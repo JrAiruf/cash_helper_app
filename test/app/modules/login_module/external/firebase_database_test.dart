@@ -1,10 +1,9 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/oeprator_not_found_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:uuid/uuid.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
