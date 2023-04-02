@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "571369655106",
+    "project_id": "cash-helper-app",
+    "storage_bucket": "cash-helper-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571369655106:android:4ad3b458f4f37e6a6796db",
+        "android_client_info": {
+          "package_name": "br.com.silva.cash_helper_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571369655106-h11cuodrremud7eqslr7vm8o4n21aien.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWnH0ymdwE763nJVMJZ1qqOG0zoIvstSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571369655106-h11cuodrremud7eqslr7vm8o4n21aien.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
