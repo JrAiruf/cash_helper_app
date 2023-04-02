@@ -17,7 +17,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   final Uuid _uuidGenerator;
 
   Map<String, dynamic>? userData;
-  
+
   bool _validCredentials(String? email, String? password) {
     return email != null &&
         !email.contains(' ') &&
@@ -52,7 +52,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? login(String? email, String? password) {
+  Future<void>? login(String? email, String? password,String? collection) {
     // TODO: implement login
     throw UnimplementedError();
   }
