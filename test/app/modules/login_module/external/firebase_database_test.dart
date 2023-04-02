@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/oeprator_not_found_error.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,6 +29,15 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         password != null &&
         !password.contains(' ') &&
         password.isNotEmpty;
+  }
+
+  bool _validOperatorInformations(String? operatorId, String? collection) {
+    return operatorId != null &&
+            !operatorId.contains(' ') &&
+            operatorId.isNotEmpty ||
+        collection != null &&
+            !collection.contains(' ') &&
+            collection.isNotEmpty;
   }
 
   bool _validOperatorValues(String? email, int? cashierNumber) {
@@ -88,21 +98,36 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? getOperatorById(String? operatorId) {
-    // TODO: implement getOperatorById
-    throw UnimplementedError();
+  Future<Map<String, dynamic>?>? getOperatorById(
+      String? operatorId, String? collection) async {
+    try {
+      if (_validOperatorInformations(operatorId, collection)) {
+        userData = await _database
+            .collection(collection!)
+            .doc(operatorId)
+            .get()
+            .then((value) => value.data());
+        return userData;
+      } else {
+        userData?.clear();
+        return null;
+      }
+    } catch (e) {
+      Exception(e.toString());
+      throw OperatorNotFound();
+    }
   }
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber) {
+      String? email, int? cashierNumber, String? collection) {
     // TODO: implement checkOperatorDataForResetPassword
     throw UnimplementedError();
   }
 
   @override
-  Future<void>? resetOperatorPassword(
-      String? email, int? cashierNumber, String? newPassword) {
+  Future<void>? resetOperatorPassword(String? email, int? cashierNumber,
+      String? collection, String? newPassword) {
     // TODO: implement resetOperatorPassword
     throw UnimplementedError();
   }
@@ -203,15 +228,27 @@ void main() {
       test(
         "Return a Map from firebase containing all operator data",
         () async {
-           await database.register(newOperator, "testCollection");
+          await database.register(newOperator, "testCollection");
           final result = await firebaseMock.collection("testCollection").get();
-          final operatorData = result.docs.first.data();
+          final operatorId = result.docs
+              .firstWhere((operatorMap) => operatorMap["operatorId"] != null)
+              .data();
           expect(result.docs.isNotEmpty == true, equals(true));
+          final operatorData = await database.getOperatorById(
+              operatorId["operatorId"], "testCollection");
+          expect(operatorData != null, equals(true));
         },
       );
       test(
         "Fail returning operator data",
-        () {},
+        () async {
+          await database.register(newOperator, "testCollection");
+          final result = await firebaseMock.collection("testCollection").get();
+          expect(result.docs.isNotEmpty == true, equals(true));
+          final operatorData =
+              await database.getOperatorById("", "testCollection");
+          expect(operatorData == null, equals(true));
+        },
       );
     },
   );

@@ -58,21 +58,21 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? getOperatorById(String? operatorId) {
+  Future<Map<String, dynamic>?>? getOperatorById(String? operatorId, String? collection) {
     // TODO: implement getOperatorById
     throw UnimplementedError();
   }
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber) {
+      String? email, int? cashierNumber, String? collection) {
     // TODO: implement checkOperatorDataForResetPassword
     throw UnimplementedError();
   }
 
   @override
   Future<void>? resetOperatorPassword(
-      String? email, int? cashierNumber, String? newPassword) {
+      String? email, int? cashierNumber, String? collection, String? newPassword) {
     // TODO: implement resetOperatorPassword
     throw UnimplementedError();
   }

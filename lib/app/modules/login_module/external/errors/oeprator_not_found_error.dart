@@ -1,0 +1,1 @@
+class OperatorNotFound implements Exception {}
