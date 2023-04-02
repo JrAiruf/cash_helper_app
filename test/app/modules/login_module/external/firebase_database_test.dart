@@ -11,17 +11,14 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   FirebaseDatabaseMock(
       {required FirebaseFirestore database,
-      required FirebaseAuth auth,
-      required Uuid uuidGenerator})
+      required FirebaseAuth auth})
       : _database = database,
-        _auth = auth,
-        _uuidGenerator = uuidGenerator;
+        _auth = auth;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
-  final Uuid _uuidGenerator;
 
-  Map<String, dynamic>? userData;
+  Map<String, dynamic>? operatorData;
   bool _validCredentials(String? email, String? password) {
     return email != null &&
         !email.contains(' ') &&
@@ -34,7 +31,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   bool _validOperatorInformations(String? operatorId, String? collection) {
     return operatorId != null &&
             !operatorId.contains(' ') &&
-            operatorId.isNotEmpty ||
+            operatorId.isNotEmpty &&
         collection != null &&
             !collection.contains(' ') &&
             collection.isNotEmpty;
@@ -64,6 +61,13 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
               .doc(newOperator["operatorId"])
               .set(newOperator)
           : null;
+      userCredentials.user!.uid.isNotEmpty
+          ? operatorData = await _database
+              .collection(collection!)
+              .doc(newOperator["operatorId"])
+              .get()
+              .then((value) => value.data())
+          : operatorData = null;
     } on FirebaseException catch (e) {
       throw Exception(e.toString());
     }
@@ -82,14 +86,15 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           },
         );
         if (userCredentials.user!.uid.isNotEmpty) {
-          userData = await _database
+          operatorData = await _database
               .collection(collection)
               .doc(userCredentials.user!.uid)
               .get()
               .then((value) => value.data());
         }
       } else {
-        userData?.clear();
+        operatorData = null;
+        return;
       }
     } on FirebaseAuthException catch (e) {
       Exception(e.toString());
@@ -102,14 +107,11 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       String? operatorId, String? collection) async {
     try {
       if (_validOperatorInformations(operatorId, collection)) {
-        userData = await _database
-            .collection(collection!)
-            .doc(operatorId)
-            .get()
-            .then((value) => value.data());
-        return userData;
+        final databaseCollection = _database.collection(collection!);
+        final operatorDatabaseData = await databaseCollection.doc(operatorId).get();
+        operatorData?.addAll(operatorDatabaseData.data() ?? {});
+        return operatorData;
       } else {
-        userData?.clear();
         return null;
       }
     } catch (e) {
@@ -133,9 +135,9 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<void>? signOut() async {
+    await _auth.signOut();
+    operatorData?.clear();
   }
 }
 
@@ -155,7 +157,7 @@ void main() {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
-    'ocupation': 'Operator',
+    'operatorOcupation': 'Operator',
   };
   final Map<String, dynamic> modifiedUser = {
     'operatorId': 'q34u6hu1qeuyoio',
@@ -166,29 +168,29 @@ void main() {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': true,
-    'ocupation': 'Admin',
+    'operatorOcupation': 'Admin',
   };
   final authMock = MockFirebaseAuth(mockUser: user);
   final firebaseMock = FakeFirebaseFirestore();
-  const uuid = Uuid();
   final database = FirebaseDatabaseMock(
-      database: firebaseMock, auth: authMock, uuidGenerator: uuid);
+      database: firebaseMock, auth: authMock);
   group(
     "Register function should",
     () {
-      test("Create a document in firebase database(Operator Data)", () async {
-        await database.register(newOperator, newOperator["ocupation"]);
-        final result =
-            await firebaseMock.collection(newOperator["ocupation"]).get();
-        final operatorData = result.docs.first.data();
-        expect(result.docs.isNotEmpty == true, equals(true));
-        expect(operatorData["operatorEmail"], equals("josy@email.com"));
+      test("Create a document in firebase database containing Operator Data",
+          () async {
+        await database.register(newOperator, newOperator["operatorOcupation"]);
+        final result = await firebaseMock
+            .collection(newOperator["operatorOcupation"])
+            .get();
+        expect(result.docs.isEmpty, equals(false));
+        expect(database.operatorData?["operatorEmail"], equals("josy@email.com"));
       });
       test("Fail to create the operator document in firebase", () async {
         newOperator["operatorEmail"] = "";
         await database.register(newOperator, "testCollection");
         final result = await firebaseMock.collection("testCollection").get();
-        expect(result.docs.isEmpty == true, equals(true));
+        expect(result.docs.isEmpty, equals(true));
       });
     },
   );
@@ -198,26 +200,33 @@ void main() {
       test(
         "Sign in successfully in the application",
         () async {
-          await database.register(newOperator, newOperator["ocupation"]);
-          final result =
-              await firebaseMock.collection(newOperator["ocupation"]).get();
-          final operatorData = result.docs.first.data();
-          expect(result.docs.isNotEmpty == true, equals(true));
-          expect(operatorData["operatorEmail"], equals("josy@email.com"));
-          await database.login("email", "password", newOperator["ocupation"]);
-          expect(database.userData?["operatorEmail"], equals("josy@email.com"));
+          await database.register(
+              newOperator, newOperator["operatorOcupation"]);
+          final result = await firebaseMock
+              .collection(newOperator["operatorOcupation"])
+              .get();
+          expect(result.docs.isNotEmpty, equals(true));
+          expect(database.operatorData?["operatorEmail"], equals("josy@email.com"));
+          await database.login(
+              database.operatorData?["operatorEmail"],
+              database.operatorData?["operatorPassword"],
+              newOperator["operatorOcupation"]);
+          expect(database.operatorData?.isNotEmpty, equals(true));
+          expect(database.operatorData?["operatorOcupation"], equals("Operator"));
         },
       );
       test(
         "Fail to sign in",
         () async {
-          await database.register(newOperator, "testCollection");
-          final result = await firebaseMock.collection("testCollection").get();
-          final operatorData = result.docs.first.data();
-          expect(result.docs.isNotEmpty == true, equals(true));
-          expect(operatorData["operatorEmail"], equals("josy@email.com"));
+          await database.register(
+              newOperator, newOperator["operatorOcupation"]);
+          final result = await firebaseMock
+              .collection(newOperator["operatorOcupation"])
+              .get();
+          expect(result.docs.isNotEmpty, equals(true));
+          expect(database.operatorData?["operatorEmail"], equals("josy@email.com"));
           await database.login("", "", "");
-          expect(database.userData?["operatorEmail"], equals(null));
+          expect(database.operatorData?["operatorEmail"], equals(null));
         },
       );
     },
@@ -228,25 +237,27 @@ void main() {
       test(
         "Return a Map from firebase containing all operator data",
         () async {
-          await database.register(newOperator, "testCollection");
-          final result = await firebaseMock.collection("testCollection").get();
-          final operatorId = result.docs
-              .firstWhere((operatorMap) => operatorMap["operatorId"] != null)
-              .data();
-          expect(result.docs.isNotEmpty == true, equals(true));
-          final operatorData = await database.getOperatorById(
-              operatorId["operatorId"], "testCollection");
-          expect(operatorData != null, equals(true));
+          await database.register(
+              newOperator, newOperator["operatorOcupation"]);
+          final result = await firebaseMock
+              .collection(newOperator["operatorOcupation"])
+              .get();
+          expect(result.docs.isNotEmpty, equals(true));
+          await database.getOperatorById("mock_uid", "testCollection");
+          expect(database.operatorData != null, equals(true));
         },
       );
       test(
         "Fail returning operator data",
         () async {
-          await database.register(newOperator, "testCollection");
-          final result = await firebaseMock.collection("testCollection").get();
-          expect(result.docs.isNotEmpty == true, equals(true));
-          final operatorData =
-              await database.getOperatorById("", "testCollection");
+          await database.register(
+              newOperator, newOperator["operatorOcupation"]);
+          final result = await firebaseMock
+              .collection(newOperator["operatorOcupation"])
+              .get();
+          expect(result.docs.isNotEmpty, equals(true));
+          final operatorData = await database.getOperatorById(
+              "", newOperator["operatorOcupation"]);
           expect(operatorData == null, equals(true));
         },
       );
@@ -266,18 +277,18 @@ void main() {
       test("description", () {});
     },
   );
-  group(
-    "description",
-    () {
-      test("description", () {});
-      test("description", () {});
-    },
-  );
-  group(
-    "description",
-    () {
-      test("description", () {});
-      test("description", () {});
+  test(
+    "Should clear all operatorData from operator's map and sign out",
+    () async {
+      await database.register(newOperator, newOperator["operatorOcupation"]);
+      final result =
+          await firebaseMock.collection(newOperator["operatorOcupation"]).get();
+      expect(result.docs.isNotEmpty == true, equals(true));
+      await database.login(
+          "email", "password", newOperator["operatorOcupation"]);
+      expect(database.operatorData?["operatorEmail"], equals("josy@email.com"));
+      await database.signOut();
+      expect(database.operatorData?["operatorEmail"], equals(null));
     },
   );
 }

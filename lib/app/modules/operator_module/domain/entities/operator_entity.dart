@@ -7,7 +7,7 @@ class OperatorEntity {
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
-  OperatorOccupation? ocupation;
+  OperatorOccupation? operatorOcupation;
 
   OperatorEntity({
     this.operatorId,
@@ -18,7 +18,7 @@ class OperatorEntity {
     this.operatorOppening,
     this.operatorClosing,
     this.operatorEnabled,
-    this.ocupation,
+    this.operatorOcupation,
   });
 }
 
