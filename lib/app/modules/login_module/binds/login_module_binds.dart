@@ -6,6 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../infra/data/login_repository.dart';
+import '../infra/repository/login_repository_impl.dart';
+
 abstract class LoginModuleBinds {
   static routes() => ModuleRoute(
         Modular.initialRoute,
@@ -34,5 +37,6 @@ class LoginModule extends Module {
     Bind<FirebaseFirestore>((i) => FirebaseFirestore.instance),
     Bind<FirebaseAuth>((i) => FirebaseAuth.instance),
     Bind<ApplicationLoginDatabase>((i) => FirebaseDatabase(database: i(), auth: i())),
+    Bind<LoginRepository>((i) => LoginRepositoryImpl(datasource: i())),
   ];
 }

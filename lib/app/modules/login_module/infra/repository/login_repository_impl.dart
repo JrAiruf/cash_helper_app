@@ -1,40 +1,61 @@
 import 'package:cash_helper_app/app/modules/login_module/infra/data/login_repository.dart';
 import 'package:cash_helper_app/app/modules/operator_module/infra/models/operator_model.dart';
 
+import '../../external/data/application_login_database.dart';
+
 class LoginRepositoryImpl implements LoginRepository {
+  LoginRepositoryImpl({required ApplicationLoginDatabase datasource})
+      : _datasource = datasource;
+  final ApplicationLoginDatabase _datasource;
+
   @override
-  Future<bool>? checkOperatorDataForResetPassword(String? email, int? cashierNumber, String? collection) {
+  Future<OperatorModel?>? register(OperatorModel? newOperator, String? collection) async {
+    if (newOperator != null && collection !=null) {
+      final databaseOperator = await _datasource.register(newOperator.toMap(), collection);
+      return OperatorModel.fromMap(databaseOperator ?? {});
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<OperatorModel?>? login(
+      String? email, String? password, String? collection) async {
+   if (email != null && password !=null) {
+      final databaseOperator = await _datasource.login(email, password, collection);
+      return OperatorModel.fromMap(databaseOperator ?? {});
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<OperatorModel?>? getOperatorById(
+      String? operatorId, String? collection) async {
+if (operatorId != null && collection != null) {
+  final databaseOperator = await _datasource.getOperatorById(operatorId, collection);
+  return OperatorModel.fromMap(databaseOperator ?? {});
+} else {
+  return null;
+}
+  }
+
+  @override
+  Future<bool>? checkOperatorDataForResetPassword(
+      String? email, int? cashierNumber, String? collection) {
     // TODO: implement checkOperatorDataForResetPassword
     throw UnimplementedError();
   }
 
   @override
-  Future<OperatorModel?>? getOperatorById(String? operatorId, String? collection) {
-    // TODO: implement getOperatorById
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<OperatorModel?>? login(String? email, String? password, String? collection) {
-    // TODO: implement login
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<OperatorModel?>? register(OperatorModel? newOperator, String? collection) {
-    // TODO: implement register
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? collection, String? newPassword) {
+  Future<void>? resetOperatorPassword(String? email, int? cashierNumber,
+      String? collection, String? newPassword) {
     // TODO: implement resetOperatorPassword
     throw UnimplementedError();
   }
 
   @override
-  Future<void>? signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<void>? signOut() async {
+    await _datasource.signOut();
   }
 }
