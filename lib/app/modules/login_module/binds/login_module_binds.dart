@@ -1,4 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/binds/login_module_routes.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,5 +33,6 @@ class LoginModule extends Module {
   final bindList = <Bind>[
     Bind<FirebaseFirestore>((i) => FirebaseFirestore.instance),
     Bind<FirebaseAuth>((i) => FirebaseAuth.instance),
+    Bind<ApplicationLoginDatabase>((i) => FirebaseDatabase(database: i(), auth: i())),
   ];
 }

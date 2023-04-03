@@ -1,16 +1,12 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uuid/uuid.dart';
-
 import 'errors/authentication_error.dart';
 import 'errors/operator_not_found_error.dart';
 
 class FirebaseDatabase implements ApplicationLoginDatabase {
   FirebaseDatabase(
-      {required FirebaseFirestore database,
-      required FirebaseAuth auth,
-      required Uuid uuidGenerator})
+      {required FirebaseFirestore database, required FirebaseAuth auth})
       : _database = database,
         _auth = auth;
 
@@ -29,11 +25,11 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
 
   bool _validOperatorInformations(String? operatorId, String? collection) {
     return operatorId != null &&
-            !operatorId.contains(' ') &&
-            operatorId.isNotEmpty &&
+        !operatorId.contains(' ') &&
+        operatorId.isNotEmpty &&
         collection != null &&
-            !collection.contains(' ') &&
-            collection.isNotEmpty;
+        !collection.contains(' ') &&
+        collection.isNotEmpty;
   }
 
   bool _validOperatorValues(String? email, int? cashierNumber) {
@@ -47,7 +43,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? register(
+  Future<Map<String, dynamic>?>? register(
       Map<String, dynamic>? newOperator, String? collection) async {
     try {
       final userCredentials = await _auth.createUserWithEmailAndPassword(
@@ -67,13 +63,14 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
               .get()
               .then((value) => value.data())
           : operatorData = null;
+      return operatorData;
     } on FirebaseException catch (e) {
       throw Exception(e.toString());
     }
   }
 
   @override
-  Future<void>? login(
+  Future<Map<String, dynamic>?>? login(
       String? email, String? password, String? collection) async {
     try {
       if (_validCredentials(email, password) && collection!.isNotEmpty) {
@@ -84,16 +81,14 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
             throw AuthenticationError();
           },
         );
-        if (userCredentials.user!.uid.isNotEmpty) {
-          operatorData = await _database
-              .collection(collection)
-              .doc(userCredentials.user!.uid)
-              .get()
-              .then((value) => value.data());
-        }
+        operatorData = await _database
+            .collection(collection)
+            .doc(userCredentials.user!.uid)
+            .get()
+            .then((value) => value.data());
+        return operatorData;
       } else {
-        operatorData = null;
-        return;
+        return null;
       }
     } on FirebaseAuthException catch (e) {
       Exception(e.toString());
@@ -107,7 +102,8 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
     try {
       if (_validOperatorInformations(operatorId, collection)) {
         final databaseCollection = _database.collection(collection!);
-        final operatorDatabaseData = await databaseCollection.doc(operatorId).get();
+        final operatorDatabaseData =
+            await databaseCollection.doc(operatorId).get();
         operatorData?.addAll(operatorDatabaseData.data() ?? {});
         return operatorData;
       } else {
