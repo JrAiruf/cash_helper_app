@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
+import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -155,7 +156,18 @@ void main() {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
-    'operatorOcupation': 'Operator',
+    'operatorOcupation': "operator",
+  };
+  final Map<String, dynamic> testOperator = {
+    'operatorId': 'q34u6hu1qeuyoio',
+    'operatorNumber': 1,
+    'operatorName': ' Josy Kelly',
+    'operatorEmail': 'junior@email.com',
+    'operatorPassword': '12345678',
+    'operatorOppening': 'operatorOppening',
+    'operatorClosing': 'operatorClosing',
+    'operatorEnabled': false,
+    'operatorOcupation': "operator",
   };
   final Map<String, dynamic> modifiedUser = {
     'operatorId': 'q34u6hu1qeuyoio',
@@ -166,7 +178,7 @@ void main() {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': true,
-    'operatorOcupation': 'Admin',
+    'operatorOcupation': "Admin",
   };
   final authMock = MockFirebaseAuth(mockUser: user);
   final firebaseMock = FakeFirebaseFirestore();
@@ -216,19 +228,18 @@ void main() {
               createdOperator?["operatorPassword"],
               newOperator["operatorOcupation"]);
           expect(loginOperator?.isNotEmpty, equals(true));
-          expect(loginOperator?["operatorOcupation"], equals("Operator"));
+          expect(loginOperator?["operatorOcupation"], equals("operator"));
         },
       );
       test(
         "Fail to sign in",
         () async {
           final createdOperator =
-              await database.register(newOperator, "testCollection");
+              await database.register(testOperator, "testCollection");
           final result = await firebaseMock.collection("testCollection").get();
-          expect(result.docs.isEmpty, equals(false));
+          expect(result.docs.isNotEmpty, equals(true));
           expect(createdOperator, isA<Map<String, dynamic>>());
-          expect(database.operatorData?["operatorEmail"],
-              equals("josy@email.com"));
+          expect(createdOperator?["operatorEmail"], equals("junior@email.com"));
           final loginOperator = await database.login("", "", "");
           expect(loginOperator, equals(null));
         },
