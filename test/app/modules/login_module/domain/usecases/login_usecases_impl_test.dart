@@ -62,8 +62,7 @@ class LoginUsecasesMock implements LoginUsecases {
 
   @override
   Future<void>? signOut() async {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  await _repository.signOut();
   }
 }
 
@@ -183,7 +182,22 @@ void main() {
   );
   test(
     "Should sign out the application",
-    () {},
+    () async {
+    when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
+          when(repository.login(any, any, any)).thenAnswer((_) async => repositoryOperator);
+          when(repository.signOut()).thenReturn(null);
+          when(repository.getOperatorById(any, any)).thenAnswer((_) async => null);
+          final createdOperator = await usecases.register(newOperator, "collection");
+          expect(createdOperator, isA<OperatorEntity>());
+          expect(createdOperator?.operatorId != null, equals(true));
+          final loginOperator = await usecases.login(createdOperator?.operatorEmail, createdOperator?.operatorPassword, createdOperator?.operatorOcupation.toString());
+          expect(loginOperator, isA<OperatorEntity>());
+          expect(loginOperator?.operatorId != null, equals(true));
+          await usecases.signOut();
+          final loggedOffOperator = await usecases.getOperatorById("id","collection");
+          expect(loggedOffOperator?.operatorId, equals(null));
+          
+    },
   );
 }
 
