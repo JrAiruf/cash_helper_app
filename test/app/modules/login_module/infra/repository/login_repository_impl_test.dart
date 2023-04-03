@@ -13,6 +13,8 @@ class LoginRepositoryMock implements LoginRepository {
       : _datasource = datasource;
   final ApplicationLoginDatabase _datasource;
 
+  
+
   @override
   Future<OperatorModel?>? register(OperatorModel? newOperator, String? collection) async {
     if (newOperator != null && collection !=null) {
