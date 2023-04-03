@@ -5,7 +5,7 @@ import '../../../operator_module/infra/models/operator_model.dart';
 import '../../infra/data/login_repository.dart';
 
 class LoginUsecasesImpl implements LoginUsecases {
- LoginUsecasesImpl(LoginRepository repository) : _repository = repository;
+ LoginUsecasesImpl({required LoginRepository repository}) : _repository = repository;
 
   final LoginRepository _repository;
   @override
