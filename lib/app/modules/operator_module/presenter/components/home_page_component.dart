@@ -34,7 +34,7 @@ class HomePageComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: height! * 0.07),
+                SizedBox(height: height! * 0.05),
                 Text(
                   "${operator.operatorName}",
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -55,7 +55,7 @@ class HomePageComponent extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 30,
+          top: 2,
           left: 10,
           child: CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -63,7 +63,7 @@ class HomePageComponent extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 32,
+          top: 4,
           left: 12,
           child: CircleAvatar(
             backgroundColor: color,
@@ -71,7 +71,7 @@ class HomePageComponent extends StatelessWidget {
           ),
         ),
         const Positioned(
-          top: 60,
+          top: 33,
           left: 42,
           child: Icon(Icons.person),
         ),

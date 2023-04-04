@@ -35,6 +35,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
     final cashierOppeningTime =
         '${hoursDateTime >= 10 ? hoursDateTime : '0$hoursDateTime'}:${minutesDateTime >= 10 ? minutesDateTime : '0$minutesDateTime'}';
     return Scaffold(
+      appBar: AppBar(),
       body: Visibility(
         visible: _createOperatorController.loadingData,
         replacement: SingleChildScrollView(

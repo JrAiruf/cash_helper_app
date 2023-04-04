@@ -20,7 +20,7 @@ class CashHelperApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarColor = Theme.of(context).colorScheme.primary;
+    const appBarColor = Color(0xff7144AB);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -33,10 +33,17 @@ class CashHelperApp extends StatelessWidget {
                 color: Colors.white, fontSize: 15, fontWeight: FontWeight.w200),
           ),
           useMaterial3: true,
-          appBarTheme: AppBarTheme(color: appBarColor),
+          appBarTheme: const AppBarTheme(color: appBarColor),
           colorScheme: lightColorScheme),
       darkTheme: ThemeData(
           iconTheme: const IconThemeData(color: Colors.white, size: 35),
+          appBarTheme: AppBarTheme(
+            color: appBarColor,
+            iconTheme: IconThemeData(
+              color: Theme.of(context).colorScheme.onSecondary,
+              size: 30,
+            ),
+          ),
           textTheme: const TextTheme(
             bodyLarge: TextStyle(
                 color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),

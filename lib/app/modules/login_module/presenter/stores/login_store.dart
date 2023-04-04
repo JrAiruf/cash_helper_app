@@ -13,12 +13,11 @@ bool loadingData = false;
 Future<OperatorEntity?>? register(OperatorEntity newOperator, String collection) async {
 final operatorEntity = await _usecases.register(newOperator, collection);
 return operatorEntity;
-}/* 
+}
 Future<OperatorEntity?>? login(String? email, String? password,String? collection) async {
 final operatorEntity = await _usecases.login(email, password, collection);
-value = operatorEntity!;
-return value;
-} */
+return operatorEntity;
+}
 Future<void>? getOperatorById(String operatorId,String collection) async {
   value = LoginLoadingState();
 final operatorEntity = await _usecases.getOperatorById(operatorId, collection);
