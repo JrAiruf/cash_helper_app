@@ -102,9 +102,10 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
     try {
       if (_validOperatorInformations(operatorId, collection)) {
         final databaseCollection = _database.collection(collection!);
-        final operatorDatabaseData =
-            await databaseCollection.doc(operatorId).get();
-        operatorData?.addAll(operatorDatabaseData.data() ?? {});
+        operatorData = await databaseCollection
+            .doc(operatorId)
+            .get()
+            .then((value) => value.data());
         return operatorData;
       } else {
         return null;

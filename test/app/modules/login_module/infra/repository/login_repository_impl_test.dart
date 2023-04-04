@@ -1,7 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/firebase_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/infra/data/login_repository.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

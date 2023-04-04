@@ -36,7 +36,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
         '${hoursDateTime >= 10 ? hoursDateTime : '0$hoursDateTime'}:${minutesDateTime >= 10 ? minutesDateTime : '0$minutesDateTime'}';
     return Scaffold(
       body: Visibility(
-        visible: _loginStore.loadingData,
+        visible: _createOperatorController.loadingData,
         replacement: SingleChildScrollView(
           child: Container(
             height: height,
@@ -194,7 +194,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           _createOperatorController.loadingData = true;
                         });
                         final newOperator = await _loginStore
-                            .register(_cashierOperator,_cashierOperator.operatorOcupation!)
+                            .register(_cashierOperator,
+                                _cashierOperator.operatorOcupation!)
                             ?.then((value) => value)
                             .catchError((e) {
                           if (e.toString().contains("already-in-use")) {
@@ -211,6 +212,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                               .operatorCreatedSucessfully(context);
                           Modular.to.navigate(OperatorModuleRoutes.home,
                               arguments: newOperator);
+                        } else {
+                          _createOperatorController.onFail(context);
                         }
                       }
                       setState(() {
@@ -235,7 +238,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
           width: width,
           child: Center(
             child: CircularProgressIndicator(
-              color: Theme.of(context).indicatorColor,
+              color: Theme.of(context).colorScheme.onSecondary,
             ),
           ),
         ),

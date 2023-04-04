@@ -34,7 +34,7 @@ class HomePageComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: height! * 0.06),
+                SizedBox(height: height! * 0.07),
                 Text(
                   "${operator.operatorName}",
                   style: Theme.of(context).textTheme.bodyMedium,

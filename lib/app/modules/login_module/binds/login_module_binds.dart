@@ -36,7 +36,7 @@ class LoginModule extends Module {
 
   final routeList = <ModularRoute>[
     ChildRoute(LoginModuleRoutes.recoveryPassword, child: (_, args) => Container()),
-    ChildRoute(LoginModuleRoutes.start, child: (_, args) => CreateOperatorPage()),
+    ChildRoute(LoginModuleRoutes.start, child: (_, args) =>const CreateOperatorPage()),
   ];
   
   final bindList = <Bind>[

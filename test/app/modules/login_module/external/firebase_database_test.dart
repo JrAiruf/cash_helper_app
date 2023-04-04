@@ -1,7 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -106,9 +105,10 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
     try {
       if (_validOperatorInformations(operatorId, collection)) {
         final databaseCollection = _database.collection(collection!);
-        final operatorDatabaseData =
-            await databaseCollection.doc(operatorId).get();
-        operatorData?.addAll(operatorDatabaseData.data() ?? {});
+        operatorData = await databaseCollection
+            .doc(operatorId)
+            .get()
+            .then((value) => value.data());
         return operatorData;
       } else {
         return null;
@@ -252,13 +252,14 @@ void main() {
       test(
         "Return a Map from firebase containing all operator data",
         () async {
-          await database.register(
+          final createdOperator = await database.register(
               newOperator, newOperator["operatorOcupation"]);
           final result = await firebaseMock
               .collection(newOperator["operatorOcupation"])
               .get();
           expect(result.docs.isNotEmpty, equals(true));
-          await database.getOperatorById("mock_uid", "testCollection");
+          await database.getOperatorById(createdOperator?["operatorId"],
+              createdOperator?["operatorOcupation"]);
           expect(database.operatorData != null, equals(true));
         },
       );

@@ -12,4 +12,8 @@ class LoginSuccessgState extends LoginStates {
   final OperatorEntity operatorEntity;
 }
 
-class LoginErrorState extends LoginStates {}
+class LoginErrorState extends LoginStates {
+  LoginErrorState({required this.message});
+  final String message;
+
+}
