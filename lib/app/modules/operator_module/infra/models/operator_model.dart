@@ -11,7 +11,7 @@ class OperatorModel {
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
-  OperatorOccupation? operatorOcupation;
+  String? operatorOcupation;
   OperatorModel({
     this.operatorId,
     this.operatorNumber,

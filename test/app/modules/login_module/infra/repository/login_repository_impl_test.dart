@@ -80,7 +80,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: OperatorOccupation.cashierOperator,
+    operatorOcupation:"operator",
   );
   final modifiedOperator = OperatorModel(
     operatorId: 'q34u6hu1qeuyoio',
@@ -91,7 +91,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: true,
-    operatorOcupation: OperatorOccupation.admin,
+    operatorOcupation: "admin",
   );
   group(
     "Register function should",
@@ -208,5 +208,5 @@ final databaseOperator = {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
-    'operatorOcupation': OperatorOccupation.cashierOperator,
+    'operatorOcupation': "operator",
   };

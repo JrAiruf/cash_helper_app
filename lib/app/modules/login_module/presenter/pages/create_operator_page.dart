@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import 'package:cash_helper_app/app/modules/operator_module/binds/operator_module_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../operator_module/domain/entities/operator_entity.dart';
@@ -6,7 +10,7 @@ import '../controllers/login_controller.dart';
 import '../stores/login_controller.dart';
 
 class CreateOperatorPage extends StatefulWidget {
-  CreateOperatorPage({super.key});
+  const CreateOperatorPage({super.key});
 
   @override
   State<CreateOperatorPage> createState() => _CreateOperatorPageState();
@@ -14,143 +18,221 @@ class CreateOperatorPage extends StatefulWidget {
 
 class _CreateOperatorPageState extends State<CreateOperatorPage> {
   final _createOperatorFormKey = GlobalKey<FormState>();
-
   final _loginStore = Modular.get<LoginStore>();
-
   final _createOperatorController = Modular.get<LoginController>();
-
   bool? startWithEnabledOperator;
-
-  final cashierOperator = OperatorEntity();
+  final _cashierOperator = OperatorEntity();
+  String? _confirmationPassword;
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final backgroundColor = Theme.of(context).colorScheme.onPrimaryContainer;
+    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final minutesDateTime = DateTime.now().minute;
+    final hoursDateTime = DateTime.now().hour;
+    final cashierOppeningTime =
+        '${hoursDateTime >= 10 ? hoursDateTime : '0$hoursDateTime'}:${minutesDateTime >= 10 ? minutesDateTime : '0$minutesDateTime'}';
     return Scaffold(
-      appBar: AppBar(),
-      body: SizedBox(
-        height: height,
-        width: width,
-        child: Visibility(
-          visible: _loginStore.loadingData,
-          replacement: SingleChildScrollView(
-            child: Container(
-              height: height,
-              width: width,
-              decoration: BoxDecoration(color: primaryColor),
-              child: Column(
-                children: [
-                  SizedBox(height: height * 0.08),
-                  Text('Godinho \nSupermercado',
+      body: Visibility(
+        visible: _loginStore.loadingData,
+        replacement: SingleChildScrollView(
+          child: Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(color: primaryColor),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: height * 0.1,
+                  ),
+                  child: Text('Crie sua Conta',
                       style: Theme.of(context).textTheme.bodyLarge),
-                  SizedBox(height: height * 0.08),
-                  SizedBox(
-                    height: height * 0.6,
-                    width: width * 0.9,
-                    child: Card(
-                      color: primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Form(
-                        key: _createOperatorFormKey,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CashHelperTextFieldComponent(
-                                isButton: false,
-                                validator: (value) => _createOperatorController
-                                    .cashierNameValidate(value),
-                                onSaved: (value) =>
-                                    cashierOperator.operatorName = value,
-                                controller:
-                                    _createOperatorController.cashierNameField,
-                                label: 'Nome',
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              CashHelperTextFieldComponent(
-                                isButton: false,
-                                validator: (value) => _createOperatorController
-                                    .emailValidate(value),
-                                onSaved: (value) =>
-                                    cashierOperator.operatorEmail = value,
-                                controller: _createOperatorController
-                                    .newOperatorEmailField,
-                                label: 'Email',
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              CashHelperTextFieldComponent(
-                                isButton: false,
-                                obscureText: true,
-                                validator: (value) => _createOperatorController
-                                    .passwordValidate(value),
-                                onSaved: (value) =>
-                                    cashierOperator.operatorPassword = value,
-                                controller: _createOperatorController
-                                    .newOperatorPasswordField,
-                                label: 'Senha',
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              CashHelperTextFieldComponent(
-                                isButton: false,
-                                validator: (value) => _createOperatorController
-                                    .cashierNumberValidate(value),
-                                onSaved: (value) => cashierOperator
-                                    .operatorNumber = int.tryParse(value!),
-                                label: 'Número do caixa',
-                                controller:
-                                    _createOperatorController.cashierNumberField,
-                                input: TextInputType.phone,
-                              ),
-                              Row(
+                ),
+                Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: height * 0.6,
+                        width: width * 0.95,
+                        child: Card(
+                          color: seccondaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Form(
+                            key: _createOperatorFormKey,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(
-                                    'Abertura de caixa',
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                  CashHelperTextFieldComponent(
+                                    radius: 15,
+                                    isButton: false,
+                                    validator: (value) =>
+                                        _createOperatorController
+                                            .cashierNameValidate(value),
+                                    onSaved: (value) =>
+                                        _cashierOperator.operatorName = value,
+                                    controller: _createOperatorController
+                                        .cashierNameField,
+                                    label: 'Nome',
                                   ),
-                                  Switch(
-                                    activeColor: backgroundColor,
-                                    value: (startWithEnabledOperator ?? false),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        startWithEnabledOperator = value;
-                                        cashierOperator.operatorEnabled = value;
-                                      });
-                                    },
+                                  CashHelperTextFieldComponent(
+                                    radius: 15,
+                                    isButton: false,
+                                    validator: (value) =>
+                                        _createOperatorController
+                                            .emailValidate(value),
+                                    onSaved: (value) =>
+                                        _cashierOperator.operatorEmail = value,
+                                    controller: _createOperatorController
+                                        .newOperatorEmailField,
+                                    label: 'Email',
                                   ),
+                                  CashHelperTextFieldComponent(
+                                    radius: 15,
+                                    isButton: false,
+                                    obscureText: true,
+                                    validator: (value) =>
+                                        _createOperatorController
+                                            .passwordValidate(value),
+                                    onSaved: (value) => _cashierOperator
+                                        .operatorPassword = value,
+                                    controller: _createOperatorController
+                                        .newOperatorPasswordField,
+                                    label: 'Senha',
+                                  ),
+                                  CashHelperTextFieldComponent(
+                                    radius: 15,
+                                    isButton: false,
+                                    obscureText: true,
+                                    validator: (value) =>
+                                        _createOperatorController
+                                            .passwordValidate(value),
+                                    onSaved: (value) => _confirmationPassword = value,
+                                    controller: _createOperatorController
+                                        .newOperatorPasswordField,
+                                    label: 'Confirmar senha',
+                                  ),
+                                  CashHelperTextFieldComponent(
+                                    radius: 15,
+                                    isButton: false,
+                                    validator: (value) =>
+                                        _createOperatorController
+                                            .cashierNumberValidate(value),
+                                    onSaved: (value) => _cashierOperator
+                                        .operatorNumber = int.tryParse(value!),
+                                    label: 'Número do caixa',
+                                    controller: _createOperatorController
+                                        .cashierNumberField,
+                                    input: TextInputType.phone,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Abertura de caixa',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                        ),
+                                        Switch(
+                                          activeColor: primaryColor,
+                                          value: (startWithEnabledOperator ??
+                                              false),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              startWithEnabledOperator = value;
+                                              _cashierOperator.operatorEnabled =
+                                                  value;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  child: CashHelperLoginButton(
+                    onPressed: () async {
+                      _createOperatorFormKey.currentState!.validate();
+                      _createOperatorFormKey.currentState!.save();
+                      _cashierOperator.operatorClosing = 'Pendente';
+                      _cashierOperator.operatorEnabled =
+                          startWithEnabledOperator ?? false;
+                      _cashierOperator.operatorOppening =
+                          _cashierOperator.operatorEnabled! == true
+                              ? cashierOppeningTime
+                              : 'Pendente';
+                      if (_createOperatorFormKey.currentState!.validate() && _cashierOperator.operatorPassword == _confirmationPassword) {
+                        setState(() {
+                          _createOperatorController.loadingData = true;
+                        });
+                        final newOperator = await _loginStore
+                            .register(_cashierOperator,
+                                _cashierOperator.operatorOcupation ?? "operator")
+                            ?.then((value) => value)
+                            .catchError((e) {
+                          if (e.toString().contains("already-in-use")) {
+                            const String message = "Email já utilizado";
+                            _createOperatorController.registrationFail(context,
+                                message: message);
+                          } else {
+                            const String message = "Erro desconhecido";
+                            _createOperatorController.registrationFail(context,
+                                message: message);
+                          }
+                        });
+                        if (newOperator != null) {
+                          _createOperatorController.operatorCreatedSucessfully(context);
+                          Modular.to.navigate(OperatorModuleRoutes.home,
+                              arguments: newOperator);
+                        }
+                      }
+                      setState(() {
+                        _createOperatorController.loadingData = false;
+                      });
+                    },
+                    width: width,
+                    height: 65,
+                    buttonName: 'Registrar',
+                    fontSize: 20,
+                    nameColor: Colors.white,
+                    backgroundColor: seccondaryColor,
+                  ),
+                )
+              ],
             ),
           ),
-          child: Container(
-            decoration: BoxDecoration(color: primaryColor),
-            height: height,
-            width: width,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).indicatorColor,
-              ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(color: primaryColor),
+          height: height,
+          width: width,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).indicatorColor,
             ),
           ),
         ),

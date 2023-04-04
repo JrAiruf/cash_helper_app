@@ -52,7 +52,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       newOperator?["operatorId"] = userCredentials.user?.uid;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
           ? await _database
-              .collection(collection ?? "")
+              .collection(collection.toString())
               .doc(newOperator["operatorId"])
               .set(newOperator)
           : null;

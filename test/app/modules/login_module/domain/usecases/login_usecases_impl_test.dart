@@ -78,7 +78,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: OperatorOccupation.cashierOperator,
+    operatorOcupation: "operator",
   );
   final modifiedOperator = OperatorEntity(
     operatorId: 'q34u6hu1qeuyoio',
@@ -89,7 +89,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: true,
-    operatorOcupation: OperatorOccupation.admin,
+    operatorOcupation: "admin",
   );
   group(
     "Register function should",
@@ -210,5 +210,5 @@ final repositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: OperatorOccupation.cashierOperator,
+  operatorOcupation: "operator",
 );

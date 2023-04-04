@@ -20,15 +20,33 @@ class CashHelperApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBarColor = Theme.of(context).colorScheme.onPrimary;
+    final appBarColor = Theme.of(context).colorScheme.primary;
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme:const TextTheme(bodyLarge: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold)),
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(
+                color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+            bodyMedium: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            bodySmall: TextStyle(
+                color: Colors.white, fontSize: 15, fontWeight: FontWeight.w200),
+          ),
           useMaterial3: true,
           appBarTheme: AppBarTheme(color: appBarColor),
           colorScheme: lightColorScheme),
-      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+      darkTheme: ThemeData(
+          iconTheme: const IconThemeData(color: Colors.white, size: 35),
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(
+                color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+            bodyMedium: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            bodySmall: TextStyle(
+                color: Colors.white, fontSize: 15, fontWeight: FontWeight.w200),
+          ),
+          useMaterial3: true,
+          colorScheme: darkColorScheme),
       routerDelegate: Modular.routerDelegate,
       routeInformationParser: Modular.routeInformationParser,
     );

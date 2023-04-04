@@ -7,7 +7,7 @@ class OperatorEntity {
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
-  OperatorOccupation? operatorOcupation;
+  String? operatorOcupation;
 
   OperatorEntity({
     this.operatorId,
@@ -22,10 +22,3 @@ class OperatorEntity {
   });
 }
 
-enum OperatorOccupation {
-  admin(occupation: "Admin"),
-  cashierOperator(occupation: "Operator");
-
-  final String occupation;
-  const OperatorOccupation({required this.occupation});
-}
