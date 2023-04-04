@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/operator_module/binds/operator_module_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -23,7 +24,8 @@ class OperatorModule extends Module {
   List<ModularRoute> get routes => routeList;
 
   final routeList = <ModularRoute>[
-    ChildRoute(OperatorModuleRoutes.home, child: (_, args) => HomePage(operator: args.data)),
+    ChildRoute(OperatorModuleRoutes.home,
+        child: (_, args) => HomePage(operator: args.data)),
   ];
 
   final bindList = <Bind>[];

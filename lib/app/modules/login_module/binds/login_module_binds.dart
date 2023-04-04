@@ -12,7 +12,7 @@ import '../domain/usecases/login_usecases_impl.dart';
 import '../infra/data/login_repository.dart';
 import '../infra/repository/login_repository_impl.dart';
 import '../presenter/controllers/login_controller.dart';
-import '../presenter/stores/login_controller.dart';
+import '../presenter/stores/login_store.dart';
 
 abstract class LoginModuleBinds {
   static routes() => ModuleRoute(

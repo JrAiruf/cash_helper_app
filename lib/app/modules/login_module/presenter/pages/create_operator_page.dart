@@ -7,7 +7,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../operator_module/domain/entities/operator_entity.dart';
 import '../components/cash_helper_text_field.dart';
 import '../controllers/login_controller.dart';
-import '../stores/login_controller.dart';
+import '../stores/login_store.dart';
 
 class CreateOperatorPage extends StatefulWidget {
   const CreateOperatorPage({super.key});
@@ -116,7 +116,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     validator: (value) =>
                                         _createOperatorController
                                             .passwordValidate(value),
-                                    onSaved: (value) => _confirmationPassword = value,
+                                    onSaved: (value) =>
+                                        _confirmationPassword = value,
                                     controller: _createOperatorController
                                         .newOperatorPasswordField,
                                     label: 'Confirmar senha',
@@ -179,25 +180,26 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       _createOperatorFormKey.currentState!.validate();
                       _createOperatorFormKey.currentState!.save();
                       _cashierOperator.operatorClosing = 'Pendente';
+                      _cashierOperator.operatorOcupation = "operator";
                       _cashierOperator.operatorEnabled =
                           startWithEnabledOperator ?? false;
                       _cashierOperator.operatorOppening =
                           _cashierOperator.operatorEnabled! == true
                               ? cashierOppeningTime
                               : 'Pendente';
-                      if (_createOperatorFormKey.currentState!.validate() && _cashierOperator.operatorPassword == _confirmationPassword) {
+                      if (_createOperatorFormKey.currentState!.validate() &&
+                          _cashierOperator.operatorPassword ==
+                              _confirmationPassword) {
                         setState(() {
                           _createOperatorController.loadingData = true;
                         });
                         final newOperator = await _loginStore
-                            .register(_cashierOperator,
-                                _cashierOperator.operatorOcupation ?? "operator")
+                            .register(_cashierOperator,_cashierOperator.operatorOcupation!)
                             ?.then((value) => value)
                             .catchError((e) {
                           if (e.toString().contains("already-in-use")) {
-                            const String message = "Email já utilizado";
                             _createOperatorController.registrationFail(context,
-                                message: message);
+                                message: "Email já utilizado");
                           } else {
                             const String message = "Erro desconhecido";
                             _createOperatorController.registrationFail(context,
@@ -205,7 +207,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           }
                         });
                         if (newOperator != null) {
-                          _createOperatorController.operatorCreatedSucessfully(context);
+                          _createOperatorController
+                              .operatorCreatedSucessfully(context);
                           Modular.to.navigate(OperatorModuleRoutes.home,
                               arguments: newOperator);
                         }
