@@ -53,62 +53,60 @@ class CashHelperTextFieldComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height ?? 55,
-      child: TextFormField(
-        enabled: enable ?? true,
-        onTap: onTap,
-        readOnly: readOnly ?? false,
-        obscureText: obscureText ?? false,
-        onSaved: onSaved,
-        onChanged: onChanged,
-        validator: validator,
-        style: TextStyle(
+    return TextFormField(
+      textInputAction: TextInputAction.go,
+      enabled: enable ?? true,
+      onTap: onTap,
+      readOnly: readOnly ?? false,
+      obscureText: obscureText ?? false,
+      onSaved: onSaved,
+      onChanged: onChanged,
+      validator: validator,
+      textAlign: TextAlign.justify,
+      style: TextStyle(
+        color: primaryColor ?? Colors.white,
+      ),
+      decoration: InputDecoration(
+        constraints: const BoxConstraints(maxHeight: 60),
+        enabled: readOnly == true ? false : true,
+        errorStyle:
+            TextStyle(color: primaryColor ?? Colors.white, fontSize: 12),
+        labelStyle: TextStyle(color: primaryColor ?? Colors.white),
+        hintText: hint ?? '',
+        label: Text(
+          label ?? '',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radius ?? 5),
+          borderSide: BorderSide(
+              color: primaryColor ?? Colors.white.withOpacity(0.2), width: 0.9),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radius ?? 5),
+          borderSide: BorderSide(color: primaryColor ?? Colors.white),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+              color: primaryColor ?? Colors.white.withOpacity(0.2), width: 0.9),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radius ?? 5),
+          borderSide: BorderSide(color: primaryColor ?? Colors.white),
+        ),
+        prefixIcon: Icon(
+          icon,
           color: primaryColor ?? Colors.white,
         ),
-        decoration: InputDecoration(
-          fillColor: primaryColor?.withOpacity(0.6),
-          enabled: readOnly == true ? false : true,
-          errorStyle: Theme.of(context).textTheme.bodySmall,
-          labelStyle: TextStyle(color: primaryColor ?? Colors.white),
-          hintText: hint ?? '',
-          label: Text(
-            label ?? '',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius ?? 5),
-            borderSide: BorderSide(
-                color: primaryColor ?? Colors.white.withOpacity(0.2),
-                width: 0.9),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius ?? 5),
-            borderSide: BorderSide(color: primaryColor ?? Colors.white),
-          ),
-          errorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: primaryColor ?? Colors.white,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(radius ?? 5),
-            borderSide: BorderSide(color: primaryColor ?? Colors.white),
-          ),
-          prefixIcon: Icon(
-            icon,
+        suffixIcon: GestureDetector(
+          onTap: iconTap,
+          child: Icon(
+            suffixIcon,
             color: primaryColor ?? Colors.white,
           ),
-          suffixIcon: GestureDetector(
-            onTap: iconTap,
-            child: Icon(
-              suffixIcon,
-              color: primaryColor ?? Colors.white,
-            ),
-          ),
         ),
-        keyboardType: input,
       ),
+      keyboardType: input,
     );
   }
 }

@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: height * 0.1),
                 Text('Cash Helper',
                     style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: height * 0.25),
+                SizedBox(height: height * 0.2),
                 Stack(
                   children: [
                     Card(
@@ -54,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                       child: SizedBox(
-                        height: height * 0.35,
-                        width: width * 0.9,
+                        height: height * 0.4,
+                        width: width,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 5, vertical: 30),
@@ -63,11 +63,12 @@ class _LoginPageState extends State<LoginPage> {
                             key: _loginFormKey,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
+                                  const EdgeInsets.symmetric(horizontal: 5),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   CashHelperTextFieldComponent(
+                                    radius: 15,
                                     isButton: false,
                                     validator: (value) =>
                                         _loginController.emailValidate(value),
@@ -80,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                                     height: 30,
                                   ),
                                   CashHelperTextFieldComponent(
+                                    radius: 15,
                                     isButton: false,
                                     obscureText: true,
                                     validator: (value) => _loginController
@@ -89,20 +91,6 @@ class _LoginPageState extends State<LoginPage> {
                                     controller: _loginController.passwordField,
                                     label: 'Senha',
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                          style: TextButton.styleFrom(),
-                                          onPressed: () => Modular.to.pushNamed(
-                                              './forgot-password-page'),
-                                          child: const Text(
-                                            'Esqueci minha senha',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
-                                    ],
-                                  ),
                                 ],
                               ),
                             ),
@@ -111,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: height * 0.29),
+                      padding: EdgeInsets.only(top: height * 0.35),
                       child: Center(
                         child: TextButton(
                           style: TextButton.styleFrom(),
@@ -125,6 +113,21 @@ class _LoginPageState extends State<LoginPage> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 5,
+                      bottom: height * 0.13,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            style: TextButton.styleFrom(),
+                            onPressed: () {},
+                            child: Text('Esqueci minha senha',
+                                style: Theme.of(context).textTheme.bodySmall),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -175,7 +178,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                
               ],
             ),
           ),

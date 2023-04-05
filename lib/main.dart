@@ -51,6 +51,8 @@ class CashHelperApp extends StatelessWidget {
                 color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             bodySmall: TextStyle(
                 color: Colors.white, fontSize: 15, fontWeight: FontWeight.w200),
+                displaySmall:  TextStyle(
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
           ),
           useMaterial3: true,
           colorScheme: darkColorScheme),

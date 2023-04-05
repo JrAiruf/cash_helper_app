@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 import 'package:cash_helper_app/app/modules/login_module/binds/login_module_routes.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
@@ -20,6 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _loginStore = Modular.get<LoginStore>();
+  final _loginController = Modular.get<LoginController>();
 
   @override
   void initState() {
@@ -58,8 +60,11 @@ class _HomePageState extends State<HomePage> {
                   child: IconButton(
                     color: Colors.white,
                     onPressed: () {
-                      _loginStore.signOut();
-                      Modular.to.navigate(LoginModuleRoutes.start);
+                      _loginController.showSignOutDialog(context, primaryColor,
+                          () {
+                        _loginStore.signOut();
+                        Modular.to.navigate(LoginModuleRoutes.start);
+                      });
                     },
                     icon: const Icon(Icons.logout_outlined),
                   ),
@@ -69,6 +74,7 @@ class _HomePageState extends State<HomePage> {
             body: Container(
               decoration: BoxDecoration(color: primaryColor),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HomePageComponent(
                     operator: currentOperator,
@@ -76,9 +82,17 @@ class _HomePageState extends State<HomePage> {
                     width: width,
                     color: seccondaryColor,
                   ),
+                  SizedBox(height: height * 0.07),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Text(
+                      "Informações Gerais:",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
+                        horizontal: 10, vertical: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -107,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
+                        horizontal: 10, vertical: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
