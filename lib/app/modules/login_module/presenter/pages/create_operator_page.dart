@@ -176,7 +176,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                  child: CashHelperLoginButton(
+                  child: CashHelperElevatedButton(
                     onPressed: () async {
                       _createOperatorFormKey.currentState!.validate();
                       _createOperatorFormKey.currentState!.save();
@@ -188,33 +188,38 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           _cashierOperator.operatorEnabled! == true
                               ? cashierOppeningTime
                               : 'Pendente';
-                      if (_createOperatorFormKey.currentState!.validate() &&
-                          _cashierOperator.operatorPassword ==
-                              _confirmationPassword) {
-                        setState(() {
-                          _createOperatorController.loadingData = true;
-                        });
-                        final newOperator = await _loginStore
-                            .register(_cashierOperator,
-                                _cashierOperator.operatorOcupation!)
-                            ?.then((value) => value)
-                            .catchError((e) {
-                          if (e.toString().contains("already-in-use")) {
-                            _createOperatorController.registrationFail(context,
-                                message: "Email já utilizado");
+                      if (_createOperatorFormKey.currentState!.validate()) {
+                        if (_cashierOperator.operatorPassword ==
+                            _confirmationPassword) {
+                          setState(() {
+                            _createOperatorController.loadingData = true;
+                          });
+                          final newOperator = await _loginStore
+                              .register(_cashierOperator,
+                                  _cashierOperator.operatorOcupation!)
+                              ?.then((value) => value)
+                              .catchError((e) {
+                            if (e.toString().contains("already-in-use")) {
+                              _createOperatorController.registrationFail(
+                                  context,
+                                  message: "Email já utilizado");
+                            } else {
+                              const String message = "Erro desconhecido";
+                              _createOperatorController
+                                  .registrationFail(context, message: message);
+                            }
+                          });
+                          if (newOperator != null) {
+                            _createOperatorController
+                                .operatorCreatedSucessfully(context);
+                            Modular.to.navigate(OperatorModuleRoutes.home,
+                                arguments: newOperator);
                           } else {
-                            const String message = "Erro desconhecido";
-                            _createOperatorController.registrationFail(context,
-                                message: message);
+                            _createOperatorController.onFail(context);
                           }
-                        });
-                        if (newOperator != null) {
-                          _createOperatorController
-                              .operatorCreatedSucessfully(context);
-                          Modular.to.navigate(OperatorModuleRoutes.home,
-                              arguments: newOperator);
                         } else {
-                          _createOperatorController.onFail(context);
+                          _createOperatorController.noMatchingPasswords(context,
+                              message: "As senhas não correspondem");
                         }
                       }
                       setState(() {

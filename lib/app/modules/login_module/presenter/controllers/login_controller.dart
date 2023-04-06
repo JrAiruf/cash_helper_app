@@ -51,21 +51,18 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+          height: MediaQuery.of(context).size.height * 0.06,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
                 'Login não realizado, tente Novamente!',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              const SizedBox(
-                height: 10,
+                style: Theme.of(context).textTheme.displaySmall,
               ),
               const Icon(
                 Icons.warning_rounded,
-                size: 55,
+                size: 35,
                 color: Colors.white,
               )
             ],
@@ -83,20 +80,45 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 5),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+          height: MediaQuery.of(context).size.height * 0.06,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             children: [
               Text(
                 'Erro: $message',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              const SizedBox(
-                height: 10,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               const Icon(
                 Icons.warning_rounded,
-                size: 55,
+                size: 35,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  noMatchingPasswords(BuildContext context, {required String message}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        backgroundColor: Colors.redAccent,
+        elevation: 5,
+        duration: const Duration(seconds: 5),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.06,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            children: [
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const Icon(
+                Icons.warning_rounded,
+                size: 35,
                 color: Colors.white,
               )
             ],
@@ -114,7 +136,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+          height: MediaQuery.of(context).size.height * 0.06,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -126,12 +148,9 @@ class LoginController {
                     fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),
-              SizedBox(
-                height: 10,
-              ),
               Icon(
                 Icons.warning_rounded,
-                size: 55,
+                size: 35,
                 color: Colors.white,
               )
             ],
@@ -149,7 +168,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+          height: MediaQuery.of(context).size.height * 0.06,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -161,12 +180,9 @@ class LoginController {
                     fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),
-              SizedBox(
-                height: 10,
-              ),
               Icon(
                 Icons.warning_rounded,
-                size: 55,
+                size: 35,
                 color: Colors.white,
               )
             ],
@@ -175,7 +191,6 @@ class LoginController {
       ),
     );
   }
-
 
   onSuccess(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 2));
@@ -186,7 +201,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+          height: MediaQuery.of(context).size.height * 0.06,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -198,12 +213,9 @@ class LoginController {
                     fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),
-              SizedBox(
-                height: 10,
-              ),
               Icon(
                 Icons.verified_outlined,
-                size: 55,
+                size: 35,
                 color: Colors.white,
               )
             ],
@@ -221,7 +233,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.1,
+          height: MediaQuery.of(context).size.height * 0.06,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -233,12 +245,9 @@ class LoginController {
                     fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),
-              SizedBox(
-                height: 10,
-              ),
               Icon(
                 Icons.done,
-                size: 55,
+                size: 35,
                 color: Colors.white,
               )
             ],

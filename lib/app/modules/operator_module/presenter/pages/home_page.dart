@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                       _loginController.showSignOutDialog(context, primaryColor,
                           () {
                         _loginStore.signOut();
+                        Modular.to.pop();
                         Modular.to.navigate(LoginModuleRoutes.start);
                       });
                     },
@@ -99,8 +100,7 @@ class _HomePageState extends State<HomePage> {
                         HomePageCardComponent(
                           itemColor: seccondaryColor,
                           icon: Icons.adf_scanner_outlined,
-                          itemName:
-                              'Caixa: ${operatorState.operatorEntity.operatorNumber}',
+                          itemName: 'Caixa: ${currentOperator.operatorNumber}',
                           height: height * 0.18,
                           width: width * 0.38,
                           radius: 20,
@@ -108,9 +108,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         HomePageCardComponent(
                           itemColor: seccondaryColor,
-                          icon: Icons.adf_scanner_outlined,
+                          icon: Icons.note_alt_outlined,
                           itemName:
-                              'Pendências: ${operatorState.operatorEntity.operatorNumber}',
+                              'Pendências: ${currentOperator.operatorNumber}',
                           height: height * 0.18,
                           width: width * 0.38,
                           radius: 20,
@@ -127,9 +127,8 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         HomePageCardComponent(
                           itemColor: seccondaryColor,
-                          icon: Icons.adf_scanner_outlined,
-                          itemName:
-                              'Caixa: ${operatorState.operatorEntity.operatorNumber}',
+                          icon: Icons.account_tree_outlined,
+                          itemName: 'Ativo: ${currentOperator.operatorEnabled}',
                           height: height * 0.18,
                           width: width * 0.38,
                           radius: 20,
@@ -137,9 +136,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         HomePageCardComponent(
                           itemColor: seccondaryColor,
-                          icon: Icons.adf_scanner_outlined,
+                          icon: Icons.access_time,
                           itemName:
-                              'Pendências: ${operatorState.operatorEntity.operatorNumber}',
+                              'Abertura: ${currentOperator.operatorOppening}',
                           height: height * 0.18,
                           width: width * 0.38,
                           radius: 20,
@@ -151,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 45, horizontal: 10),
-                    child: CashHelperLoginButton(
+                    child: CashHelperElevatedButton(
                       width: width,
                       height: 60,
                       radius: 12,
@@ -159,6 +158,7 @@ class _HomePageState extends State<HomePage> {
                       buttonName: "Área do operador",
                       backgroundColor: buttonColor,
                       nameColor: Colors.white,
+                      fontSize: 16,
                     ),
                   ),
                 ],

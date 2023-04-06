@@ -5,9 +5,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../domain/contract/login_usecases.dart';
 import '../domain/usecases/login_usecases_impl.dart';
 import '../infra/data/login_repository.dart';
@@ -34,17 +32,39 @@ class LoginModule extends Module {
   List<ModularRoute> get routes => routeList;
 
   final routeList = <ModularRoute>[
-    ChildRoute(LoginModuleRoutes.register, child: (_, args) =>const CreateOperatorPage()),
-    ChildRoute(LoginModuleRoutes.start, child: (_, args) =>const LoginPage()),
+    ChildRoute(LoginModuleRoutes.register,
+        child: (_, args) => const CreateOperatorPage()),
+    ChildRoute(LoginModuleRoutes.start, child: (_, args) => const LoginPage()),
   ];
-  
+
   final bindList = <Bind>[
-    Bind<FirebaseFirestore>((i) => FirebaseFirestore.instance),
-    Bind<FirebaseAuth>((i) => FirebaseAuth.instance),
-    Bind<ApplicationLoginDatabase>((i) => FirebaseDatabase(database: i(), auth: i())),
-    Bind<LoginRepository>((i) => LoginRepositoryImpl(datasource: i())),
-    Bind<LoginUsecases>((i) => LoginUsecasesImpl(repository: i())),
-    Bind<LoginStore>((i) => LoginStore(usecases: i())),
-    Bind<LoginController>((i) => LoginController()),
+    Bind<FirebaseFirestore>(
+      (i) => FirebaseFirestore.instance,
+    ),
+    Bind<FirebaseAuth>(
+      (i) => FirebaseAuth.instance,
+    ),
+    Bind<ApplicationLoginDatabase>((i) => FirebaseDatabase(
+          database: i(),
+          auth: i(),
+        )),
+    Bind<LoginRepository>(
+      (i) => LoginRepositoryImpl(
+        datasource: i(),
+      ),
+    ),
+    Bind<LoginUsecases>(
+      (i) => LoginUsecasesImpl(
+        repository: i(),
+      ),
+    ),
+    Bind<LoginStore>(
+      (i) => LoginStore(
+        usecases: i(),
+      ),
+    ),
+    Bind<LoginController>(
+      (i) => LoginController(),
+    ),
   ];
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CashHelperLoginButton extends StatelessWidget {
-  const CashHelperLoginButton(
+class CashHelperElevatedButton extends StatelessWidget {
+  const CashHelperElevatedButton(
       {super.key,
       this.onPressed,
       this.buttonName,
@@ -27,6 +27,7 @@ class CashHelperLoginButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
+            side: const BorderSide(color: Colors.white, width: 0.9),
             borderRadius: BorderRadius.circular(radius ?? 5),
           ),
           fixedSize: Size(width ?? 105, height ?? 45)),

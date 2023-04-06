@@ -125,7 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextButton.styleFrom(),
                             onPressed: () {},
                             child: Text('Esqueci minha senha',
-                                style: Theme.of(context).textTheme.bodySmall),
+                                style:
+                                    Theme.of(context).textTheme.displaySmall),
                           ),
                         ],
                       ),
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Theme.of(context).indicatorColor,
                       ),
                     ),
-                    child: CashHelperLoginButton(
+                    child: CashHelperElevatedButton(
                       onPressed: () async {
                         _loginFormKey.currentState!.validate();
                         _loginFormKey.currentState!.save();
