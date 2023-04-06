@@ -36,7 +36,7 @@ class CashHelperApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(color: appBarColor),
           colorScheme: lightColorScheme),
       darkTheme: ThemeData(
-          iconTheme: const IconThemeData(color: Colors.white, size: 35),
+          iconTheme: const IconThemeData(color: Colors.white, size: 30),
           appBarTheme: AppBarTheme(
             color: appBarColor,
             iconTheme: IconThemeData(
@@ -51,7 +51,7 @@ class CashHelperApp extends StatelessWidget {
                 color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
             bodySmall: TextStyle(
                 color: Colors.white, fontSize: 15, fontWeight: FontWeight.w200),
-                displaySmall:  TextStyle(
+            displaySmall: TextStyle(
                 color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
           ),
           useMaterial3: true,

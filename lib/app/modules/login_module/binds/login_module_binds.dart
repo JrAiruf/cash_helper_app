@@ -32,9 +32,14 @@ class LoginModule extends Module {
   List<ModularRoute> get routes => routeList;
 
   final routeList = <ModularRoute>[
-    ChildRoute(LoginModuleRoutes.register,
-        child: (_, args) => const CreateOperatorPage()),
-    ChildRoute(LoginModuleRoutes.start, child: (_, args) => const LoginPage()),
+    ChildRoute(
+      LoginModuleRoutes.register,
+      child: (_, args) => const CreateOperatorPage(),
+    ),
+    ChildRoute(
+      LoginModuleRoutes.start,
+      child: (_, args) => const LoginPage(),
+    ),
   ];
 
   final bindList = <Bind>[

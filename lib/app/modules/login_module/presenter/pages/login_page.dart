@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                             _loginController.onFail(context);
                           });
                           loggedUser != null
-                              ? Modular.to.navigate(OperatorModuleRoutes.home,
+                              ? Modular.to.navigate("operator-module${OperatorModuleRoutes.home}",
                                   arguments: loggedUser)
                               : null;
                         }

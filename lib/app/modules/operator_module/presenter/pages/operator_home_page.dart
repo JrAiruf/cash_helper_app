@@ -4,22 +4,22 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/components/bu
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
+import 'package:cash_helper_app/app/modules/operator_module/binds/operator_module_routes.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/home_page_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../components/home_page_card_component.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({super.key, required this.operatorEntity});
+class OperartorAreaPage extends StatefulWidget {
+  OperartorAreaPage({super.key, required this.operatorEntity});
 
   OperatorEntity operatorEntity;
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<OperartorAreaPage> createState() => _OperartorAreaPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _OperartorAreaPageState extends State<OperartorAreaPage> {
   final _loginStore = Modular.get<LoginStore>();
   final _loginController = Modular.get<LoginController>();
 
@@ -154,7 +154,11 @@ class _HomePageState extends State<HomePage> {
                       width: width,
                       height: 60,
                       radius: 12,
-                      onPressed: () {},
+                      onPressed: () {
+                        Modular.to.pushNamed(
+                          ".${OperatorModuleRoutes.operatorArea}${currentOperator.operatorId}",
+                        );
+                      },
                       buttonName: "Área do operador",
                       backgroundColor: buttonColor,
                       nameColor: Colors.white,
