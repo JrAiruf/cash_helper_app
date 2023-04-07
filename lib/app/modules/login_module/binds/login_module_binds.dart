@@ -1,5 +1,5 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/firebase_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_operator_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +18,7 @@ abstract class LoginModuleBinds {
         module: LoginModule.instance,
         transition: TransitionType.fadeIn,
       );
-  static final loginModule = LoginModule.instance;
+  static final binds = LoginModule.instance.bindList;
 }
 
 class LoginModule extends Module {

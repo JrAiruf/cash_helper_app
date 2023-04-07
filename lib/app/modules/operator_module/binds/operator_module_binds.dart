@@ -8,7 +8,7 @@ abstract class OperatorModuleBinds {
         module: OperatorModule.instance,
         transition: TransitionType.fadeIn,
       );
-  static final operatorModule = OperatorModule.instance;
+  static final binds = OperatorModule.instance.bindList;
 }
 
 class OperatorModule extends Module {

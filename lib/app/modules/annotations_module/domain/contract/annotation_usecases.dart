@@ -1,4 +1,4 @@
-import 'package:cash_helper_app/app/modules/operator_annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 
 abstract class AnnotationUsecases {
   Future<AnnotationEntity?>? createAnnotation(String? operatorId, AnnotationEntity? annotation);

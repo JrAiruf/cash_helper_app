@@ -1,4 +1,4 @@
-import 'package:cash_helper_app/app/modules/operator_annotations_module/infra/models/annotation_model.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 
 abstract class AnnotationRepository {
   Future<AnnotationModel?>? createAnnotation(String? operatorId, AnnotationModel? annotation);
