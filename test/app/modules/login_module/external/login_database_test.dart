@@ -2,10 +2,10 @@ import 'package:cash_helper_app/app/modules/login_module/external/data/applicati
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   FirebaseDatabaseMock(
@@ -121,16 +121,49 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) {
-    // TODO: implement checkOperatorDataForResetPassword
-    throw UnimplementedError();
+      String? email, int? cashierNumber, String? collection) async {
+    try {
+      if (email != null && cashierNumber != null && collection != null) {
+        final operatorCollection = await _database.collection(collection).get();
+        final databaseOperatorMaps =
+            operatorCollection.docs.map((operator) => operator.data()).toList();
+        final checkedOperator = databaseOperatorMaps.firstWhere((operator) =>
+            operator["operatorEmail"] == email &&
+            operator["operatorNumber"] == cashierNumber);
+        return checkedOperator["operatorId"] != null ? true : false;
+      } else {
+        return false;
+      }
+    } on FirebaseException catch (e) {
+      throw AuthenticationError();
+    }
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber,
-      String? collection, String? newPassword) {
-    // TODO: implement resetOperatorPassword
-    throw UnimplementedError();
+  Future<void>? resetOperatorPassword(
+      String? email, int? cashierNumber, String? newPassword) async {
+    try {
+      final operatorsList = await _database.collection("operator").get();
+      if (_validOperatorValues(email, cashierNumber)) {
+        final databaseOperator = operatorsList.docs
+            .firstWhere((operator) =>
+                operator["operatorEmail"] == email &&
+                operator["operatorNumber"] == cashierNumber)
+            .data();
+        await login(email, databaseOperator["operatorPassword"], "operator");
+        _auth.currentUser?.updatePassword(newPassword!);
+        final newPasswordValue =
+            newPassword ?? databaseOperator["operatorPassword"];
+        final operatorsCollection = _database.collection("operator");
+        await operatorsCollection
+            .doc(databaseOperator["operatorId"])
+            .update({"operatorPassword": newPasswordValue});
+      } else {
+        return;
+      }
+    } on Exception catch (e) {
+      throw Exception(e.toString());
+    }
   }
 
   @override
@@ -163,6 +196,17 @@ void main() {
     'operatorNumber': 1,
     'operatorName': ' Josy Kelly',
     'operatorEmail': 'junior@email.com',
+    'operatorPassword': '12345678',
+    'operatorOppening': 'operatorOppening',
+    'operatorClosing': 'operatorClosing',
+    'operatorEnabled': false,
+    'operatorOcupation': "operator",
+  };
+  final Map<String, dynamic> deletionOperator = {
+    'operatorId': 'q34u6hu1qeuyoio',
+    'operatorNumber': 1,
+    'operatorName': ' Josy Kelly',
+    'operatorEmail': 'josy@email.com',
     'operatorPassword': '12345678',
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
@@ -280,28 +324,96 @@ void main() {
     },
   );
   group(
-    "description",
+    "CheckOperatorDataForResetPassword function should",
     () {
-      test("description", () {});
-      test("description", () {});
+      test(
+        "Return true, if parameters matches with database's operator data",
+        () async {
+          final createdOperator = await database.register(
+              newOperator, newOperator["operatorOcupation"]);
+          final operatorsList = await firebaseMock
+              .collection(newOperator["operatorOcupation"])
+              .get();
+          expect(operatorsList.docs.isEmpty, equals(false));
+          final checkedInformation =
+              await database.checkOperatorDataForResetPassword(
+                  createdOperator!["operatorEmail"],
+                  createdOperator["operatorNumber"],
+                  createdOperator["operatorOcupation"]);
+          expect(checkedInformation, equals(true));
+        },
+      );
+      test(
+        "Return false, if parameters does not matches with database's operator data",
+        () async {
+          final createdOperator = await database.register(
+              newOperator, newOperator["operatorOcupation"]);
+          final operatorsList = await firebaseMock
+              .collection(newOperator["operatorOcupation"])
+              .get();
+          expect(operatorsList.docs.isEmpty, equals(false));
+          final checkedInformation =
+              await database.checkOperatorDataForResetPassword(
+                  createdOperator?["operatorEmail"],
+                  null,
+                  createdOperator?["operatorOccupation"]);
+          expect(checkedInformation, equals(false));
+        },
+      );
     },
   );
   group(
-    "description",
+    "ResetOperatorPassword function should",
     () {
-      test("description", () {});
-      test("description", () {});
+      test(
+        "Reset operator user password",
+        () async {
+          final createdOperator = await database.register(
+              newOperator, newOperator["operatorOcupation"]);
+          final operatorsList = await firebaseMock
+              .collection(newOperator["operatorOcupation"])
+              .get();
+          expect(operatorsList.docs.isEmpty, equals(false));
+          await database.resetOperatorPassword(
+              createdOperator!["operatorEmail"],
+              createdOperator["operatorNumber"],
+              "newPassword");
+          final currentOperator = await database.getOperatorById(
+              createdOperator["operatorId"],
+              createdOperator["operatorOcupation"]);
+          expect(currentOperator?["operatorPassword"], equals("newPassword"));
+        },
+      );
+      test(
+        "Fail reseting password",
+        () async {
+          final createdOperator = await database.register(
+              testOperator, testOperator["operatorOcupation"]);
+          final operatorsList = await firebaseMock
+              .collection(testOperator["operatorOcupation"])
+              .get();
+          expect(operatorsList.docs.isEmpty, equals(false));
+          await database.resetOperatorPassword(
+              createdOperator!["operatorEmail"], null, null);
+          final currentOperator = await database.getOperatorById(
+              createdOperator["operatorId"],
+              createdOperator["operatorOcupation"]);
+          expect(currentOperator?["operatorPassword"], equals("12345678"));
+        },
+      );
     },
   );
   test(
     "Should clear all operatorData from operator's map and sign out",
     () async {
-      await database.register(newOperator, newOperator["operatorOcupation"]);
-      final result =
-          await firebaseMock.collection(newOperator["operatorOcupation"]).get();
+      final createdOperator = await database.register(
+          deletionOperator, deletionOperator["operatorOcupation"]);
+      final result = await firebaseMock
+          .collection(createdOperator!["operatorOcupation"])
+          .get();
       expect(result.docs.isNotEmpty == true, equals(true));
-      await database.login(
-          "email", "password", newOperator["operatorOcupation"]);
+      await database.login(deletionOperator["operatorEmail"],
+          newOperator["operatorPassword"], newOperator["operatorOcupation"]);
       expect(database.operatorData?["operatorEmail"], equals("josy@email.com"));
       await database.signOut();
       expect(database.operatorData?["operatorEmail"], equals(null));

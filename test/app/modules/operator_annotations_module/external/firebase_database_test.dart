@@ -361,15 +361,15 @@ void main() {
         "Delete annotation in database",
         () async {
           final createdAnnotation =
-              await database.createAnnotation("operatorId", newAnnotation);
+              await database.createAnnotation("anotherId", newAnnotation);
           expect(createdAnnotation?["annotationId"] != null, equals(true));
           final annotationsList =
-              await database.getAllAnnotations("operatorId");
+              await database.getAllAnnotations("anotherId");
           expect(annotationsList?.isNotEmpty, equals(true));
           await database.deleteAnnotation(
-              "operatorId", createdAnnotation?["annotationId"]);
+              "anotherId", createdAnnotation?["annotationId"]);
                final currentAnnotationsList =
-              await database.getAllAnnotations("operatorId");
+              await database.getAllAnnotations("anotherId");
           expect(currentAnnotationsList?.isEmpty, equals(true));
         },
       );
