@@ -7,8 +7,8 @@ class LoginInitialState extends LoginStates {}
 
 class LoginLoadingState extends LoginStates {}
 
-class LoginSuccessgState extends LoginStates {
-  LoginSuccessgState({required this.operatorEntity});
+class LoginSuccessState extends LoginStates {
+  LoginSuccessState({required this.operatorEntity});
   final OperatorEntity operatorEntity;
 }
 

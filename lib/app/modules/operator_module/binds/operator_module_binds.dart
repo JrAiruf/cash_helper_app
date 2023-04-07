@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/operator_module/binds/operator_module_routes.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/operator_area.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../presenter/pages/operator_home_page.dart';
@@ -23,13 +22,13 @@ class OperatorModule extends Module {
 
   final routeList = <ModularRoute>[
     ChildRoute(
-      OperatorModuleRoutes.home,
+     "/",
       child: (_, args) => OperartorAreaPage(
         operatorEntity: args.data,
       ),
     ),
     ChildRoute(
-      OperatorModuleRoutes.operatorArea,
+      "/operator-area/:operatorId",
       child: (_, args) => OperatorArea(
         operatorId: args.params["operatorId"],
       ),

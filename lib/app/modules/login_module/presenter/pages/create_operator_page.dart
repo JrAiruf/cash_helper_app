@@ -1,7 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
-
+// ignore_for_file: use_build_context_synchronously, unnecessary_string_interpolations
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import 'package:cash_helper_app/app/modules/operator_module/binds/operator_module_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../operator_module/domain/entities/operator_entity.dart';
@@ -39,6 +37,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
       body: Visibility(
         visible: _createOperatorController.loadingData,
         replacement: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             height: height,
             width: width,
@@ -49,7 +48,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 25,
-                    vertical: height * 0.1,
+                    vertical: height * 0.05,
                   ),
                   child: Text('Crie sua Conta',
                       style: Theme.of(context).textTheme.bodyLarge),
@@ -212,7 +211,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           if (newOperator != null) {
                             _createOperatorController
                                 .operatorCreatedSucessfully(context);
-                            Modular.to.navigate(OperatorModuleRoutes.home,
+                            Modular.to.navigate("/operator-module/",
                                 arguments: newOperator);
                           } else {
                             _createOperatorController.onFail(context);

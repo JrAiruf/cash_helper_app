@@ -11,18 +11,22 @@ bool loadingData = false;
 
 
 Future<OperatorEntity?>? register(OperatorEntity newOperator, String collection) async {
+value = LoginLoadingState();
 final operatorEntity = await _usecases.register(newOperator, collection);
+operatorEntity != null ? value = LoginSuccessState(operatorEntity: operatorEntity) : value = LoginErrorState(message: "Usuário não criado");
 return operatorEntity;
 }
 Future<OperatorEntity?>? login(String? email, String? password,String? collection) async {
+  value = LoginLoadingState();
 final operatorEntity = await _usecases.login(email, password, collection);
+operatorEntity != null ? value = LoginSuccessState(operatorEntity: operatorEntity) : value = LoginErrorState(message: "Usuário não encontrado");
 return operatorEntity;
 }
 Future<void>? getOperatorById(String operatorId,String collection) async {
-  value = LoginLoadingState();
+value = LoginLoadingState();
 final operatorEntity = await _usecases.getOperatorById(operatorId, collection);
 operatorEntity != null ?
-value = LoginSuccessgState(operatorEntity: operatorEntity) :
+value = LoginSuccessState(operatorEntity: operatorEntity) :
 value = LoginErrorState(message: "Usuário não encontrado");
 }
 

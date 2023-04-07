@@ -1,10 +1,8 @@
-import 'package:cash_helper_app/app/modules/login_module/binds/login_module_routes.dart';
+// ignore_for_file: unnecessary_string_interpolations
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
-import 'package:cash_helper_app/app/modules/operator_module/binds/operator_module_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../operator_module/domain/entities/operator_entity.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
@@ -27,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
+    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     return Scaffold(
       body: SingleChildScrollView(
@@ -104,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: TextButton(
                           style: TextButton.styleFrom(),
                           onPressed: () {
-                            Modular.to.pushNamed(LoginModuleRoutes.register);
+                            Modular.to.pushNamed("./create-new-operator");
                           },
                           child: const Text(
                             'Criar conta',
@@ -117,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Positioned(
                       right: 5,
-                      bottom: height * 0.13,
+                      bottom: height * 0.1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -139,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     visible: !_loginController.loadingLoginData,
                     replacement: Center(
                       child: CircularProgressIndicator(
-                        color: Theme.of(context).indicatorColor,
+                        color: indicatorColor,
                       ),
                     ),
                     child: CashHelperElevatedButton(
@@ -161,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                             _loginController.onFail(context);
                           });
                           loggedUser != null
-                              ? Modular.to.navigate("operator-module${OperatorModuleRoutes.home}",
+                              ? Modular.to.navigate("/operator-module/",
                                   arguments: loggedUser)
                               : null;
                         }

@@ -1,10 +1,8 @@
-// ignore_for_file: must_be_immutable
-import 'package:cash_helper_app/app/modules/login_module/binds/login_module_routes.dart';
+// ignore_for_file: must_be_immutable, unnecessary_string_interpolations
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
-import 'package:cash_helper_app/app/modules/operator_module/binds/operator_module_routes.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/home_page_component.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +49,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
             ),
           );
         }
-        if (operatorState is LoginSuccessgState) {
+        if (operatorState is LoginSuccessState) {
           final currentOperator = operatorState.operatorEntity;
           return Scaffold(
             appBar: AppBar(
@@ -64,7 +62,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                           () {
                         _loginStore.signOut();
                         Modular.to.pop();
-                        Modular.to.navigate(LoginModuleRoutes.start);
+                        Modular.to.navigate(Modular.initialRoute);
                       });
                     },
                     icon: const Icon(Icons.logout_outlined),
@@ -151,12 +149,13 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 45, horizontal: 10),
                     child: CashHelperElevatedButton(
+                      border: true,
                       width: width,
                       height: 60,
                       radius: 12,
                       onPressed: () {
                         Modular.to.pushNamed(
-                          ".${OperatorModuleRoutes.operatorArea}${currentOperator.operatorId}",
+                          "./operator-area/${currentOperator.operatorId}",
                         );
                       },
                       buttonName: "Área do operador",
@@ -172,16 +171,6 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
         }
         return Container(
           decoration: BoxDecoration(color: primaryColor),
-          /* child: Column(
-            children: [
-              HomePageComponent(
-                operator: !,
-                height: height * 0.25,
-                width: width,
-                color: seccondaryColor,
-              ),
-            ],
-          ), */
         );
       },
     );

@@ -30,6 +30,6 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
         decoration: BoxDecoration(
           color: primaryColor,
         ),
-        child: Center(child: Text("Initial")));
+        child: Center(child: Text(widget.operatorId)));
   }
 }

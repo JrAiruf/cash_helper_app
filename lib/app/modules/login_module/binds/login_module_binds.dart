@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/login_module/binds/login_module_routes.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/firebase_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_operator_page.dart';
@@ -33,11 +32,11 @@ class LoginModule extends Module {
 
   final routeList = <ModularRoute>[
     ChildRoute(
-      LoginModuleRoutes.register,
+      "/create-new-operator",
       child: (_, args) => const CreateOperatorPage(),
     ),
     ChildRoute(
-      LoginModuleRoutes.start,
+      "/",
       child: (_, args) => const LoginPage(),
     ),
   ];
@@ -49,10 +48,12 @@ class LoginModule extends Module {
     Bind<FirebaseAuth>(
       (i) => FirebaseAuth.instance,
     ),
-    Bind<ApplicationLoginDatabase>((i) => FirebaseDatabase(
-          database: i(),
-          auth: i(),
-        )),
+    Bind<ApplicationLoginDatabase>(
+      (i) => FirebaseDatabase(
+        database: i(),
+        auth: i(),
+      ),
+    ),
     Bind<LoginRepository>(
       (i) => LoginRepositoryImpl(
         datasource: i(),

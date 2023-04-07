@@ -67,7 +67,6 @@ class CashHelperTextFieldComponent extends StatelessWidget {
         color: primaryColor ?? Colors.white,
       ),
       decoration: InputDecoration(
-        constraints: const BoxConstraints(maxHeight: 60),
         enabled: readOnly == true ? false : true,
         errorStyle:
             TextStyle(color: primaryColor ?? Colors.white, fontSize: 12),

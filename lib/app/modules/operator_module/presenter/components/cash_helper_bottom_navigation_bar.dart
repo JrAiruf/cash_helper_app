@@ -26,8 +26,9 @@ class CashHelperBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(radius ?? 4),
-          topRight: Radius.circular(radius ?? 4)),
+        topLeft: Radius.circular(radius ?? 4),
+        topRight: Radius.circular(radius ?? 4),
+      ),
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(

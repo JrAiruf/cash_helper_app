@@ -51,7 +51,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -80,7 +80,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 5),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             children: [
@@ -108,9 +108,10 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 5),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
                 message,
@@ -136,7 +137,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -168,7 +169,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -201,7 +202,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -233,7 +234,7 @@ class LoginController {
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.06,
+          height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

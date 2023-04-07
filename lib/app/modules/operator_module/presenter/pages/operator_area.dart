@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/operator_initial_page.dart';
@@ -11,21 +13,21 @@ import '../components/cash_helper_bottom_navigation_item.dart';
 
 class OperatorArea extends StatefulWidget {
   OperatorArea({super.key, required this.operatorId, this.position});
+
   final String operatorId;
   BottomNavigationBarPosition? position;
   @override
   State<OperatorArea> createState() => _OperatorArea();
 }
 
-final _operatorPageController = PageController();
 final _loginStore = Modular.get<LoginStore>();
+final _operatorPageController = PageController();
 
 class _OperatorArea extends State<OperatorArea> {
   @override
   void initState() {
-    super.initState();
     widget.position = BottomNavigationBarPosition.operatorHome;
-    _loginStore.getOperatorById(widget.operatorId, "operator");
+    super.initState();
   }
 
   @override
@@ -48,10 +50,19 @@ class _OperatorArea extends State<OperatorArea> {
             ),
           );
         }
-        if (operatorState is LoginSuccessgState) {
+        if (operatorState is LoginSuccessState) {
           final currentOperator = operatorState.operatorEntity;
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              leading: IconButton(
+                color: Colors.white,
+                onPressed: () {
+                  Modular.to.navigate("/operator-module/",
+                      arguments: currentOperator);
+                },
+                icon: const Icon(Icons.arrow_back),
+              ),
+            ),
             body: Container(
               height: height,
               width: width,
@@ -63,7 +74,7 @@ class _OperatorArea extends State<OperatorArea> {
                 controller: _operatorPageController,
                 children: [
                   OperatorInitialPage(
-                    operatorId: '',
+                    operatorId: currentOperator.operatorId ?? "Hello",
                     pageController: _operatorPageController,
                     position: BottomNavigationBarPosition.operatorHome,
                   ),
@@ -93,8 +104,12 @@ class _OperatorArea extends State<OperatorArea> {
                       itemBackgroundColor: primaryColor,
                       contentColor: seccondaryColor,
                       onTap: () {
-                        _operatorPageController.jumpToPage(
-                            BottomNavigationBarPosition.operatorHome.position);
+                        _operatorPageController.animateToPage(
+                            BottomNavigationBarPosition.operatorHome.position,
+                            duration: const Duration(
+                              milliseconds: 400,
+                            ),
+                            curve: Curves.easeInSine);
                         setState(() {
                           widget.position =
                               BottomNavigationBarPosition.operatorHome;
@@ -109,9 +124,13 @@ class _OperatorArea extends State<OperatorArea> {
                       itemBackgroundColor: primaryColor,
                       contentColor: seccondaryColor,
                       onTap: () {
-                        _operatorPageController.jumpToPage(
+                        _operatorPageController.animateToPage(
                             BottomNavigationBarPosition
-                                .operatorOptions.position);
+                                .operatorOptions.position,
+                            duration: const Duration(
+                              milliseconds: 400,
+                            ),
+                            curve: Curves.easeInSine);
                         setState(() {
                           widget.position =
                               BottomNavigationBarPosition.operatorOptions;
@@ -126,9 +145,13 @@ class _OperatorArea extends State<OperatorArea> {
                       itemBackgroundColor: primaryColor,
                       contentColor: seccondaryColor,
                       onTap: () {
-                        _operatorPageController.jumpToPage(
+                        _operatorPageController.animateToPage(
                             BottomNavigationBarPosition
-                                .operatorOppening.position);
+                                .operatorOppening.position,
+                            duration: const Duration(
+                              milliseconds: 400,
+                            ),
+                            curve: Curves.easeInSine);
                         setState(() {
                           widget.position =
                               BottomNavigationBarPosition.operatorOppening;
@@ -148,10 +171,3 @@ class _OperatorArea extends State<OperatorArea> {
     );
   }
 }
-
-
-
-/* 
-
-
- */
