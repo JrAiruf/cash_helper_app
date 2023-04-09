@@ -94,73 +94,72 @@ class _OperatorArea extends State<OperatorArea> {
             bottomNavigationBar: Container(
               decoration: BoxDecoration(color: primaryColor),
               child: CashHelperBottomNavigationBar(
-                  itemColor: tertiaryColor,
-                  itemContentColor: Colors.white,
-                  pageController: _operatorPageController,
-                  position: widget.position,
-                  backgroundColor: seccondaryColor,
-                  radius: 20,
-                  height: 60,
-                  items: [
-                    CashHelperBottomNavigationItem(
-                      itemBackgroundColor: Colors.blueAccent,
-                      onTap: () {
-                        _operatorPageController.animateToPage(
-                            BottomNavigationBarPosition.operatorHome.position,
-                            duration: const Duration(
-                              milliseconds: 400,
-                            ),
-                            curve: Curves.easeInSine);
-                        setState(() {
-                          widget.position =
-                              BottomNavigationBarPosition.operatorHome;
-                        });
-                      },
-                      icon: Icons.person,
-                      itemName: 'Início',
-                      position: BottomNavigationBarPosition.operatorHome,
-                    ),
-                    CashHelperBottomNavigationItem(
-                      itemBackgroundColor: primaryColor,
-                      contentColor: seccondaryColor,
-                      onTap: () {
-                        _operatorPageController.animateToPage(
-                            BottomNavigationBarPosition
-                                .operatorOptions.position,
-                            duration: const Duration(
-                              milliseconds: 400,
-                            ),
-                            curve: Curves.easeInSine);
-                        setState(() {
-                          widget.position =
-                              BottomNavigationBarPosition.operatorOptions;
-                        });
-                      },
-                      icon: Icons.menu,
-                      itemName: 'Opções',
-                      position: BottomNavigationBarPosition.operatorOptions,
-                    ),
-                    CashHelperBottomNavigationItem(
-                      itemBackgroundColor: primaryColor,
-                      contentColor: seccondaryColor,
-                      onTap: () {
-                        _operatorPageController.animateToPage(
-                            BottomNavigationBarPosition
-                                .operatorOppening.position,
-                            duration: const Duration(
-                              milliseconds: 400,
-                            ),
-                            curve: Curves.easeInSine);
-                        setState(() {
-                          widget.position =
-                              BottomNavigationBarPosition.operatorOppening;
-                        });
-                      },
-                      icon: Icons.adf_scanner_outlined,
-                      itemName: 'Abertura',
-                      position: BottomNavigationBarPosition.operatorOppening,
-                    ),
-                  ]),
+                itemColor: tertiaryColor,
+                itemContentColor: Colors.white,
+                pageController: _operatorPageController,
+                position: widget.position,
+                backgroundColor: seccondaryColor,
+                radius: 20,
+                height: 60,
+                items: [
+                  CashHelperBottomNavigationItem(
+                    itemBackgroundColor: Colors.blueAccent,
+                    onTap: () {
+                      _operatorPageController.animateToPage(
+                          BottomNavigationBarPosition.operatorHome.position,
+                          duration: const Duration(
+                            milliseconds: 400,
+                          ),
+                          curve: Curves.easeInSine);
+                      setState(() {
+                        widget.position =
+                            BottomNavigationBarPosition.operatorHome;
+                      });
+                    },
+                    icon: Icons.person,
+                    itemName: 'Início',
+                    position: BottomNavigationBarPosition.operatorHome,
+                  ),
+                  CashHelperBottomNavigationItem(
+                    itemBackgroundColor: primaryColor,
+                    contentColor: seccondaryColor,
+                    onTap: () {
+                      _operatorPageController.animateToPage(
+                          BottomNavigationBarPosition.operatorOptions.position,
+                          duration: const Duration(
+                            milliseconds: 400,
+                          ),
+                          curve: Curves.easeInSine);
+                      setState(() {
+                        widget.position =
+                            BottomNavigationBarPosition.operatorOptions;
+                      });
+                    },
+                    icon: Icons.menu,
+                    itemName: 'Opções',
+                    position: BottomNavigationBarPosition.operatorOptions,
+                  ),
+                  CashHelperBottomNavigationItem(
+                    itemBackgroundColor: primaryColor,
+                    contentColor: seccondaryColor,
+                    onTap: () {
+                      _operatorPageController.animateToPage(
+                          BottomNavigationBarPosition.operatorOppening.position,
+                          duration: const Duration(
+                            milliseconds: 400,
+                          ),
+                          curve: Curves.easeInSine);
+                      setState(() {
+                        widget.position =
+                            BottomNavigationBarPosition.operatorOppening;
+                      });
+                    },
+                    icon: Icons.adf_scanner_outlined,
+                    itemName: 'Abertura',
+                    position: BottomNavigationBarPosition.operatorOppening,
+                  ),
+                ],
+              ),
             ),
           );
         } else {

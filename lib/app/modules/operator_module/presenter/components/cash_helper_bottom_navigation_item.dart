@@ -35,7 +35,10 @@ class CashHelperBottomNavigationItem extends StatelessWidget {
               ),
               Text(
                 itemName ?? '',
-                style: TextStyle(color: contentColor, fontSize: 13),
+                style: TextStyle(
+                    color: contentColor,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w300),
               ),
             ],
           ),

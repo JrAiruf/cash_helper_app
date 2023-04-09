@@ -1,7 +1,11 @@
+import 'package:cash_helper_app/app/modules/annotations_module/external/annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
-class AnnotationRepositoryImpl implements AnnotationRepository {
+class AnnotationsDatabaseMock extends Mock implements AnnotationsDatabase {}
+class AnnotationsRepositoryMock implements AnnotationRepository {
   @override
   Future<AnnotationModel?>? createAnnotation(String? operatorId, AnnotationModel? annotation) {
     // TODO: implement createAnnotation
@@ -43,4 +47,14 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
     // TODO: implement updateAnnotation
     throw UnimplementedError();
   }
+}
+
+void main() {
+  group(
+    "description",
+    () {
+      test("", () async {});
+      test("", () async {});
+    },
+  );
 }
