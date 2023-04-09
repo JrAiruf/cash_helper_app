@@ -121,8 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                             style: TextButton.styleFrom(),
                             onPressed: () {
-                              Modular.to
-                                  .pushNamed("/forgot-password-page");
+                              Modular.to.pushNamed("/forgot-password-page");
                             },
                             child: Text('Esqueci minha senha',
                                 style:
@@ -136,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 25),
                   child: Visibility(
-                    visible: !_loginController.loadingLoginData,
+                    visible: !_loginController.loadingData,
                     replacement: Center(
                       child: CircularProgressIndicator(
                         color: indicatorColor,
@@ -149,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         if (_loginFormKey.currentState!.validate()) {
                           setState(() {
-                            _loginController.loadingLoginData = true;
+                            _loginController.loadingData = true;
                           });
                           final loggedUser = await _loginStore
                               .login(
@@ -166,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                               : null;
                         }
                         setState(() {
-                          _loginController.loadingLoginData = false;
+                          _loginController.loadingData = false;
                         });
                       },
                       radius: 12,

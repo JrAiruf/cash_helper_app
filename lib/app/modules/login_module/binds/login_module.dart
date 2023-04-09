@@ -43,7 +43,7 @@ class LoginModuleCore extends Module {
     ),
     ChildRoute(
       "/recovery-password-page",
-      child: (_, args) => const RecoveryPasswordPage(),
+      child: (_, args) => RecoveryPasswordPage(operatorEntity: args.data),
     ),
     ChildRoute(
       "/",

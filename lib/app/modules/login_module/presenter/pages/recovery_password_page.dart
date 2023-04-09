@@ -8,18 +8,19 @@ import '../controllers/login_controller.dart';
 import '../stores/login_store.dart';
 
 class RecoveryPasswordPage extends StatefulWidget {
-  const RecoveryPasswordPage({super.key});
+  RecoveryPasswordPage({super.key, required this.operatorEntity});
 
+  OperatorEntity operatorEntity;
   @override
   State<RecoveryPasswordPage> createState() => _RecoveryPasswordPageState();
 }
 
 class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
-  @override
-  final _checkOperatorDataFormKey = GlobalKey<FormState>();
-  final _operatorEntity = OperatorEntity();
+  final _recoveryPasswordFormKey = GlobalKey<FormState>();
   final _loginController = Modular.get<LoginController>();
   final _loginStore = Modular.get<LoginStore>();
+  final _operatorEntity = OperatorEntity();
+  String? confirmationPassword;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -37,9 +38,9 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Visibility(
-              visible: !_loginController.loadingData,
+              visible: !_loginController.loadingLoginData,
               replacement: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
@@ -59,33 +60,34 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   ),
                   SizedBox(height: height * 0.1),
                   Text(
-                    "Informe os dados necessários:",
+                    "Digite sua nova senha:",
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Form(
-                      key: _checkOperatorDataFormKey,
+                      key: _recoveryPasswordFormKey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CashHelperTextFieldComponent(
                             radius: 15,
                             validator: (value) =>
-                                _loginController.emailValidate(value),
-                            onSaved: (value) =>
-                                _operatorEntity.operatorEmail = value,
-                            controller: _loginController.emailField,
+                                _loginController.passwordValidate(value),
+                            onSaved: (value) => _operatorEntity
+                                .operatorPassword = value?.trim(),
+                            controller: _loginController.passwordField,
                             label: 'Nova Senha',
                           ),
                           SizedBox(height: height * 0.03),
                           CashHelperTextFieldComponent(
                             radius: 15,
-                            validator: (value) =>
-                                _loginController.cashierNumberValidate(value),
-                            onSaved: (value) => _operatorEntity.operatorNumber =
-                                int.tryParse(value ?? "0"),
-                            controller: _loginController.emailField,
+                            validator: (value) => _loginController
+                                .confirmationPasswordValidate(value),
+                            onSaved: (value) =>
+                                confirmationPassword = value?.trim(),
+                            controller:
+                                _loginController.confirmationPasswordField,
                             label: 'Confirmar Nova Senha',
                           ),
                         ],
@@ -95,29 +97,39 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   SizedBox(height: height * 0.15),
                   CashHelperElevatedButton(
                     onPressed: () async {
-                      setState(() {
-                        _loginController.loadingData = true;
-                      });
-                      _checkOperatorDataFormKey.currentState!.validate();
-                      _checkOperatorDataFormKey.currentState!.save();
-                      if (_checkOperatorDataFormKey.currentState!.validate()) {
-                        final checkedInformation = await _loginStore
-                            .checkOperatorDataForResetPassword(
-                              _operatorEntity.operatorEmail!,
-                              _operatorEntity.operatorNumber!,
-                              "operator",
-                            )!
-                            .then((value) => value)
-                            .catchError((e) {
-                          _loginController.checkInformationTrialFail(context);
-                          return false;
+                      _recoveryPasswordFormKey.currentState!.validate();
+                      _recoveryPasswordFormKey.currentState!.save();
+                      if (_recoveryPasswordFormKey.currentState!.validate()) {
+                        setState(() {
+                          _loginController.loadingLoginData = true;
                         });
-
-                        if (checkedInformation) {
-                          Modular.to.pushNamed("/reset-password-page");
+                        if (_operatorEntity.operatorPassword ==
+                            confirmationPassword) {
+                          await _loginStore.resetOperatorPassword(
+                              widget.operatorEntity.operatorEmail!,
+                              widget.operatorEntity.operatorNumber!,
+                              _operatorEntity.operatorPassword!);
+                          final recoveredOperator = await _loginStore
+                              .login(widget.operatorEntity.operatorEmail,
+                                  _operatorEntity.operatorPassword, "operator")
+                              ?.then((currentOperator) => currentOperator)
+                              .catchError((e) {
+                            _loginController.onFail(context);
+                          });
+                          if (recoveredOperator != null) {
+                            Modular.to.navigate("/operator-module/",
+                                arguments: recoveredOperator);
+                          } else {
+                            return;
+                          }
+                          setState(() {
+                            _loginController.loadingLoginData = false;
+                          });
+                        } else {
+                          _loginController.recoveryTrialFail(context);
                         }
                         setState(() {
-                          _loginController.loadingData = false;
+                          _loginController.loadingLoginData = false;
                         });
                       }
                     },

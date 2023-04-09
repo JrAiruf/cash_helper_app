@@ -53,7 +53,7 @@ if (operatorId != null && collection != null) {
   @override
   Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? newPassword) async {
     if(email!.isNotEmpty && !cashierNumber!.isNaN && newPassword!.isNotEmpty){
-      await _datasource.resetOperatorPassword(email, cashierNumber, newPassword);
+  await _datasource.resetOperatorPassword(email, cashierNumber, newPassword);
     } else {
       return;
     }

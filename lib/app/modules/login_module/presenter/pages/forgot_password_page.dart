@@ -35,7 +35,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Visibility(
-              visible: !_loginController.loadingData,
+              visible: !_loginController.loadingAuthData,
               replacement: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -100,7 +100,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       _checkOperatorDataFormKey.currentState!.save();
                       if (_checkOperatorDataFormKey.currentState!.validate()) {
                         setState(() {
-                          _loginController.loadingData = true;
+                          _loginController.loadingAuthData = true;
                         });
                         final checkedInformation = await _loginStore
                             .checkOperatorDataForResetPassword(
@@ -115,10 +115,11 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         });
 
                         if (checkedInformation) {
-                          Modular.to.pushNamed("/recovery-password-page");
+                          Modular.to.pushNamed("/recovery-password-page",
+                              arguments: _operatorEntity);
                         }
                         setState(() {
-                          _loginController.loadingData = false;
+                          _loginController.loadingAuthData = false;
                         });
                       }
                     },

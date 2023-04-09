@@ -42,7 +42,13 @@ class LoginStore extends ValueNotifier<LoginStates?> {
 
   Future<bool>? checkOperatorDataForResetPassword(
       String email, int cashierNumber, String collection) async {
-    return await _usecases.checkOperatorDataForResetPassword(email, cashierNumber, collection)!;
+    return await _usecases.checkOperatorDataForResetPassword(
+        email, cashierNumber, collection)!;
+  }
+
+  Future<void>? resetOperatorPassword(
+      String email, int cashierNumber, String newPassword) async {
+    await _usecases.resetOperatorPassword(email, cashierNumber, newPassword);
   }
 
   Future<void> signOut() async {

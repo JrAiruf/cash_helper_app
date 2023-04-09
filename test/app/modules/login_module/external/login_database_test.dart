@@ -15,7 +15,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
-
+  User? _authUser;
   Map<String, dynamic>? operatorData;
   bool _validCredentials(String? email, String? password) {
     return email != null &&
@@ -53,6 +53,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           email: newOperator?['operatorEmail'] ?? "",
           password: newOperator?['operatorPassword'] ?? "");
       newOperator?["operatorId"] = userCredentials.user?.uid;
+      _authUser = userCredentials.user;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
           ? await _database
               .collection(collection ?? "")
@@ -124,10 +125,10 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       String? email, int? cashierNumber, String? collection) async {
     if (email != null && cashierNumber != null && collection != null) {
       final operatorsCollection = await _database.collection(collection).get();
-    final checkedOperator =  operatorsCollection.docs.firstWhere((operatorMap) => 
-      operatorMap.data()["operatorEmail"] == email &&
-      operatorMap.data()["operatorNumber"] == cashierNumber
-      );
+      final checkedOperator = operatorsCollection.docs.firstWhere(
+          (operatorMap) =>
+              operatorMap.data()["operatorEmail"] == email &&
+              operatorMap.data()["operatorNumber"] == cashierNumber);
       return checkedOperator.exists ? true : false;
     } else {
       return false;
@@ -142,17 +143,15 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       if (_validOperatorValues(email, cashierNumber)) {
         final databaseOperator = operatorsList.docs
             .firstWhere((operator) =>
-                operator["operatorEmail"] == email &&
-                operator["operatorNumber"] == cashierNumber)
+                operator.data()["operatorEmail"] == email &&
+                operator.data()["operatorNumber"] == cashierNumber)
             .data();
         await login(email, databaseOperator["operatorPassword"], "operator");
         _auth.currentUser?.updatePassword(newPassword!);
-        final newPasswordValue =
-            newPassword ?? databaseOperator["operatorPassword"];
         final operatorsCollection = _database.collection("operator");
         await operatorsCollection
             .doc(databaseOperator["operatorId"])
-            .update({"operatorPassword": newPasswordValue});
+            .update({"operatorPassword": newPassword!});
       } else {
         return;
       }

@@ -76,6 +76,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       if (_validCredentials(email, password) && collection!.isNotEmpty) {
         final userCredentials = await _auth
             .signInWithEmailAndPassword(email: email!, password: password!)
+            .then((value) => value)
             .catchError(
           (e) {
             throw AuthenticationError();
@@ -119,12 +120,12 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   @override
   Future<bool>? checkOperatorDataForResetPassword(
       String? email, int? cashierNumber, String? collection) async {
- if (email != null && cashierNumber != null && collection != null) {
+    if (email != null && cashierNumber != null && collection != null) {
       final operatorsCollection = await _database.collection(collection).get();
-    final checkedOperator =  operatorsCollection.docs.firstWhere((operatorMap) => 
-      operatorMap.data()["operatorEmail"] == email &&
-      operatorMap.data()["operatorNumber"] == cashierNumber
-      );
+      final checkedOperator = operatorsCollection.docs.firstWhere(
+          (operatorMap) =>
+              operatorMap.data()["operatorEmail"] == email &&
+              operatorMap.data()["operatorNumber"] == cashierNumber);
       return checkedOperator.exists ? true : false;
     } else {
       return false;
@@ -144,12 +145,10 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
             .data();
         await login(email, databaseOperator["operatorPassword"], "operator");
         _auth.currentUser?.updatePassword(newPassword!);
-        final newPasswordValue =
-            newPassword ?? databaseOperator["operatorPassword"];
         final operatorsCollection = _database.collection("operator");
         await operatorsCollection
             .doc(databaseOperator["operatorId"])
-            .update({"operatorPassword": newPasswordValue});
+            .update({"operatorPassword": newPassword!});
       } else {
         return;
       }
