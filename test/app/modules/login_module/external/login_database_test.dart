@@ -143,8 +143,8 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       if (_validOperatorValues(email, cashierNumber)) {
         final databaseOperator = operatorsList.docs
             .firstWhere((operator) =>
-                operator.data()["operatorEmail"] == email &&
-                operator.data()["operatorNumber"] == cashierNumber)
+                operator["operatorEmail"] == email &&
+                operator["operatorNumber"] == cashierNumber)
             .data();
         await login(email, databaseOperator["operatorPassword"], "operator");
         _auth.currentUser?.updatePassword(newPassword!);

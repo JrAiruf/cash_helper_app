@@ -8,7 +8,6 @@ class CashHelperBottomNavigationItem extends StatelessWidget {
   final Color? itemBackgroundColor;
   final Color? contentColor;
   final BottomNavigationBarPosition? position;
-  final PageController? pageController;
   final void Function()? onTap;
 
   const CashHelperBottomNavigationItem(
@@ -17,7 +16,6 @@ class CashHelperBottomNavigationItem extends StatelessWidget {
       this.itemName,
       this.itemBackgroundColor,
       required this.position,
-      required this.pageController,
       this.contentColor,
       this.onTap});
   @override

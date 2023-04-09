@@ -9,8 +9,9 @@ class CashHelperBottomNavigationBar extends StatelessWidget {
       this.height,
       this.width,
       this.radius,
-      this.borderColor,
+      this.itemColor,
       this.backgroundColor,
+      this.itemContentColor,
       this.pageController,
       this.position});
 
@@ -18,8 +19,9 @@ class CashHelperBottomNavigationBar extends StatelessWidget {
   final double? height;
   final double? width;
   final double? radius;
-  final Color? borderColor;
+  final Color? itemColor;
   final Color? backgroundColor;
+  final Color? itemContentColor;
   final PageController? pageController;
   final BottomNavigationBarPosition? position;
   @override
@@ -41,15 +43,12 @@ class CashHelperBottomNavigationBar extends StatelessWidget {
               .map(
                 (bottomNavigationItem) => Expanded(
                   child: CashHelperBottomNavigationItem(
-                    pageController: pageController,
                     onTap: bottomNavigationItem?.onTap,
-                    contentColor: bottomNavigationItem?.position == position
-                        ? Colors.white
-                        : backgroundColor,
+                    contentColor: itemContentColor,
                     itemBackgroundColor:
-                        bottomNavigationItem?.position == position
-                            ? backgroundColor
-                            : Colors.white,
+                        position == bottomNavigationItem?.position
+                            ? itemColor
+                            : backgroundColor,
                     icon: bottomNavigationItem?.icon,
                     itemName: bottomNavigationItem?.itemName,
                     position: bottomNavigationItem?.position,

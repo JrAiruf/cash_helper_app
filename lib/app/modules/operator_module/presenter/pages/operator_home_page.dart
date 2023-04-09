@@ -168,10 +168,11 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
               ),
             ),
           );
+        } else {
+          return Container(
+            decoration: BoxDecoration(color: primaryColor),
+          );
         }
-        return Container(
-          decoration: BoxDecoration(color: primaryColor),
-        );
       },
     );
   }

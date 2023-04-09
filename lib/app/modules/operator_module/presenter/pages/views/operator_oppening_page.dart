@@ -27,6 +27,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final _operatorPageController = PageController();
     return Container(
+      decoration: BoxDecoration(color: primaryColor),
       child: Center(
         child: Text("Oppening"),
       ),

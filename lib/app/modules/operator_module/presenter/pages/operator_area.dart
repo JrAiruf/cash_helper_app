@@ -35,6 +35,7 @@ class _OperatorArea extends State<OperatorArea> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
+    final tertiaryColor = Theme.of(context).colorScheme.onTertiaryContainer;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     return ValueListenableBuilder(
@@ -67,10 +68,10 @@ class _OperatorArea extends State<OperatorArea> {
               height: height,
               width: width,
               decoration: BoxDecoration(
-                color: primaryColor,
+                color: seccondaryColor,
               ),
               child: PageView(
-                // physics: const NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _operatorPageController,
                 children: [
                   OperatorInitialPage(
@@ -93,6 +94,8 @@ class _OperatorArea extends State<OperatorArea> {
             bottomNavigationBar: Container(
               decoration: BoxDecoration(color: primaryColor),
               child: CashHelperBottomNavigationBar(
+                  itemColor: tertiaryColor,
+                  itemContentColor: Colors.white,
                   pageController: _operatorPageController,
                   position: widget.position,
                   backgroundColor: seccondaryColor,
@@ -100,9 +103,7 @@ class _OperatorArea extends State<OperatorArea> {
                   height: 60,
                   items: [
                     CashHelperBottomNavigationItem(
-                      pageController: _operatorPageController,
-                      itemBackgroundColor: primaryColor,
-                      contentColor: seccondaryColor,
+                      itemBackgroundColor: Colors.blueAccent,
                       onTap: () {
                         _operatorPageController.animateToPage(
                             BottomNavigationBarPosition.operatorHome.position,
@@ -120,7 +121,6 @@ class _OperatorArea extends State<OperatorArea> {
                       position: BottomNavigationBarPosition.operatorHome,
                     ),
                     CashHelperBottomNavigationItem(
-                      pageController: _operatorPageController,
                       itemBackgroundColor: primaryColor,
                       contentColor: seccondaryColor,
                       onTap: () {
@@ -141,7 +141,6 @@ class _OperatorArea extends State<OperatorArea> {
                       position: BottomNavigationBarPosition.operatorOptions,
                     ),
                     CashHelperBottomNavigationItem(
-                      pageController: _operatorPageController,
                       itemBackgroundColor: primaryColor,
                       contentColor: seccondaryColor,
                       onTap: () {
