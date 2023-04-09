@@ -2,18 +2,18 @@ import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/oper
 import 'package:flutter_modular/flutter_modular.dart';
 import '../presenter/pages/operator_home_page.dart';
 
-abstract class OperatorModuleBinds {
+abstract class OperatorModule {
   static routes() => ModuleRoute(
         "/operator-module",
-        module: OperatorModule.instance,
+        module: OperatorModuleCore.instance,
         transition: TransitionType.fadeIn,
       );
-  static final binds = OperatorModule.instance.bindList;
+  static final binds = OperatorModuleCore.instance.bindList;
 }
 
-class OperatorModule extends Module {
-  OperatorModule._();
-  static final instance = OperatorModule._();
+class OperatorModuleCore extends Module {
+  OperatorModuleCore._();
+  static final instance = OperatorModuleCore._();
 
   @override
   List<Bind<Object>> get binds => bindList;

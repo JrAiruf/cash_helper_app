@@ -52,7 +52,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       newOperator?["operatorId"] = userCredentials.user?.uid;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
           ? await _database
-              .collection(collection.toString())
+              .collection(collection ?? "")
               .doc(newOperator["operatorId"])
               .set(newOperator)
           : null;
@@ -118,15 +118,44 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) {
-    // TODO: implement checkOperatorDataForResetPassword
-    throw UnimplementedError();
+      String? email, int? cashierNumber, String? collection) async {
+ if (email != null && cashierNumber != null && collection != null) {
+      final operatorsCollection = await _database.collection(collection).get();
+    final checkedOperator =  operatorsCollection.docs.firstWhere((operatorMap) => 
+      operatorMap.data()["operatorEmail"] == email &&
+      operatorMap.data()["operatorNumber"] == cashierNumber
+      );
+      return checkedOperator.exists ? true : false;
+    } else {
+      return false;
+    }
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? newPassword) {
-    // TODO: implement resetOperatorPassword
-    throw UnimplementedError();
+  Future<void>? resetOperatorPassword(
+      String? email, int? cashierNumber, String? newPassword) async {
+    try {
+      final operatorsList = await _database.collection("operator").get();
+      if (_validOperatorValues(email, cashierNumber)) {
+        final databaseOperator = operatorsList.docs
+            .firstWhere((operator) =>
+                operator["operatorEmail"] == email &&
+                operator["operatorNumber"] == cashierNumber)
+            .data();
+        await login(email, databaseOperator["operatorPassword"], "operator");
+        _auth.currentUser?.updatePassword(newPassword!);
+        final newPasswordValue =
+            newPassword ?? databaseOperator["operatorPassword"];
+        final operatorsCollection = _database.collection("operator");
+        await operatorsCollection
+            .doc(databaseOperator["operatorId"])
+            .update({"operatorPassword": newPasswordValue});
+      } else {
+        return;
+      }
+    } on Exception catch (e) {
+      throw Exception(e.toString());
+    }
   }
 
   @override

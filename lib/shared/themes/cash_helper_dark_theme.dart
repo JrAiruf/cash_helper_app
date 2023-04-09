@@ -24,5 +24,7 @@ final cashHelperDarkTheme = ThemeData(
                 color: Colors.white, fontSize: 15, fontWeight: FontWeight.w200),
             displaySmall: TextStyle(
                 color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+            displayMedium: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
           ),
           colorScheme: darkColorScheme);

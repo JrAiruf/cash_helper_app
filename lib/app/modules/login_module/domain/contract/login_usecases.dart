@@ -5,6 +5,6 @@ abstract class LoginUsecases {
 Future<OperatorEntity?>? login(String? email, String? password, String? collection);
 Future<OperatorEntity?>? getOperatorById(String? operatorId, String? collection);
 Future<bool>? checkOperatorDataForResetPassword(String? email, int? cashierNumber, String? collection);
-Future<void>? resetOperatorPassword( String? email, int? cashierNumber, String? collection, String? newPassword);
+Future<void>? resetOperatorPassword( String? email, int? cashierNumber, String? newPassword);
 Future<void>? signOut();
 }

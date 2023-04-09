@@ -17,7 +17,6 @@ class CashHelperTextFieldComponent extends StatelessWidget {
       this.onSaved,
       this.onTap,
       this.iconTap,
-      this.isButton,
       this.textColor,
       this.radius,
       this.height,
@@ -44,7 +43,6 @@ class CashHelperTextFieldComponent extends StatelessWidget {
   final void Function(String?)? onSaved;
   final bool? obscureText;
   final bool? enable;
-  final bool? isButton;
   final bool? readOnly;
   final TextEditingController? controller;
   final TextInputType? input;

@@ -74,7 +74,6 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                 children: [
                                   CashHelperTextFieldComponent(
                                     radius: 15,
-                                    isButton: false,
                                     validator: (value) =>
                                         _createOperatorController
                                             .cashierNameValidate(value),
@@ -86,7 +85,6 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                   ),
                                   CashHelperTextFieldComponent(
                                     radius: 15,
-                                    isButton: false,
                                     validator: (value) =>
                                         _createOperatorController
                                             .emailValidate(value),
@@ -98,7 +96,6 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                   ),
                                   CashHelperTextFieldComponent(
                                     radius: 15,
-                                    isButton: false,
                                     obscureText: true,
                                     validator: (value) =>
                                         _createOperatorController
@@ -111,7 +108,6 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                   ),
                                   CashHelperTextFieldComponent(
                                     radius: 15,
-                                    isButton: false,
                                     obscureText: true,
                                     validator: (value) =>
                                         _createOperatorController
@@ -124,7 +120,6 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                   ),
                                   CashHelperTextFieldComponent(
                                     radius: 15,
-                                    isButton: false,
                                     validator: (value) =>
                                         _createOperatorController
                                             .cashierNumberValidate(value),

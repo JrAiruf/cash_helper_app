@@ -5,6 +5,6 @@ Future<OperatorModel?>? register(OperatorModel? newOperator, String? collection)
 Future<OperatorModel?>? login(String? email, String? password, String? collection);
 Future<OperatorModel?>? getOperatorById(String? operatorId, String? collection);
 Future<bool>? checkOperatorDataForResetPassword(String? email, int? cashierNumber, String? collection);
-Future<void>? resetOperatorPassword( String? email, int? cashierNumber, String? collection, String? newPassword);
+Future<void>? resetOperatorPassword( String? email, int? cashierNumber, String? newPassword);
 Future<void>? signOut();
 }

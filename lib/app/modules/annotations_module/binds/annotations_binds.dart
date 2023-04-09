@@ -1,16 +1,16 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-abstract class AnnotationsModuleBinds {
+abstract class AnnotationsModule {
   static routes() => ModuleRoute(
         "/annotations-module",
-        module: AnnotationModule.instance,
+        module: AnnotationModuleCore.instance,
       );
-  static final binds = AnnotationModule.instance.binds;
+  static final binds = AnnotationModuleCore.instance.binds;
 }
 
-class AnnotationModule extends Module {
-  AnnotationModule._();
-  static final instance = AnnotationModule._();
+class AnnotationModuleCore extends Module {
+  AnnotationModuleCore._();
+  static final instance = AnnotationModuleCore._();
   @override
   List<Bind<Object>> get binds => [];
   @override

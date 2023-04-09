@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/forgot_password_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_operator_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/login_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,20 +11,21 @@ import '../domain/usecases/login_usecases_impl.dart';
 import '../infra/data/login_repository.dart';
 import '../infra/repository/login_repository_impl.dart';
 import '../presenter/controllers/login_controller.dart';
+import '../presenter/pages/recovery_password_page.dart';
 import '../presenter/stores/login_store.dart';
 
-abstract class LoginModuleBinds {
+abstract class LoginModule {
   static routes() => ModuleRoute(
         Modular.initialRoute,
-        module: LoginModule.instance,
+        module: LoginModuleCore.instance,
         transition: TransitionType.fadeIn,
       );
-  static final binds = LoginModule.instance.bindList;
+  static final binds = LoginModuleCore.instance.bindList;
 }
 
-class LoginModule extends Module {
-  LoginModule._();
-  static final instance = LoginModule._();
+class LoginModuleCore extends Module {
+  LoginModuleCore._();
+  static final instance = LoginModuleCore._();
 
   @override
   List<Bind<Object>> get binds => bindList;
@@ -34,6 +36,14 @@ class LoginModule extends Module {
     ChildRoute(
       "/create-new-operator",
       child: (_, args) => const CreateOperatorPage(),
+    ),
+    ChildRoute(
+      "/forgot-password-page",
+      child: (_, args) => const ForgotPasswordPage(),
+    ),
+    ChildRoute(
+      "/recovery-password-page",
+      child: (_, args) => const RecoveryPasswordPage(),
     ),
     ChildRoute(
       "/",

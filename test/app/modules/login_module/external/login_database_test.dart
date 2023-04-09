@@ -122,20 +122,15 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   @override
   Future<bool>? checkOperatorDataForResetPassword(
       String? email, int? cashierNumber, String? collection) async {
-    try {
-      if (email != null && cashierNumber != null && collection != null) {
-        final operatorCollection = await _database.collection(collection).get();
-        final databaseOperatorMaps =
-            operatorCollection.docs.map((operator) => operator.data()).toList();
-        final checkedOperator = databaseOperatorMaps.firstWhere((operator) =>
-            operator["operatorEmail"] == email &&
-            operator["operatorNumber"] == cashierNumber);
-        return checkedOperator["operatorId"] != null ? true : false;
-      } else {
-        return false;
-      }
-    } on FirebaseException catch (e) {
-      throw AuthenticationError();
+    if (email != null && cashierNumber != null && collection != null) {
+      final operatorsCollection = await _database.collection(collection).get();
+    final checkedOperator =  operatorsCollection.docs.firstWhere((operatorMap) => 
+      operatorMap.data()["operatorEmail"] == email &&
+      operatorMap.data()["operatorNumber"] == cashierNumber
+      );
+      return checkedOperator.exists ? true : false;
+    } else {
+      return false;
     }
   }
 

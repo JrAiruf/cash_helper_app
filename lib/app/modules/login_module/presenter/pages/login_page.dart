@@ -68,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   CashHelperTextFieldComponent(
                                     radius: 15,
-                                    isButton: false,
                                     validator: (value) =>
                                         _loginController.emailValidate(value),
                                     onSaved: (value) =>
@@ -81,7 +80,6 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   CashHelperTextFieldComponent(
                                     radius: 15,
-                                    isButton: false,
                                     obscureText: true,
                                     validator: (value) => _loginController
                                         .passwordValidate(value),
@@ -122,7 +120,10 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           TextButton(
                             style: TextButton.styleFrom(),
-                            onPressed: () {},
+                            onPressed: () {
+                              Modular.to
+                                  .pushNamed("/forgot-password-page");
+                            },
                             child: Text('Esqueci minha senha',
                                 style:
                                     Theme.of(context).textTheme.displaySmall),

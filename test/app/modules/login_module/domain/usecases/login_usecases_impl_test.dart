@@ -49,15 +49,12 @@ class LoginUsecasesMock implements LoginUsecases {
   @override
   Future<bool>? checkOperatorDataForResetPassword(
       String? email, int? cashierNumber, String? collection) async {
-    // TODO: implement checkOperatorDataForResetPassword
-    throw UnimplementedError();
+  return await _repository.checkOperatorDataForResetPassword(email, cashierNumber, collection) ?? false;
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber,
-      String? collection, String? newPassword) {
-    // TODO: implement resetOperatorPassword
-    throw UnimplementedError();
+  Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? newPassword) async {
+   await _repository.resetOperatorPassword(email, cashierNumber, newPassword);
   }
 
   @override
@@ -180,6 +177,73 @@ void main() {
       );
     },
   );
+  group(
+    "CheckOperatorDataForResetPassword function should",
+    () {
+      test(
+        "Call repository function to check opertor's informations",
+       () async {
+          when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
+          when(repository.checkOperatorDataForResetPassword(any, any,any)).thenAnswer((_) async => true);
+          final createdOperator = await usecases.register(newOperator, "collection");
+          expect(createdOperator, isA<OperatorEntity>());
+          expect(createdOperator?.operatorId != null, equals(true));
+          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber,"collection");
+          expect(checkedInformation, equals(true));
+          
+        },
+      );
+      test(
+        "Return false for non checked informations",
+        () async {
+        when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
+          when(repository.checkOperatorDataForResetPassword(any, any,any)).thenAnswer((_) async => false);
+          final createdOperator = await usecases.register(newOperator, "collection");
+          expect(createdOperator, isA<OperatorEntity>());
+          expect(createdOperator?.operatorId != null, equals(true));
+          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber,"");
+          expect(checkedInformation, equals(false));
+        },
+      );
+    },
+  );
+  group(
+    "ResetOperatorPassword function should",
+    () {
+      test(
+        "Call repository function to reset operator's password",
+       () async {
+          when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
+          when(repository.getOperatorById(any, any)).thenAnswer((_) async => modifiedRepositoryOperator);
+          when(repository.resetOperatorPassword(any, any,any)).thenReturn(null);
+
+          final createdOperator = await usecases.register(newOperator, "collection");
+          expect(createdOperator, isA<OperatorEntity>());
+          expect(createdOperator?.operatorId != null, equals(true));
+          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+          final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
+
+          expect(currentOperator?.operatorPassword, equals("newPassword"));
+        },
+      );
+      test(
+        "Fail reseting operator's password",
+        () async {
+             when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
+          when(repository.getOperatorById(any, any)).thenAnswer((_) async => repositoryOperator);
+          when(repository.resetOperatorPassword(any, any,any)).thenReturn(null);
+          
+          final createdOperator = await usecases.register(newOperator, "collection");
+          expect(createdOperator, isA<OperatorEntity>());
+          expect(createdOperator?.operatorId != null, equals(true));
+          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+          final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
+
+          expect(currentOperator?.operatorPassword, equals("12345678"));
+        },
+      );
+    },
+  );
   test(
     "Should sign out the application",
     () async {
@@ -207,6 +271,17 @@ final repositoryOperator = OperatorModel(
   operatorName: ' Josy Kelly',
   operatorEmail: 'josy@email.com',
   operatorPassword: '12345678',
+  operatorOppening: 'operatorOppening',
+  operatorClosing: 'operatorClosing',
+  operatorEnabled: false,
+  operatorOcupation: "operator",
+);
+final modifiedRepositoryOperator = OperatorModel(
+  operatorId: 'q34u6hu1qeuyoio',
+  operatorNumber: 1,
+  operatorName: ' Josy Kelly',
+  operatorEmail: 'josy@email.com',
+  operatorPassword: 'newPassword',
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
