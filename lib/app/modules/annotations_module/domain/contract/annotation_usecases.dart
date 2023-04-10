@@ -5,7 +5,7 @@ abstract class AnnotationUsecases {
   Future<AnnotationEntity?>? getAnnotationById(String? operatorId, String? annotationId);
   Future<List<AnnotationEntity>?>? getAllAnnotations(String? operatorId);
   Future<List<AnnotationEntity>?>? searchAnnotationsByClientAddress(String? operatorId, String? clientAddress);
-  Future<AnnotationEntity?>? updateAnnotation(String? operatorId,String? annotationId,AnnotationEntity? annotation);
+  Future<void>? updateAnnotation(String? operatorId,String? annotationId,AnnotationEntity? annotation);
   Future<void>? finishAnnotation(String? operatorId,String? annotationId);
   Future<void>? deleteAnnotation(String? operatorId, String? annotationId);
 }
