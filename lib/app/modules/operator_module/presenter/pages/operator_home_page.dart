@@ -1,4 +1,6 @@
 // ignore_for_file: must_be_immutable, unnecessary_string_interpolations
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotation_states.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
@@ -19,6 +21,7 @@ class OperartorAreaPage extends StatefulWidget {
 
 class _OperartorAreaPageState extends State<OperartorAreaPage> {
   final _loginStore = Modular.get<LoginStore>();
+  final _annotationListStore = Modular.get<AnnotationsListStore>();
   final _loginController = Modular.get<LoginController>();
 
   @override
@@ -26,6 +29,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
     super.initState();
     _loginStore.getOperatorById(widget.operatorEntity.operatorId!,
         widget.operatorEntity.operatorOcupation!);
+    _annotationListStore.getAllAnnotations(widget.operatorEntity.operatorId!);
   }
 
   @override
@@ -82,68 +86,178 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                     color: seccondaryColor,
                   ),
                   SizedBox(height: height * 0.07),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Text(
-                      "Informações Gerais:",
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        HomePageCardComponent(
-                          itemColor: seccondaryColor,
-                          icon: Icons.adf_scanner_outlined,
-                          itemName: 'Caixa: ${currentOperator.operatorNumber}',
-                          height: height * 0.18,
-                          width: width * 0.38,
-                          radius: 20,
-                          fontSize: 16,
-                        ),
-                        HomePageCardComponent(
-                          itemColor: seccondaryColor,
-                          icon: Icons.note_alt_outlined,
-                          itemName:
-                              'Pendências: ${currentOperator.operatorNumber}',
-                          height: height * 0.18,
-                          width: width * 0.38,
-                          radius: 20,
-                          fontSize: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        HomePageCardComponent(
-                          itemColor: seccondaryColor,
-                          icon: Icons.account_tree_outlined,
-                          itemName: 'Ativo: ${currentOperator.operatorEnabled}',
-                          height: height * 0.18,
-                          width: width * 0.38,
-                          radius: 20,
-                          fontSize: 16,
-                        ),
-                        HomePageCardComponent(
-                          itemColor: seccondaryColor,
-                          icon: Icons.access_time,
-                          itemName:
-                              'Abertura: ${currentOperator.operatorOppening}',
-                          height: height * 0.18,
-                          width: width * 0.38,
-                          radius: 20,
-                          fontSize: 16,
-                        ),
-                      ],
-                    ),
+                  ValueListenableBuilder(
+                    valueListenable: _annotationListStore,
+                    builder: ((context, annotationListState, child) {
+                      if (annotationListState is LoadingAnnotationsListState) {
+                        return Container(
+                          decoration: BoxDecoration(color: primaryColor),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: indicatorColor,
+                            ),
+                          ),
+                        );
+                      } else if (annotationListState
+                          is RetrievedAnnotationsListState) {
+                        final annotationsList =
+                            annotationListState.annotationsList;
+                        final pendingAnnotations = annotationsList.where(
+                            (annotation) =>
+                                annotation.annotationConcluied == false);
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: Text(
+                                "Informações Gerais:",
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.adf_scanner_outlined,
+                                    itemName:
+                                        'Caixa: ${currentOperator.operatorNumber}',
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.note_alt_outlined,
+                                    itemName:
+                                        'Pendências: ${pendingAnnotations.length}',
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.account_tree_outlined,
+                                    itemName: currentOperator.operatorEnabled!
+                                        ? "Status: Ativo"
+                                        : "Status: Inativo",
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.access_time,
+                                    itemName:
+                                        'Abertura: ${currentOperator.operatorOppening}',
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      } else if (annotationListState
+                          is EmptyAnnotationsListState) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: Text(
+                                "Informações Gerais:",
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.adf_scanner_outlined,
+                                    itemName:
+                                        'Caixa: ${currentOperator.operatorNumber}',
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.note_alt_outlined,
+                                    itemName: 'Pendências: 0',
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.account_tree_outlined,
+                                    itemName: currentOperator.operatorEnabled!
+                                        ? "Status: Ativo"
+                                        : "Status: Inativo",
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                  HomePageCardComponent(
+                                    itemColor: seccondaryColor,
+                                    icon: Icons.access_time,
+                                    itemName:
+                                        'Abertura: ${currentOperator.operatorOppening}',
+                                    height: height * 0.18,
+                                    width: width * 0.38,
+                                    radius: 20,
+                                    fontSize: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(

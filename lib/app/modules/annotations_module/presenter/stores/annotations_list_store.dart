@@ -8,8 +8,13 @@ class AnnotationsListStore extends ValueNotifier<AnnotationsListStates> {
 
   final AnnotationUsecases _usecases;
 
-  Future<List<AnnotationEntity>> getAllAnnotations(String? operatorId) async {
+  Future<void> getAllAnnotations(String? operatorId) async {
+    value = LoadingAnnotationsListState();
     final annotationsList = await _usecases.getAllAnnotations(operatorId) ?? [];
-    return annotationsList;
+    if (annotationsList.isNotEmpty) {
+      value = RetrievedAnnotationsListState(annotationsList: annotationsList);
+    } else {
+      value = EmptyAnnotationsListState();
+    }
   }
 }
