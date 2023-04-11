@@ -291,7 +291,3 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
     );
   }
 }
-
-/* 
-
- */
