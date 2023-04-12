@@ -267,11 +267,9 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                       width: width,
                       height: 60,
                       radius: 12,
-                      onPressed: () {
-                        Modular.to.pushNamed(
-                          "./operator-area/${currentOperator.operatorId}",
-                        );
-                      },
+                      onPressed: () => Modular.to.pushNamed(
+                        "./operator-area/${currentOperator.operatorId}",
+                      ),
                       buttonName: "Área do operador",
                       backgroundColor: buttonColor,
                       nameColor: Colors.white,

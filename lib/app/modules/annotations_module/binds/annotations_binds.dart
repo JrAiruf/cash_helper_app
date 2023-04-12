@@ -6,13 +6,17 @@ import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annota
 import 'package:cash_helper_app/app/modules/annotations_module/infra/repository/annotation_repository_impl.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_store.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
+
+import '../presenter/pages/create_annotations_page.dart';
 
 abstract class AnnotationsModule {
   static routes() => ModuleRoute(
         "/annotations-module",
         module: AnnotationModuleCore.instance,
+        transition: TransitionType.fadeIn,
       );
   static final binds = AnnotationModuleCore.instance.binds;
 }
@@ -23,7 +27,7 @@ class AnnotationModuleCore extends Module {
   @override
   List<Bind<Object>> get binds => bindsList;
   @override
-  List<ModularRoute> get routes => [];
+  List<ModularRoute> get routes => routesList;
 
   final bindsList = <Bind>[
     Bind<Uuid>(
@@ -54,6 +58,17 @@ class AnnotationModuleCore extends Module {
       (i) => AnnotationStore(
         usecases: i(),
       ),
+    ),
+  ];
+
+  final routesList = <ModularRoute>[
+    ChildRoute(
+      "/",
+      child: (_, args) => CreateAnnotationsPage(),
+    ),
+    ChildRoute(
+      "/name",
+      child: (_, args) => Container(),
     ),
   ];
 }

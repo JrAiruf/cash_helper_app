@@ -75,7 +75,7 @@ class _OperatorArea extends State<OperatorArea> {
                 controller: _operatorPageController,
                 children: [
                   OperatorInitialPage(
-                    operatorId: currentOperator.operatorId ?? "Hello",
+                    operatorId: currentOperator.operatorId!,
                     pageController: _operatorPageController,
                     position: BottomNavigationBarPosition.operatorHome,
                   ),
@@ -100,7 +100,7 @@ class _OperatorArea extends State<OperatorArea> {
                 position: widget.position,
                 backgroundColor: seccondaryColor,
                 radius: 20,
-                height: 60,
+                height: 55,
                 items: [
                   CashHelperBottomNavigationItem(
                     itemBackgroundColor: Colors.blueAccent,
