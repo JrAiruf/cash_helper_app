@@ -23,11 +23,11 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final _operatorPageController = PageController();
     return Container(
-      decoration: BoxDecoration(color: primaryColor),
+      decoration: BoxDecoration(color: backgroundColor),
       child: Center(
         child: Text("Oppening"),
       ),

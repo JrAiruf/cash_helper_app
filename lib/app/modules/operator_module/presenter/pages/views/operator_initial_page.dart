@@ -21,14 +21,14 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final _operatorPageController = PageController();
     return Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
-          color: primaryColor,
+          color: backgroundColor,
         ),
         child: Center(child: Text(widget.operatorId)));
   }

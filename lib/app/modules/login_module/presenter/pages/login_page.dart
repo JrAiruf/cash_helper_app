@@ -24,9 +24,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
+    final primaryColor = Theme.of(context).colorScheme.primary;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     return Scaffold(
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),

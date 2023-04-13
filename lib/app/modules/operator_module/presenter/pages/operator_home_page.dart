@@ -37,10 +37,10 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final primaryColor = Theme.of(context).colorScheme.primary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final buttonColor = Theme.of(context).colorScheme.onTertiaryContainer;
+    final buttonColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     return ValueListenableBuilder(
       valueListenable: _loginStore,
       builder: (_, operatorState, __) {
@@ -57,13 +57,12 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
         if (operatorState is LoginSuccessState) {
           final currentOperator = operatorState.operatorEntity;
           return Scaffold(
-            appBar: AppBar(
-                ),
+            appBar: AppBar(),
             drawer: CashHelperDrawer(
               height: height,
               width: width,
               drawerTitle: "Opções",
-              backgroundColor: seccondaryColor,
+              backgroundColor: primaryColor,
               drawerItems: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,11 +115,22 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                   ],
                 ),
                 SizedBox(height: height * 0.3),
-                Text("Sair", style: Theme.of(context).textTheme.titleMedium)
+                GestureDetector(
+                  onTap: () {
+                    _loginController.showSignOutDialog(context, primaryColor,
+                        () {
+                      Modular.to.pop();
+                      _loginStore.signOut();
+                    });
+                    Modular.to.navigate("/login-module");
+                  },
+                  child: Text("Sair",
+                      style: Theme.of(context).textTheme.titleMedium),
+                ),
               ],
             ),
             body: Container(
-              decoration: BoxDecoration(color: primaryColor),
+              decoration: BoxDecoration(color: backgroundContainer),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -128,7 +138,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                     operator: currentOperator,
                     height: height * 0.19,
                     width: width,
-                    color: seccondaryColor,
+                    color: primaryColor,
                   ),
                   SizedBox(height: height * 0.07),
                   ValueListenableBuilder(
@@ -169,7 +179,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.adf_scanner_outlined,
                                     itemName:
                                         'Caixa: ${currentOperator.operatorNumber}',
@@ -179,7 +189,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     fontSize: 16,
                                   ),
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.note_alt_outlined,
                                     itemName:
                                         'Pendências: ${pendingAnnotations.length}',
@@ -199,7 +209,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.account_tree_outlined,
                                     itemName: currentOperator.operatorEnabled!
                                         ? "Status: Ativo"
@@ -210,7 +220,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     fontSize: 16,
                                   ),
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.access_time,
                                     itemName:
                                         'Abertura: ${currentOperator.operatorOppening}',
@@ -245,7 +255,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.adf_scanner_outlined,
                                     itemName:
                                         'Caixa: ${currentOperator.operatorNumber}',
@@ -255,7 +265,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     fontSize: 16,
                                   ),
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.note_alt_outlined,
                                     itemName: 'Pendências: 0',
                                     height: height * 0.18,
@@ -274,7 +284,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.account_tree_outlined,
                                     itemName: currentOperator.operatorEnabled!
                                         ? "Status: Ativo"
@@ -285,7 +295,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                                     fontSize: 16,
                                   ),
                                   HomePageCardComponent(
-                                    itemColor: seccondaryColor,
+                                    itemColor: primaryColor,
                                     icon: Icons.access_time,
                                     itemName:
                                         'Abertura: ${currentOperator.operatorOppening}',
@@ -308,7 +318,6 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 45, horizontal: 10),
                     child: CashHelperElevatedButton(
-                      border: true,
                       width: width,
                       height: 60,
                       radius: 12,

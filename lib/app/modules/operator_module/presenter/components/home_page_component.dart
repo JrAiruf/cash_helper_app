@@ -55,7 +55,7 @@ class HomePageComponent extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 2,
+          top: 10,
           left: 10,
           child: CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.onPrimary,

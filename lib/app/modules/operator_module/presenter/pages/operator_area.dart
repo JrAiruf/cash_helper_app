@@ -12,7 +12,10 @@ import '../../../login_module/presenter/stores/login_store.dart';
 import '../components/cash_helper_bottom_navigation_item.dart';
 
 class OperatorArea extends StatefulWidget {
-  OperatorArea({super.key, required this.operatorId, this.position});
+  OperatorArea(
+      {super.key,
+      required this.operatorId,
+      this.position = BottomNavigationBarPosition.operatorHome});
 
   final String operatorId;
   BottomNavigationBarPosition? position;
@@ -26,7 +29,6 @@ final _operatorPageController = PageController();
 class _OperatorArea extends State<OperatorArea> {
   @override
   void initState() {
-    widget.position = BottomNavigationBarPosition.operatorHome;
     super.initState();
   }
 
@@ -34,8 +36,9 @@ class _OperatorArea extends State<OperatorArea> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final tertiaryColor = Theme.of(context).colorScheme.onTertiaryContainer;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final backgroundColor = Theme.of(context).colorScheme.onBackground;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     return ValueListenableBuilder(
@@ -92,18 +95,18 @@ class _OperatorArea extends State<OperatorArea> {
               ),
             ),
             bottomNavigationBar: Container(
-              decoration: BoxDecoration(color: primaryColor),
+              decoration: BoxDecoration(color: backgroundColor),
               child: CashHelperBottomNavigationBar(
                 itemColor: tertiaryColor,
                 itemContentColor: Colors.white,
                 pageController: _operatorPageController,
                 position: widget.position,
-                backgroundColor: seccondaryColor,
+                backgroundColor: primaryColor,
                 radius: 20,
                 height: 55,
                 items: [
                   CashHelperBottomNavigationItem(
-                    itemBackgroundColor: Colors.blueAccent,
+                    itemBackgroundColor: primaryColor,
                     onTap: () {
                       _operatorPageController.animateToPage(
                           BottomNavigationBarPosition.operatorHome.position,

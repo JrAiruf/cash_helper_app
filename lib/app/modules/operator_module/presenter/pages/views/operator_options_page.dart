@@ -22,16 +22,16 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
-    final tertiaryColor = Theme.of(context).colorScheme.onTertiaryContainer;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final _operatorPageController = PageController();
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: primaryColor,
+        color: backgroundColor,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -40,7 +40,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
             height: height * 0.28,
             width: width,
             decoration: BoxDecoration(
-              color: seccondaryColor,
+              color: primaryColor,
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
@@ -84,7 +84,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                     itemName: "Listar Anotações",
                     radius: 15,
                     borderColor: Colors.white,
-                    itemColor: seccondaryColor,
+                    itemColor: primaryColor,
                     icon: Icons.view_list_outlined,
                     height: height * 0.18,
                     width: width * 0.38,
@@ -94,7 +94,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                     itemName: "Pesquisar",
                     radius: 15,
                     borderColor: Colors.white,
-                    itemColor: seccondaryColor,
+                    itemColor: primaryColor,
                     icon: Icons.search,
                     height: height * 0.18,
                     width: width * 0.38,
@@ -111,7 +111,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                     itemName: "Criar Anotação",
                     radius: 15,
                     borderColor: Colors.white,
-                    itemColor: seccondaryColor,
+                    itemColor: primaryColor,
                     icon: Icons.note_add_outlined,
                     height: height * 0.18,
                     width: width * 0.38,
@@ -121,7 +121,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                     itemName: "Fechar Caixa",
                     radius: 15,
                     borderColor: Colors.white,
-                    itemColor: seccondaryColor,
+                    itemColor: primaryColor,
                     icon: Icons.power_settings_new_sharp,
                     height: height * 0.18,
                     width: width * 0.38,

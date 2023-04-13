@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'generated/color_schemes.g.dart';
 
-const appBarColor = Color(0xff7144AB);
+const appBarColor = Color(0xff282528);
 final cashHelperDarkTheme = ThemeData(
     iconTheme: const IconThemeData(color: Colors.white, size: 30),
     appBarTheme: const AppBarTheme(
