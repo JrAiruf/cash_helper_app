@@ -11,6 +11,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Container(
         child: Center(
           child: Text("Create Annotations Page"),

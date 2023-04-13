@@ -7,6 +7,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/home_page_component.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/components/widgets/cash_helper_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../components/home_page_card_component.dart';
@@ -57,21 +58,65 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
           final currentOperator = operatorState.operatorEntity;
           return Scaffold(
             appBar: AppBar(
-              actions: [
-                Center(
-                  child: IconButton(
-                    color: Colors.white,
-                    onPressed: () {
-                      _loginController.showSignOutDialog(context, primaryColor,
-                          () {
-                        _loginStore.signOut();
-                        Modular.to.pop();
-                        Modular.to.navigate(Modular.initialRoute);
-                      });
-                    },
-                    icon: const Icon(Icons.logout_outlined),
-                  ),
                 ),
+            drawer: CashHelperDrawer(
+              height: height,
+              width: width,
+              drawerTitle: "Opções",
+              backgroundColor: seccondaryColor,
+              drawerItems: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.home,
+                      size: 40,
+                    ),
+                    SizedBox(
+                      width: width * 0.05,
+                    ),
+                    Text(
+                      "Início",
+                      style: Theme.of(context).textTheme.displayMedium,
+                    )
+                  ],
+                ),
+                SizedBox(height: height * 0.06),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.person,
+                      size: 40,
+                    ),
+                    SizedBox(
+                      width: width * 0.05,
+                    ),
+                    Text(
+                      "Meu Perfil",
+                      style: Theme.of(context).textTheme.displayMedium,
+                    )
+                  ],
+                ),
+                SizedBox(height: height * 0.06),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.settings,
+                      size: 40,
+                    ),
+                    SizedBox(
+                      width: width * 0.05,
+                    ),
+                    Text(
+                      "Configurações",
+                      style: Theme.of(context).textTheme.displayMedium,
+                    )
+                  ],
+                ),
+                SizedBox(height: height * 0.3),
+                Text("Sair", style: Theme.of(context).textTheme.titleMedium)
               ],
             ),
             body: Container(

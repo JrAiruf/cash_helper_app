@@ -8,6 +8,7 @@ class AnnotationEntity {
   String? annotationReminder;
   String? annotationClientAddress;
   bool? annotationConcluied;
+  
   AnnotationEntity({
     this.annotationId,
     this.annotationSaleTime,
