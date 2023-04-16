@@ -26,8 +26,9 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
+    final primaryColor = Theme.of(context).colorScheme.primary;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final minutesDateTime = DateTime.now().minute;
     final hoursDateTime = DateTime.now().hour;
     final cashierOppeningTime =
@@ -144,7 +145,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                               .bodyMedium,
                                         ),
                                         Switch(
-                                          activeColor: primaryColor,
+                                          activeColor: tertiaryColor,
                                           value: (startWithEnabledOperator ??
                                               false),
                                           onChanged: (value) {

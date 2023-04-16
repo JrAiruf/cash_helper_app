@@ -15,7 +15,7 @@ class CashHelperDrawer extends StatelessWidget {
   final List<Widget> drawerItems;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       child: ClipRRect(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(20),

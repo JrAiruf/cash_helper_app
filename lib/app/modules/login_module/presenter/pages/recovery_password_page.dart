@@ -25,8 +25,8 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -45,7 +45,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: LinearProgressIndicator(
-                      color: seccondaryColor,
+                      color: tertiaryColor,
                     ),
                   )
                 ],
@@ -71,6 +71,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CashHelperTextFieldComponent(
+                            obscureText: true,
                             radius: 15,
                             validator: (value) =>
                                 _loginController.passwordValidate(value),
@@ -81,6 +82,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                           ),
                           SizedBox(height: height * 0.03),
                           CashHelperTextFieldComponent(
+                            obscureText: true,
                             radius: 15,
                             validator: (value) => _loginController
                                 .confirmationPasswordValidate(value),
@@ -139,7 +141,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                     buttonName: 'Próximo',
                     fontSize: 20,
                     nameColor: Colors.white,
-                    backgroundColor: seccondaryColor,
+                    backgroundColor: tertiaryColor,
                   ),
                 ],
               ),

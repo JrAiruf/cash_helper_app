@@ -37,7 +37,7 @@ class HomePageComponent extends StatelessWidget {
                 SizedBox(height: height! * 0.06),
                 Text(
                   "${operator.operatorName}",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 SizedBox(height: height! * 0.02),
                 Row(

@@ -13,6 +13,7 @@ class LoginController {
   bool loadingData = false;
   bool loadingLoginData = false;
   bool loadingAuthData = false;
+  DrawerPagePosition? drawerPosition;
   String? emailValidate(String? value) {
     return value!.isNotEmpty && value != '' && value.contains('@')
         ? null
@@ -318,3 +319,5 @@ class LoginController {
     );
   }
 }
+
+enum DrawerPagePosition { home, profile, settings }

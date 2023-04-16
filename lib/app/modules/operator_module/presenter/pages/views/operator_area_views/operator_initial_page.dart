@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../components/cash_helper_bottom_navigation_bar.dart';
+import '../../../components/cash_helper_bottom_navigation_bar.dart';
 
 class OperatorInitialPage extends StatefulWidget {
   const OperatorInitialPage(

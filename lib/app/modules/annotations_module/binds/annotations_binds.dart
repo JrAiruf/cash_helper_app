@@ -64,7 +64,7 @@ class AnnotationModuleCore extends Module {
   final routesList = <ModularRoute>[
     ChildRoute(
       "/",
-      child: (_, args) => CreateAnnotationsPage(),
+      child: (_, args) =>const CreateAnnotationsPage(),
     ),
     ChildRoute(
       "/name",

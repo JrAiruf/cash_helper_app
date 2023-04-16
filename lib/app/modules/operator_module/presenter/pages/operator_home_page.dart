@@ -7,24 +7,25 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/home_page_component.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/components/tiles/drawer_tile.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/widgets/cash_helper_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../components/home_page_card_component.dart';
 
-class OperartorAreaPage extends StatefulWidget {
-  OperartorAreaPage({super.key, required this.operatorEntity});
+class OperartorHomePage extends StatefulWidget {
+  OperartorHomePage({super.key, required this.operatorEntity});
 
   OperatorEntity operatorEntity;
   @override
-  State<OperartorAreaPage> createState() => _OperartorAreaPageState();
+  State<OperartorHomePage> createState() => _OperartorHomePageState();
 }
 
-class _OperartorAreaPageState extends State<OperartorAreaPage> {
+class _OperartorHomePageState extends State<OperartorHomePage> {
   final _loginStore = Modular.get<LoginStore>();
   final _annotationListStore = Modular.get<AnnotationsListStore>();
   final _loginController = Modular.get<LoginController>();
-
+  DrawerPagePosition? drawerPosition;
   @override
   void initState() {
     super.initState();
@@ -39,7 +40,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final buttonColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     return ValueListenableBuilder(
       valueListenable: _loginStore,
@@ -56,6 +57,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
         }
         if (operatorState is LoginSuccessState) {
           final currentOperator = operatorState.operatorEntity;
+          _loginController.drawerPosition = DrawerPagePosition.home;
           return Scaffold(
             appBar: AppBar(),
             drawer: CashHelperDrawer(
@@ -64,65 +66,60 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
               drawerTitle: "Opções",
               backgroundColor: primaryColor,
               drawerItems: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.home,
-                      size: 40,
-                    ),
-                    SizedBox(
-                      width: width * 0.05,
-                    ),
-                    Text(
-                      "Início",
-                      style: Theme.of(context).textTheme.displayMedium,
-                    )
-                  ],
+                DrawerTile(
+                  width: width,
+                  title: "Início",
+                  icon: Icons.home,
+                  itemColor:
+                      _loginController.drawerPosition == DrawerPagePosition.home
+                          ? tertiaryColor
+                          : Colors.white,
+                  onTap: () {
+                    Modular.to.pop();
+                  },
                 ),
                 SizedBox(height: height * 0.06),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.person,
-                      size: 40,
-                    ),
-                    SizedBox(
-                      width: width * 0.05,
-                    ),
-                    Text(
-                      "Meu Perfil",
-                      style: Theme.of(context).textTheme.displayMedium,
-                    )
-                  ],
+                DrawerTile(
+                  width: width,
+                  title: "Meu Perfil",
+                  icon: Icons.person,
+                  itemColor: _loginController.drawerPosition ==
+                          DrawerPagePosition.profile
+                      ? tertiaryColor
+                      : Colors.white,
+                  onTap: () {
+                    Modular.to.pop();
+                    Modular.to.pushNamed("./operator-profile",
+                        arguments: currentOperator);
+                  },
                 ),
                 SizedBox(height: height * 0.06),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.settings,
-                      size: 40,
-                    ),
-                    SizedBox(
-                      width: width * 0.05,
-                    ),
-                    Text(
-                      "Configurações",
-                      style: Theme.of(context).textTheme.displayMedium,
-                    )
-                  ],
+                DrawerTile(
+                  width: width,
+                  title: "Configurações",
+                  icon: Icons.settings,
+                  itemColor: _loginController.drawerPosition ==
+                          DrawerPagePosition.settings
+                      ? tertiaryColor
+                      : Colors.white,
+                  onTap: () {
+                    Modular.to.pop();
+                    Modular.to.pushNamed("./operator-settings",
+                        arguments: currentOperator);
+                  },
                 ),
                 SizedBox(height: height * 0.3),
                 GestureDetector(
                   onTap: () {
-                    _loginController.showSignOutDialog(context, primaryColor,
-                        () {
-                      Modular.to.pop();
-                      _loginStore.signOut();
-                    });
-                    Modular.to.navigate("/login-module");
+                    _loginController.showSignOutDialog(
+                      context,
+                      primaryColor,
+                      () {
+                        _loginStore.signOut();
+                        Modular.to.pop();
+                        Modular.to.navigate("/");
+                      },
+                    );
                   },
                   child: Text("Sair",
                       style: Theme.of(context).textTheme.titleMedium),
@@ -325,7 +322,7 @@ class _OperartorAreaPageState extends State<OperartorAreaPage> {
                         "./operator-area/${currentOperator.operatorId}",
                       ),
                       buttonName: "Área do operador",
-                      backgroundColor: buttonColor,
+                      backgroundColor: tertiaryColor,
                       nameColor: Colors.white,
                       fontSize: 16,
                     ),

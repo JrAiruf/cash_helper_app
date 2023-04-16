@@ -22,8 +22,8 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -44,7 +44,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         horizontal: 10, vertical: 35),
                     child: Center(
                       child: LinearProgressIndicator(
-                        color: seccondaryColor,
+                        color: tertiaryColor,
                       ),
                     ),
                   ),
@@ -129,7 +129,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     buttonName: 'Próximo',
                     fontSize: 20,
                     nameColor: Colors.white,
-                    backgroundColor: seccondaryColor,
+                    backgroundColor: tertiaryColor,
                   ),
                 ],
               ),
