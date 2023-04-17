@@ -24,7 +24,8 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final store = context.watch<AppStore>((store) => store.appTheme);
+    final store =
+        context.watch<AppStore>((store) => store.appTheme);
     return Container(
       decoration: BoxDecoration(color: primaryColor),
       child: Stack(

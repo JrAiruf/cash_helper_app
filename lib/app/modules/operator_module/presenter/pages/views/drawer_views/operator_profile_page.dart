@@ -9,7 +9,10 @@ import '../../../components/tiles/operator_profile_component.dart';
 import '../../../components/widgets/cash_helper_drawer.dart';
 
 class OperatorProfilePage extends StatefulWidget {
-  OperatorProfilePage({super.key, required this.operatorEntity,});
+  OperatorProfilePage({
+    super.key,
+    required this.operatorEntity,
+  });
 
   OperatorEntity operatorEntity;
   @override
@@ -147,7 +150,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                     children: [
                       OperatorProfileComponent(
                         height: height,
-                        title: "E-mail",
+                        title: "E-mail:",
                         backgroundColor: backgroundContainer,
                         content: widget.operatorEntity.operatorEmail,
                       ),
@@ -175,7 +178,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                             ? "Operador"
                             : "ADM",
                       ),
-                      SizedBox(height: height * 0.018),
+                      SizedBox(height: height * 0.03),
                       OperatorProfileComponent(
                         height: height,
                         title: "Abertura:",
