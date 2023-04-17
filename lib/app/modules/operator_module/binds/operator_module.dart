@@ -1,8 +1,9 @@
+import 'package:cash_helper_app/app/modules/operator_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/operator_area.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../presenter/pages/operator_home_page.dart';
-import '../presenter/pages/views/profile_and_settings_views/operator_profile_page.dart';
-import '../presenter/pages/views/profile_and_settings_views/operator_settings_page.dart';
+import '../presenter/pages/views/drawer_views/operator_profile_page.dart';
+import '../presenter/pages/views/drawer_views/operator_settings_page.dart';
 
 abstract class OperatorModule {
   static routes() => ModuleRoute(
@@ -24,19 +25,19 @@ class OperatorModuleCore extends Module {
 
   final routeList = <ModularRoute>[
     ChildRoute(
-     "/",
+      "/",
       child: (_, args) => OperartorHomePage(
         operatorEntity: args.data,
       ),
     ),
     ChildRoute(
-     "/operator-profile",
+      "/operator-profile",
       child: (_, args) => OperatorProfilePage(
         operatorEntity: args.data,
       ),
     ),
     ChildRoute(
-     "/operator-settings",
+      "/operator-settings",
       child: (_, args) => OperatorSettingsPage(
         operatorEntity: args.data,
       ),
@@ -49,5 +50,7 @@ class OperatorModuleCore extends Module {
     ),
   ];
 
-  final bindList = <Bind>[];
+  final bindList = <Bind>[
+    Bind.singleton<OperatorController>((i) => OperatorController())
+  ];
 }

@@ -65,7 +65,9 @@ class CashHelperBottomNavigationBar extends StatelessWidget {
 enum BottomNavigationBarPosition {
   operatorHome(position: 0),
   operatorOptions(position: 1),
-  operatorOppening(position: 2);
+  operatorOppening(position: 2),
+  appAppearance(position: 0),
+  operatorAccount(position: 1);
 
   final int position;
   const BottomNavigationBarPosition({required this.position});

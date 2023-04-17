@@ -9,7 +9,7 @@ import '../../../components/tiles/operator_profile_component.dart';
 import '../../../components/widgets/cash_helper_drawer.dart';
 
 class OperatorProfilePage extends StatefulWidget {
-  OperatorProfilePage({super.key, required this.operatorEntity});
+  OperatorProfilePage({super.key, required this.operatorEntity,});
 
   OperatorEntity operatorEntity;
   @override
