@@ -6,15 +6,20 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:uuid/uuid.dart';
 
 class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   FirebaseDatabaseMock(
-      {required FirebaseFirestore database, required FirebaseAuth auth})
+      {required FirebaseFirestore database,
+      required FirebaseAuth auth,
+      required Uuid uuid})
       : _database = database,
-        _auth = auth;
+        _auth = auth,
+        _uuid = uuid;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
+  final Uuid _uuid;
   User? _authUser;
   Map<String, dynamic>? operatorData;
   bool _validCredentials(String? email, String? password) {
@@ -39,10 +44,9 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
     return email != null && email != ' ' && cashierNumber != null;
   }
 
-  bool _validOperatorData(Map<String, dynamic>? databaseOperator, String? email,
-      int? cashierNumber) {
-    return databaseOperator?["operatorEmail"] == email &&
-        databaseOperator?["operatorPassword"] == cashierNumber;
+  String _createOperatorCode(String source, int hashSize) {
+    final index = source.length ~/ source.length;
+    return source.substring(index, index + hashSize);
   }
 
   @override
@@ -53,6 +57,9 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           email: newOperator?['operatorEmail'] ?? "",
           password: newOperator?['operatorPassword'] ?? "");
       newOperator?["operatorId"] = userCredentials.user?.uid;
+      final operatorCodeResource = _uuid.v1();
+      final operatorCode = _createOperatorCode(operatorCodeResource, 6);
+      newOperator?["operatorCode"] = operatorCode;
       _authUser = userCredentials.user;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
           ? await _database
@@ -177,9 +184,10 @@ void main() {
   final Map<String, dynamic> newOperator = {
     'operatorId': 'q34u6hu1qeuyoio',
     'operatorNumber': 1,
-    'operatorName': ' Josy Kelly',
+    'operatorName': 'Josy Kelly',
     'operatorEmail': 'josy@email.com',
     'operatorPassword': '12345678',
+    'operatorCode': '123267',
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
@@ -188,9 +196,10 @@ void main() {
   final Map<String, dynamic> testOperator = {
     'operatorId': 'q34u6hu1qeuyoio',
     'operatorNumber': 1,
-    'operatorName': ' Josy Kelly',
+    'operatorName': 'Josy Kelly',
     'operatorEmail': 'junior@email.com',
     'operatorPassword': '12345678',
+    'operatorCode': '123267',
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
@@ -199,9 +208,10 @@ void main() {
   final Map<String, dynamic> deletionOperator = {
     'operatorId': 'q34u6hu1qeuyoio',
     'operatorNumber': 1,
-    'operatorName': ' Josy Kelly',
+    'operatorName': 'Josy Kelly',
     'operatorEmail': 'josy@email.com',
     'operatorPassword': '12345678',
+    'operatorCode': '123267',
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
@@ -210,9 +220,10 @@ void main() {
   final Map<String, dynamic> modifiedUser = {
     'operatorId': 'q34u6hu1qeuyoio',
     'operatorNumber': 14,
-    'operatorName': ' Josy Kelly',
-    'operatorEmail': 'josy@email.com',
+    'operatorName': 'Josy Kelly',
+    'operatorEmail': '',
     'operatorPassword': '12345678',
+    'operatorCode': '123267',
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': true,
@@ -220,7 +231,9 @@ void main() {
   };
   final authMock = MockFirebaseAuth(mockUser: user);
   final firebaseMock = FakeFirebaseFirestore();
-  final database = FirebaseDatabaseMock(database: firebaseMock, auth: authMock);
+  final uuid = Uuid();
+  final database =
+      FirebaseDatabaseMock(database: firebaseMock, auth: authMock, uuid: uuid);
   group(
     "Register function should",
     () {
@@ -237,9 +250,8 @@ void main() {
             database.operatorData?["operatorEmail"], equals("josy@email.com"));
       });
       test("Fail to create the operator document in firebase", () async {
-        newOperator["operatorEmail"] = "";
         final createdOperator =
-            await database.register(newOperator, "testCollection");
+            await database.register(modifiedUser, "testCollection");
         final result = await firebaseMock.collection("testCollection").get();
         expect(result.docs.isEmpty, equals(true));
         expect(createdOperator == null, equals(true));
@@ -363,9 +375,9 @@ void main() {
         "Reset operator user password",
         () async {
           final createdOperator = await database.register(
-              newOperator, newOperator["operatorOcupation"]);
+              testOperator, testOperator["operatorOcupation"]);
           final operatorsList = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
+              .collection(testOperator["operatorOcupation"])
               .get();
           expect(operatorsList.docs.isEmpty, equals(false));
           await database.resetOperatorPassword(

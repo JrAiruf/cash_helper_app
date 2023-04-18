@@ -8,6 +8,7 @@ class OperatorModel {
   String? operatorName;
   String? operatorEmail;
   String? operatorPassword;
+  String? operatorCode;
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
@@ -18,6 +19,7 @@ class OperatorModel {
     this.operatorName,
     this.operatorEmail,
     this.operatorPassword,
+    this.operatorCode,
     this.operatorOppening,
     this.operatorClosing,
     this.operatorEnabled,
@@ -31,6 +33,7 @@ class OperatorModel {
       'operatorName': operatorName,
       'operatorEmail': operatorEmail,
       'operatorPassword': operatorPassword,
+      'operatorPassword': operatorCode,
       'operatorOppening': operatorOppening,
       'operatorClosing': operatorClosing,
       'operatorEnabled': operatorEnabled,
@@ -45,6 +48,7 @@ class OperatorModel {
       operatorName: map['operatorName'],
       operatorEmail: map['operatorEmail'],
       operatorPassword: map['operatorPassword'],
+      operatorCode: map['operatorCode'],
       operatorOppening: map['operatorOppening'],
       operatorClosing: map['operatorClosing'],
       operatorEnabled: map['operatorEnabled'],
@@ -59,6 +63,7 @@ class OperatorModel {
       operatorName: operator.operatorName,
       operatorEmail: operator.operatorEmail,
       operatorPassword: operator.operatorPassword,
+      operatorCode: operator.operatorCode,
       operatorOppening: operator.operatorOppening,
       operatorClosing: operator.operatorClosing,
       operatorEnabled: operator.operatorEnabled,
@@ -73,6 +78,7 @@ class OperatorModel {
       operatorName: operator.operatorName,
       operatorEmail: operator.operatorEmail,
       operatorPassword: operator.operatorPassword,
+      operatorCode: operator.operatorCode,
       operatorOppening: operator.operatorOppening,
       operatorClosing: operator.operatorClosing,
       operatorEnabled: operator.operatorEnabled,

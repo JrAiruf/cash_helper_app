@@ -1,18 +1,23 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 import 'errors/authentication_error.dart';
 import 'errors/operator_not_found_error.dart';
 
 class FirebaseDatabase implements ApplicationLoginDatabase {
   FirebaseDatabase(
-      {required FirebaseFirestore database, required FirebaseAuth auth})
+      {required FirebaseFirestore database,
+      required FirebaseAuth auth,
+      required Uuid uuid})
       : _database = database,
-        _auth = auth;
+        _auth = auth,
+        _uuid = uuid;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
-
+  final Uuid _uuid;
+  User? _authUser;
   Map<String, dynamic>? operatorData;
   bool _validCredentials(String? email, String? password) {
     return email != null &&
@@ -36,10 +41,9 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
     return email != null && email != ' ' && cashierNumber != null;
   }
 
-  bool _validOperatorData(Map<String, dynamic>? databaseOperator, String? email,
-      int? cashierNumber) {
-    return databaseOperator?["operatorEmail"] == email &&
-        databaseOperator?["operatorPassword"] == cashierNumber;
+  String _createOperatorCode(String source, int hashSize) {
+    final index = source.length ~/ source.length;
+    return source.substring(index, index + hashSize);
   }
 
   @override
@@ -50,6 +54,10 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
           email: newOperator?['operatorEmail'] ?? "",
           password: newOperator?['operatorPassword'] ?? "");
       newOperator?["operatorId"] = userCredentials.user?.uid;
+      final operatorCodeResource = _uuid.v1();
+      final operatorCode = _createOperatorCode(operatorCodeResource, 6);
+      newOperator?["operatorCode"] = operatorCode;
+      _authUser = userCredentials.user;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
           ? await _database
               .collection(collection ?? "")

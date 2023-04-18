@@ -62,6 +62,7 @@ class LoginModuleCore extends Module {
       (i) => FirebaseDatabase(
         database: i(),
         auth: i(),
+        uuid:i(),
       ),
     ),
     Bind<LoginRepository>(

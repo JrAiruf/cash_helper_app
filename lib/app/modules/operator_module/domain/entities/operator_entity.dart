@@ -4,6 +4,7 @@ class OperatorEntity {
   String? operatorName;
   String? operatorEmail;
   String? operatorPassword;
+  String? operatorCode;
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
@@ -15,6 +16,7 @@ class OperatorEntity {
     this.operatorName,
     this.operatorEmail,
     this.operatorPassword,
+    this.operatorCode,
     this.operatorOppening,
     this.operatorClosing,
     this.operatorEnabled,
