@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/modules/operator_module/external/data/operat
 import 'package:cash_helper_app/app/modules/operator_module/external/operator_database_impl.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/operator_area.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/settings_pages/change_operator_email_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../domain/usecases/operator_usecases_impl.dart';
 import '../infra/data/operator_repository.dart';
@@ -10,6 +11,7 @@ import '../infra/repository/operator_repository_impl.dart';
 import '../presenter/pages/operator_home_page.dart';
 import '../presenter/pages/views/drawer_views/operator_profile_page.dart';
 import '../presenter/pages/views/drawer_views/operator_settings_page.dart';
+import '../presenter/pages/views/drawer_views/settings_pages/change_operator_password_page.dart';
 import '../presenter/stores/operator_store.dart';
 
 abstract class OperatorModule {
@@ -50,6 +52,18 @@ class OperatorModuleCore extends Module {
       ),
     ),
     ChildRoute(
+      "/change-operator-email",
+      child: (_, args) => ChangeOperatorEmailPage(
+        operatorEntity: args.data,
+      ),
+    ),
+    ChildRoute(
+      "/change-operator-password",
+      child: (_, args) => ChangeOperatorPasswordPage(
+        operatorEntity: args.data,
+      ),
+    ),
+    ChildRoute(
       "/operator-area/:operatorId",
       child: (_, args) => OperatorArea(
         operatorId: args.params["operatorId"],
@@ -58,7 +72,8 @@ class OperatorModuleCore extends Module {
   ];
 
   final bindList = <Bind>[
-    Bind<OperatorDatabase>((i) => OperatorDatabaseImpl(auth: i(),datasource: i())),
+    Bind<OperatorDatabase>(
+        (i) => OperatorDatabaseImpl(auth: i(), datasource: i())),
     Bind<OperatorRepository>((i) => OperatorRepositoryImpl(database: i())),
     Bind<OperatorUsecases>((i) => OperatorUsecasesImpl(repository: i())),
     Bind<OperatorStore>((i) => OperatorStore(usecases: i())),

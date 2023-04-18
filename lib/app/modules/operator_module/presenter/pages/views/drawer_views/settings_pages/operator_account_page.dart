@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../components/cash_helper_bottom_navigation_bar.dart';
 
@@ -82,7 +83,10 @@ class OperatorAccountPage extends StatelessWidget {
                             side: BorderSide(color: tertiaryColor),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Modular.to.pushNamed("./change-operator-email",
+                              arguments: operatorEntity);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 1, horizontal: 25),
@@ -114,7 +118,10 @@ class OperatorAccountPage extends StatelessWidget {
                             side: BorderSide(color: tertiaryColor),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Modular.to.pushNamed("./change-operator-password",
+                              arguments: operatorEntity);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 1, horizontal: 25),

@@ -146,7 +146,7 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
             ),
             CashHelperBottomNavigationItem(
               icon: Icons.person_search_outlined,
-              itemName: "Privacidade",
+              itemName: "Minha Conta",
               position: BottomNavigationBarPosition.operatorAccount,
               onTap: () {
                 _settingsPageController.animateToPage(
