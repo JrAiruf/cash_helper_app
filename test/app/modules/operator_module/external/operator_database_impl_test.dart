@@ -19,8 +19,8 @@ class OperatorDatabaseMock implements OperatorDatabase {
 
   @override
   Future<void> changeOperatorEmail(
-      String? newEmail, String? operatorCode, String? operatorPassword) async {
-    final operatorsCollection = _datasource.collection("operator");
+      String? newEmail, String? operatorCode, String? operatorPassword, String? collection) async {
+    final operatorsCollection = _datasource.collection(collection!);
     if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
@@ -106,7 +106,7 @@ void main() {
           await database.changeOperatorEmail(
               "operator@email.com",
               createdOperator?["operatorCode"],
-              createdOperator?["operatorPassword"]);
+              createdOperator?["operatorPassword"],createdOperator?["operatorOcupation"]);
           final databaseDocsList = await firebaseMock
               .collection(createdOperator?["operatorOcupation"])
               .get();
@@ -128,7 +128,7 @@ void main() {
           final createdOperator = await loginDatabase.register(
               newOperator, newOperator["operatorOcupation"]);
           await database.changeOperatorEmail(
-              "operator@email.com", null, createdOperator?["operatorPassword"]);
+              "operator@email.com", null, createdOperator?["operatorPassword"],createdOperator?["operatorOcupation"]);
           final databaseDocsList = await firebaseMock
               .collection(createdOperator?["operatorOcupation"])
               .get();

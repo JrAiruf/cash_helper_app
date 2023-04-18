@@ -13,8 +13,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
 
   @override
   Future changeOperatorEmail(
-      String? newEmail, String? operatorCode, String? operatorPassword) async {
-    final operatorsCollection = _datasource.collection("operator");
+      String? newEmail, String? operatorCode, String? operatorPassword, String? collection) async {
+    final operatorsCollection = _datasource.collection(collection!);
     if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
