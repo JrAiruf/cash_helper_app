@@ -53,8 +53,8 @@ class LoginUsecasesMock implements LoginUsecases {
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? newPassword) async {
- return await _repository.resetOperatorPassword(email, cashierNumber, newPassword);
+  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? newPassword) async {
+ return await _repository.resetOperatorPassword(email, operatorCode, newPassword);
   }
 
   @override
@@ -220,7 +220,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
           final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
 
           expect(currentOperator?.operatorPassword, equals("newPassword"));
@@ -236,7 +236,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
           final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
 
           expect(currentOperator?.operatorPassword, equals("12345678"));

@@ -109,7 +109,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             confirmationPassword) {
                           await _loginStore.resetOperatorPassword(
                               widget.operatorEntity.operatorEmail!,
-                              widget.operatorEntity.operatorNumber!,
+                              widget.operatorEntity.operatorCode!,
                               _operatorEntity.operatorPassword!);
                           final recoveredOperator = await _loginStore
                               .login(widget.operatorEntity.operatorEmail,

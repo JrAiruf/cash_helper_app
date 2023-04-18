@@ -58,9 +58,9 @@ if (operatorId != null && collection != null) {
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? newPassword) async {
-    if(email!.isNotEmpty && !cashierNumber!.isNaN && newPassword!.isNotEmpty){
-     return await _datasource.resetOperatorPassword(email, cashierNumber, newPassword);
+  Future<void>? resetOperatorPassword(String? email,String? operatorCode, String? newPassword) async {
+    if(email!.isNotEmpty && !operatorCode!.isNotEmpty && newPassword!.isNotEmpty){
+     return await _datasource.resetOperatorPassword(email, operatorCode, newPassword);
     } else {
       return;
     }
@@ -82,6 +82,7 @@ void main() {
     operatorName: ' Josy Kelly',
     operatorEmail: 'josy@email.com',
     operatorPassword: '12345678',
+    operatorCode: '123456',
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
@@ -93,6 +94,7 @@ void main() {
     operatorName: ' Josy Kelly',
     operatorEmail: 'josy@email.com',
     operatorPassword: 'newPassword',
+    operatorCode: 'newPas',
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: true,
@@ -228,7 +230,7 @@ void main() {
           expect(createdOperator, isA<OperatorModel>());
           expect(createdOperator?.operatorId != null, equals(true));
            when(datasource.getOperatorById(any, any)).thenAnswer((_) async => modifiedDatabaseOperator);
-           await repository.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+           await repository.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
           final currenteOpertor = await repository.getOperatorById(createdOperator?.operatorId, "collection");
           expect(currenteOpertor, isA<OperatorModel>());
           expect(currenteOpertor?.operatorPassword, equals("newPassword"));
@@ -243,7 +245,7 @@ void main() {
           expect(createdOperator, isA<OperatorModel>());
           expect(createdOperator?.operatorId != null, equals(true));
            when(datasource.getOperatorById(any, any)).thenAnswer((_) async => databaseOperator);
-           await repository.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+           await repository.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
           final currenteOpertor = await repository.getOperatorById(createdOperator?.operatorId, "collection");
           expect(currenteOpertor, isA<OperatorModel>());
           expect(currenteOpertor?.operatorPassword, equals("12345678"));
@@ -280,6 +282,7 @@ final databaseOperator = <String,dynamic>{
     'operatorName': ' Josy Kelly',
     'operatorEmail': 'josy@email.com',
     'operatorPassword': '12345678',
+    'operatorCode': '123456',
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
@@ -291,6 +294,7 @@ final modifiedDatabaseOperator = <String,dynamic>{
     'operatorName': ' Josy Kelly',
     'operatorEmail': 'josy@email.com',
     'operatorPassword': 'newPassword',
+    'operatorCode': 'newPas',
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,

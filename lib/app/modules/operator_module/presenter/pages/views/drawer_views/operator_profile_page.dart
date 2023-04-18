@@ -185,6 +185,13 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                         backgroundColor: backgroundContainer,
                         content: widget.operatorEntity.operatorOppening,
                       ),
+                      SizedBox(height: height * 0.03),
+                      OperatorProfileComponent(
+                        height: height,
+                        title: "Código Ops.:",
+                        backgroundColor: backgroundContainer,
+                        content: widget.operatorEntity.operatorCode,
+                      ),
                     ],
                   ),
                 ),
