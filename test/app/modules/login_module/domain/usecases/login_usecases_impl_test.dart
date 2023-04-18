@@ -48,8 +48,8 @@ class LoginUsecasesMock implements LoginUsecases {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) async {
-  return await _repository.checkOperatorDataForResetPassword(email, cashierNumber, collection) ?? false;
+      String? email,String? operatorCode, String? collection) async {
+  return await _repository.checkOperatorDataForResetPassword(email, operatorCode, collection) ?? false;
   }
 
   @override
@@ -188,7 +188,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber,"collection");
+          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode,"collection");
           expect(checkedInformation, equals(true));
           
         },
@@ -201,7 +201,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber,"");
+          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode,"");
           expect(checkedInformation, equals(false));
         },
       );

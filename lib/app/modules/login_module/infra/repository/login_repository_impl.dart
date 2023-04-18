@@ -42,9 +42,9 @@ if (operatorId != null && collection != null) {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) async {
+      String? email, String? operatorCode, String? collection) async {
         if(email!.isNotEmpty && collection!.isNotEmpty){
-          return await _datasource.checkOperatorDataForResetPassword(email, cashierNumber, collection)!;
+          return await _datasource.checkOperatorDataForResetPassword(email, operatorCode, collection)!;
         } else {
         return false;
         }

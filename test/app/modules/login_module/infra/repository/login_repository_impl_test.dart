@@ -48,9 +48,9 @@ if (operatorId != null && collection != null) {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) async {
+      String? email, String? operatorCode, String? collection) async {
         if(email!.isNotEmpty && collection!.isNotEmpty){
-          final checkedInformation = await _datasource.checkOperatorDataForResetPassword(email, cashierNumber, collection) ?? false;
+          final checkedInformation = await _datasource.checkOperatorDataForResetPassword(email, operatorCode, collection) ?? false;
     return checkedInformation ? true : false;
         } else {
         return false;
@@ -196,7 +196,7 @@ void main() {
           final createdOperator = await repository.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorModel>());
           expect(createdOperator?.operatorId != null, equals(true));
-          final checkedOperator = await repository.checkOperatorDataForResetPassword(createdOperator?.operatorEmail,createdOperator?.operatorNumber,"collection");
+          final checkedOperator = await repository.checkOperatorDataForResetPassword(createdOperator?.operatorEmail,createdOperator?.operatorCode,"collection");
           
           expect(checkedOperator, equals(true));
         },
@@ -211,7 +211,7 @@ void main() {
           final createdOperator = await repository.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorModel>());
           expect(createdOperator?.operatorId != null, equals(true));
-          final checkedOperator = await repository.checkOperatorDataForResetPassword("",createdOperator?.operatorNumber,"");
+          final checkedOperator = await repository.checkOperatorDataForResetPassword("",createdOperator?.operatorCode,"");
           
           expect(checkedOperator, equals(false));
         },

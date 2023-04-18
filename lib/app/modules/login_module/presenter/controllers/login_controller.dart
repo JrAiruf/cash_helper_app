@@ -8,6 +8,7 @@ class LoginController {
   final newOperatorEmailField = TextEditingController();
   final newOperatorPasswordField = TextEditingController();
   final cashierNameField = TextEditingController();
+  final cashierCodeField = TextEditingController();
   final cashierNumberField = TextEditingController();
 
   bool loadingData = false;
@@ -36,6 +37,11 @@ class LoginController {
     return value!.isNotEmpty && value != ''
         ? null
         : 'Nome Inválido! Insira o nome do caixa.';
+  }
+  String? cashierCodeValidate(String? value) {
+    return value!.isNotEmpty && value != '' && value.length == 6
+        ? null
+        : 'Código Inválido! Insira seu código Ops.';
   }
 
   String? cashierNumberValidate(String? value) {

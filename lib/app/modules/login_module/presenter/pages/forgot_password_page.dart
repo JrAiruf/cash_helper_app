@@ -83,11 +83,11 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           CashHelperTextFieldComponent(
                             radius: 15,
                             validator: (value) =>
-                                _loginController.cashierNumberValidate(value),
-                            onSaved: (value) => _operatorEntity.operatorNumber =
-                                int.tryParse(value ?? "0"),
+                                _loginController.cashierCodeValidate(value),
+                            onSaved: (value) => _operatorEntity.operatorCode =
+                                value,
                             controller: _loginController.emailField,
-                            label: 'Número do caixa',
+                            label: 'Código Ops.',
                           ),
                         ],
                       ),
@@ -105,7 +105,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         final checkedInformation = await _loginStore
                             .checkOperatorDataForResetPassword(
                               _operatorEntity.operatorEmail!,
-                              _operatorEntity.operatorNumber!,
+                              _operatorEntity.operatorCode!,
                               "operator",
                             )!
                             .then((value) => value)
