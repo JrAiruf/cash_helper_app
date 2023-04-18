@@ -41,17 +41,17 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   }
 
 @override
-  Future<void> deleteOperatorAccount(String? operatorCode, String? newEmail,
+  Future<void> deleteOperatorAccount(String? operatorCode, String? operatorEmail,
       String? operatorPassword, String? collection) async {
-    final operatorsCollection = _datasource.collection(collection ?? "");
-    if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
+   final operatorsCollection = _datasource.collection(collection ?? "");
+    if (_validOperatorData(operatorEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
           .map((databaseOperator) => databaseOperator.data())
           .toList();
       final operatorToBeDeleted = databaseOperatorsList.firstWhere(
         (operatorMap) {
-          return operatorMap["operatorPassword"] == operatorPassword &&
+          return operatorMap["operatorPassword"] == operatorPassword && operatorMap["operatorEmail"] == operatorEmail &&
               operatorMap["operatorCode"] == operatorCode;
         },
       );
