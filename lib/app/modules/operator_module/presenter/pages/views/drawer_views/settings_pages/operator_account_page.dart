@@ -58,7 +58,7 @@ class OperatorAccountPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: height * 0.05, width: width),
+                  SizedBox(height: height * 0.01, width: width),
                   Text(
                     "Informações:",
                     style: Theme.of(context).textTheme.displayMedium,
