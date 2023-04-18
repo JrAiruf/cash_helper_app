@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 class LoginRepositoryMock extends Mock implements LoginRepositoryImpl {}
 
 class LoginUsecasesMock implements LoginUsecases {
-  LoginUsecasesMock(LoginRepository repository) : _repository = repository;
+  LoginUsecasesMock({required LoginRepository repository}) : _repository = repository;
 
   final LoginRepository _repository;
   @override
@@ -65,7 +65,7 @@ class LoginUsecasesMock implements LoginUsecases {
 
 void main() {
   final repository = LoginRepositoryMock();
-  final usecases = LoginUsecasesMock(repository);
+  final usecases = LoginUsecasesMock(repository: repository);
   final newOperator = OperatorEntity(
     operatorId: 'q34u6hu1qeuyoio',
     operatorNumber: 1,
@@ -268,9 +268,10 @@ void main() {
 final repositoryOperator = OperatorModel(
   operatorId: 'q34u6hu1qeuyoio',
   operatorNumber: 1,
-  operatorName: ' Josy Kelly',
+  operatorName: 'Josy Kelly',
   operatorEmail: 'josy@email.com',
   operatorPassword: '12345678',
+  operatorCode: '123456',
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
@@ -279,9 +280,10 @@ final repositoryOperator = OperatorModel(
 final modifiedRepositoryOperator = OperatorModel(
   operatorId: 'q34u6hu1qeuyoio',
   operatorNumber: 1,
-  operatorName: ' Josy Kelly',
+  operatorName: 'Josy Kelly',
   operatorEmail: 'josy@email.com',
   operatorPassword: 'newPassword',
+  operatorCode: 'newPas',
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
