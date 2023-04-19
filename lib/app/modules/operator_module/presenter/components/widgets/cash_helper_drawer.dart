@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CashHelperDrawer extends StatelessWidget {
-  CashHelperDrawer({
+ const CashHelperDrawer({super.key, 
     required this.backgroundColor,
     required this.drawerTitle,
     required this.height,
@@ -17,7 +17,7 @@ class CashHelperDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius:const BorderRadius.only(
           topRight: Radius.circular(20),
           bottomRight: Radius.circular(20),
         ),

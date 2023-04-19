@@ -40,8 +40,11 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         collection.isNotEmpty;
   }
 
-  bool _validOperatorValues(String? email,String? operatorCode) {
-    return email != null && email != ' ' && operatorCode != null && operatorCode.isNotEmpty;
+  bool _validOperatorValues(String? email, String? operatorCode) {
+    return email != null &&
+        email != ' ' &&
+        operatorCode != null &&
+        operatorCode.isNotEmpty;
   }
 
   String _createOperatorCode(String source, int hashSize) {
@@ -85,8 +88,9 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       String? email, String? password, String? collection) async {
     try {
       if (_validCredentials(email, password) && collection!.isNotEmpty) {
-        final userCredentials = await _auth
+        _authUser = await _auth
             .signInWithEmailAndPassword(email: email!, password: password!)
+            .then((value) => value.user)
             .catchError(
           (e) {
             throw AuthenticationError();
@@ -94,7 +98,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         );
         operatorData = await _database
             .collection(collection)
-            .doc(userCredentials.user!.uid)
+            .doc(_authUser!.uid)
             .get()
             .then((value) => value.data());
         return operatorData;
@@ -153,9 +157,11 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
                 operator["operatorEmail"] == email &&
                 operator["operatorCode"] == operatorCode)
             .data();
-        await login(email, databaseOperator["operatorPassword"], "operator");
-        _auth.currentUser?.updatePassword(newPassword!);
-        final operatorsCollection = _database.collection("operator");
+        await login(email, databaseOperator["operatorPassword"],
+            databaseOperator["operatorOcupation"]);
+        await _auth.currentUser?.updatePassword(newPassword!);
+        final operatorsCollection =
+            _database.collection(databaseOperator["operatorOcupation"]);
         await operatorsCollection
             .doc(databaseOperator["operatorId"])
             .update({"operatorPassword": newPassword!});
@@ -231,7 +237,7 @@ void main() {
   };
   final authMock = MockFirebaseAuth(mockUser: user);
   final firebaseMock = FakeFirebaseFirestore();
-  final uuid = Uuid();
+  const uuid =  Uuid();
   final database =
       FirebaseDatabaseMock(database: firebaseMock, auth: authMock, uuid: uuid);
   group(

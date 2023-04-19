@@ -1,6 +1,9 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/stores/operator_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -12,12 +15,15 @@ class ChangeOperatorEmailPage extends StatelessWidget {
   OperatorEntity operatorEntity;
 
   final _controller = Modular.get<LoginController>();
+  final _changeEmailFormKey = GlobalKey<FormState>();
+  final _operatorStore = Modular.get<OperatorStore>();
+  String? _confirmationEmail;
+  String? _operatorPassword;
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
-    final redLight = Theme.of(context).colorScheme.error;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -73,6 +79,7 @@ class ChangeOperatorEmailPage extends StatelessWidget {
                           SizedBox(height: height * 0.04, width: width),
                           SingleChildScrollView(
                             child: Form(
+                              key: _changeEmailFormKey,
                               child: SizedBox(
                                 height: height * 0.35,
                                 child: Column(
@@ -84,7 +91,7 @@ class ChangeOperatorEmailPage extends StatelessWidget {
                                       validator: (value) =>
                                           _controller.emailValidate(value),
                                       onSaved: (value) =>
-                                          operatorEntity.operatorName = value,
+                                          operatorEntity.operatorEmail = value,
                                       controller: _controller.emailField,
                                       label: 'Novo E-mail',
                                     ),
@@ -93,11 +100,12 @@ class ChangeOperatorEmailPage extends StatelessWidget {
                                       validator: (value) =>
                                           _controller.emailValidate(value),
                                       onSaved: (value) =>
-                                          operatorEntity.operatorName = value,
+                                          _confirmationEmail = value,
                                       controller: _controller.emailField,
                                       label: 'Confirmar E-mail',
                                     ),
                                     CashHelperTextFieldComponent(
+                                      obscureText: true,
                                       radius: 15,
                                       validator: (value) => _controller
                                           .cashierCodeValidate(value),
@@ -107,11 +115,12 @@ class ChangeOperatorEmailPage extends StatelessWidget {
                                       label: 'Código Ops',
                                     ),
                                     CashHelperTextFieldComponent(
+                                      obscureText: true,
                                       radius: 15,
                                       validator: (value) =>
                                           _controller.passwordValidate(value),
-                                      onSaved: (value) => operatorEntity
-                                          .operatorPassword = value,
+                                      onSaved: (value) =>
+                                          _operatorPassword = value,
                                       controller: _controller.passwordField,
                                       label: 'Senha',
                                     ),
@@ -141,7 +150,25 @@ class ChangeOperatorEmailPage extends StatelessWidget {
                       width: width * 0.95,
                       height: 60,
                       radius: 12,
-                      onPressed: () {},
+                      onPressed: () async {
+                        _changeEmailFormKey.currentState?.validate();
+                        _changeEmailFormKey.currentState?.save();
+                        if (_changeEmailFormKey.currentState!.validate()) {
+                          if (_confirmationEmail ==
+                                  operatorEntity.operatorEmail &&
+                              _operatorPassword ==
+                                  operatorEntity.operatorPassword &&
+                              operatorEntity.operatorEmail != null) {
+                            await _operatorStore.changeOperatorEmail(
+                                operatorEntity.operatorEmail!,
+                                operatorEntity.operatorCode!,
+                                operatorEntity.operatorPassword!,
+                                operatorEntity.operatorOcupation!);
+                          } else {
+                            _controller.recoveryEmailTrialFail(context);
+                          }
+                        }
+                      },
                       buttonName: "Alterar",
                       backgroundColor: tertiaryColor,
                       nameColor: Colors.white,

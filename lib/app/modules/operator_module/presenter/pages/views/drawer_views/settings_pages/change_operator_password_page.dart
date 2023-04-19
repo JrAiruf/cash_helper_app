@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,6 @@ class ChangeOperatorPasswordPage extends StatelessWidget {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
-    final redLight = Theme.of(context).colorScheme.error;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(

@@ -52,8 +52,8 @@ if (operatorId != null && collection != null) {
 
   @override
   Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? newPassword) async {
-    if(email!.isNotEmpty && !operatorCode!.isNotEmpty && newPassword!.isNotEmpty){
-  await _datasource.resetOperatorPassword(email, operatorCode, newPassword);
+    if(email!.isNotEmpty && operatorCode!.isNotEmpty && newPassword!.isNotEmpty){
+  return await _datasource.resetOperatorPassword(email, operatorCode, newPassword);
     } else {
       return;
     }

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -108,7 +110,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                 height: height * 0.75,
                 decoration: BoxDecoration(
                   color: backgroundContainer,
-                  borderRadius: BorderRadius.only(
+                  borderRadius:const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -134,12 +136,12 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
             Positioned(
               top: height * 0.25,
               left: width * 0.01,
-              child: Container(
+              child: SizedBox(
                 height: height * 0.5,
                 width: width * 0.98,
                 child: Card(
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(
+                    side: const BorderSide(
                       color: Colors.white,
                     ),
                     borderRadius: BorderRadius.circular(20),

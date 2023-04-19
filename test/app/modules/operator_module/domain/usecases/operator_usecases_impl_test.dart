@@ -51,18 +51,7 @@ void main() {
     operatorEnabled: false,
     operatorOcupation: "operator",
   );
-  final modifiedOperator = OperatorEntity(
-    operatorId: 'q34u6hu1qeuyoio',
-    operatorNumber: 14,
-    operatorName: 'Josy Kelly',
-    operatorEmail: 'josy@email.com',
-    operatorPassword: 'newPassword',
-    operatorCode: 'newPas',
-    operatorOppening: 'operatorOppening',
-    operatorClosing: 'operatorClosing',
-    operatorEnabled: true,
-    operatorOcupation: "admin",
-  );
+  
   group(
     'ChangeOperatorEmail function should',
     () {

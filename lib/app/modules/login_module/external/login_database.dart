@@ -38,7 +38,10 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   bool _validOperatorValues(String? email, String? operatorCode) {
-    return email != null && email != ' ' && operatorCode != null && operatorCode.isNotEmpty;
+    return email != null &&
+        email.isNotEmpty &&
+        operatorCode != null &&
+        operatorCode.isNotEmpty;
   }
 
   String _createOperatorCode(String source, int hashSize) {
@@ -50,9 +53,13 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   Future<Map<String, dynamic>?>? register(
       Map<String, dynamic>? newOperator, String? collection) async {
     try {
-      final userCredentials = await _auth.createUserWithEmailAndPassword(
-          email: newOperator?['operatorEmail'] ?? "",
-          password: newOperator?['operatorPassword'] ?? "");
+      final userCredentials = await _auth
+          .createUserWithEmailAndPassword(
+              email: newOperator?['operatorEmail'] ?? "",
+              password: newOperator?['operatorPassword'] ?? "")
+          .then((value) => value)
+          .catchError((e) {
+      });
       newOperator?["operatorId"] = userCredentials.user?.uid;
       final operatorCodeResource = _uuid.v1();
       final operatorCode = _createOperatorCode(operatorCodeResource, 6);
@@ -82,9 +89,9 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       String? email, String? password, String? collection) async {
     try {
       if (_validCredentials(email, password) && collection!.isNotEmpty) {
-        final userCredentials = await _auth
+        _authUser = await _auth
             .signInWithEmailAndPassword(email: email!, password: password!)
-            .then((value) => value)
+            .then((value) => value.user)
             .catchError(
           (e) {
             throw AuthenticationError();
@@ -92,7 +99,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
         );
         operatorData = await _database
             .collection(collection)
-            .doc(userCredentials.user!.uid)
+            .doc(_authUser!.uid)
             .get()
             .then((value) => value.data());
         return operatorData;
@@ -151,9 +158,11 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
                 operator["operatorEmail"] == email &&
                 operator["operatorCode"] == operatorCode)
             .data();
-        await login(email, databaseOperator["operatorPassword"], "operator");
-        _auth.currentUser?.updatePassword(newPassword!);
-        final operatorsCollection = _database.collection("operator");
+        await login(email, databaseOperator["operatorPassword"],
+            databaseOperator["operatorOcupation"]);
+        await _auth.currentUser?.updatePassword(newPassword!);
+        final operatorsCollection =
+            _database.collection(databaseOperator["operatorOcupation"]);
         await operatorsCollection
             .doc(databaseOperator["operatorId"])
             .update({"operatorPassword": newPassword!});

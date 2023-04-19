@@ -81,12 +81,13 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           ),
                           SizedBox(height: height * 0.03),
                           CashHelperTextFieldComponent(
+                            obscureText: true,
                             radius: 15,
                             validator: (value) =>
                                 _loginController.cashierCodeValidate(value),
-                            onSaved: (value) => _operatorEntity.operatorCode =
-                                value,
-                            controller: _loginController.emailField,
+                            onSaved: (value) =>
+                                _operatorEntity.operatorCode = value,
+                            controller: _loginController.cashierCodeField,
                             label: 'Código Ops.',
                           ),
                         ],

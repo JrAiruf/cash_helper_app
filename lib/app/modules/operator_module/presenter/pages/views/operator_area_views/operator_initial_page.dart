@@ -20,10 +20,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final _operatorPageController = PageController();
     return Container(
         height: height,
         width: width,

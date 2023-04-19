@@ -12,7 +12,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
+      body: const SizedBox(
         child: Center(
           child: Text("Create Annotations Page"),
         ),

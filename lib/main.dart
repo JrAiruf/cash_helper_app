@@ -10,7 +10,7 @@ void main() async {
   runApp(
     ModularApp(
       module: CashHelperAppModule(),
-      child: CashHelperApp(),
+      child:const CashHelperApp(),
     ),
   );
 }

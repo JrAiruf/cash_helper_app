@@ -2,20 +2,33 @@ import 'package:cash_helper_app/app/modules/operator_module/domain/contract/oper
 import 'package:cash_helper_app/app/modules/operator_module/infra/data/operator_repository.dart';
 
 class OperatorUsecasesImpl implements OperatorUsecases {
-  OperatorUsecasesImpl({required OperatorRepository repository}) : _repository = repository;
+  OperatorUsecasesImpl({required OperatorRepository repository})
+      : _repository = repository;
 
   final OperatorRepository _repository;
   @override
-  Future changeOperatorEmail(String? newEmail, String? operatorCode,
-      String? operatorPassword, String? collection) {
-    // TODO: implement changeOperatorEmail
-    throw UnimplementedError();
+  Future<void> changeOperatorEmail(String? newEmail, String? operatorCode,
+      String? operatorPassword, String? collection) async {
+    if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
+      return await _repository.changeOperatorEmail(
+          newEmail, operatorCode, operatorPassword, collection);
+    } else {
+      return;
+    }
   }
 
   @override
-  Future deleteOperatorAccount(String? operatorCode, String? newEmail,
-      String? operatorPassword, String? collection) {
-    // TODO: implement deleteOperatorAccount
-    throw UnimplementedError();
+  Future<void> deleteOperatorAccount(String? operatorCode, String? newEmail,
+      String? operatorPassword, String? collection) async {
+    if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
+      return await _repository.deleteOperatorAccount(
+          operatorCode, newEmail, operatorPassword, collection);
+    } else {
+      return;
+    }
   }
+
+  bool _validOperatorData(
+          String? newEmail, String? operatorCode, String? operatorPassword) =>
+      newEmail != null && operatorCode != null && operatorPassword != null;
 }
