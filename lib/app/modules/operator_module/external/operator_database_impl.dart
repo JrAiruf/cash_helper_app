@@ -68,4 +68,10 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail != null && operatorCode != null && operatorPassword != null;
+      
+        @override
+        Future? changeOperatorPassword(String? newPassword, String? operatorCode, String? currentPassword, String? collection) {
+          // TODO: implement changeOperatorPassword
+          throw UnimplementedError();
+        }
 }

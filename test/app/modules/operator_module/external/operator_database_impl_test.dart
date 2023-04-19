@@ -18,8 +18,8 @@ class OperatorDatabaseMock implements OperatorDatabase {
   final FirebaseFirestore _datasource;
 
   @override
-  Future<void> changeOperatorEmail(
-      String? newEmail, String? operatorCode, String? operatorPassword, String? collection) async {
+  Future<void> changeOperatorEmail(String? newEmail, String? operatorCode,
+      String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
     if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
@@ -41,8 +41,11 @@ class OperatorDatabaseMock implements OperatorDatabase {
   }
 
   @override
-  Future<void> deleteOperatorAccount(String? operatorCode, String? operatorEmail,
-      String? operatorPassword, String? collection) async {
+  Future<void> deleteOperatorAccount(
+      String? operatorCode,
+      String? operatorEmail,
+      String? operatorPassword,
+      String? collection) async {
     final operatorsCollection = _datasource.collection(collection ?? "");
     if (_validOperatorData(operatorEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
@@ -51,7 +54,8 @@ class OperatorDatabaseMock implements OperatorDatabase {
           .toList();
       final operatorToBeDeleted = databaseOperatorsList.firstWhere(
         (operatorMap) {
-          return operatorMap["operatorPassword"] == operatorPassword && operatorMap["operatorEmail"] == operatorEmail &&
+          return operatorMap["operatorPassword"] == operatorPassword &&
+              operatorMap["operatorEmail"] == operatorEmail &&
               operatorMap["operatorCode"] == operatorCode;
         },
       );
@@ -60,6 +64,33 @@ class OperatorDatabaseMock implements OperatorDatabase {
           password: operatorToBeDeleted["operatorPassword"]);
       await _auth.currentUser?.delete();
       await operatorsCollection.doc(operatorToBeDeleted["operatorId"]).delete();
+    } else {
+      return;
+    }
+  }
+
+  @override
+  Future<void> changeOperatorPassword(String? newPassword, String? operatorCode,
+      String? currentPassword, String? collection) async {
+    final operatorsCollection = _datasource.collection(collection!);
+    if (_validOperatorData(newPassword, operatorCode, currentPassword)) {
+      final operatorsCollectionDocs = await operatorsCollection.get();
+      final databaseOperatorsList = operatorsCollectionDocs.docs
+          .map((databaseOperator) => databaseOperator.data())
+          .toList();
+      final operatorToBeModified = databaseOperatorsList.firstWhere(
+        (operatorMap) {
+          return operatorMap["operatorPassword"] == currentPassword &&
+              operatorMap["operatorCode"] == operatorCode;
+        },
+      );
+     await _auth.signInWithEmailAndPassword(
+          email: operatorToBeModified["operatorEmail"],
+          password: operatorToBeModified["operatorPassword"]);
+          await _auth.currentUser?.updatePassword(newPassword!);
+      await operatorsCollection
+          .doc(operatorToBeModified["operatorId"])
+          .update({"operatorPassword": newPassword});
     } else {
       return;
     }
@@ -106,7 +137,8 @@ void main() {
           await database.changeOperatorEmail(
               "operator@email.com",
               createdOperator?["operatorCode"],
-              createdOperator?["operatorPassword"],createdOperator?["operatorOcupation"]);
+              createdOperator?["operatorPassword"],
+              createdOperator?["operatorOcupation"]);
           final databaseDocsList = await firebaseMock
               .collection(createdOperator?["operatorOcupation"])
               .get();
@@ -128,7 +160,10 @@ void main() {
           final createdOperator = await loginDatabase.register(
               newOperator, newOperator["operatorOcupation"]);
           await database.changeOperatorEmail(
-              "operator@email.com", null, createdOperator?["operatorPassword"],createdOperator?["operatorOcupation"]);
+              "operator@email.com",
+              null,
+              createdOperator?["operatorPassword"],
+              createdOperator?["operatorOcupation"]);
           final databaseDocsList = await firebaseMock
               .collection(createdOperator?["operatorOcupation"])
               .get();
@@ -151,33 +186,75 @@ void main() {
       test(
         'Delete operator account',
         () async {
-          final createdOperator = await loginDatabase.register(
-              newOperator, "deleteCollection");
+          final createdOperator =
+              await loginDatabase.register(newOperator, "deleteCollection");
           await database.deleteOperatorAccount(
               createdOperator?["operatorCode"],
               createdOperator?["operatorEmail"],
               createdOperator?["operatorPassword"],
               "deleteCollection");
-          final databaseDocsList = await firebaseMock
-              .collection("deleteCollection")
-              .get();
+          final databaseDocsList =
+              await firebaseMock.collection("deleteCollection").get();
           expect(databaseDocsList.docs.length, equals(0));
         },
       );
       test(
         'Fail to delete account',
         () async {
-          final createdOperator = await loginDatabase.register(
-              newOperator, "otherCollection");
-          await database.deleteOperatorAccount(
+          final createdOperator =
+              await loginDatabase.register(newOperator, "otherCollection");
+          await database.deleteOperatorAccount(createdOperator?["operatorCode"],
+              null, createdOperator?["operatorPassword"], "otherCollection");
+          final databaseDocsList =
+              await firebaseMock.collection("otherCollection").get();
+          expect(databaseDocsList.docs.length, equals(1));
+        },
+      );
+    },
+  );
+  group(
+    'ChangeOperatorPassword should',
+    () {
+      test(
+        'Change operator password, validating the given arguments',
+        () async {
+          final createdOperator =
+              await loginDatabase.register(newOperator, newOperator["operatorOcupation"]);
+          await database.changeOperatorPassword(
+              "newPassword",
               createdOperator?["operatorCode"],
+              createdOperator?["operatorPassword"],
+              createdOperator?["operatorOcupation"]);
+        final databaseDocsList = await firebaseMock
+              .collection(createdOperator?["operatorOcupation"])
+              .get();
+          final operatorsMapList =
+              databaseDocsList.docs.map((e) => e.data()).toList();
+          final modifiedOperator = operatorsMapList.firstWhere((operatorMap) {
+            return operatorMap["operatorCode"] == createdOperator?["operatorCode"];
+          });
+          expect(modifiedOperator["operatorPassword"], equals("newPassword"));
+        },
+      );
+      test(
+        'Fail to change operator password',
+        () async {
+          final createdOperator =
+              await loginDatabase.register(newOperator, newOperator["operatorOcupation"]);
+          await database.changeOperatorPassword(
+              "newPassword",
               null,
               createdOperator?["operatorPassword"],
-              "otherCollection");
+              createdOperator?["operatorOcupation"]);
           final databaseDocsList = await firebaseMock
-              .collection( "otherCollection")
+              .collection(createdOperator?["operatorOcupation"])
               .get();
-          expect(databaseDocsList.docs.length, equals(1));
+          final operatorsMapList =
+              databaseDocsList.docs.map((e) => e.data()).toList();
+          final modifiedOperator = operatorsMapList.firstWhere((operatorMap) {
+            return operatorMap["operatorCode"] == createdOperator?["operatorCode"];
+          });
+          expect(modifiedOperator["operatorPassword"], equals("12345678"));
         },
       );
     },

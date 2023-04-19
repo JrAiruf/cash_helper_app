@@ -49,7 +49,9 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                     child: LinearProgressIndicator(
                       color: tertiaryColor,
                     ),
-                  )
+                  ),
+                    SizedBox(height: height * 0.4),
+                    const Text("Aguarde...",)
                 ],
               ),
               child: Column(
