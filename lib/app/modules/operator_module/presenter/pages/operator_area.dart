@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_string_interpolations
+// ignore_for_file: unnecessary_string_interpolations, must_be_immutable
 
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_bar.dart';

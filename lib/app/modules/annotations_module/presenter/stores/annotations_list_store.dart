@@ -1,5 +1,4 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/contract/annotation_usecases.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotation_states.dart';
 import 'package:flutter/foundation.dart';
 

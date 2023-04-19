@@ -40,8 +40,11 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         collection.isNotEmpty;
   }
 
-  bool _validOperatorValues(String? email, int? cashierNumber) {
-    return email != null && email != ' ' && cashierNumber != null;
+  bool _validOperatorValues(String? email, String? operatorCode) {
+    return email != null &&
+        email != ' ' &&
+        operatorCode != null &&
+        operatorCode.isNotEmpty;
   }
 
   String _createOperatorCode(String source, int hashSize) {
@@ -85,8 +88,9 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       String? email, String? password, String? collection) async {
     try {
       if (_validCredentials(email, password) && collection!.isNotEmpty) {
-        final userCredentials = await _auth
+        _authUser = await _auth
             .signInWithEmailAndPassword(email: email!, password: password!)
+            .then((value) => value.user)
             .catchError(
           (e) {
             throw AuthenticationError();
@@ -94,7 +98,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         );
         operatorData = await _database
             .collection(collection)
-            .doc(userCredentials.user!.uid)
+            .doc(_authUser!.uid)
             .get()
             .then((value) => value.data());
         return operatorData;
@@ -129,13 +133,13 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) async {
-    if (email != null && cashierNumber != null && collection != null) {
+      String? email, String? operatorCode, String? collection) async {
+    if (email != null && operatorCode != null && collection != null) {
       final operatorsCollection = await _database.collection(collection).get();
       final checkedOperator = operatorsCollection.docs.firstWhere(
           (operatorMap) =>
               operatorMap.data()["operatorEmail"] == email &&
-              operatorMap.data()["operatorNumber"] == cashierNumber);
+              operatorMap.data()["operatorCode"] == operatorCode);
       return checkedOperator.exists ? true : false;
     } else {
       return false;
@@ -144,18 +148,20 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
 
   @override
   Future<void>? resetOperatorPassword(
-      String? email, int? cashierNumber, String? newPassword) async {
+      String? email, String? operatorCode, String? newPassword) async {
     try {
       final operatorsList = await _database.collection("operator").get();
-      if (_validOperatorValues(email, cashierNumber)) {
+      if (_validOperatorValues(email, operatorCode)) {
         final databaseOperator = operatorsList.docs
             .firstWhere((operator) =>
                 operator["operatorEmail"] == email &&
-                operator["operatorNumber"] == cashierNumber)
+                operator["operatorCode"] == operatorCode)
             .data();
-        await login(email, databaseOperator["operatorPassword"], "operator");
-        _auth.currentUser?.updatePassword(newPassword!);
-        final operatorsCollection = _database.collection("operator");
+        await login(email, databaseOperator["operatorPassword"],
+            databaseOperator["operatorOcupation"]);
+        await _auth.currentUser?.updatePassword(newPassword!);
+        final operatorsCollection =
+            _database.collection(databaseOperator["operatorOcupation"]);
         await operatorsCollection
             .doc(databaseOperator["operatorId"])
             .update({"operatorPassword": newPassword!});
@@ -231,7 +237,7 @@ void main() {
   };
   final authMock = MockFirebaseAuth(mockUser: user);
   final firebaseMock = FakeFirebaseFirestore();
-  final uuid = Uuid();
+  const uuid =  Uuid();
   final database =
       FirebaseDatabaseMock(database: firebaseMock, auth: authMock, uuid: uuid);
   group(
@@ -344,7 +350,7 @@ void main() {
           final checkedInformation =
               await database.checkOperatorDataForResetPassword(
                   createdOperator!["operatorEmail"],
-                  createdOperator["operatorNumber"],
+                  createdOperator["operatorCode"],
                   createdOperator["operatorOcupation"]);
           expect(checkedInformation, equals(true));
         },
@@ -382,7 +388,7 @@ void main() {
           expect(operatorsList.docs.isEmpty, equals(false));
           await database.resetOperatorPassword(
               createdOperator!["operatorEmail"],
-              createdOperator["operatorNumber"],
+              createdOperator["operatorCode"],
               "newPassword");
           final currentOperator = await database.getOperatorById(
               createdOperator["operatorId"],

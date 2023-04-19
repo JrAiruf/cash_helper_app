@@ -44,13 +44,13 @@ class LoginUsecasesImpl implements LoginUsecases {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) async {
-  return await _repository.checkOperatorDataForResetPassword(email, cashierNumber, collection) ?? false;
+      String? email, String? operatorCode, String? collection) async {
+  return await _repository.checkOperatorDataForResetPassword(email, operatorCode, collection) ?? false;
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? newPassword) async {
-  await _repository.resetOperatorPassword(email, cashierNumber, newPassword);
+  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? newPassword) async {
+  return await _repository.resetOperatorPassword(email, operatorCode, newPassword);
   }
 
 

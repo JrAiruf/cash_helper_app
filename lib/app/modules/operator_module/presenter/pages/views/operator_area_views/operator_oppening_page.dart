@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import '../../../../domain/entities/operator_entity.dart';
 import '../../../components/cash_helper_bottom_navigation_bar.dart';
@@ -25,10 +27,10 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
     final primaryColor = Theme.of(context).colorScheme.onPrimaryContainer;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final _operatorPageController = PageController();
+    final operatorPageController = PageController();
     return Container(
       decoration: BoxDecoration(color: backgroundColor),
-      child: Center(
+      child:const  Center(
         child: Text("Oppening"),
       ),
     );

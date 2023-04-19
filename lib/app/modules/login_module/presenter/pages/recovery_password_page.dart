@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import "package:flutter/material.dart";
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -109,7 +111,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             confirmationPassword) {
                           await _loginStore.resetOperatorPassword(
                               widget.operatorEntity.operatorEmail!,
-                              widget.operatorEntity.operatorNumber!,
+                              widget.operatorEntity.operatorCode!,
                               _operatorEntity.operatorPassword!);
                           final recoveredOperator = await _loginStore
                               .login(widget.operatorEntity.operatorEmail,
@@ -122,6 +124,9 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             Modular.to.navigate("/operator-module/",
                                 arguments: recoveredOperator);
                           } else {
+                            setState(() {
+                              _loginController.loadingLoginData = false;
+                            });
                             return;
                           }
                           setState(() {

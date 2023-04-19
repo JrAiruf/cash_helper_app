@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -8,6 +10,7 @@ class LoginController {
   final newOperatorEmailField = TextEditingController();
   final newOperatorPasswordField = TextEditingController();
   final cashierNameField = TextEditingController();
+  final cashierCodeField = TextEditingController();
   final cashierNumberField = TextEditingController();
 
   bool loadingData = false;
@@ -36,6 +39,11 @@ class LoginController {
     return value!.isNotEmpty && value != ''
         ? null
         : 'Nome Inválido! Insira o nome do caixa.';
+  }
+  String? cashierCodeValidate(String? value) {
+    return value!.isNotEmpty && value != '' && value.length == 6
+        ? null
+        : 'Código Inválido! Insira seu código Ops.';
   }
 
   String? cashierNumberValidate(String? value) {
@@ -145,6 +153,37 @@ class LoginController {
             children: const [
               Text(
                 'As senhas não correspondem.',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16),
+              ),
+              Icon(
+                Icons.warning_rounded,
+                size: 35,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  recoveryEmailTrialFail(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        backgroundColor: Colors.redAccent,
+        elevation: 5,
+        duration: const Duration(seconds: 2),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                'Dados incorretos. Tente novamente',
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,

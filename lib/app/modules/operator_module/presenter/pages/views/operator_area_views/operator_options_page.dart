@@ -1,4 +1,5 @@
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+// ignore_for_file: unused_local_variable
+
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/options_page_menu_component.dart';
 import "package:flutter/material.dart";
@@ -26,7 +27,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final _operatorPageController = PageController();
+    final operatorPageController = PageController();
     return Container(
       height: height,
       width: width,

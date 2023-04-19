@@ -19,7 +19,6 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final secondaryColor = Theme.of(context).colorScheme.secondary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
@@ -36,7 +35,7 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
               height: height * 0.75,
               decoration: BoxDecoration(
                 color: backgroundContainer,
-                borderRadius: BorderRadius.only(
+                borderRadius:const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),

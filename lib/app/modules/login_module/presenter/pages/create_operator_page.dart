@@ -177,10 +177,9 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       _createOperatorFormKey.currentState!.save();
                       _cashierOperator.operatorClosing = 'Pendente';
                       _cashierOperator.operatorOcupation = "operator";
-                      _cashierOperator.operatorEnabled =
-                          startWithEnabledOperator ?? false;
+                      _cashierOperator.operatorEnabled = startWithEnabledOperator ?? false ? true : false;
                       _cashierOperator.operatorOppening =
-                          _cashierOperator.operatorEnabled! == true
+                          _cashierOperator.operatorEnabled == true
                               ? cashierOppeningTime
                               : 'Pendente';
                       if (_createOperatorFormKey.currentState!.validate()) {

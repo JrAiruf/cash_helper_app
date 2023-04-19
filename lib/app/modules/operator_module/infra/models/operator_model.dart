@@ -33,7 +33,7 @@ class OperatorModel {
       'operatorName': operatorName,
       'operatorEmail': operatorEmail,
       'operatorPassword': operatorPassword,
-      'operatorPassword': operatorCode,
+      'operatorCode': operatorCode,
       'operatorOppening': operatorOppening,
       'operatorClosing': operatorClosing,
       'operatorEnabled': operatorEnabled,

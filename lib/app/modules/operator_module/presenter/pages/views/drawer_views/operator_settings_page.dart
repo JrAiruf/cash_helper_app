@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_item.dart';
@@ -146,7 +148,7 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
             ),
             CashHelperBottomNavigationItem(
               icon: Icons.person_search_outlined,
-              itemName: "Privacidade",
+              itemName: "Minha Conta",
               position: BottomNavigationBarPosition.operatorAccount,
               onTap: () {
                 _settingsPageController.animateToPage(

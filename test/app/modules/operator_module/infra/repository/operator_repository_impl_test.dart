@@ -55,17 +55,7 @@ void main() {
     operatorEnabled: false,
     operatorOcupation: "operator",
   );
-  final modifiedOperator = OperatorModel(
-    operatorId: 'q34u6hu1qeuyoio',
-    operatorNumber: 14,
-    operatorName: 'Josy Kelly',
-    operatorEmail: 'josy@email.com',
-    operatorPassword: 'newPassword',
-    operatorOppening: 'operatorOppening',
-    operatorClosing: 'operatorClosing',
-    operatorEnabled: true,
-    operatorOcupation: "admin",
-  );
+  
   group(
     "ChangeOperatorEmail Function should",
     () {

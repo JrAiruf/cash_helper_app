@@ -9,7 +9,7 @@ import 'package:mockito/mockito.dart';
 class LoginRepositoryMock extends Mock implements LoginRepositoryImpl {}
 
 class LoginUsecasesMock implements LoginUsecases {
-  LoginUsecasesMock(LoginRepository repository) : _repository = repository;
+  LoginUsecasesMock({required LoginRepository repository}) : _repository = repository;
 
   final LoginRepository _repository;
   @override
@@ -48,13 +48,13 @@ class LoginUsecasesMock implements LoginUsecases {
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, int? cashierNumber, String? collection) async {
-  return await _repository.checkOperatorDataForResetPassword(email, cashierNumber, collection) ?? false;
+      String? email,String? operatorCode, String? collection) async {
+  return await _repository.checkOperatorDataForResetPassword(email, operatorCode, collection) ?? false;
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, int? cashierNumber, String? newPassword) async {
- return await _repository.resetOperatorPassword(email, cashierNumber, newPassword);
+  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? newPassword) async {
+ return await _repository.resetOperatorPassword(email, operatorCode, newPassword);
   }
 
   @override
@@ -65,7 +65,7 @@ class LoginUsecasesMock implements LoginUsecases {
 
 void main() {
   final repository = LoginRepositoryMock();
-  final usecases = LoginUsecasesMock(repository);
+  final usecases = LoginUsecasesMock(repository: repository);
   final newOperator = OperatorEntity(
     operatorId: 'q34u6hu1qeuyoio',
     operatorNumber: 1,
@@ -76,17 +76,6 @@ void main() {
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
     operatorOcupation: "operator",
-  );
-  final modifiedOperator = OperatorEntity(
-    operatorId: 'q34u6hu1qeuyoio',
-    operatorNumber: 14,
-    operatorName: ' Josy Kelly',
-    operatorEmail: 'josy@email.com',
-    operatorPassword: '12345678',
-    operatorOppening: 'operatorOppening',
-    operatorClosing: 'operatorClosing',
-    operatorEnabled: true,
-    operatorOcupation: "admin",
   );
   group(
     "Register function should",
@@ -188,7 +177,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber,"collection");
+          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode,"collection");
           expect(checkedInformation, equals(true));
           
         },
@@ -201,7 +190,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber,"");
+          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode,"");
           expect(checkedInformation, equals(false));
         },
       );
@@ -220,7 +209,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
           final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
 
           expect(currentOperator?.operatorPassword, equals("newPassword"));
@@ -236,7 +225,7 @@ void main() {
           final createdOperator = await usecases.register(newOperator, "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
-          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorNumber, "newPassword");
+          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
           final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
 
           expect(currentOperator?.operatorPassword, equals("12345678"));
@@ -268,9 +257,10 @@ void main() {
 final repositoryOperator = OperatorModel(
   operatorId: 'q34u6hu1qeuyoio',
   operatorNumber: 1,
-  operatorName: ' Josy Kelly',
+  operatorName: 'Josy Kelly',
   operatorEmail: 'josy@email.com',
   operatorPassword: '12345678',
+  operatorCode: '123456',
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
@@ -279,9 +269,10 @@ final repositoryOperator = OperatorModel(
 final modifiedRepositoryOperator = OperatorModel(
   operatorId: 'q34u6hu1qeuyoio',
   operatorNumber: 1,
-  operatorName: ' Josy Kelly',
+  operatorName: 'Josy Kelly',
   operatorEmail: 'josy@email.com',
   operatorPassword: 'newPassword',
+  operatorCode: 'newPas',
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
