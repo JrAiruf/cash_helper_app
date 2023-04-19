@@ -6,6 +6,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../login_module/presenter/controllers/login_controller.dart';
 import '../../../../../login_module/presenter/stores/login_store.dart';
+import '../../../components/cards/operator_card_component.dart';
+import '../../../components/cards/profile_informations_card.dart';
 import '../../../components/tiles/drawer_tile.dart';
 import '../../../components/tiles/operator_profile_component.dart';
 import '../../../components/widgets/cash_helper_drawer.dart';
@@ -30,6 +32,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
@@ -110,7 +113,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                 height: height * 0.75,
                 decoration: BoxDecoration(
                   color: backgroundContainer,
-                  borderRadius:const BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -137,7 +140,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
               top: height * 0.25,
               left: width * 0.01,
               child: SizedBox(
-                height: height * 0.5,
+                height: height * 0.65,
                 width: width * 0.98,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -147,54 +150,82 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   color: primaryColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      OperatorProfileComponent(
-                        height: height,
-                        title: "E-mail:",
-                        backgroundColor: backgroundContainer,
-                        content: widget.operatorEntity.operatorEmail,
-                      ),
-                      SizedBox(height: height * 0.03),
-                      OperatorProfileComponent(
-                        height: height,
-                        title: "Número do caixa:",
-                        backgroundColor: backgroundContainer,
-                        content: "${widget.operatorEntity.operatorNumber}",
-                      ),
-                      SizedBox(height: height * 0.03),
-                      OperatorProfileComponent(
-                        height: height,
-                        title: "Anotações nesta semana:",
-                        backgroundColor: backgroundContainer,
-                        content: "7",
-                      ),
-                      SizedBox(height: height * 0.03),
-                      OperatorProfileComponent(
-                        height: height,
-                        title: "Ocupação:",
-                        backgroundColor: backgroundContainer,
-                        content: widget.operatorEntity.operatorOcupation ==
-                                "operator"
-                            ? "Operador"
-                            : "ADM",
-                      ),
-                      SizedBox(height: height * 0.03),
-                      OperatorProfileComponent(
-                        height: height,
-                        title: "Abertura:",
-                        backgroundColor: backgroundContainer,
-                        content: widget.operatorEntity.operatorOppening,
-                      ),
-                      SizedBox(height: height * 0.03),
-                      OperatorProfileComponent(
-                        height: height,
-                        title: "Código Ops.:",
-                        backgroundColor: backgroundContainer,
-                        content: widget.operatorEntity.operatorCode,
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        /*      OperatorProfileComponent(
+                          height: height,
+                          title: "E-mail:",
+                          backgroundColor: backgroundContainer,
+                          content: widget.operatorEntity.operatorEmail,
+                        ),
+                        SizedBox(height: height * 0.03),
+                        OperatorProfileComponent(
+                          height: height,
+                          title: "Número do caixa:",
+                          backgroundColor: backgroundContainer,
+                          content: "${widget.operatorEntity.operatorNumber}",
+                        ), */
+                        OperatorCardComponent(
+                            height: height * 0.15,
+                            backgroundColor: secondaryColor,
+                            operatorEntity: widget.operatorEntity),
+                        ProfileInformationCard(
+                          backgroundColor: secondaryColor,
+                          height: height * 0.15,
+                          width: width * 0.33,
+                          items: [
+                            Icon(Icons.access_time_rounded),
+                            const Text("Abertura:"),
+                            Text(widget.operatorEntity.operatorOppening ?? ""),
+                          ],
+                        ),
+                        ProfileInformationCard(
+                          backgroundColor: secondaryColor,
+                          height: height * 0.15,
+                          width: width * 0.33,
+                          items: [
+                            const Text("Código Ops."),
+                            Text(widget.operatorEntity.operatorCode ?? ""),
+                            Icon(Icons.visibility_outlined),
+                          ],
+                        ),
+
+                        /*  SizedBox(height: height * 0.03),
+                        OperatorProfileComponent(
+                          height: height,
+                          title: "Anotações nesta semana:",
+                          backgroundColor: backgroundContainer,
+                          content: "7",
+                        ),
+                        SizedBox(height: height * 0.03),
+                        OperatorProfileComponent(
+                          height: height,
+                          title: "Ocupação:",
+                          backgroundColor: backgroundContainer,
+                          content: widget.operatorEntity.operatorOcupation ==
+                                  "operator"
+                              ? "Operador"
+                              : "ADM",
+                        ),
+                        SizedBox(height: height * 0.03),
+                        OperatorProfileComponent(
+                          height: height,
+                          title: "Abertura:",
+                          backgroundColor: backgroundContainer,
+                          content: widget.operatorEntity.operatorOppening,
+                        ),
+                        SizedBox(height: height * 0.03),
+                        OperatorProfileComponent(
+                          height: height,
+                          title: "Código Ops.:",
+                          backgroundColor: backgroundContainer,
+                          content: widget.operatorEntity.operatorCode,
+                        ), */
+                      ],
+                    ),
                   ),
                 ),
               ),
