@@ -75,7 +75,7 @@ class ChangeOperatorPasswordPage extends StatelessWidget {
                           SingleChildScrollView(
                             child: Form(
                               child: SizedBox(
-                                height: height * 0.35,
+                                height: height * 0.38,
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

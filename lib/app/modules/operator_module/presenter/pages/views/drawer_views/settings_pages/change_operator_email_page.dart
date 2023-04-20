@@ -1,24 +1,39 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/stores/operator_store.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/stores/operator_store_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 
-class ChangeOperatorEmailPage extends StatelessWidget {
+class ChangeOperatorEmailPage extends StatefulWidget {
   ChangeOperatorEmailPage({super.key, required this.operatorEntity});
 
   OperatorEntity operatorEntity;
 
-  final _controller = Modular.get<LoginController>();
+  @override
+  State<ChangeOperatorEmailPage> createState() =>
+      _ChangeOperatorEmailPageState();
+}
+
+class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
+  final _controller = Modular.get<OperatorController>();
   final _changeEmailFormKey = GlobalKey<FormState>();
   final _operatorStore = Modular.get<OperatorStore>();
   String? _confirmationEmail;
   String? _operatorPassword;
+  bool? _emailChanged;
+
+  @override
+  void initState() {
+    _operatorStore.restartOperatorSettingsPage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -65,72 +80,116 @@ class ChangeOperatorEmailPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: SizedBox(
-                      height: height * 0.5,
-                      width: width * 0.95,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: height * 0.02, width: width),
-                          Text(
-                            "Alterar E-mail:",
-                            style: Theme.of(context).textTheme.displayMedium,
-                          ),
-                          SizedBox(height: height * 0.04, width: width),
-                          SingleChildScrollView(
-                            child: Form(
-                              key: _changeEmailFormKey,
-                              child: SizedBox(
-                                height: height * 0.35,
+                      height: height * 0.65,
+                      width: width * 0.9,
+                      child: ValueListenableBuilder(
+                          valueListenable: _operatorStore,
+                          builder: (_, operatorSettingsState, __) {
+                            if (operatorSettingsState
+                                is OperatorSettingsLoadingState) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: tertiaryColor,
+                                ),
+                              );
+                            }
+                            if (operatorSettingsState
+                                is OperatorSettingsInitialState) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: height * 0.02, width: width),
+                                  Text(
+                                    "Alterar E-mail:",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
+                                  ),
+                                  SizedBox(height: height * 0.04, width: width),
+                                  SingleChildScrollView(
+                                    child: Form(
+                                      key: _changeEmailFormKey,
+                                      child: SizedBox(
+                                        height: height * 0.38,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CashHelperTextFieldComponent(
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .emailValidate(value),
+                                              onSaved: (value) => widget
+                                                  .operatorEntity
+                                                  .operatorEmail = value,
+                                              controller:
+                                                  _controller.emailField,
+                                              label: 'Novo E-mail',
+                                            ),
+                                            CashHelperTextFieldComponent(
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .emailValidate(value),
+                                              onSaved: (value) =>
+                                                  _confirmationEmail = value,
+                                              controller:
+                                                  _controller.emailField,
+                                              label: 'Confirmar E-mail',
+                                            ),
+                                            CashHelperTextFieldComponent(
+                                              obscureText: true,
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .cashierCodeValidate(value),
+                                              onSaved: (value) => widget
+                                                  .operatorEntity
+                                                  .operatorCode = value,
+                                              controller:
+                                                  _controller.cashierCodeField,
+                                              label: 'Código Ops',
+                                            ),
+                                            CashHelperTextFieldComponent(
+                                              obscureText: true,
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .passwordValidate(value),
+                                              onSaved: (value) =>
+                                                  _operatorPassword = value,
+                                              controller:
+                                                  _controller.passwordField,
+                                              label: 'Senha',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            if (operatorSettingsState
+                                is OperatorModifiedEmailState) {
+                              return Center(
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    CashHelperTextFieldComponent(
-                                      radius: 15,
-                                      validator: (value) =>
-                                          _controller.emailValidate(value),
-                                      onSaved: (value) =>
-                                          operatorEntity.operatorEmail = value,
-                                      controller: _controller.emailField,
-                                      label: 'Novo E-mail',
+                                    Text("Email Alterado!"),
+                                    SizedBox(
+                                      height: 45,
                                     ),
-                                    CashHelperTextFieldComponent(
-                                      radius: 15,
-                                      validator: (value) =>
-                                          _controller.emailValidate(value),
-                                      onSaved: (value) =>
-                                          _confirmationEmail = value,
-                                      controller: _controller.emailField,
-                                      label: 'Confirmar E-mail',
-                                    ),
-                                    CashHelperTextFieldComponent(
-                                      obscureText: true,
-                                      radius: 15,
-                                      validator: (value) => _controller
-                                          .cashierCodeValidate(value),
-                                      onSaved: (value) =>
-                                          operatorEntity.operatorCode = value,
-                                      controller: _controller.cashierCodeField,
-                                      label: 'Código Ops',
-                                    ),
-                                    CashHelperTextFieldComponent(
-                                      obscureText: true,
-                                      radius: 15,
-                                      validator: (value) =>
-                                          _controller.passwordValidate(value),
-                                      onSaved: (value) =>
-                                          _operatorPassword = value,
-                                      controller: _controller.passwordField,
-                                      label: 'Senha',
+                                    Icon(
+                                      size: 45,
+                                      Icons.done,
+                                      color: tertiaryColor,
                                     ),
                                   ],
                                 ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }),
                     ),
                   ),
                 ),
@@ -155,17 +214,24 @@ class ChangeOperatorEmailPage extends StatelessWidget {
                         _changeEmailFormKey.currentState?.save();
                         if (_changeEmailFormKey.currentState!.validate()) {
                           if (_confirmationEmail ==
-                                  operatorEntity.operatorEmail &&
+                                  widget.operatorEntity.operatorEmail &&
                               _operatorPassword ==
-                                  operatorEntity.operatorPassword &&
-                              operatorEntity.operatorEmail != null) {
-                            await _operatorStore.changeOperatorEmail(
-                                operatorEntity.operatorEmail!,
-                                operatorEntity.operatorCode!,
-                                operatorEntity.operatorPassword!,
-                                operatorEntity.operatorOcupation!);
+                                  widget.operatorEntity.operatorPassword &&
+                              widget.operatorEntity.operatorEmail != null) {
+                            await _operatorStore
+                                .changeOperatorEmail(
+                                    widget.operatorEntity.operatorEmail!,
+                                    widget.operatorEntity.operatorCode!,
+                                    widget.operatorEntity.operatorPassword!,
+                                    widget.operatorEntity.operatorOcupation!)
+                                .catchError((e) {
+                              _controller.modificationEmailFailure(context);
+                            });
+                            setState(() {
+                              _emailChanged = true;
+                            });
                           } else {
-                            _controller.recoveryEmailTrialFail(context);
+                            _controller.modificationEmailFailure(context);
                           }
                         }
                       },
