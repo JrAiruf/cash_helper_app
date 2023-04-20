@@ -12,10 +12,9 @@ class HomePageComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateTimeMonth = DateTime.now().month;
-    final dateTimeDay = DateTime.now().day;
-    final currentDateTime =
-        '${dateTimeDay >= 10 ? dateTimeDay : '0$dateTimeDay'}/${dateTimeMonth >= 10 ? dateTimeMonth : '0$dateTimeMonth'}';
+    final operatortName = operator.operatorName?.split(" ")[0];
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiary;
     return Stack(
       children: [
         Container(
@@ -32,45 +31,22 @@ class HomePageComponent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: height! * 0.06),
-                Text(
-                  "${operator.operatorName}",
-                  style: Theme.of(context).textTheme.bodyLarge,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Olá,$operatortName",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
                 SizedBox(height: height! * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Icon(Icons.calendar_month),
-                    Text(
-                      currentDateTime,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    )
-                  ],
-                ),
               ],
             ),
           ),
         ),
-        Positioned(
-          top: 10,
-          left: 10,
-          child: CircleAvatar(
-            backgroundColor: Theme.of(context).colorScheme.onPrimary,
-            maxRadius: 50,
-            child: CircleAvatar(
-              backgroundColor: color,
-              maxRadius: 48,
-              child: const Icon(
-                color: Colors.white,
-                Icons.person,
-                size: 55,
-              ),
-            ),
-          ),
-        ),
+        
       ],
     );
   }
