@@ -32,6 +32,7 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final fontSize = Theme.of(context).textTheme.bodySmall;
     return Container(
       height: height ?? 10,
       width: width,
@@ -45,10 +46,13 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("Anotações semanais:"),
+            Text("Anotações semanais:", style: fontSize),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text("${annotationsList?.length}"),
+              child: Text(
+                "${annotationsList?.length}",
+                style: fontSize,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -60,11 +64,11 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
                   items: [
                     Text(
                       "Dinheiro:",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                     Text(
                       "25%",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                   ],
                 ),
@@ -75,11 +79,11 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
                   items: [
                     Text(
                       "Dinheiro:",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                     Text(
                       "25%",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                   ],
                 ),
@@ -96,11 +100,11 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
                   items: [
                     Text(
                       "Dinheiro:",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                     Text(
                       "25%",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                   ],
                 ),
@@ -111,11 +115,11 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
                   items: [
                     Text(
                       "Dinheiro:",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                     Text(
                       "25%",
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: fontSize,
                     ),
                   ],
                 ),

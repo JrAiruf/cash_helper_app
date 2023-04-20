@@ -17,6 +17,7 @@ class OperatorCardComponent extends StatelessWidget {
   final Color? borderColor;
   @override
   Widget build(BuildContext context) {
+    final fontSize = Theme.of(context).textTheme.bodySmall;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
       child: Container(
@@ -34,28 +35,22 @@ class OperatorCardComponent extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Ocupação:",
-                      style: Theme.of(context).textTheme.displaySmall),
-                  Text(operatorEntity.operatorOcupation ?? "",
-                      style: Theme.of(context).textTheme.displaySmall),
+                  Text("Ocupação:", style: fontSize),
+                  Text(operatorEntity.operatorOcupation ?? "", style: fontSize),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Número do Caixa:",
-                      style: Theme.of(context).textTheme.displaySmall),
-                  Text("${operatorEntity.operatorNumber}",
-                      style: Theme.of(context).textTheme.displaySmall),
+                  Text("Número do Caixa:", style: fontSize),
+                  Text("${operatorEntity.operatorNumber}", style: fontSize),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("E-mail:",
-                      style: Theme.of(context).textTheme.displaySmall),
-                  Text(operatorEntity.operatorEmail ?? "",
-                      style: Theme.of(context).textTheme.displaySmall),
+                  Text("E-mail:", style: fontSize),
+                  Text(operatorEntity.operatorEmail ?? "", style: fontSize),
                 ],
               ),
             ],

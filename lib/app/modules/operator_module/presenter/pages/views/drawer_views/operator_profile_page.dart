@@ -26,6 +26,7 @@ class OperatorProfilePage extends StatefulWidget {
 final _loginController = Modular.get<LoginController>();
 final _loginStore = Modular.get<LoginStore>();
 DrawerPagePosition? drawerPosition;
+bool showOperatorCode = false;
 
 class _OperatorProfilePageState extends State<OperatorProfilePage> {
   @override
@@ -36,6 +37,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final fontSize = Theme.of(context).textTheme.bodySmall;
     _loginController.drawerPosition = DrawerPagePosition.profile;
     return Scaffold(
       appBar: AppBar(),
@@ -154,19 +156,6 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       children: [
-                        /*      OperatorProfileComponent(
-                          height: height,
-                          title: "E-mail:",
-                          backgroundColor: backgroundContainer,
-                          content: widget.operatorEntity.operatorEmail,
-                        ),
-                        SizedBox(height: height * 0.03),
-                        OperatorProfileComponent(
-                          height: height,
-                          title: "Número do caixa:",
-                          backgroundColor: backgroundContainer,
-                          content: "${widget.operatorEntity.operatorNumber}",
-                        ), */
                         OperatorCardComponent(
                             height: height * 0.15,
                             width: width,
@@ -188,14 +177,12 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                                     width: width * 0.35,
                                     items: [
                                       const Icon(Icons.access_time_rounded),
-                                      const Text("Abertura:"),
+                                      Text("Abertura:", style: fontSize),
                                       Text(
                                         widget.operatorEntity
                                                 .operatorOppening ??
                                             "",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall,
+                                        style: fontSize,
                                       ),
                                     ],
                                   ),
@@ -205,15 +192,26 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                                     width: width * 0.35,
                                     backgroundColor: secondaryColor,
                                     items: [
-                                      const Text("Código Ops."),
+                                      Text("Código Ops.", style: fontSize),
                                       Text(
-                                        widget.operatorEntity.operatorCode ??
-                                            "",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall,
+                                        showOperatorCode
+                                            ? widget.operatorEntity
+                                                    .operatorCode ??
+                                                ""
+                                            : "......",
+                                        style: fontSize,
                                       ),
-                                      const Icon(Icons.visibility_outlined),
+                                      GestureDetector(
+                                        onTap: (() {
+                                          setState(() {
+                                            showOperatorCode =
+                                                !showOperatorCode;
+                                          });
+                                        }),
+                                        child: Icon(showOperatorCode
+                                            ? Icons.visibility_outlined
+                                            : Icons.visibility_off_outlined),
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -227,38 +225,6 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                             ],
                           ),
                         ),
-
-                        /*  SizedBox(height: height * 0.03),
-                        OperatorProfileComponent(
-                          height: height,
-                          title: "Anotações nesta semana:",
-                          backgroundColor: backgroundContainer,
-                          content: "7",
-                        ),
-                        SizedBox(height: height * 0.03),
-                        OperatorProfileComponent(
-                          height: height,
-                          title: "Ocupação:",
-                          backgroundColor: backgroundContainer,
-                          content: widget.operatorEntity.operatorOcupation ==
-                                  "operator"
-                              ? "Operador"
-                              : "ADM",
-                        ),
-                        SizedBox(height: height * 0.03),
-                        OperatorProfileComponent(
-                          height: height,
-                          title: "Abertura:",
-                          backgroundColor: backgroundContainer,
-                          content: widget.operatorEntity.operatorOppening,
-                        ),
-                        SizedBox(height: height * 0.03),
-                        OperatorProfileComponent(
-                          height: height,
-                          title: "Código Ops.:",
-                          backgroundColor: backgroundContainer,
-                          content: widget.operatorEntity.operatorCode,
-                        ), */
                       ],
                     ),
                   ),
