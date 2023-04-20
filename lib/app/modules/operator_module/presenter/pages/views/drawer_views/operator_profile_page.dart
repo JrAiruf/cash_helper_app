@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cards/annotations_status_card_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -9,7 +10,6 @@ import '../../../../../login_module/presenter/stores/login_store.dart';
 import '../../../components/cards/operator_card_component.dart';
 import '../../../components/cards/profile_informations_card.dart';
 import '../../../components/tiles/drawer_tile.dart';
-import '../../../components/tiles/operator_profile_component.dart';
 import '../../../components/widgets/cash_helper_drawer.dart';
 
 class OperatorProfilePage extends StatefulWidget {
@@ -110,7 +110,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                height: height * 0.75,
+                height: height * 0.82,
                 decoration: BoxDecoration(
                   color: backgroundContainer,
                   borderRadius: const BorderRadius.only(
@@ -121,7 +121,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
               ),
             ),
             Positioned(
-              top: height * 0.11,
+              top: height * 0.04,
               left: width * 0.36,
               child: Text(
                 widget.operatorEntity.operatorName ?? "",
@@ -129,7 +129,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
               ),
             ),
             Positioned(
-              top: height * 0.09,
+              top: height * 0.02,
               left: width * 0.05,
               child: const Icon(
                 Icons.person,
@@ -137,10 +137,10 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
               ),
             ),
             Positioned(
-              top: height * 0.25,
+              top: height * 0.2,
               left: width * 0.01,
               child: SizedBox(
-                height: height * 0.65,
+                height: height * 0.55,
                 width: width * 0.98,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -153,7 +153,6 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         /*      OperatorProfileComponent(
                           height: height,
@@ -170,27 +169,63 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                         ), */
                         OperatorCardComponent(
                             height: height * 0.15,
+                            width: width,
                             backgroundColor: secondaryColor,
                             operatorEntity: widget.operatorEntity),
-                        ProfileInformationCard(
-                          backgroundColor: secondaryColor,
-                          height: height * 0.15,
-                          width: width * 0.33,
-                          items: [
-                            Icon(Icons.access_time_rounded),
-                            const Text("Abertura:"),
-                            Text(widget.operatorEntity.operatorOppening ?? ""),
-                          ],
-                        ),
-                        ProfileInformationCard(
-                          backgroundColor: secondaryColor,
-                          height: height * 0.15,
-                          width: width * 0.33,
-                          items: [
-                            const Text("Código Ops."),
-                            Text(widget.operatorEntity.operatorCode ?? ""),
-                            Icon(Icons.visibility_outlined),
-                          ],
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ProfileInformationCard(
+                                    backgroundColor: secondaryColor,
+                                    height: height * 0.165,
+                                    width: width * 0.35,
+                                    items: [
+                                      const Icon(Icons.access_time_rounded),
+                                      const Text("Abertura:"),
+                                      Text(
+                                        widget.operatorEntity
+                                                .operatorOppening ??
+                                            "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  ProfileInformationCard(
+                                    height: height * 0.165,
+                                    width: width * 0.35,
+                                    backgroundColor: secondaryColor,
+                                    items: [
+                                      const Text("Código Ops."),
+                                      Text(
+                                        widget.operatorEntity.operatorCode ??
+                                            "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall,
+                                      ),
+                                      const Icon(Icons.visibility_outlined),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 10),
+                              AnnotationsStatusCardComponent(
+                                height: height * 0.34,
+                                width: width * 0.54,
+                                backgroundColor: secondaryColor,
+                              ),
+                            ],
+                          ),
                         ),
 
                         /*  SizedBox(height: height * 0.03),
