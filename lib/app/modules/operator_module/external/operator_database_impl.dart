@@ -65,13 +65,34 @@ class OperatorDatabaseImpl implements OperatorDatabase {
     }
   }
 
+ @override
+  Future<void> changeOperatorPassword(String? newPassword, String? operatorCode,
+      String? currentPassword, String? collection) async {
+    final operatorsCollection = _datasource.collection(collection!);
+    if (_validOperatorData(newPassword, operatorCode, currentPassword)) {
+      final operatorsCollectionDocs = await operatorsCollection.get();
+      final databaseOperatorsList = operatorsCollectionDocs.docs
+          .map((databaseOperator) => databaseOperator.data())
+          .toList();
+      final operatorToBeModified = databaseOperatorsList.firstWhere(
+        (operatorMap) {
+          return operatorMap["operatorPassword"] == currentPassword &&
+              operatorMap["operatorCode"] == operatorCode;
+        },
+      );
+     await _auth.signInWithEmailAndPassword(
+          email: operatorToBeModified["operatorEmail"],
+          password: operatorToBeModified["operatorPassword"]);
+          await _auth.currentUser?.updatePassword(newPassword!);
+      await operatorsCollection
+          .doc(operatorToBeModified["operatorId"])
+          .update({"operatorPassword": newPassword});
+    } else {
+      return;
+    }
+  }
+
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail != null && operatorCode != null && operatorPassword != null;
-      
-        @override
-        Future? changeOperatorPassword(String? newPassword, String? operatorCode, String? currentPassword, String? collection) {
-          // TODO: implement changeOperatorPassword
-          throw UnimplementedError();
-        }
 }

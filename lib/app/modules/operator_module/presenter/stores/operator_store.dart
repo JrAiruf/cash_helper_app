@@ -15,13 +15,13 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
 
   Future<void> changeOperatorEmail(String newEmail, String operatorCode,
       String operatorPassword, String collection) async {
-    value = OperatorSettingsLoadingState();
+    value = ChangeEmailLoadingState();
     await Future.delayed(const Duration(seconds: 3));
     if (_validOperatorCredentials(
         newEmail, operatorCode, operatorPassword, collection)) {
-      value = OperatorModifiedEmailState();
-      return await _usecases.changeOperatorEmail(
+      await _usecases.changeOperatorEmail(
           newEmail, operatorCode, operatorPassword, collection);
+      value = OperatorModifiedEmailState();
     } else {
       return;
     }
@@ -29,10 +29,12 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
 
   Future<void> changeOperatorPassword(String newPassword, String operatorCode,
       String currentPassword, String collection) async {
+    value = ChangePasswordLoadingState();
     if (_validOperatorCredentials(
         newPassword, operatorCode, currentPassword, collection)) {
-      return await _usecases.changeOperatorPassword(
+      await _usecases.changeOperatorPassword(
           newPassword, operatorCode, currentPassword, collection);
+      value = OperatorSettingsInitialState();
     } else {
       return;
     }

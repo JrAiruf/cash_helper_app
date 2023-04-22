@@ -26,7 +26,7 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
   final _operatorStore = Modular.get<OperatorStore>();
   String? _confirmationEmail;
   String? _operatorPassword;
-  bool? _emailChanged;
+  bool _emailChanged = false;
 
   @override
   void initState() {
@@ -86,7 +86,7 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                           valueListenable: _operatorStore,
                           builder: (_, operatorSettingsState, __) {
                             if (operatorSettingsState
-                                is OperatorSettingsLoadingState) {
+                                is ChangeEmailLoadingState) {
                               return Center(
                                 child: CircularProgressIndicator(
                                   color: tertiaryColor,
@@ -170,6 +170,7 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                             }
                             if (operatorSettingsState
                                 is OperatorModifiedEmailState) {
+                              _emailChanged = true;
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -201,44 +202,47 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                     size: 85,
                   ),
                 ),
-                Positioned(
-                  top: height * 0.7,
-                  left: width * 0.025,
-                  child: Center(
-                    child: CashHelperElevatedButton(
-                      width: width * 0.95,
-                      height: 60,
-                      radius: 12,
-                      onPressed: () async {
-                        _changeEmailFormKey.currentState?.validate();
-                        _changeEmailFormKey.currentState?.save();
-                        if (_changeEmailFormKey.currentState!.validate()) {
-                          if (_confirmationEmail ==
-                                  widget.operatorEntity.operatorEmail &&
-                              _operatorPassword ==
-                                  widget.operatorEntity.operatorPassword &&
-                              widget.operatorEntity.operatorEmail != null) {
-                            await _operatorStore
-                                .changeOperatorEmail(
-                                    widget.operatorEntity.operatorEmail!,
-                                    widget.operatorEntity.operatorCode!,
-                                    widget.operatorEntity.operatorPassword!,
-                                    widget.operatorEntity.operatorOcupation!)
-                                .catchError((e) {
+                Visibility(
+                  visible: !_emailChanged,
+                  child: Positioned(
+                    top: height * 0.7,
+                    left: width * 0.025,
+                    child: Center(
+                      child: CashHelperElevatedButton(
+                        width: width * 0.95,
+                        height: 60,
+                        radius: 12,
+                        onPressed: () async {
+                          _changeEmailFormKey.currentState?.validate();
+                          _changeEmailFormKey.currentState?.save();
+                          if (_changeEmailFormKey.currentState!.validate()) {
+                            if (_confirmationEmail ==
+                                    widget.operatorEntity.operatorEmail &&
+                                _operatorPassword ==
+                                    widget.operatorEntity.operatorPassword &&
+                                widget.operatorEntity.operatorEmail != null) {
+                              await _operatorStore
+                                  .changeOperatorEmail(
+                                      widget.operatorEntity.operatorEmail!,
+                                      widget.operatorEntity.operatorCode!,
+                                      widget.operatorEntity.operatorPassword!,
+                                      widget.operatorEntity.operatorOcupation!)
+                                  .catchError((e) {
+                                _controller.modificationEmailFailure(context);
+                              });
+                              setState(() {
+                                _emailChanged = true;
+                              });
+                            } else {
                               _controller.modificationEmailFailure(context);
-                            });
-                            setState(() {
-                              _emailChanged = true;
-                            });
-                          } else {
-                            _controller.modificationEmailFailure(context);
+                            }
                           }
-                        }
-                      },
-                      buttonName: "Alterar",
-                      backgroundColor: tertiaryColor,
-                      nameColor: Colors.white,
-                      fontSize: 16,
+                        },
+                        buttonName: "Alterar",
+                        backgroundColor: tertiaryColor,
+                        nameColor: Colors.white,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
@@ -250,8 +254,3 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
     );
   }
 }
-
-
-/* 
-
- */

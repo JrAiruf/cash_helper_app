@@ -8,17 +8,38 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
+import '../../../../stores/operator_store_states.dart';
 
-class ChangeOperatorPasswordPage extends StatelessWidget {
+class ChangeOperatorPasswordPage extends StatefulWidget {
   ChangeOperatorPasswordPage({super.key, required this.operatorEntity});
 
   OperatorEntity operatorEntity;
+
+  @override
+  State<ChangeOperatorPasswordPage> createState() =>
+      _ChangeOperatorPasswordPageState();
+}
+
+class _ChangeOperatorPasswordPageState
+    extends State<ChangeOperatorPasswordPage> {
   final _controller = Modular.get<OperatorController>();
+
   final _changePasswordFormKey = GlobalKey<FormState>();
+
   final _operatorStore = Modular.get<OperatorStore>();
+
   String? _newPassword = "";
+  String? _operatorCode = "";
   String? _confirmationPassword = "";
   String? _operatorPassword = "";
+  bool _emailChanged = false;
+
+  @override
+  void initState() {
+    _operatorStore.restartOperatorSettingsPage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -70,73 +91,86 @@ class ChangeOperatorPasswordPage extends StatelessWidget {
                       child: ValueListenableBuilder(
                           valueListenable: _operatorStore,
                           builder: (_, state, __) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: height * 0.02, width: width),
-                                Text(
-                                  "Alterar Senha:",
-                                  style:
-                                      Theme.of(context).textTheme.displayMedium,
+                            if (state is ChangePasswordLoadingState) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: tertiaryColor,
                                 ),
-                                SizedBox(height: height * 0.04, width: width),
-                                SingleChildScrollView(
-                                  child: Form(
-                                    key: _changePasswordFormKey,
-                                    child: SizedBox(
-                                      height: height * 0.38,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          CashHelperTextFieldComponent(
-                                            radius: 15,
-                                            validator: (value) => _controller
-                                                .passwordValidate(value),
-                                            onSaved: (value) =>
-                                                _newPassword = value,
-                                            controller:
-                                                _controller.passwordField,
-                                            label: 'Nova Senha',
-                                          ),
-                                          CashHelperTextFieldComponent(
-                                            radius: 15,
-                                            validator: (value) => _controller
-                                                .passwordValidate(value),
-                                            onSaved: (value) =>
-                                                _confirmationPassword = value,
-                                            controller:
-                                                _controller.passwordField,
-                                            label: 'Confirmar nova senha',
-                                          ),
-                                          CashHelperTextFieldComponent(
-                                            radius: 15,
-                                            validator: (value) => _controller
-                                                .cashierCodeValidate(value),
-                                            onSaved: (value) => operatorEntity
-                                                .operatorCode = value,
-                                            controller:
-                                                _controller.cashierCodeField,
-                                            label: 'Código Ops',
-                                          ),
-                                          CashHelperTextFieldComponent(
-                                            radius: 15,
-                                            validator: (value) => _controller
-                                                .passwordValidate(value),
-                                            onSaved: (value) =>
-                                                _operatorPassword = value,
-                                            controller:
-                                                _controller.passwordField,
-                                            label: 'Senha',
-                                          ),
-                                        ],
+                              );
+                            }
+                            if (state is OperatorSettingsInitialState) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: height * 0.02, width: width),
+                                  Text(
+                                    "Alterar Senha:",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
+                                  ),
+                                  SizedBox(height: height * 0.04, width: width),
+                                  SingleChildScrollView(
+                                    child: Form(
+                                      key: _changePasswordFormKey,
+                                      child: SizedBox(
+                                        height: height * 0.38,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CashHelperTextFieldComponent(
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .passwordValidate(value),
+                                              onSaved: (value) =>
+                                                  _newPassword = value,
+                                              controller:
+                                                  _controller.passwordField,
+                                              label: 'Nova Senha',
+                                            ),
+                                            CashHelperTextFieldComponent(
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .passwordValidate(value),
+                                              onSaved: (value) =>
+                                                  _confirmationPassword = value,
+                                              controller:
+                                                  _controller.passwordField,
+                                              label: 'Confirmar nova senha',
+                                            ),
+                                            CashHelperTextFieldComponent(
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .cashierCodeValidate(value),
+                                              onSaved: (value) => widget
+                                                  .operatorEntity
+                                                  .operatorCode = value,
+                                              controller:
+                                                  _controller.cashierCodeField,
+                                              label: 'Código Ops',
+                                            ),
+                                            CashHelperTextFieldComponent(
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .passwordValidate(value),
+                                              onSaved: (value) =>
+                                                  _operatorPassword = value,
+                                              controller:
+                                                  _controller.passwordField,
+                                              label: 'Senha',
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            );
+                                ],
+                              );
+                            } else {
+                              return Container();
+                            }
                           }),
                     ),
                   ),
@@ -157,7 +191,31 @@ class ChangeOperatorPasswordPage extends StatelessWidget {
                       width: width * 0.95,
                       height: 60,
                       radius: 12,
-                      onPressed: () {},
+                      onPressed: () {
+                        _changePasswordFormKey.currentState!.validate();
+                        _changePasswordFormKey.currentState!.save();
+                        if (_changePasswordFormKey.currentState!.validate()) {
+                          if (_controller.validOperatorCredentials(
+                                  widget.operatorEntity,
+                                  _operatorCode!,
+                                  _operatorPassword!) &&
+                              _newPassword == _confirmationPassword) {
+                            _operatorStore
+                                .changeOperatorPassword(
+                                    _newPassword!,
+                                    _operatorCode!,
+                                    _operatorPassword!,
+                                    widget.operatorEntity.operatorOcupation!)
+                                .catchError(
+                              (e) {
+                                _controller.modificationEmailFailure(context);
+                              },
+                            );
+                          } else {
+                            _controller.modificationPasswordFailure(context);
+                          }
+                        }
+                      },
                       buttonName: "Alterar",
                       backgroundColor: tertiaryColor,
                       nameColor: Colors.white,
