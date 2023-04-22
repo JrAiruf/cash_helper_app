@@ -1,7 +1,8 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/controller/operator_controller.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/stores/operator_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -12,8 +13,12 @@ class ChangeOperatorPasswordPage extends StatelessWidget {
   ChangeOperatorPasswordPage({super.key, required this.operatorEntity});
 
   OperatorEntity operatorEntity;
-  final _controller = Modular.get<LoginController>();
-
+  final _controller = Modular.get<OperatorController>();
+  final _changePasswordFormKey = GlobalKey<FormState>();
+  final _operatorStore = Modular.get<OperatorStore>();
+  String? _newPassword = "";
+  String? _confirmationPassword = "";
+  String? _operatorPassword = "";
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -60,69 +65,79 @@ class ChangeOperatorPasswordPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: SizedBox(
-                      height: height * 0.5,
-                      width: width * 0.95,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: height * 0.02, width: width),
-                          Text(
-                            "Alterar Senha:",
-                            style: Theme.of(context).textTheme.displayMedium,
-                          ),
-                          SizedBox(height: height * 0.04, width: width),
-                          SingleChildScrollView(
-                            child: Form(
-                              child: SizedBox(
-                                height: height * 0.38,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CashHelperTextFieldComponent(
-                                      radius: 15,
-                                      validator: (value) =>
-                                          _controller.passwordValidate(value),
-                                      onSaved: (value) => operatorEntity
-                                          .operatorPassword = value,
-                                      controller: _controller.passwordField,
-                                      label: 'Nova Senha',
-                                    ),
-                                    CashHelperTextFieldComponent(
-                                      radius: 15,
-                                      validator: (value) =>
-                                          _controller.passwordValidate(value),
-                                      onSaved: (value) => operatorEntity
-                                          .operatorPassword = value,
-                                      controller: _controller.passwordField,
-                                      label: 'Confirmar nova senha',
-                                    ),
-                                    CashHelperTextFieldComponent(
-                                      radius: 15,
-                                      validator: (value) => _controller
-                                          .cashierCodeValidate(value),
-                                      onSaved: (value) =>
-                                          operatorEntity.operatorCode = value,
-                                      controller: _controller.cashierCodeField,
-                                      label: 'Código Ops',
-                                    ),
-                                    CashHelperTextFieldComponent(
-                                      radius: 15,
-                                      validator: (value) =>
-                                          _controller.passwordValidate(value),
-                                      onSaved: (value) => operatorEntity
-                                          .operatorPassword = value,
-                                      controller: _controller.passwordField,
-                                      label: 'Senha',
-                                    ),
-                                  ],
+                      height: height * 0.65,
+                      width: width * 0.9,
+                      child: ValueListenableBuilder(
+                          valueListenable: _operatorStore,
+                          builder: (_, state, __) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: height * 0.02, width: width),
+                                Text(
+                                  "Alterar Senha:",
+                                  style:
+                                      Theme.of(context).textTheme.displayMedium,
                                 ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                                SizedBox(height: height * 0.04, width: width),
+                                SingleChildScrollView(
+                                  child: Form(
+                                    key: _changePasswordFormKey,
+                                    child: SizedBox(
+                                      height: height * 0.38,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          CashHelperTextFieldComponent(
+                                            radius: 15,
+                                            validator: (value) => _controller
+                                                .passwordValidate(value),
+                                            onSaved: (value) =>
+                                                _newPassword = value,
+                                            controller:
+                                                _controller.passwordField,
+                                            label: 'Nova Senha',
+                                          ),
+                                          CashHelperTextFieldComponent(
+                                            radius: 15,
+                                            validator: (value) => _controller
+                                                .passwordValidate(value),
+                                            onSaved: (value) =>
+                                                _confirmationPassword = value,
+                                            controller:
+                                                _controller.passwordField,
+                                            label: 'Confirmar nova senha',
+                                          ),
+                                          CashHelperTextFieldComponent(
+                                            radius: 15,
+                                            validator: (value) => _controller
+                                                .cashierCodeValidate(value),
+                                            onSaved: (value) => operatorEntity
+                                                .operatorCode = value,
+                                            controller:
+                                                _controller.cashierCodeField,
+                                            label: 'Código Ops',
+                                          ),
+                                          CashHelperTextFieldComponent(
+                                            radius: 15,
+                                            validator: (value) => _controller
+                                                .passwordValidate(value),
+                                            onSaved: (value) =>
+                                                _operatorPassword = value,
+                                            controller:
+                                                _controller.passwordField,
+                                            label: 'Senha',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                     ),
                   ),
                 ),

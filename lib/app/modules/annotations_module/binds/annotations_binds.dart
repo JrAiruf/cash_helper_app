@@ -12,18 +12,18 @@ import 'package:uuid/uuid.dart';
 
 import '../presenter/pages/create_annotations_page.dart';
 
-abstract class AnnotationsModule {
+abstract class AppAnnotationModule {
   static routes() => ModuleRoute(
         "/annotations-module",
-        module: AnnotationModuleCore.instance,
+        module: AnnotationModule.instance,
         transition: TransitionType.fadeIn,
       );
-  static final binds = AnnotationModuleCore.instance.binds;
+  static final module = AnnotationModule.instance;
 }
 
-class AnnotationModuleCore extends Module {
-  AnnotationModuleCore._();
-  static final instance = AnnotationModuleCore._();
+class AnnotationModule extends Module {
+  AnnotationModule._();
+  static final instance = AnnotationModule._();
   @override
   List<Bind<Object>> get binds => bindsList;
   @override

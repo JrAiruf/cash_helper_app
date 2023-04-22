@@ -14,25 +14,25 @@ import '../presenter/controllers/login_controller.dart';
 import '../presenter/pages/recovery_password_page.dart';
 import '../presenter/stores/login_store.dart';
 
-abstract class LoginModule {
+abstract class AppLoginModule {
   static routes() => ModuleRoute(
         Modular.initialRoute,
-        module: LoginModuleCore.instance,
+        module: LoginModule.instance,
         transition: TransitionType.fadeIn,
       );
-  static final binds = LoginModuleCore.instance.bindList;
+  static final module = LoginModule.instance;
 }
 
-class LoginModuleCore extends Module {
-  LoginModuleCore._();
-  static final instance = LoginModuleCore._();
+class LoginModule extends Module {
+  LoginModule._();
+  static final instance = LoginModule._();
 
   @override
   List<Bind<Object>> get binds => bindList;
   @override
-  List<ModularRoute> get routes => routeList;
+  List<ModularRoute> get routes => routesList;
 
-  final routeList = <ModularRoute>[
+  final routesList = <ModularRoute>[
     ChildRoute(
       "/create-new-operator",
       child: (_, args) => const CreateOperatorPage(),

@@ -8,15 +8,15 @@ import 'modules/annotations_module/binds/annotations_binds.dart';
 class CashHelperAppModule extends Module {
   @override
   List<Bind<Object>> get binds => [
-        ...LoginModule.binds,
-        ...OperatorModule.binds,
-        ...AnnotationsModule.binds,
         Bind.singleton<AppStore>((i) => AppStore()),
+        ...AppLoginModule.module.bindList,
+        ...AppOperatorModule.module.bindList,
+        ...AppAnnotationModule.module.bindsList,
       ];
   @override
   List<ModularRoute> get routes => [
-        LoginModule.routes(),
-        OperatorModule.routes(),
-        AnnotationsModule.routes(),
+        AppLoginModule.routes(),
+        AppOperatorModule.routes(),
+        AppAnnotationModule.routes(),
       ];
 }

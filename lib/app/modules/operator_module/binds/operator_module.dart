@@ -14,25 +14,25 @@ import '../presenter/pages/views/drawer_views/operator_settings_page.dart';
 import '../presenter/pages/views/drawer_views/settings_pages/change_operator_password_page.dart';
 import '../presenter/stores/operator_store.dart';
 
-abstract class OperatorModule {
+abstract class AppOperatorModule {
   static routes() => ModuleRoute(
         "/operator-module",
-        module: OperatorModuleCore.instance,
+        module: OperatorModule.instance,
         transition: TransitionType.fadeIn,
       );
-  static final binds = OperatorModuleCore.instance.bindList;
+  static final module = OperatorModule.instance;
 }
 
-class OperatorModuleCore extends Module {
-  OperatorModuleCore._();
-  static final instance = OperatorModuleCore._();
+class OperatorModule extends Module {
+  OperatorModule._();
+  static final instance = OperatorModule._();
 
   @override
   List<Bind<Object>> get binds => bindList;
   @override
-  List<ModularRoute> get routes => routeList;
+  List<ModularRoute> get routes => routesList;
 
-  final routeList = <ModularRoute>[
+  final routesList = <ModularRoute>[
     ChildRoute(
       "/",
       child: (_, args) => OperartorHomePage(

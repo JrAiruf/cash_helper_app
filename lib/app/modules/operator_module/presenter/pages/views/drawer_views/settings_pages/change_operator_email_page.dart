@@ -174,8 +174,8 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("Email Alterado!"),
-                                    SizedBox(
+                                    const Text("Email Alterado!"),
+                                    const SizedBox(
                                       height: 45,
                                     ),
                                     Icon(

@@ -27,6 +27,17 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
     }
   }
 
+  Future<void> changeOperatorPassword(String newPassword, String operatorCode,
+      String currentPassword, String collection) async {
+    if (_validOperatorCredentials(
+        newPassword, operatorCode, currentPassword, collection)) {
+      return await _usecases.changeOperatorPassword(
+          newPassword, operatorCode, currentPassword, collection);
+    } else {
+      return;
+    }
+  }
+
   bool _validOperatorCredentials(String newEmail, String operatorCode,
           String operatorPassword, String collection) =>
       newEmail.isNotEmpty &&
