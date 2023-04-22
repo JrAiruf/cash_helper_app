@@ -28,4 +28,10 @@ class OperatorRepositoryImpl implements OperatorRepository {
    bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail!.isNotEmpty && operatorCode!.isNotEmpty && operatorPassword!.isNotEmpty;
+      
+        @override
+        Future? changeOperatorPassword(String? newPassword, String? operatorCode, String? currentPassword, String? collection) {
+          // TODO: implement changeOperatorPassword
+          throw UnimplementedError();
+        }
 }
