@@ -28,6 +28,17 @@ class OperatorUsecasesImpl implements OperatorUsecases {
     }
   }
 
+  @override
+  Future? changeOperatorPassword(String? newPassword, String? operatorCode,
+      String? currentPassword, String? collection) async {
+    if (_validOperatorData(newPassword, operatorCode, currentPassword)) {
+      return await _repository.changeOperatorPassword(
+          newPassword, operatorCode, currentPassword, collection);
+    } else {
+      return;
+    }
+  }
+
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail != null && operatorCode != null && operatorPassword != null;
