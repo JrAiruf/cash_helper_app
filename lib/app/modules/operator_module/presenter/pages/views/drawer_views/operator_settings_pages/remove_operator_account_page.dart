@@ -106,7 +106,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                     child: Form(
                                       key: _deleteAccountFormKey,
                                       child: SizedBox(
-                                        height: height * 0.28,
+                                        height: height * 0.29,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

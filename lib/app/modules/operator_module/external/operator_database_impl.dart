@@ -12,8 +12,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   final FirebaseFirestore _datasource;
 
   @override
-  Future changeOperatorEmail(
-      String? newEmail, String? operatorCode, String? operatorPassword, String? collection) async {
+  Future changeOperatorEmail(String? newEmail, String? operatorCode,
+      String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
     if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
@@ -40,10 +40,13 @@ class OperatorDatabaseImpl implements OperatorDatabase {
     }
   }
 
-@override
-  Future<void> deleteOperatorAccount(String? operatorCode, String? operatorEmail,
-      String? operatorPassword, String? collection) async {
-   final operatorsCollection = _datasource.collection(collection ?? "");
+  @override
+  Future<void> deleteOperatorAccount(
+      String? operatorCode,
+      String? operatorEmail,
+      String? operatorPassword,
+      String? collection) async {
+    final operatorsCollection = _datasource.collection(collection ?? "");
     if (_validOperatorData(operatorEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
@@ -51,7 +54,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
           .toList();
       final operatorToBeDeleted = databaseOperatorsList.firstWhere(
         (operatorMap) {
-          return operatorMap["operatorPassword"] == operatorPassword && operatorMap["operatorEmail"] == operatorEmail &&
+          return operatorMap["operatorPassword"] == operatorPassword &&
+              operatorMap["operatorEmail"] == operatorEmail &&
               operatorMap["operatorCode"] == operatorCode;
         },
       );
@@ -65,7 +69,7 @@ class OperatorDatabaseImpl implements OperatorDatabase {
     }
   }
 
- @override
+  @override
   Future<void> changeOperatorPassword(String? newPassword, String? operatorCode,
       String? currentPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
@@ -80,10 +84,10 @@ class OperatorDatabaseImpl implements OperatorDatabase {
               operatorMap["operatorCode"] == operatorCode;
         },
       );
-     await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: operatorToBeModified["operatorEmail"],
           password: operatorToBeModified["operatorPassword"]);
-          await _auth.currentUser?.updatePassword(newPassword!);
+      await _auth.currentUser?.updatePassword(newPassword!);
       await operatorsCollection
           .doc(operatorToBeModified["operatorId"])
           .update({"operatorPassword": newPassword});
