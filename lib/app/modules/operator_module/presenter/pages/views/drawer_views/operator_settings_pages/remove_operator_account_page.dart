@@ -229,8 +229,8 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                 );
                                 await _operatorStore
                                     .deleteOperatorAccount(
-                                        _operatorEmail!,
                                         _operatorCode!,
+                                        _operatorEmail!,
                                         _operatorPassword!,
                                         widget
                                             .operatorEntity.operatorOcupation!)
