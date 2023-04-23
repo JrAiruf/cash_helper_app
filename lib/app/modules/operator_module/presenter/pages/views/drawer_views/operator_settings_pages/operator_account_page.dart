@@ -163,7 +163,7 @@ class OperatorAccountPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Modular.to.pushReplacementNamed("./remove-operator-account",
+                  Modular.to.pushNamed("./remove-operator-account",
                       arguments: operatorEntity);
                 },
                 child: Text(
