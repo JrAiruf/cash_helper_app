@@ -105,8 +105,11 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                       ? tertiaryColor
                       : Colors.white,
                   onTap: () {
+                    print(currentOperator.operatorId);
+                    print(currentOperator.operatorEmail);
+                    print(currentOperator.operatorPassword);
                     Modular.to.pop();
-                    Modular.to.pushNamed("./operator-settings",
+                    Modular.to.navigate("./operator-settings",
                         arguments: currentOperator);
                   },
                 ),

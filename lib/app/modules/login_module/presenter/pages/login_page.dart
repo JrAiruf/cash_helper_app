@@ -1,4 +1,5 @@
 // ignore_for_file: unnecessary_string_interpolations
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ final _loginFormKey = GlobalKey<FormState>();
 final _loginStore = Modular.get<LoginStore>();
 final _loginController = Modular.get<LoginController>();
 final _userLogin = OperatorEntity();
+bool _passwordVisible = false;
 
 class _LoginPageState extends State<LoginPage> {
   @override
@@ -79,8 +81,19 @@ class _LoginPageState extends State<LoginPage> {
                                     height: 30,
                                   ),
                                   CashHelperTextFieldComponent(
+                                    suffixIcon: VisibilityIconComponent(
+                                        onTap: () {
+                                          setState(() {
+                                            _passwordVisible =
+                                                !_passwordVisible;
+                                          });
+                                        },
+                                        forVisibility: Icons.visibility,
+                                        forHideContent: Icons.visibility_off,
+                                        condition: _passwordVisible),
                                     radius: 15,
-                                    obscureText: true,
+                                    obscureText:
+                                        _passwordVisible == true ? false : true,
                                     validator: (value) => _loginController
                                         .passwordValidate(value),
                                     onSaved: (value) =>

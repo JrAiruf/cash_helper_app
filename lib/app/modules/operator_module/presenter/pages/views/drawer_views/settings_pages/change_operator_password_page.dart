@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/stores/operator_store.dart';
@@ -29,11 +30,16 @@ class _ChangeOperatorPasswordPageState
   final _operatorStore = Modular.get<OperatorStore>();
 
   String? _newPassword = "";
-  String? _operatorCode = "";
   String? _confirmationPassword = "";
+  String? _operatorCode = "";
   String? _operatorPassword = "";
-  bool _emailChanged = false;
 
+  bool _passwordChanged = false;
+
+  bool _newPasswordVisible = false;
+  bool _confirmationPasswordVisible = false;
+  bool _operatorCodeVisible = false;
+  bool _passwordVisible = false;
   @override
   void initState() {
     _operatorStore.restartOperatorSettingsPage();
@@ -121,6 +127,23 @@ class _ChangeOperatorPasswordPageState
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             CashHelperTextFieldComponent(
+                                              suffixIcon:
+                                                  VisibilityIconComponent(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _newPasswordVisible =
+                                                        !_newPasswordVisible;
+                                                  });
+                                                },
+                                                condition: _newPasswordVisible,
+                                                forVisibility: Icons.visibility,
+                                                forHideContent:
+                                                    Icons.visibility_off,
+                                              ),
+                                              obscureText:
+                                                  _newPasswordVisible == true
+                                                      ? false
+                                                      : true,
                                               radius: 15,
                                               validator: (value) => _controller
                                                   .passwordValidate(value),
@@ -131,6 +154,25 @@ class _ChangeOperatorPasswordPageState
                                               label: 'Nova Senha',
                                             ),
                                             CashHelperTextFieldComponent(
+                                              suffixIcon:
+                                                  VisibilityIconComponent(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _confirmationPasswordVisible =
+                                                        !_confirmationPasswordVisible;
+                                                  });
+                                                },
+                                                condition:
+                                                    _confirmationPasswordVisible,
+                                                forVisibility: Icons.visibility,
+                                                forHideContent:
+                                                    Icons.visibility_off,
+                                              ),
+                                              obscureText:
+                                                  _confirmationPasswordVisible ==
+                                                          true
+                                                      ? false
+                                                      : true,
                                               radius: 15,
                                               validator: (value) => _controller
                                                   .passwordValidate(value),
@@ -141,17 +183,50 @@ class _ChangeOperatorPasswordPageState
                                               label: 'Confirmar nova senha',
                                             ),
                                             CashHelperTextFieldComponent(
+                                              suffixIcon:
+                                                  VisibilityIconComponent(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _operatorCodeVisible =
+                                                        !_operatorCodeVisible;
+                                                  });
+                                                },
+                                                condition: _operatorCodeVisible,
+                                                forVisibility: Icons.visibility,
+                                                forHideContent:
+                                                    Icons.visibility_off,
+                                              ),
+                                              obscureText:
+                                                  _operatorCodeVisible == true
+                                                      ? false
+                                                      : true,
                                               radius: 15,
                                               validator: (value) => _controller
                                                   .cashierCodeValidate(value),
-                                              onSaved: (value) => widget
-                                                  .operatorEntity
-                                                  .operatorCode = value,
+                                              onSaved: (value) =>
+                                                  _operatorCode = value,
                                               controller:
                                                   _controller.cashierCodeField,
                                               label: 'Código Ops',
                                             ),
                                             CashHelperTextFieldComponent(
+                                              suffixIcon:
+                                                  VisibilityIconComponent(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _passwordVisible =
+                                                        !_passwordVisible;
+                                                  });
+                                                },
+                                                condition: _passwordVisible,
+                                                forVisibility: Icons.visibility,
+                                                forHideContent:
+                                                    Icons.visibility_off,
+                                              ),
+                                              obscureText:
+                                                  _passwordVisible == true
+                                                      ? false
+                                                      : true,
                                               radius: 15,
                                               validator: (value) => _controller
                                                   .passwordValidate(value),
@@ -168,6 +243,11 @@ class _ChangeOperatorPasswordPageState
                                   ),
                                 ],
                               );
+                            }
+                            if (state is OperatorModifiedPasswordState) {
+                              Modular.to.navigate("./",
+                                  arguments: widget.operatorEntity);
+                              return Container();
                             } else {
                               return Container();
                             }
@@ -183,43 +263,50 @@ class _ChangeOperatorPasswordPageState
                     size: 85,
                   ),
                 ),
-                Positioned(
-                  top: height * 0.7,
-                  left: width * 0.025,
-                  child: Center(
-                    child: CashHelperElevatedButton(
-                      width: width * 0.95,
-                      height: 60,
-                      radius: 12,
-                      onPressed: () {
-                        _changePasswordFormKey.currentState!.validate();
-                        _changePasswordFormKey.currentState!.save();
-                        if (_changePasswordFormKey.currentState!.validate()) {
-                          if (_controller.validOperatorCredentials(
-                                  widget.operatorEntity,
-                                  _operatorCode!,
-                                  _operatorPassword!) &&
-                              _newPassword == _confirmationPassword) {
-                            _operatorStore
-                                .changeOperatorPassword(
-                                    _newPassword!,
+                Visibility(
+                  visible: !_passwordChanged,
+                  child: Positioned(
+                    top: height * 0.7,
+                    left: width * 0.025,
+                    child: Center(
+                      child: CashHelperElevatedButton(
+                        width: width * 0.95,
+                        height: 60,
+                        radius: 12,
+                        onPressed: () {
+                          _changePasswordFormKey.currentState!.validate();
+                          _changePasswordFormKey.currentState!.save();
+                          if (_changePasswordFormKey.currentState!.validate()) {
+                            if (_controller.validOperatorCredentials(
+                                    widget.operatorEntity,
                                     _operatorCode!,
-                                    _operatorPassword!,
-                                    widget.operatorEntity.operatorOcupation!)
-                                .catchError(
-                              (e) {
-                                _controller.modificationEmailFailure(context);
-                              },
-                            );
-                          } else {
-                            _controller.modificationPasswordFailure(context);
+                                    _operatorPassword!) &&
+                                _newPassword == _confirmationPassword) {
+                              setState(
+                                () {
+                                  _passwordChanged = true;
+                                },
+                              );
+                              _operatorStore
+                                  .changeOperatorPassword(
+                                      widget.operatorEntity, _newPassword!)
+                                  .catchError(
+                                (e) {
+                                  _controller.modificationEmailFailure(context);
+                                  _operatorStore.restartOperatorSettingsPage();
+                                },
+                              );
+                              widget.operatorEntity.operatorPassword = _newPassword;
+                            } else {
+                              _controller.modificationPasswordFailure(context);
+                            }
                           }
-                        }
-                      },
-                      buttonName: "Alterar",
-                      backgroundColor: tertiaryColor,
-                      nameColor: Colors.white,
-                      fontSize: 16,
+                        },
+                        buttonName: "Alterar",
+                        backgroundColor: tertiaryColor,
+                        nameColor: Colors.white,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),

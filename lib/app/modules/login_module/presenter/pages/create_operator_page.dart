@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../operator_module/domain/entities/operator_entity.dart';
 import '../components/cash_helper_text_field.dart';
+import '../components/visibility_icon_component.dart';
 import '../controllers/login_controller.dart';
 import '../stores/login_store.dart';
 
@@ -21,6 +22,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
   bool? startWithEnabledOperator;
   final _cashierOperator = OperatorEntity();
   String? _confirmationPassword;
+  bool _passwordVisible = false;
+  bool _confirmationPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +99,19 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Email',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    suffixIcon: VisibilityIconComponent(
+                                        onTap: () {
+                                          setState(() {
+                                            _passwordVisible =
+                                                !_passwordVisible;
+                                          });
+                                        },
+                                        forVisibility: Icons.visibility,
+                                        forHideContent: Icons.visibility_off,
+                                        condition: _passwordVisible),
                                     radius: 15,
-                                    obscureText: true,
+                                    obscureText:
+                                        _passwordVisible == true ? false : true,
                                     validator: (value) =>
                                         _createOperatorController
                                             .passwordValidate(value),
@@ -108,8 +122,21 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Senha',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    suffixIcon: VisibilityIconComponent(
+                                        onTap: () {
+                                          setState(() {
+                                            _confirmationPasswordVisible =
+                                                !_confirmationPasswordVisible;
+                                          });
+                                        },
+                                        forVisibility: Icons.visibility,
+                                        forHideContent: Icons.visibility_off,
+                                        condition: _passwordVisible),
                                     radius: 15,
-                                    obscureText: true,
+                                    obscureText:
+                                        _confirmationPasswordVisible == true
+                                            ? false
+                                            : true,
                                     validator: (value) =>
                                         _createOperatorController
                                             .passwordValidate(value),
@@ -177,7 +204,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       _createOperatorFormKey.currentState!.save();
                       _cashierOperator.operatorClosing = 'Pendente';
                       _cashierOperator.operatorOcupation = "operator";
-                      _cashierOperator.operatorEnabled = startWithEnabledOperator ?? false ? true : false;
+                      _cashierOperator.operatorEnabled =
+                          startWithEnabledOperator ?? false ? true : false;
                       _cashierOperator.operatorOppening =
                           _cashierOperator.operatorEnabled == true
                               ? cashierOppeningTime

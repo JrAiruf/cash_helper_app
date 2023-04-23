@@ -26,8 +26,8 @@ class CashHelperTextFieldComponent extends StatelessWidget {
       this.validator,
       this.onValidate});
 
-  final IconData? icon;
-  final IconData? suffixIcon;
+  final Widget? icon;
+  final Widget? suffixIcon;
   final Color? primaryColor;
   final Color? errorColor;
   final Color? textColor;
@@ -91,17 +91,8 @@ class CashHelperTextFieldComponent extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius ?? 5),
           borderSide: BorderSide(color: primaryColor ?? Colors.white),
         ),
-        prefixIcon: Icon(
-          icon,
-          color: primaryColor ?? Colors.white,
-        ),
-        suffixIcon: GestureDetector(
-          onTap: iconTap,
-          child: Icon(
-            suffixIcon,
-            color: primaryColor ?? Colors.white,
-          ),
-        ),
+        prefixIcon: icon,
+        suffixIcon: suffixIcon,
       ),
       keyboardType: input,
     );

@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/stores/operator_store_states.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,27 +14,27 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
     value = OperatorSettingsInitialState();
   }
 
-  Future<void> changeOperatorEmail(String newEmail, String operatorCode,
-      String operatorPassword, String collection) async {
+  Future<void> changeOperatorEmail(OperatorEntity operatorEntity, String newEmail) async {
     value = ChangeEmailLoadingState();
     await Future.delayed(const Duration(seconds: 3));
     if (_validOperatorCredentials(
-        newEmail, operatorCode, operatorPassword, collection)) {
+        newEmail, operatorEntity.operatorCode!, operatorEntity.operatorPassword!, operatorEntity.operatorOcupation!)) {
       await _usecases.changeOperatorEmail(
-          newEmail, operatorCode, operatorPassword, collection);
+          newEmail, operatorEntity.operatorCode, operatorEntity.operatorPassword, operatorEntity.operatorOcupation);
       value = OperatorModifiedEmailState();
     } else {
       return;
     }
   }
 
-  Future<void> changeOperatorPassword(String newPassword, String operatorCode,
-      String currentPassword, String collection) async {
+  Future<void> changeOperatorPassword(OperatorEntity operatorEntity, String newPassword) async {
     value = ChangePasswordLoadingState();
+    await Future.delayed(const Duration(seconds: 3));
     if (_validOperatorCredentials(
-        newPassword, operatorCode, currentPassword, collection)) {
+        newPassword, operatorEntity.operatorCode!, operatorEntity.operatorPassword!, operatorEntity.operatorOcupation!)) {
+      value = OperatorModifiedPasswordState();
       await _usecases.changeOperatorPassword(
-          newPassword, operatorCode, currentPassword, collection);
+          newPassword, operatorEntity.operatorCode, operatorEntity.operatorPassword, operatorEntity.operatorOcupation);
       value = OperatorSettingsInitialState();
     } else {
       return;

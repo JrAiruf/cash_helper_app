@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../../../../../login_module/presenter/components/visibility_icon_component.dart';
 
 class ChangeOperatorEmailPage extends StatefulWidget {
   ChangeOperatorEmailPage({super.key, required this.operatorEntity});
@@ -24,10 +25,14 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
   final _controller = Modular.get<OperatorController>();
   final _changeEmailFormKey = GlobalKey<FormState>();
   final _operatorStore = Modular.get<OperatorStore>();
+
   String? _confirmationEmail;
   String? _operatorPassword;
+  String? _operatorCode;
   bool _emailChanged = false;
 
+  bool _operatorCodeVisible = false;
+  bool _passwordVisible = false;
   @override
   void initState() {
     _operatorStore.restartOperatorSettingsPage();
@@ -138,7 +143,23 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                                               label: 'Confirmar E-mail',
                                             ),
                                             CashHelperTextFieldComponent(
-                                              obscureText: true,
+                                              suffixIcon:
+                                                  VisibilityIconComponent(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _operatorCodeVisible =
+                                                        !_operatorCodeVisible;
+                                                  });
+                                                },
+                                                condition: _operatorCodeVisible,
+                                                forVisibility: Icons.visibility,
+                                                forHideContent:
+                                                    Icons.visibility_off,
+                                              ),
+                                              obscureText:
+                                                  _operatorCodeVisible == true
+                                                      ? false
+                                                      : true,
                                               radius: 15,
                                               validator: (value) => _controller
                                                   .cashierCodeValidate(value),
@@ -150,7 +171,23 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                                               label: 'Código Ops',
                                             ),
                                             CashHelperTextFieldComponent(
-                                              obscureText: true,
+                                              suffixIcon:
+                                                  VisibilityIconComponent(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _passwordVisible =
+                                                        !_passwordVisible;
+                                                  });
+                                                },
+                                                condition: _passwordVisible,
+                                                forVisibility: Icons.visibility,
+                                                forHideContent:
+                                                    Icons.visibility_off,
+                                              ),
+                                              obscureText:
+                                                  _passwordVisible == true
+                                                      ? false
+                                                      : true,
                                               radius: 15,
                                               validator: (value) => _controller
                                                   .passwordValidate(value),
@@ -170,23 +207,8 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                             }
                             if (operatorSettingsState
                                 is OperatorModifiedEmailState) {
-                              _emailChanged = true;
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text("Email Alterado!"),
-                                    const SizedBox(
-                                      height: 45,
-                                    ),
-                                    Icon(
-                                      size: 45,
-                                      Icons.done,
-                                      color: tertiaryColor,
-                                    ),
-                                  ],
-                                ),
-                              );
+                              Modular.to.navigate("./", arguments: widget.operatorEntity);
+                              return Container();
                             } else {
                               return Container();
                             }
@@ -221,18 +243,20 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                                 _operatorPassword ==
                                     widget.operatorEntity.operatorPassword &&
                                 widget.operatorEntity.operatorEmail != null) {
+                              setState(
+                                () {
+                                  _emailChanged = true;
+                                },
+                              );
                               await _operatorStore
-                                  .changeOperatorEmail(
-                                      widget.operatorEntity.operatorEmail!,
-                                      widget.operatorEntity.operatorCode!,
-                                      widget.operatorEntity.operatorPassword!,
-                                      widget.operatorEntity.operatorOcupation!)
+                                  .changeOperatorEmail(widget.operatorEntity, widget.operatorEntity.operatorEmail!)
                                   .catchError((e) {
                                 _controller.modificationEmailFailure(context);
                               });
                               setState(() {
                                 _emailChanged = true;
                               });
+                              widget.operatorEntity.operatorEmail = _confirmationEmail;
                             } else {
                               _controller.modificationEmailFailure(context);
                             }
