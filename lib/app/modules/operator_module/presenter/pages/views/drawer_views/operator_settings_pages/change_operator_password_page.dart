@@ -67,7 +67,7 @@ class _ChangeOperatorPasswordPageState
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: height * 0.92,
+                    height: height * 0.915,
                     decoration: BoxDecoration(
                       color: backgroundContainer,
                       borderRadius: const BorderRadius.only(

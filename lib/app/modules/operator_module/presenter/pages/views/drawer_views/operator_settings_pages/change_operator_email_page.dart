@@ -60,7 +60,7 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: height * 0.92,
+                    height: height * 0.915,
                     decoration: BoxDecoration(
                       color: backgroundContainer,
                       borderRadius: const BorderRadius.only(
@@ -257,9 +257,6 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                                       widget.operatorEntity.operatorOcupation!)
                                   .catchError((e) {
                                 _controller.modificationEmailFailure(context);
-                              });
-                              setState(() {
-                                _emailChanged = true;
                               });
                               widget.operatorEntity.operatorEmail =
                                   _confirmationEmail;

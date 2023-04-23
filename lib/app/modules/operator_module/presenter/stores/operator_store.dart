@@ -38,6 +38,18 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
       return;
     }
   }
+  Future<void> deleteOperatorAccount(String operatorCode, String operatorEmail,String operatorPassword, String collection) async {
+    value = DeleteOperatorAccountLoadingState();
+    await Future.delayed(const Duration(seconds: 3));
+    if (_validOperatorCredentials(
+        operatorCode, operatorEmail, operatorPassword, collection)) {
+      value = AccountDeletedState();
+      await _usecases.deleteOperatorAccount(operatorCode, operatorEmail, operatorPassword, collection);
+    } else {
+      value = OperatorSettingsInitialState();
+      return;
+    }
+  }
 
   bool _validOperatorCredentials(String newEmail, String operatorCode,
           String operatorPassword, String collection) =>

@@ -9,15 +9,17 @@ class OperatorController {
 
   bool? loadingOperatorSettings;
   bool validOperatorCredentials(OperatorEntity operatorEntity,
-      String operatorCode, String currentPassword) {
+      String operatorCode, String currentPassword,
+      {String? operatorEmail}) {
     return currentPassword == operatorEntity.operatorPassword &&
-        operatorCode == operatorEntity.operatorCode;
+        operatorCode == operatorEntity.operatorCode &&
+        operatorEmail == operatorEntity.operatorEmail;
   }
 
   String? emailValidate(String? value) {
     return value!.isNotEmpty && value != '' && value.contains('@')
         ? null
-        : 'E-mail Inválido! Insira o email do caixa.';
+        : 'E-mail Inválido! Insira o email da conta.';
   }
 
   String? cashierCodeValidate(String? value) {
@@ -47,6 +49,38 @@ class OperatorController {
             children: const [
               Text(
                 'E-mail não modificado. Verifique os dados e tente novamente',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13),
+              ),
+              Icon(
+                Icons.warning_rounded,
+                size: 35,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  deletionFailure(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        backgroundColor: Colors.redAccent,
+        elevation: 5,
+        duration: const Duration(seconds: 2),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                'Conta não deletada. Verifique os dados e tente novamente',
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -115,6 +149,68 @@ class OperatorController {
                 const SizedBox(height: 15),
                 Text(
                   'Atenção! Esse procedimento deletará todos os seus dados e não pode ser desfeito. Deseja Continuar?',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 35),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: onPressed,
+                      style: TextButton.styleFrom(
+                          side: const BorderSide(color: Colors.white)),
+                      child: const Text(
+                        'Sim',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Modular.to.pop();
+                      },
+                      style: TextButton.styleFrom(
+                          side: const BorderSide(color: Colors.white)),
+                      child: const Text(
+                        'Não',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  askForAccountDeletion(
+      BuildContext context, Color color, void Function()? onPressed) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return SimpleDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          backgroundColor: color,
+          alignment: Alignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(Icons.warning),
+                const SizedBox(height: 15),
+                Text(
+                  'Essa operação não poderá ser desfeita.Deseja deletar sua conta permanentemente?',
                   style: Theme.of(context).textTheme.bodySmall,
                   textAlign: TextAlign.center,
                 ),

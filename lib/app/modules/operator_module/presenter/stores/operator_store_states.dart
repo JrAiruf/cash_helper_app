@@ -10,6 +10,10 @@ class ChangeEmailLoadingState implements OperatorStoreStates {}
 
 class ChangePasswordLoadingState implements OperatorStoreStates {}
 
+class DeleteOperatorAccountLoadingState implements OperatorStoreStates {}
+
+class AccountDeletedState implements OperatorStoreStates {}
+
 class OperatorModifiedEmailState implements OperatorStoreStates {}
 
 class OperatorModifiedPasswordState implements OperatorStoreStates {}
