@@ -14,29 +14,27 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
     value = OperatorSettingsInitialState();
   }
 
-  Future<void> changeOperatorEmail(OperatorEntity operatorEntity, String newEmail) async {
+  Future<void> changeOperatorEmail(String newEmail, String operatorCode,String currentPassword, String collection) async {
     value = ChangeEmailLoadingState();
     await Future.delayed(const Duration(seconds: 3));
     if (_validOperatorCredentials(
-        newEmail, operatorEntity.operatorCode!, operatorEntity.operatorPassword!, operatorEntity.operatorOcupation!)) {
-      await _usecases.changeOperatorEmail(
-          newEmail, operatorEntity.operatorCode, operatorEntity.operatorPassword, operatorEntity.operatorOcupation);
+        newEmail, operatorCode, currentPassword, collection)) {
+      await _usecases.changeOperatorEmail(newEmail, operatorCode, currentPassword, collection);
       value = OperatorModifiedEmailState();
     } else {
       return;
     }
   }
 
-  Future<void> changeOperatorPassword(OperatorEntity operatorEntity, String newPassword) async {
+  Future<void> changeOperatorPassword(String newPassword, String operatorCode,String currentPassword, String collection) async {
     value = ChangePasswordLoadingState();
     await Future.delayed(const Duration(seconds: 3));
     if (_validOperatorCredentials(
-        newPassword, operatorEntity.operatorCode!, operatorEntity.operatorPassword!, operatorEntity.operatorOcupation!)) {
+        newPassword, operatorCode, currentPassword, collection)) {
       value = OperatorModifiedPasswordState();
-      await _usecases.changeOperatorPassword(
-          newPassword, operatorEntity.operatorCode, operatorEntity.operatorPassword, operatorEntity.operatorOcupation);
-      value = OperatorSettingsInitialState();
+      await _usecases.changeOperatorPassword(newPassword, operatorCode, currentPassword, collection);
     } else {
+      value = OperatorSettingsInitialState();
       return;
     }
   }

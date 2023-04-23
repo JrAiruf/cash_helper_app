@@ -23,8 +23,7 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final store =
-        context.watch<AppStore>((store) => store.appTheme);
+    final store = context.watch<AppStore>((store) => store.appTheme);
     return Container(
       decoration: BoxDecoration(color: primaryColor),
       child: Stack(
@@ -35,7 +34,7 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
               height: height * 0.75,
               decoration: BoxDecoration(
                 color: backgroundContainer,
-                borderRadius:const BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
@@ -113,7 +112,7 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
             top: height * 0.03,
             left: width * 0.05,
             child: const Icon(
-              Icons.settings,
+              Icons.color_lens_outlined,
               size: 85,
             ),
           ),

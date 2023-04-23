@@ -4,7 +4,9 @@ import 'package:cash_helper_app/app/modules/operator_module/domain/entities/oper
 import 'package:flutter/cupertino.dart';
 
 class LoginStore extends ValueNotifier<LoginStates?> {
-  LoginStore({required LoginUsecases usecases}) : _usecases = usecases, super(LoginInitialState());
+  LoginStore({required LoginUsecases usecases})
+      : _usecases = usecases,
+        super(LoginInitialState());
 
   final LoginUsecases _usecases;
   bool loadingData = false;

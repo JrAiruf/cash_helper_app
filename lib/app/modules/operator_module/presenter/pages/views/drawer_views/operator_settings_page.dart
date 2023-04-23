@@ -3,8 +3,8 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_item.dart';
-import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/settings_pages/app_apearence_page.dart';
-import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/settings_pages/operator_account_page.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/operator_settings_pages/app_apearence_page.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/operator_settings_pages/operator_account_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../login_module/presenter/stores/login_store.dart';

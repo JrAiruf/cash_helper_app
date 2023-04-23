@@ -34,7 +34,7 @@ class OperatorAccountPage extends StatelessWidget {
               height: height * 0.75,
               decoration: BoxDecoration(
                 color: backgroundContainer,
-                borderRadius:const BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
@@ -144,7 +144,7 @@ class OperatorAccountPage extends StatelessWidget {
             top: height * 0.03,
             left: width * 0.05,
             child: const Icon(
-              Icons.settings,
+              Icons.person_search_outlined,
               size: 85,
             ),
           ),
@@ -156,13 +156,16 @@ class OperatorAccountPage extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: redLight),
                   backgroundColor: Colors.white,
-                  fixedSize: Size(width * 0.7, 45),
+                  fixedSize: Size(width * 0.7, 30),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(color: redLight),
                     borderRadius: BorderRadius.circular(35),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Modular.to.pushReplacementNamed("./remove-operator-account",
+                      arguments: operatorEntity);
+                },
                 child: Text(
                   "RemoverConta",
                   style: TextStyle(color: redLight),
