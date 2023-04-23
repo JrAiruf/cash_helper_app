@@ -171,8 +171,6 @@ class LoginController {
     );
   }
 
-  
-
   checkInformationTrialFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -242,7 +240,7 @@ class LoginController {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(

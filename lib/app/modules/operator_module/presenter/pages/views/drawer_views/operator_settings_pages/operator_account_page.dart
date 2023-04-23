@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/controller/operator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -16,6 +17,7 @@ class OperatorAccountPage extends StatelessWidget {
   OperatorEntity operatorEntity;
   BottomNavigationBarPosition? position;
   PageController? controller;
+  final _controller = Modular.get<OperatorController>();
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -163,8 +165,11 @@ class OperatorAccountPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Modular.to.pushNamed("./remove-operator-account",
-                      arguments: operatorEntity);
+                  _controller.removeAccountWarning(context, primaryColor, () {
+                    Modular.to.pop();
+                    Modular.to.pushNamed("./remove-operator-account",
+                        arguments: operatorEntity);
+                  });
                 },
                 child: Text(
                   "RemoverConta",
