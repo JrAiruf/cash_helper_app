@@ -111,7 +111,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   OptionsPageMenuComponent(
-                    onTap: () => Modular.to.navigate("/annotations-module/"),
+                    onTap: () => Modular.to.navigate("/annotations-module/${widget.operatorId}"),
                     elevation: 10,
                     itemName: "Criar Anotação",
                     radius: 15,
