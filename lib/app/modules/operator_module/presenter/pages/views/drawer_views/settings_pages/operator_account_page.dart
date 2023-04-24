@@ -125,9 +125,9 @@ class OperatorAccountPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Text(
+                      Text(
                         "........",
-                        style: TextStyle(fontSize: 35, color: Colors.white),
+                        style: TextStyle(fontSize: 35, color: surfaceColor),
                       ),
                       TextButton(
                         style: TextButton.styleFrom(

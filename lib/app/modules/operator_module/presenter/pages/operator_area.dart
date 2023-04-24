@@ -60,7 +60,7 @@ class _OperatorArea extends State<OperatorArea> {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                color: Colors.white,
+                color: surfaceColor,
                 onPressed: () {
                   Modular.to.navigate("/operator-module/",
                       arguments: currentOperator);

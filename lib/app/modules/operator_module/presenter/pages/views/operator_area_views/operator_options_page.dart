@@ -24,6 +24,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
@@ -54,7 +55,10 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                 const Icon(Icons.person, size: 85),
                 SizedBox(height: height * 0.01),
                 Text('Júnior Oliveira',
-                    style: Theme.of(context).textTheme.displayMedium),
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: surfaceColor)),
                 SizedBox(height: height * 0.02),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +67,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                     SizedBox(width: width * 0.05),
                     CircleAvatar(
                         radius: 15,
-                        backgroundColor: Colors.white,
+                        backgroundColor: surfaceColor,
                         child: Text(
                           "2",
                           style: TextStyle(
@@ -81,20 +85,20 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   OptionsPageMenuComponent(
-                    elevation: 5,
+                    elevation: 10,
                     itemName: "Listar Anotações",
                     radius: 15,
-                    borderColor: Colors.white,
+                    borderColor: surfaceColor,
                     itemColor: primaryColor,
                     icon: Icons.view_list_outlined,
                     height: height * 0.18,
                     width: width * 0.38,
                   ),
                   OptionsPageMenuComponent(
-                    elevation: 5,
+                    elevation: 10,
                     itemName: "Pesquisar",
                     radius: 15,
-                    borderColor: Colors.white,
+                    borderColor: surfaceColor,
                     itemColor: primaryColor,
                     icon: Icons.search,
                     height: height * 0.18,
@@ -108,20 +112,20 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                 children: [
                   OptionsPageMenuComponent(
                     onTap: () => Modular.to.navigate("/annotations-module/"),
-                    elevation: 5,
+                    elevation: 10,
                     itemName: "Criar Anotação",
                     radius: 15,
-                    borderColor: Colors.white,
+                    borderColor: surfaceColor,
                     itemColor: primaryColor,
                     icon: Icons.note_add_outlined,
                     height: height * 0.18,
                     width: width * 0.38,
                   ),
                   OptionsPageMenuComponent(
-                    elevation: 5,
+                    elevation: 10,
                     itemName: "Fechar Caixa",
                     radius: 15,
-                    borderColor: Colors.white,
+                    borderColor: surfaceColor,
                     itemColor: primaryColor,
                     icon: Icons.power_settings_new_sharp,
                     height: height * 0.18,

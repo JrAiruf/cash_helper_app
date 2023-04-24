@@ -25,6 +25,7 @@ class OptionsPageMenuComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -45,7 +46,10 @@ class OptionsPageMenuComponent extends StatelessWidget {
               ),
               Text(
                 itemName ?? '',
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: surfaceColor),
               ),
             ],
           ),
