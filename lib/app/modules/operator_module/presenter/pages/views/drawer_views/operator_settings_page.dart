@@ -3,8 +3,8 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/cash_helper_bottom_navigation_item.dart';
-import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/operator_settings_pages/app_apearence_page.dart';
-import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/operator_settings_pages/operator_account_page.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/settings_pages/app_apearence_page.dart';
+import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/views/drawer_views/settings_pages/operator_account_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../login_module/presenter/stores/login_store.dart';
@@ -33,6 +33,7 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
@@ -53,7 +54,7 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
             itemColor:
                 _loginController.drawerPosition == DrawerPagePosition.home
                     ? tertiaryColor
-                    : Colors.white,
+                    : surfaceColor,
             onTap: () {
               Modular.to.pop();
               Modular.to.navigate("./", arguments: widget.operatorEntity);
@@ -67,7 +68,7 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
             itemColor:
                 _loginController.drawerPosition == DrawerPagePosition.profile
                     ? tertiaryColor
-                    : Colors.white,
+                    : surfaceColor,
             onTap: () {
               Modular.to.pop();
               Modular.to.pushReplacementNamed("./operator-profile",
@@ -82,7 +83,7 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
             itemColor:
                 _loginController.drawerPosition == DrawerPagePosition.settings
                     ? tertiaryColor
-                    : Colors.white,
+                    : surfaceColor,
             onTap: () {
               Modular.to.pop();
             },
@@ -100,7 +101,11 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
                 },
               );
             },
-            child: Text("Sair", style: Theme.of(context).textTheme.titleMedium),
+            child: Text("Sair",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: surfaceColor)),
           ),
         ],
       ),
@@ -121,7 +126,7 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: backgroundContainer),
         child: CashHelperBottomNavigationBar(
-          itemContentColor: Colors.white,
+          itemContentColor: surfaceColor,
           pageController: _settingsPageController,
           itemColor: tertiaryColor,
           position: widget.position,

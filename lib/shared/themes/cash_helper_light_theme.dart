@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'generated/color_schemes.g.dart';
 
-const appBarColor = Color(0xFF662F78);
+const appBarColor = Color(0xFFE6E1E6);
 final cashHelperLightTheme = ThemeData(
     appBarTheme: const AppBarTheme(
       actionsIconTheme: IconThemeData(
-        color: Colors.white,
+        color: Colors.black,
         size: 30,
       ),
       color: appBarColor,
       iconTheme: IconThemeData(
-        color: Colors.white,
+        color: Colors.black,
         size: 30,
       ),
     ),

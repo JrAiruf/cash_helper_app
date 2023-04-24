@@ -135,6 +135,7 @@ class OperatorController {
     showDialog(
       context: context,
       builder: (_) {
+        final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -149,7 +150,10 @@ class OperatorController {
                 const SizedBox(height: 15),
                 Text(
                   'Atenção! Esse procedimento deletará todos os seus dados e não pode ser desfeito. Deseja Continuar?',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: surfaceColor),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 35),
@@ -159,13 +163,13 @@ class OperatorController {
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Sim',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                     TextButton(
@@ -173,13 +177,13 @@ class OperatorController {
                         Modular.to.pop();
                       },
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Não',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                   ],
@@ -197,6 +201,7 @@ class OperatorController {
     showDialog(
       context: context,
       builder: (_) {
+        final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -211,7 +216,10 @@ class OperatorController {
                 const SizedBox(height: 15),
                 Text(
                   'Essa operação não poderá ser desfeita.Deseja deletar sua conta permanentemente?',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: surfaceColor),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 35),
@@ -221,13 +229,13 @@ class OperatorController {
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Sim',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                     TextButton(
@@ -235,13 +243,13 @@ class OperatorController {
                         Modular.to.pop();
                       },
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Não',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                   ],

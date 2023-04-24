@@ -38,6 +38,7 @@ class _OperatorArea extends State<OperatorArea> {
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
@@ -98,7 +99,7 @@ class _OperatorArea extends State<OperatorArea> {
               decoration: BoxDecoration(color: backgroundColor),
               child: CashHelperBottomNavigationBar(
                 itemColor: tertiaryColor,
-                itemContentColor: Colors.white,
+                itemContentColor: surfaceColor,
                 pageController: _operatorPageController,
                 position: widget.position,
                 backgroundColor: primaryColor,

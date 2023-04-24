@@ -20,10 +20,11 @@ class CashHelperBottomNavigationItem extends StatelessWidget {
       this.onTap});
   @override
   Widget build(BuildContext context) {
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(color: itemBackgroundColor ?? Colors.white),
+        decoration: BoxDecoration(color: itemBackgroundColor ?? surfaceColor),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 4),
           child: Column(
@@ -31,12 +32,12 @@ class CashHelperBottomNavigationItem extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: contentColor,
+                color: contentColor ?? surfaceColor,
               ),
               Text(
                 itemName ?? '',
                 style: TextStyle(
-                    color: contentColor,
+                    color: contentColor ?? surfaceColor,
                     fontSize: 13,
                     fontWeight: FontWeight.w300),
               ),

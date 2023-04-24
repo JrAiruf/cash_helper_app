@@ -21,6 +21,7 @@ class OperatorAccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final redLight = Theme.of(context).colorScheme.error;
@@ -65,12 +66,18 @@ class OperatorAccountPage extends StatelessWidget {
                   SizedBox(height: height * 0.01, width: width),
                   Text(
                     "Informações:",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.05, width: width),
                   Text(
                     "E-mail:",
-                    style: Theme.of(context).textTheme.labelSmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.03, width: width),
                   Row(
@@ -79,7 +86,10 @@ class OperatorAccountPage extends StatelessWidget {
                     children: [
                       Text(
                         operatorEntity.operatorEmail ?? "",
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: surfaceColor),
                       ),
                       TextButton(
                         style: TextButton.styleFrom(
@@ -105,7 +115,10 @@ class OperatorAccountPage extends StatelessWidget {
                   SizedBox(height: height * 0.06, width: width),
                   Text(
                     "Senha:",
-                    style: Theme.of(context).textTheme.labelSmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.03, width: width),
                   Row(

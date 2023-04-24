@@ -106,9 +106,6 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                       ? tertiaryColor
                       : surfaceColor,
                   onTap: () {
-                    print(currentOperator.operatorId);
-                    print(currentOperator.operatorEmail);
-                    print(currentOperator.operatorPassword);
                     Modular.to.pop();
                     Modular.to.navigate("./operator-settings",
                         arguments: currentOperator);
@@ -128,7 +125,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                     );
                   },
                   child: Text("Sair",
-                      style: Theme.of(context).textTheme.titleMedium),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(color: surfaceColor)),
                 ),
               ],
             ),
@@ -188,7 +188,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                         "Sem Anotações no momento",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .displaySmall,
+                                            .displaySmall
+                                            ?.copyWith(color: surfaceColor),
                                       ),
                                     ),
                                   ),
@@ -208,7 +209,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                         child: Text("Acesso rápido:",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodySmall),
+                                                .bodySmall
+                                                ?.copyWith(
+                                                    color: surfaceColor)),
                                       ),
                                       const SizedBox(height: 30),
                                       Row(
@@ -229,7 +232,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                               Text("Anotações",
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodySmall)
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                          color: surfaceColor))
                                             ],
                                           ),
                                           QuickAccessButton(
@@ -246,7 +251,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                               Text("Nova Anotação",
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodySmall)
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                          color: surfaceColor))
                                             ],
                                           ),
                                         ],
@@ -266,8 +273,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                       horizontal: 40),
                                   child: Text(
                                     "Últimas anotações:",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: surfaceColor),
                                   ),
                                 ),
                                 Padding(
@@ -280,7 +289,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                         "Sem Anotações no momento",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .displaySmall,
+                                            .displaySmall
+                                            ?.copyWith(color: surfaceColor),
                                       ),
                                     ),
                                   ),
@@ -300,7 +310,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                         child: Text("Acesso rápido:",
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodySmall),
+                                                .bodySmall
+                                                ?.copyWith(
+                                                    color: surfaceColor)),
                                       ),
                                       const SizedBox(height: 30),
                                       Row(
@@ -321,7 +333,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                               Text("Anotações",
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodySmall)
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                          color: surfaceColor))
                                             ],
                                           ),
                                           QuickAccessButton(
@@ -338,7 +352,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                               Text("Nova Anotação",
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .bodySmall)
+                                                      .bodySmall
+                                                      ?.copyWith(
+                                                          color: surfaceColor))
                                             ],
                                           ),
                                         ],
@@ -365,7 +381,6 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           ),
                           buttonName: "Área do operador",
                           backgroundColor: tertiaryColor,
-                          nameColor: surfaceColor,
                           fontSize: 16,
                         ),
                       ),
@@ -394,9 +409,13 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         ),
                       ),
                       const SizedBox(width: 25),
-                      Text(currentOperator.operatorEnabled!
-                          ? "Ativo"
-                          : "Inativo"),
+                      Text(
+                        currentOperator.operatorEnabled! ? "Ativo" : "Inativo",
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(color: surfaceColor),
+                      ),
                     ],
                   ),
                 ),

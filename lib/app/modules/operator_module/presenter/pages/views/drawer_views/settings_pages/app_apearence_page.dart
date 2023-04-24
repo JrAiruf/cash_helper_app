@@ -19,6 +19,7 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
@@ -63,7 +64,10 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
                   SizedBox(height: height * 0.05, width: width),
                   Text(
                     "Tema:",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.06),
                   RadioListTile<ThemeMode>(
@@ -75,7 +79,10 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
                     },
                     title: Text(
                       "Claro",
-                      style: Theme.of(context).textTheme.displaySmall,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(color: surfaceColor),
                     ),
                   ),
                   SizedBox(height: height * 0.025),
@@ -88,7 +95,10 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
                     },
                     title: Text(
                       "Escuro",
-                      style: Theme.of(context).textTheme.displaySmall,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(color: surfaceColor),
                     ),
                   ),
                   SizedBox(height: height * 0.025),
@@ -101,7 +111,10 @@ class _AppAppearencePageState extends State<AppAppearencePage> {
                     },
                     title: Text(
                       "Sistema",
-                      style: Theme.of(context).textTheme.displaySmall,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(color: surfaceColor),
                     ),
                   ),
                 ],

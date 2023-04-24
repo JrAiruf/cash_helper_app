@@ -273,6 +273,7 @@ class LoginController {
     showDialog(
       context: context,
       builder: (_) {
+        final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -283,11 +284,11 @@ class LoginController {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('Deseja Sair?',
+                Text('Deseja Sair?',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Colors.white)),
+                        color: surfaceColor)),
                 const SizedBox(height: 80),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -295,13 +296,13 @@ class LoginController {
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Sim',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                     TextButton(
@@ -309,13 +310,13 @@ class LoginController {
                         Modular.to.pop();
                       },
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Não',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                   ],
