@@ -27,6 +27,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
@@ -50,8 +51,10 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                       color: tertiaryColor,
                     ),
                   ),
-                    SizedBox(height: height * 0.4),
-                    const Text("Aguarde...",)
+                  SizedBox(height: height * 0.4),
+                  const Text(
+                    "Aguarde...",
+                  )
                 ],
               ),
               child: Column(
@@ -60,7 +63,10 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   SizedBox(height: height * 0.1),
                   Text(
                     "Recuperar Senha",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.1),
                   Text(

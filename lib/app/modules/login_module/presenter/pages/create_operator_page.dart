@@ -30,6 +30,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final minutesDateTime = DateTime.now().minute;
@@ -77,6 +78,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
                                         _createOperatorController
@@ -88,6 +91,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Nome',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
                                         _createOperatorController
@@ -99,6 +104,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Email',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     suffixIcon: VisibilityIconComponent(
                                         onTap: () {
                                           setState(() {
@@ -122,6 +129,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Senha',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     suffixIcon: VisibilityIconComponent(
                                         onTap: () {
                                           setState(() {
@@ -147,6 +156,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Confirmar senha',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
                                         _createOperatorController

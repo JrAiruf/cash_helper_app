@@ -42,6 +42,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     return ValueListenableBuilder(
@@ -75,7 +76,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                   itemColor:
                       _loginController.drawerPosition == DrawerPagePosition.home
                           ? tertiaryColor
-                          : Colors.white,
+                          : surfaceColor,
                   onTap: () {
                     Modular.to.pop();
                   },
@@ -88,7 +89,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                   itemColor: _loginController.drawerPosition ==
                           DrawerPagePosition.profile
                       ? tertiaryColor
-                      : Colors.white,
+                      : surfaceColor,
                   onTap: () {
                     Modular.to.pop();
                     Modular.to.pushNamed("./operator-profile",
@@ -103,7 +104,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                   itemColor: _loginController.drawerPosition ==
                           DrawerPagePosition.settings
                       ? tertiaryColor
-                      : Colors.white,
+                      : surfaceColor,
                   onTap: () {
                     print(currentOperator.operatorId);
                     print(currentOperator.operatorEmail);
@@ -221,9 +222,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                             width: width * 0.38,
                                             radius: 15,
                                             items: [
-                                              const Icon(
+                                              Icon(
                                                 Icons.list_alt_outlined,
-                                                color: Colors.white,
+                                                color: surfaceColor,
                                               ),
                                               Text("Anotações",
                                                   style: Theme.of(context)
@@ -238,9 +239,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                             width: width * 0.38,
                                             radius: 15,
                                             items: [
-                                              const Icon(
+                                              Icon(
                                                 Icons.add,
-                                                color: Colors.white,
+                                                color: surfaceColor,
                                               ),
                                               Text("Nova Anotação",
                                                   style: Theme.of(context)
@@ -313,9 +314,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                             width: width * 0.38,
                                             radius: 15,
                                             items: [
-                                              const Icon(
+                                              Icon(
                                                 Icons.list_alt_outlined,
-                                                color: Colors.white,
+                                                color: surfaceColor,
                                               ),
                                               Text("Anotações",
                                                   style: Theme.of(context)
@@ -330,9 +331,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                             width: width * 0.38,
                                             radius: 15,
                                             items: [
-                                              const Icon(
+                                              Icon(
                                                 Icons.add,
-                                                color: Colors.white,
+                                                color: surfaceColor,
                                               ),
                                               Text("Nova Anotação",
                                                   style: Theme.of(context)
@@ -364,7 +365,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           ),
                           buttonName: "Área do operador",
                           backgroundColor: tertiaryColor,
-                          nameColor: Colors.white,
+                          nameColor: surfaceColor,
                           fontSize: 16,
                         ),
                       ),

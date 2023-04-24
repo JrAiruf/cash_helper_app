@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.onSurface;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     return Scaffold(
@@ -69,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   CashHelperTextFieldComponent(
+                                    primaryColor: surfaceColor,
                                     radius: 15,
                                     validator: (value) =>
                                         _loginController.emailValidate(value),
@@ -81,7 +83,9 @@ class _LoginPageState extends State<LoginPage> {
                                     height: 30,
                                   ),
                                   CashHelperTextFieldComponent(
+                                    primaryColor: surfaceColor,
                                     suffixIcon: VisibilityIconComponent(
+                                        iconColor: surfaceColor,
                                         onTap: () {
                                           setState(() {
                                             _passwordVisible =
@@ -116,11 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             Modular.to.pushNamed("./create-new-operator");
                           },
-                          child: const Text(
+                          child: Text(
                             'Criar conta',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                            style: Theme.of(context).textTheme.displaySmall,
                           ),
                         ),
                       ),
@@ -186,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 65,
                       buttonName: 'Entrar',
                       fontSize: 20,
-                      nameColor: Colors.white,
+                      nameColor: surfaceColor,
                       backgroundColor: seccondaryColor,
                     ),
                   ),

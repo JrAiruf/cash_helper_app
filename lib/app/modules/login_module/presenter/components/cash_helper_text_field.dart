@@ -51,6 +51,7 @@ class CashHelperTextFieldComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return TextFormField(
       textInputAction: TextInputAction.go,
       enabled: enable ?? true,
@@ -62,34 +63,37 @@ class CashHelperTextFieldComponent extends StatelessWidget {
       validator: validator,
       textAlign: TextAlign.justify,
       style: TextStyle(
-        color: primaryColor ?? Colors.white,
+        color: primaryColor ?? surfaceColor,
       ),
       decoration: InputDecoration(
         enabled: readOnly == true ? false : true,
         errorStyle:
-            TextStyle(color: primaryColor ?? Colors.white, fontSize: 12),
-        labelStyle: TextStyle(color: primaryColor ?? Colors.white),
+            TextStyle(color: primaryColor ?? surfaceColor, fontSize: 12),
+        labelStyle: TextStyle(color: primaryColor ?? surfaceColor),
         hintText: hint ?? '',
         label: Text(
           label ?? '',
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(color: primaryColor ?? surfaceColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius ?? 5),
           borderSide: BorderSide(
-              color: primaryColor ?? Colors.white.withOpacity(0.2), width: 0.9),
+              color: primaryColor ?? surfaceColor.withOpacity(0.2), width: 0.9),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius ?? 5),
-          borderSide: BorderSide(color: primaryColor ?? Colors.white),
+          borderSide: BorderSide(color: primaryColor ?? surfaceColor),
         ),
         errorBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-              color: primaryColor ?? Colors.white.withOpacity(0.2), width: 0.9),
+              color: primaryColor ?? surfaceColor.withOpacity(0.2), width: 0.9),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius ?? 5),
-          borderSide: BorderSide(color: primaryColor ?? Colors.white),
+          borderSide: BorderSide(color: primaryColor ?? surfaceColor),
         ),
         prefixIcon: icon,
         suffixIcon: suffixIcon,

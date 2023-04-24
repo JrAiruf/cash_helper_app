@@ -22,7 +22,9 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
       appBar: AppBar(),
@@ -56,13 +58,16 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   SizedBox(height: height * 0.1),
                   Text(
                     "Recuperar Senha",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.1),
-                  Text(
-                    "Informe os dados necessários:",
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
+                  Text("Informe os dados necessários:",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: surfaceColor,
+                          ),),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Form(
@@ -130,7 +135,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     buttonName: 'Próximo',
                     fontSize: 20,
                     nameColor: Colors.white,
-                    backgroundColor: tertiaryColor,
+                    backgroundColor: secondaryColor,
                   ),
                 ],
               ),
