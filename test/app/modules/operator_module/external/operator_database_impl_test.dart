@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/operator_module/external/data/operator_database.dart';
+import 'package:cash_helper_app/app/modules/operator_module/external/errors/operation_errors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -84,15 +85,53 @@ class OperatorDatabaseMock implements OperatorDatabase {
               operatorMap["operatorCode"] == operatorCode;
         },
       );
-     await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: operatorToBeModified["operatorEmail"],
           password: operatorToBeModified["operatorPassword"]);
-          await _auth.currentUser?.updatePassword(newPassword!);
+      await _auth.currentUser?.updatePassword(newPassword!);
       await operatorsCollection
           .doc(operatorToBeModified["operatorId"])
           .update({"operatorPassword": newPassword});
     } else {
       return;
+    }
+  }
+
+  @override
+  Future<void> openOperatorCash(
+      String? operatorId, String? collection, String? oppeningTime) async {
+    final operatorsCollection = _datasource.collection(collection!);
+    try {
+      if (_validOperatorData(operatorId, collection, oppeningTime)) {
+        await operatorsCollection.doc(operatorId!).update({
+          "operatorEnabled": true,
+          "operatorOppening": oppeningTime,
+        });
+        print("Deu Certo!");
+      } else {
+        return;
+      }
+    } on FirebaseException catch (e) {
+      print(e.toString());
+      throw OppeningCashError();
+    }
+  }
+
+  @override
+  Future<void> closeOperatorCash(String? operatorId, String? collection) async {
+    try {
+      if (operatorId != null && collection != null) {
+        final operatorsCollection = _datasource.collection(collection);
+        await operatorsCollection.doc(operatorId).update({
+          "operatorEnabled": false,
+          "operatorOppening": "Pendente",
+        });
+        print("Deu Certo!");
+      } else {
+        return;
+      }
+    } on FirebaseException catch (e) {
+      throw OppeningCashError();
     }
   }
 
@@ -218,20 +257,21 @@ void main() {
       test(
         'Change operator password, validating the given arguments',
         () async {
-          final createdOperator =
-              await loginDatabase.register(newOperator, newOperator["operatorOcupation"]);
+          final createdOperator = await loginDatabase.register(
+              newOperator, newOperator["operatorOcupation"]);
           await database.changeOperatorPassword(
               "newPassword",
               createdOperator?["operatorCode"],
               createdOperator?["operatorPassword"],
               createdOperator?["operatorOcupation"]);
-        final databaseDocsList = await firebaseMock
+          final databaseDocsList = await firebaseMock
               .collection(createdOperator?["operatorOcupation"])
               .get();
           final operatorsMapList =
               databaseDocsList.docs.map((e) => e.data()).toList();
           final modifiedOperator = operatorsMapList.firstWhere((operatorMap) {
-            return operatorMap["operatorCode"] == createdOperator?["operatorCode"];
+            return operatorMap["operatorCode"] ==
+                createdOperator?["operatorCode"];
           });
           expect(modifiedOperator["operatorPassword"], equals("newPassword"));
         },
@@ -239,8 +279,8 @@ void main() {
       test(
         'Fail to change operator password',
         () async {
-          final createdOperator =
-              await loginDatabase.register(newOperator, newOperator["operatorOcupation"]);
+          final createdOperator = await loginDatabase.register(
+              newOperator, newOperator["operatorOcupation"]);
           await database.changeOperatorPassword(
               "newPassword",
               null,
@@ -252,9 +292,110 @@ void main() {
           final operatorsMapList =
               databaseDocsList.docs.map((e) => e.data()).toList();
           final modifiedOperator = operatorsMapList.firstWhere((operatorMap) {
-            return operatorMap["operatorCode"] == createdOperator?["operatorCode"];
+            return operatorMap["operatorCode"] ==
+                createdOperator?["operatorCode"];
           });
           expect(modifiedOperator["operatorPassword"], equals("12345678"));
+        },
+      );
+    },
+  );
+  group(
+    'OpenOperatorCash should',
+    () {
+      test(
+        'Change operator enabled status from false to true',
+        () async {
+          final createdOperator = await loginDatabase.register(
+              newOperator, newOperator["operatorOcupation"]);
+          expect(createdOperator?["operatorEnabled"], equals(false));
+          await database.openOperatorCash(createdOperator?["operatorId"],
+              createdOperator?["operatorOcupation"], "Current Time");
+          final operatorCollection = await firebaseMock
+              .collection(createdOperator?["operatorOcupation"])
+              .get();
+          final enabledOperator = operatorCollection.docs.firstWhere(
+              (operatorDocMap) =>
+                  operatorDocMap.data()["operatorEnabled"] == true);
+
+          expect(enabledOperator.data().isNotEmpty, equals(true));
+          expect(enabledOperator.data()["operatorOppening"],
+              equals("Current Time"));
+        },
+      );
+      test(
+        'Fail to enable operator status',
+        () async {
+          final createdOperator =
+              await loginDatabase.register(newOperator, "ocupation");
+          expect(createdOperator?["operatorEnabled"], equals(false));
+          await database.openOperatorCash(
+              null, createdOperator?["operatorOcupation"], null);
+          final operatorCollection =
+              await firebaseMock.collection("ocupation").get();
+          final enabledOperatorsList = operatorCollection.docs
+              .where((operatorDocMap) =>
+                  operatorDocMap.data()["operatorEnabled"] == true)
+              .toList();
+          expect(enabledOperatorsList.isNotEmpty, equals(false));
+        },
+      );
+    },
+  );
+  group(
+    'CloseOperatorCash should',
+    () {
+      test(
+        'Change operator enabled status to false',
+        () async {
+          final createdOperator =
+              await loginDatabase.register(newOperator, "operatorsCollection");
+          expect(createdOperator?["operatorEnabled"], equals(false));
+          await database.openOperatorCash(createdOperator?["operatorId"],
+              "operatorsCollection", "Current Time");
+          final operatorCollection =
+              await firebaseMock.collection("operatorsCollection").get();
+          final enabledOperator = operatorCollection.docs.firstWhere(
+              (operatorDocMap) =>
+                  operatorDocMap.data()["operatorEnabled"] == true);
+          expect(enabledOperator.data().isNotEmpty, equals(true));
+          expect(enabledOperator.data()["operatorOppening"],
+              equals("Current Time"));
+          await database.closeOperatorCash(
+              createdOperator?["operatorId"], "operatorsCollection");
+               final currentOperatorCollection =
+              await firebaseMock.collection("operatorsCollection").get();
+          final operatorDisabled = currentOperatorCollection.docs.firstWhere(
+              (operatorDocMap) =>
+                  operatorDocMap.data()["operatorEnabled"] == false);
+          expect(operatorDisabled.data()["operatorEnabled"], equals(false));
+        },
+      );
+      test(
+        'Fail to disable operator',
+        () async {
+          final createdOperator =
+              await loginDatabase.register(newOperator, "opOcupation");
+          expect(createdOperator?["operatorEnabled"], equals(false));
+          await database.openOperatorCash(createdOperator?["operatorId"],
+              "opOcupation", "Now");
+          final operatorCollection = await firebaseMock
+              .collection("opOcupation")
+              .get();
+          final enabledOperator = operatorCollection.docs.firstWhere(
+              (operatorDocMap) =>
+                  operatorDocMap.data()["operatorEnabled"] == true);
+          expect(enabledOperator.data().isNotEmpty, equals(true));
+          expect(enabledOperator.data()["operatorOppening"],
+              equals("Now"));
+          await database.closeOperatorCash(createdOperator?["operatorId"],null);
+          final operatorDisabledCollection = await firebaseMock
+              .collection("opOcupation")
+              .get();
+          final disabledOperatorList = operatorDisabledCollection.docs.where(
+              (operatorDocMap) =>
+                  operatorDocMap.data()["operatorEnabled"] == false).toList();
+          expect(disabledOperatorList.isEmpty, equals(true));
         },
       );
     },

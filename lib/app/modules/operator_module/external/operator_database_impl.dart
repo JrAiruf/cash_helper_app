@@ -99,4 +99,16 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail != null && operatorCode != null && operatorPassword != null;
+      
+        @override
+        Future? closeOperatorCash(String? operatorId, String? collection) {
+          // TODO: implement closeOperatorCash
+          throw UnimplementedError();
+        }
+      
+        @override
+        Future? openOperatorCash(String? operatorId, String? collection,String?oppeningTime) {
+          // TODO: implement openOperatorCash
+          throw UnimplementedError();
+        }
 }
