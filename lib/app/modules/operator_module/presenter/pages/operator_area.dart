@@ -29,6 +29,7 @@ final _operatorPageController = PageController();
 class _OperatorArea extends State<OperatorArea> {
   @override
   void initState() {
+    _loginStore.getOperatorById(widget.operatorId, "operator");
     super.initState();
   }
 
