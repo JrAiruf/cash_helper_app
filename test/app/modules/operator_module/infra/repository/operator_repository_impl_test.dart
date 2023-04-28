@@ -287,14 +287,14 @@ void main() {
           await operatorRepository.openOperatorCash(
             "",
             createdOperator?.operatorOcupation,
-            "operatorOppening",
+            "cashOppened",
           );
           when(loginDatabase.getOperatorById(any, any))
               .thenAnswer((_) async => modifiedDatabaseOperator);
           final currenteOperator =
               await loginRepository.getOperatorById("operatorId", "collection");
           expect(
-              currenteOperator?.operatorOppening, equals("operatorOppening"));
+              currenteOperator?.operatorOppening, equals("cashOppened"));
         },
       );
     },

@@ -9,7 +9,6 @@ class DeleteOperatorAccount implements IDeleteOperatorAccount {
   @override
   Future call(String? operatorCode, String? operatorEmail, String? operatorPassword, String? collection) async {
     if(_validOperatorData(operatorEmail, operatorCode, operatorPassword)){
-      print("Cheguei");
       await _repository.deleteOperatorAccount(operatorCode, operatorEmail, operatorPassword, collection);
     } else {
       return;

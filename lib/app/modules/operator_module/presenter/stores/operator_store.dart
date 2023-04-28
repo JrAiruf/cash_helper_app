@@ -2,7 +2,6 @@ import 'package:cash_helper_app/app/modules/operator_module/domain/usecases/chan
 import 'package:cash_helper_app/app/modules/operator_module/domain/usecases/delete_operator_account/idelete_operator_account.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/stores/operator_store_states.dart';
 import 'package:flutter/cupertino.dart';
-import '../../domain/contract/operator_usecases.dart';
 import '../../domain/usecases/change_operator_password/ichange_operator_password.dart';
 
 class OperatorStore extends ValueNotifier<OperatorStoreStates> {
