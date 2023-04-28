@@ -4,7 +4,10 @@ import 'package:cash_helper_app/app/modules/operator_module/infra/data/operator_
 import 'package:cash_helper_app/app/modules/operator_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import '../../../../login_module/domain/usecases/login_usecases_impl_test.dart';
+
+import '../../../../../mocks/login_module_mocks.dart';
+import '../../../../login_module/domain/usecases/get_operator_by_id/get_operator_by_id_test.dart';
+import '../../../../login_module/domain/usecases/register_operator/register_operator_test.dart';
 
 class OperatorRepositoryMock extends Mock implements OperatorRepository {}
 
@@ -31,7 +34,8 @@ class ChangeOperatorEmailUsecaseMock implements IChangeOperatorEmail {
 
 void main() {
   final loginRepository = LoginRepositoryMock();
-  final loginUsecases = LoginUsecasesMock(repository: loginRepository);
+  final register = RegisterOperatorUsecaseMock(repository: loginRepository);
+  final getOperatorById = GetOperatorByIdMock(repository: loginRepository);
   final operatorRepository = OperatorRepositoryMock();
   final changeOperatorEmailUsecase =
       ChangeOperatorEmailUsecaseMock(repository: operatorRepository);
@@ -57,7 +61,7 @@ void main() {
               .thenAnswer((_) async => repositoryOperator);
           when(loginRepository.getOperatorById(any, any))
               .thenAnswer((_) async => modifiedRepositoryOperator);
-          final createdOperator = await loginUsecases.register(
+          final createdOperator = await register(
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
@@ -69,7 +73,7 @@ void main() {
               createdOperator?.operatorPassword,
               null);
           final currenteOperator =
-              await loginUsecases.getOperatorById("operatorId", "collection");
+              await getOperatorById("operatorId", "collection");
           expect(
               currenteOperator?.operatorEmail, equals("josy_kelly@email.com"));
         },
@@ -81,7 +85,7 @@ void main() {
               .thenAnswer((_) async => repositoryOperator);
           when(loginRepository.getOperatorById(any, any))
               .thenAnswer((_) async => repositoryOperator);
-          final createdOperator = await loginUsecases.register(
+          final createdOperator = await register(
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
@@ -89,7 +93,7 @@ void main() {
               .thenReturn(null);
           await changeOperatorEmailUsecase(null, createdOperator?.operatorCode,createdOperator?.operatorPassword, null);
           final currenteOperator =
-              await loginUsecases.getOperatorById("operatorId", "collection");
+              await getOperatorById("operatorId", "collection");
           expect(currenteOperator?.operatorEmail, equals("josy@email.com"));
         },
       );

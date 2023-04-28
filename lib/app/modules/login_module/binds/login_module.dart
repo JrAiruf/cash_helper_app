@@ -2,6 +2,8 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_ope
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/login.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/register_operator.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/sign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/forgot_password_page.dart';
@@ -15,7 +17,6 @@ import '../domain/usecases/check_operator_data_for_reset_password/check_operator
 import '../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
 import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
 import '../domain/usecases/login/ilogin.dart';
-import '../domain/usecases/login_usecases_impl.dart';
 import '../domain/usecases/reset_operator_password/ireset_operator_password.dart';
 import '../domain/usecases/reset_operator_password/reset_operator_password.dart';
 import '../infra/data/login_repository.dart';
@@ -105,19 +106,19 @@ class LoginModule extends Module {
         repository: i(),
       ),
     ),
-    Bind<LoginUsecases>(
-      (i) => LoginUsecasesImpl(
+    Bind<ISignOut>(
+      (i) => SignOut(
         repository: i(),
       ),
     ),
     Bind<LoginStore>(
       (i) => LoginStore(
-        usecases: i(),
         registerOperator: i(),
         login: i(),
         getOperatorById: i(),
         checkOperatorDataForResetPassword: i(),
         resetOperatorPassword: i(),
+        signOut: i(),
       ),
     ),
     Bind<LoginController>(

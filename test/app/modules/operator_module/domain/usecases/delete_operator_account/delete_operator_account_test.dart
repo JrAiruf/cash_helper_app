@@ -4,33 +4,41 @@ import 'package:cash_helper_app/app/modules/operator_module/infra/data/operator_
 import 'package:cash_helper_app/app/modules/operator_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import '../../../../login_module/domain/usecases/login_usecases_impl_test.dart';
+
+import '../../../../../mocks/login_module_mocks.dart';
+import '../../../../login_module/domain/usecases/get_operator_by_id/get_operator_by_id_test.dart';
+import '../../../../login_module/domain/usecases/register_operator/register_operator_test.dart';
 
 class OperatorRepositoryMock extends Mock implements OperatorRepository {}
 
 class DeleteOperatorAccountUsecaseMock implements IDeleteOperatorAccount {
-DeleteOperatorAccountUsecaseMock({required OperatorRepository repository})
+  DeleteOperatorAccountUsecaseMock({required OperatorRepository repository})
       : _repository = repository;
   final OperatorRepository _repository;
 
   @override
-  Future<void> call(String? operatorCode, String? operatorEmail, String? operatorPassword, String? collection) async {
-   if(_validOperatorData(operatorEmail, operatorCode, operatorPassword)){
-    await _repository.deleteOperatorAccount(operatorCode, operatorEmail, operatorPassword, collection);
-   } else {
-    return;
-   }
+  Future<void> call(String? operatorCode, String? operatorEmail,
+      String? operatorPassword, String? collection) async {
+    if (_validOperatorData(operatorEmail, operatorCode, operatorPassword)) {
+      await _repository.deleteOperatorAccount(
+          operatorCode, operatorEmail, operatorPassword, collection);
+    } else {
+      return;
+    }
   }
 
-  bool _validOperatorData(
-          String? operatorEmail, String? operatorCode, String? operatorPassword) =>
+  bool _validOperatorData(String? operatorEmail, String? operatorCode,
+          String? operatorPassword) =>
       operatorEmail != null && operatorCode != null && operatorPassword != null;
 }
 
-void main() {final loginRepository = LoginRepositoryMock();
-  final loginUsecases = LoginUsecasesMock(repository: loginRepository);
+void main() {
+  final loginRepository = LoginRepositoryMock();
+  final register = RegisterOperatorUsecaseMock(repository: loginRepository);
+  final getOperatorById = GetOperatorByIdMock(repository: loginRepository);
   final operatorRepository = OperatorRepositoryMock();
-  final deleteOperatorAccount = DeleteOperatorAccountUsecaseMock(repository: operatorRepository);
+  final deleteOperatorAccount =
+      DeleteOperatorAccountUsecaseMock(repository: operatorRepository);
   final newOperator = OperatorEntity(
     operatorId: 'q34u6hu1qeuyoio',
     operatorNumber: 1,
@@ -53,7 +61,7 @@ void main() {final loginRepository = LoginRepositoryMock();
               .thenAnswer((_) async => repositoryOperator);
           when(loginRepository.getOperatorById(any, any))
               .thenAnswer((_) async => null);
-          final createdOperator = await loginUsecases.register(
+          final createdOperator = await register(
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
@@ -64,7 +72,8 @@ void main() {final loginRepository = LoginRepositoryMock();
               createdOperator?.operatorCode,
               createdOperator?.operatorPassword,
               "collection");
-          final currenteOperator = await loginUsecases.getOperatorById("operatorId", "collection");
+          final currenteOperator =
+              await getOperatorById("operatorId", "collection");
           expect(currenteOperator?.operatorId, equals(null));
         },
       );
@@ -75,18 +84,19 @@ void main() {final loginRepository = LoginRepositoryMock();
               .thenAnswer((_) async => repositoryOperator);
           when(loginRepository.getOperatorById(any, any))
               .thenAnswer((_) async => repositoryOperator);
-          final createdOperator = await loginUsecases.register(
+          final createdOperator = await register(
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-         when(operatorRepository.deleteOperatorAccount(any, any, any, any))
+          when(operatorRepository.deleteOperatorAccount(any, any, any, any))
               .thenReturn(null);
           await deleteOperatorAccount(
               "newPassword",
               createdOperator?.operatorCode,
               createdOperator?.operatorPassword,
               null);
-          final currenteOperator = await loginUsecases.getOperatorById("operatorId", "collection");
+          final currenteOperator =
+              await getOperatorById("operatorId", "collection");
           expect(currenteOperator?.operatorCode, equals("123456"));
         },
       );
