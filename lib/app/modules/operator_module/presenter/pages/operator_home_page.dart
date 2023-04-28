@@ -12,7 +12,8 @@ import 'package:cash_helper_app/app/modules/operator_module/presenter/components
 import 'package:cash_helper_app/app/modules/operator_module/presenter/components/widgets/cash_helper_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../components/home_page_card_component.dart';
+
+import '../components/widgets/empty_annotations_list_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
   OperartorHomePage({super.key, required this.operatorEntity});
@@ -265,105 +266,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                             );
                           } else if (annotationListState
                               is EmptyAnnotationsListState) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 40),
-                                  child: Text(
-                                    "Últimas anotações:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 15),
-                                  child: SizedBox(
-                                    height: height * 0.2,
-                                    child: Center(
-                                      child: Text(
-                                        "Sem Anotações no momento",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(color: surfaceColor),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 15),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 40),
-                                        child: Text("Acesso rápido:",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall
-                                                ?.copyWith(
-                                                    color: surfaceColor)),
-                                      ),
-                                      const SizedBox(height: 30),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          QuickAccessButton(
-                                            backgroundColor: primaryColor,
-                                            border: true,
-                                            height: height * 0.1,
-                                            width: width * 0.38,
-                                            radius: 15,
-                                            items: [
-                                              Icon(
-                                                Icons.list_alt_outlined,
-                                                color: surfaceColor,
-                                              ),
-                                              Text("Anotações",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall
-                                                      ?.copyWith(
-                                                          color: surfaceColor))
-                                            ],
-                                          ),
-                                          QuickAccessButton(
-                                            backgroundColor: primaryColor,
-                                            border: true,
-                                            height: height * 0.1,
-                                            width: width * 0.38,
-                                            radius: 15,
-                                            items: [
-                                              Icon(
-                                                Icons.add,
-                                                color: surfaceColor,
-                                              ),
-                                              Text("Nova Anotação",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall
-                                                      ?.copyWith(
-                                                          color: surfaceColor))
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
+                            return const EmptyAnnotationsListComponent();
                           } else {
                             return Container();
                           }
