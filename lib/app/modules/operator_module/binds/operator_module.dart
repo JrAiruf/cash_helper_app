@@ -1,10 +1,14 @@
-import 'package:cash_helper_app/app/modules/operator_module/domain/contract/operator_usecases.dart';
 import 'package:cash_helper_app/app/modules/operator_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/operator_module/external/operator_database_impl.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/operator_module/presenter/pages/operator_area.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../domain/usecases/operator_usecases_impl.dart';
+import '../domain/usecases/change_operator_email/change_operator_email.dart';
+import '../domain/usecases/change_operator_email/ichange_operator_email.dart';
+import '../domain/usecases/change_operator_password/change_operator_password.dart';
+import '../domain/usecases/change_operator_password/ichange_operator_password.dart';
+import '../domain/usecases/delete_operator_account/delete_operator_account.dart';
+import '../domain/usecases/delete_operator_account/idelete_operator_account.dart';
 import '../infra/data/operator_repository.dart';
 import '../infra/repository/operator_repository_impl.dart';
 import '../presenter/pages/operator_home_page.dart';
@@ -80,10 +84,40 @@ class OperatorModule extends Module {
 
   final bindList = <Bind>[
     Bind<OperatorDatabase>(
-        (i) => OperatorDatabaseImpl(auth: i(), datasource: i())),
-    Bind<OperatorRepository>((i) => OperatorRepositoryImpl(database: i())),
-    Bind<OperatorUsecases>((i) => OperatorUsecasesImpl(repository: i())),
-    Bind<OperatorStore>((i) => OperatorStore(usecases: i())),
-    Bind.singleton<OperatorController>((i) => OperatorController())
+      (i) => OperatorDatabaseImpl(
+        auth: i(),
+        datasource: i(),
+      ),
+    ),
+    Bind<OperatorRepository>(
+      (i) => OperatorRepositoryImpl(
+        database: i(),
+      ),
+    ),
+    Bind<IChangeOperatorEmail>(
+      (i) => ChangeOperatorEmail(
+        repository: i(),
+      ),
+    ),
+    Bind<IChangeOperatorPassword>(
+      (i) => ChangeOperatorPassword(
+        repository: i(),
+      ),
+    ),
+    Bind<IDeleteOperatorAccount>(
+      (i) => DeleteOperatorAccount(
+        repository: i(),
+      ),
+    ),
+    Bind<OperatorStore>(
+      (i) => OperatorStore(
+        changeOperatorEmail: i(),
+        changeOperatorPassword: i(),
+        deleteOperatorAccount: i(),
+      ),
+    ),
+    Bind.singleton<OperatorController>(
+      (i) => OperatorController(),
+    )
   ];
 }

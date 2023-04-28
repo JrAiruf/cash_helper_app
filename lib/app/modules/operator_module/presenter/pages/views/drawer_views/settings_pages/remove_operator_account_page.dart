@@ -36,6 +36,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final redColor = Theme.of(context).colorScheme.error;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
+    final detailColor = Theme.of(context).colorScheme.background;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -124,6 +125,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                             CashHelperTextFieldComponent(
                                               suffixIcon:
                                                   VisibilityIconComponent(
+                                                iconColor: detailColor,
                                                 onTap: () {
                                                   setState(() {
                                                     _operatorCodeVisible =
@@ -151,6 +153,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                             CashHelperTextFieldComponent(
                                               suffixIcon:
                                                   VisibilityIconComponent(
+                                                iconColor: detailColor,
                                                 onTap: () {
                                                   setState(() {
                                                     _passwordVisible =

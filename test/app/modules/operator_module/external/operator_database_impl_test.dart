@@ -107,13 +107,11 @@ class OperatorDatabaseMock implements OperatorDatabase {
           "operatorEnabled": true,
           "operatorOppening": oppeningTime,
         });
-        print("Deu Certo!");
       } else {
         return;
       }
     } on FirebaseException catch (e) {
-      print(e.toString());
-      throw OppeningCashError();
+      throw OppeningCashError(errorMessage: e.toString());
     }
   }
 
@@ -126,12 +124,11 @@ class OperatorDatabaseMock implements OperatorDatabase {
           "operatorEnabled": false,
           "operatorOppening": "Pendente",
         });
-        print("Deu Certo!");
       } else {
         return;
       }
     } on FirebaseException catch (e) {
-      throw OppeningCashError();
+      throw OppeningCashError(errorMessage: e.toString());
     }
   }
 

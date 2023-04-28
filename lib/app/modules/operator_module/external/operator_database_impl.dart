@@ -2,6 +2,8 @@ import 'package:cash_helper_app/app/modules/operator_module/external/data/operat
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'errors/operation_errors.dart';
+
 class OperatorDatabaseImpl implements OperatorDatabase {
   OperatorDatabaseImpl(
       {required FirebaseAuth auth, required FirebaseFirestore datasource})
@@ -21,11 +23,9 @@ class OperatorDatabaseImpl implements OperatorDatabase {
           .map((databaseOperator) => databaseOperator.data())
           .toList();
       final operatorToBeModified = databaseOperatorsList.firstWhere(
-        (operatorMap) {
-          return operatorMap["operatorPassword"] == operatorPassword &&
-              operatorMap["operatorCode"] == operatorCode;
-        },
-      );
+          (operatorMap) =>
+              operatorMap["operatorPassword"] == operatorPassword &&
+              operatorMap["operatorCode"] == operatorCode);
       await _auth
           .signInWithEmailAndPassword(
               email: operatorToBeModified["operatorEmail"],
@@ -53,12 +53,10 @@ class OperatorDatabaseImpl implements OperatorDatabase {
           .map((databaseOperator) => databaseOperator.data())
           .toList();
       final operatorToBeDeleted = databaseOperatorsList.firstWhere(
-        (operatorMap) {
-          return operatorMap["operatorPassword"] == operatorPassword &&
+          (operatorMap) =>
+              operatorMap["operatorPassword"] == operatorPassword &&
               operatorMap["operatorEmail"] == operatorEmail &&
-              operatorMap["operatorCode"] == operatorCode;
-        },
-      );
+              operatorMap["operatorCode"] == operatorCode);
       await _auth.signInWithEmailAndPassword(
           email: operatorToBeDeleted["operatorEmail"],
           password: operatorToBeDeleted["operatorPassword"]);
@@ -96,19 +94,42 @@ class OperatorDatabaseImpl implements OperatorDatabase {
     }
   }
 
+  @override
+  Future<void> openOperatorCash(
+      String? operatorId, String? collection, String? oppeningTime) async {
+    final operatorsCollection = _datasource.collection(collection!);
+    try {
+      if (_validOperatorData(operatorId, collection, oppeningTime)) {
+        await operatorsCollection.doc(operatorId!).update({
+          "operatorEnabled": true,
+          "operatorOppening": oppeningTime,
+        });
+      } else {
+        return;
+      }
+    } on FirebaseException catch (e) {
+      throw OppeningCashError(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<void> closeOperatorCash(String? operatorId, String? collection) async {
+    try {
+      if (operatorId != null && collection != null) {
+        final operatorsCollection = _datasource.collection(collection);
+        await operatorsCollection.doc(operatorId).update({
+          "operatorEnabled": false,
+          "operatorOppening": "Pendente",
+        });
+      } else {
+        return;
+      }
+    } on FirebaseException catch (e) {
+      throw OppeningCashError(errorMessage: e.toString());
+    }
+  }
+
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail != null && operatorCode != null && operatorPassword != null;
-      
-        @override
-        Future? closeOperatorCash(String? operatorId, String? collection) {
-          // TODO: implement closeOperatorCash
-          throw UnimplementedError();
-        }
-      
-        @override
-        Future? openOperatorCash(String? operatorId, String? collection,String?oppeningTime) {
-          // TODO: implement openOperatorCash
-          throw UnimplementedError();
-        }
 }

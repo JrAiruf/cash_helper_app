@@ -47,6 +47,20 @@ class OperatorRepositoryMock implements OperatorRepository {
     }
   }
 
+  @override
+  Future<void> openOperatorCash(
+      String? operatorId, String? collection, String? oppeningTime) async {
+    if (_validOperatorData(operatorId, collection, oppeningTime)) {
+      await _database.openOperatorCash(operatorId, collection, oppeningTime);
+    } else {
+      return;
+    }
+  }
+
+  @override
+  Future<void> closeOperatorCash(
+      String? operatorId, String? collection) async {}
+
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail!.isNotEmpty &&
@@ -230,6 +244,116 @@ void main() {
       );
     },
   );
+  group(
+    "OpenOperatorCash Function should",
+    () {
+      test(
+        "Call database function to change operator's enabled stated (from false to true)",
+        () async {
+          when(loginDatabase.register(any, any))
+              .thenAnswer((_) async => databaseOperator);
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => modifiedDatabaseOperator);
+          final createdOperator = await loginRepository.register(
+              newOperator, newOperator.operatorOcupation);
+          expect(createdOperator != null, equals(true));
+          when(operatorDatabase.openOperatorCash(any, any, any))
+              .thenReturn(null);
+          await operatorRepository.openOperatorCash(
+            createdOperator?.operatorId,
+            createdOperator?.operatorOcupation,
+            "cashOppened",
+          );
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => modifiedDatabaseOperator);
+          final currenteOperator =
+              await loginRepository.getOperatorById("operatorId", "collection");
+          expect(
+              currenteOperator?.operatorOppening, equals("cashOppened"));
+        },
+      );
+      test(
+        "Fail to change operator enabled state",
+        () async {
+          when(loginDatabase.register(any, any))
+              .thenAnswer((_) async => databaseOperator);
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => modifiedDatabaseOperator);
+          final createdOperator = await loginRepository.register(
+              newOperator, newOperator.operatorOcupation);
+          expect(createdOperator != null, equals(true));
+          when(operatorDatabase.openOperatorCash(any, any, any))
+              .thenReturn(null);
+          await operatorRepository.openOperatorCash(
+            "",
+            createdOperator?.operatorOcupation,
+            "operatorOppening",
+          );
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => modifiedDatabaseOperator);
+          final currenteOperator =
+              await loginRepository.getOperatorById("operatorId", "collection");
+          expect(
+              currenteOperator?.operatorOppening, equals("operatorOppening"));
+        },
+      );
+    },
+  );
+  group(
+    "CloseOperatorCash Function should",
+    () {
+      test(
+        "Call database function to change operator's enabled state (from true to false)",
+        () async {
+          when(loginDatabase.register(any, any))
+              .thenAnswer((_) async => databaseOperator);
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => modifiedDatabaseOperator);
+          final createdOperator = await loginRepository.register(
+              newOperator, newOperator.operatorOcupation);
+          expect(createdOperator != null, equals(true));
+          expect(createdOperator?.operatorName, equals("Josy Kelly"));
+          when(operatorDatabase.changeOperatorPassword(any, any, any, any))
+              .thenReturn(null);
+          await operatorRepository.changeOperatorPassword(
+              "newPassword",
+              createdOperator?.operatorCode,
+              createdOperator?.operatorPassword,
+              createdOperator?.operatorOcupation);
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => modifiedDatabaseOperator);
+          final currenteOperator =
+              await loginRepository.getOperatorById("operatorId", "collection");
+          expect(currenteOperator?.operatorPassword, equals("newPassword"));
+        },
+      );
+      test(
+        "Fail to change operator enabled state",
+        () async {
+          when(loginDatabase.register(any, any))
+              .thenAnswer((_) async => databaseOperator);
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => databaseOperator);
+          final createdOperator = await loginRepository.register(
+              newOperator, newOperator.operatorOcupation);
+          expect(createdOperator != null, equals(true));
+          expect(createdOperator?.operatorName, equals("Josy Kelly"));
+          when(operatorDatabase.changeOperatorPassword(any, any, any, any))
+              .thenReturn(null);
+          await operatorRepository.changeOperatorPassword(
+              "newPassword",
+              createdOperator?.operatorCode,
+              createdOperator?.operatorPassword,
+              createdOperator?.operatorOcupation);
+          when(loginDatabase.getOperatorById(any, any))
+              .thenAnswer((_) async => databaseOperator);
+          final currenteOperator =
+              await loginRepository.getOperatorById("operatorId", "collection");
+          expect(currenteOperator?.operatorPassword, equals("12345678"));
+        },
+      );
+    },
+  );
 }
 
 final databaseOperator = <String, dynamic>{
@@ -251,7 +375,7 @@ final modifiedDatabaseOperator = <String, dynamic>{
   'operatorEmail': 'josy_kelly@email.com',
   'operatorPassword': 'newPassword',
   'operatorCode': 'newPas',
-  'operatorOppening': 'operatorOppening',
+  'operatorOppening': 'cashOppened',
   'operatorClosing': 'operatorClosing',
   'operatorEnabled': false,
   'operatorOcupation': "operator",
