@@ -11,6 +11,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../domain/contract/login_usecases.dart';
+import '../domain/usecases/check_operator_data_for_reset_password/check_operator_data_for_reset_password.dart';
+import '../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
 import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
 import '../domain/usecases/login/ilogin.dart';
 import '../domain/usecases/login_usecases_impl.dart';
@@ -91,6 +93,11 @@ class LoginModule extends Module {
         repository: i(),
       ),
     ),
+    Bind<ICheckOperatorDataForResetPassword>(
+      (i) => CheckOperatorDataForResetPassword(
+        repository: i(),
+      ),
+    ),
     Bind<LoginUsecases>(
       (i) => LoginUsecasesImpl(
         repository: i(),
@@ -102,6 +109,7 @@ class LoginModule extends Module {
         registerOperator: i(),
         login: i(),
         getOperatorById: i(),
+        checkOperatorDataForResetPassword: i(),
       ),
     ),
     Bind<LoginController>(

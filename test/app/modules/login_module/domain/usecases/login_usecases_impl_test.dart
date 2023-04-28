@@ -79,36 +79,7 @@ void main() {
   );
   
   
-  group(
-    "CheckOperatorDataForResetPassword function should",
-    () {
-      test(
-        "Call repository function to check opertor's informations",
-       () async {
-          when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
-          when(repository.checkOperatorDataForResetPassword(any, any,any)).thenAnswer((_) async => true);
-          final createdOperator = await usecases.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorEntity>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode,"collection");
-          expect(checkedInformation, equals(true));
-          
-        },
-      );
-      test(
-        "Return false for non checked informations",
-        () async {
-        when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
-          when(repository.checkOperatorDataForResetPassword(any, any,any)).thenAnswer((_) async => false);
-          final createdOperator = await usecases.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorEntity>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          final checkedInformation = await usecases.checkOperatorDataForResetPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode,"");
-          expect(checkedInformation, equals(false));
-        },
-      );
-    },
-  );
+  
   group(
     "ResetOperatorPassword function should",
     () {

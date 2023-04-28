@@ -6,22 +6,27 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
+
 class LoginStore extends ValueNotifier<LoginStates?> {
   LoginStore({
     required LoginUsecases usecases,
     required IRegisterOperator registerOperator,
     required ILogin login,
     required IGetOperatorById getOperatorById,
+    required ICheckOperatorDataForResetPassword checkOperatorDataForResetPassword,
   })  : _usecases = usecases,
    _registerOperator = registerOperator,
    _login = login,
    _getOperatorById = getOperatorById,
+   _checkOperatorDataForResetPassword = checkOperatorDataForResetPassword,
         super(LoginInitialState());
 
   final LoginUsecases _usecases;
   final IRegisterOperator _registerOperator;
   final ILogin _login;
   final IGetOperatorById _getOperatorById;
+  final ICheckOperatorDataForResetPassword _checkOperatorDataForResetPassword;
   bool loadingData = false;
 
   Future<OperatorEntity?>? register(
@@ -55,8 +60,8 @@ class LoginStore extends ValueNotifier<LoginStates?> {
 
   Future<bool>? checkOperatorDataForResetPassword(
       String email, String operatorCode, String collection) async {
-    return await _usecases.checkOperatorDataForResetPassword(
-        email, operatorCode, collection)!;
+    return await _checkOperatorDataForResetPassword(
+        email, operatorCode, collection);
   }
 
   Future<void>? resetOperatorPassword(
