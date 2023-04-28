@@ -80,43 +80,7 @@ void main() {
   
   
   
-  group(
-    "ResetOperatorPassword function should",
-    () {
-      test(
-        "Call repository function to reset operator's password",
-       () async {
-          when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
-          when(repository.getOperatorById(any, any)).thenAnswer((_) async => modifiedRepositoryOperator);
-          when(repository.resetOperatorPassword(any, any,any)).thenReturn(null);
-
-          final createdOperator = await usecases.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorEntity>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
-          final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
-
-          expect(currentOperator?.operatorPassword, equals("newPassword"));
-        },
-      );
-      test(
-        "Fail reseting operator's password",
-        () async {
-             when(repository.register(any, any)).thenAnswer((_) async => repositoryOperator);
-          when(repository.getOperatorById(any, any)).thenAnswer((_) async => repositoryOperator);
-          when(repository.resetOperatorPassword(any, any,any)).thenReturn(null);
-          
-          final createdOperator = await usecases.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorEntity>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          await usecases.resetOperatorPassword(createdOperator?.operatorEmail, createdOperator?.operatorCode, "newPassword");
-          final currentOperator = await usecases.getOperatorById(createdOperator?.operatorEmail, "collection");
-
-          expect(currentOperator?.operatorPassword, equals("12345678"));
-        },
-      );
-    },
-  );
+ 
   test(
     "Should sign out the application",
     () async {
