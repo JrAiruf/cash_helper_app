@@ -1,6 +1,6 @@
 class DataVerifier {
   bool validateInputData({required List<Object?> inputs}) {
-    bool? verified;
+    late bool verified;
     inputs.forEach((element) {
       if (element != null &&
           element.toString().isNotEmpty &&
@@ -10,6 +10,6 @@ class DataVerifier {
         verified = false;
       }
     });
-    return verified!;
+    return verified;
   }
 }

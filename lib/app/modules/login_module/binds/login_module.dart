@@ -1,3 +1,7 @@
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/login.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/register_operator.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/forgot_password_page.dart';
@@ -7,6 +11,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../domain/contract/login_usecases.dart';
+import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
+import '../domain/usecases/login/ilogin.dart';
 import '../domain/usecases/login_usecases_impl.dart';
 import '../infra/data/login_repository.dart';
 import '../infra/repository/login_repository_impl.dart';
@@ -62,12 +68,27 @@ class LoginModule extends Module {
       (i) => FirebaseDatabase(
         database: i(),
         auth: i(),
-        uuid:i(),
+        uuid: i(),
       ),
     ),
     Bind<LoginRepository>(
       (i) => LoginRepositoryImpl(
         datasource: i(),
+      ),
+    ),
+    Bind<IRegisterOperator>(
+      (i) => RegisterOperator(
+        repository: i(),
+      ),
+    ),
+    Bind<ILogin>(
+      (i) => Login(
+        repository: i(),
+      ),
+    ),
+    Bind<IGetOperatorById>(
+      (i) => GetOperatorById(
+        repository: i(),
       ),
     ),
     Bind<LoginUsecases>(
@@ -78,6 +99,9 @@ class LoginModule extends Module {
     Bind<LoginStore>(
       (i) => LoginStore(
         usecases: i(),
+        registerOperator: i(),
+        login: i(),
+        getOperatorById: i(),
       ),
     ),
     Bind<LoginController>(

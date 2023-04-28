@@ -1,20 +1,33 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/contract/login_usecases.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginStore extends ValueNotifier<LoginStates?> {
-  LoginStore({required LoginUsecases usecases})
-      : _usecases = usecases,
+  LoginStore({
+    required LoginUsecases usecases,
+    required IRegisterOperator registerOperator,
+    required ILogin login,
+    required IGetOperatorById getOperatorById,
+  })  : _usecases = usecases,
+   _registerOperator = registerOperator,
+   _login = login,
+   _getOperatorById = getOperatorById,
         super(LoginInitialState());
 
   final LoginUsecases _usecases;
+  final IRegisterOperator _registerOperator;
+  final ILogin _login;
+  final IGetOperatorById _getOperatorById;
   bool loadingData = false;
 
   Future<OperatorEntity?>? register(
       OperatorEntity newOperator, String collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _usecases.register(newOperator, collection);
+    final operatorEntity = await _registerOperator(newOperator, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState(message: "Usuário não criado");
@@ -24,7 +37,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   Future<OperatorEntity?>? login(
       String? email, String? password, String? collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _usecases.login(email, password, collection);
+    final operatorEntity = await _login(email, password, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState(message: "Usuário não encontrado");
@@ -34,7 +47,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   Future<void>? getOperatorById(String operatorId, String collection) async {
     value = LoginLoadingState();
     final operatorEntity =
-        await _usecases.getOperatorById(operatorId, collection);
+        await _getOperatorById(operatorId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState(message: "Usuário não encontrado");

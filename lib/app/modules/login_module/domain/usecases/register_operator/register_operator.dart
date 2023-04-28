@@ -1,8 +1,8 @@
-import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register/iregister_operator.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
 import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
 
 import '../../../../operator_module/infra/models/operator_model.dart';
-import '../../../helpers/data_verifier.dart';
+import '../../../../../helpers/data_verifier.dart';
 import '../../../infra/data/login_repository.dart';
 
 class RegisterOperator implements IRegisterOperator {
@@ -14,8 +14,7 @@ class RegisterOperator implements IRegisterOperator {
 
   @override
   Future<OperatorEntity?> call(OperatorEntity? newOperator, String? collection) async {
-    if (_dataVerifier
-        .validateInputData(inputs: [newOperator?.operatorId, collection])) {
+    if (_dataVerifier.validateInputData(inputs: [newOperator?.operatorId, collection])) {
      final operatorModelData = OperatorModel.fromEntityData(newOperator ?? OperatorEntity());
       final operatorModel = await _repository.register(operatorModelData, collection) ?? OperatorModel();
       return OperatorModel.toEntityData(operatorModel);
