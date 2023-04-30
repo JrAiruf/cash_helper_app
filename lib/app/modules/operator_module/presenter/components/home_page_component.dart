@@ -13,8 +13,6 @@ class HomePageComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final operatortName = operator.operatorName?.split(" ")[0];
-    final secondaryColor = Theme.of(context).colorScheme.secondary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiary;
     return Stack(
       children: [
         Container(
@@ -37,7 +35,7 @@ class HomePageComponent extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "Olá,$operatortName",
+                    "Olá, $operatortName",
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
@@ -46,7 +44,6 @@ class HomePageComponent extends StatelessWidget {
             ),
           ),
         ),
-        
       ],
     );
   }

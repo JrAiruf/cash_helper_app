@@ -6,7 +6,7 @@ import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annota
 import '../../../infra/models/annotation_model.dart';
 
 class SearchAnnotationsByClientAddress
-    implements ISearchAnnoationsByClientAddress {
+    implements ISearchAnnotationsByClientAddress {
   SearchAnnotationsByClientAddress({required AnnotationRepository repository})
       : _repository = repository;
 
