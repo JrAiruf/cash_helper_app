@@ -6,7 +6,7 @@ import 'package:cash_helper_app/app/modules/operator_module/infra/models/operato
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../../mocks/login_module_mocks.dart';
+import '../../../../../mocks/mocks.dart';
 
 class RegisterOperatorUsecaseMock implements IRegisterOperator {
   RegisterOperatorUsecaseMock({required LoginRepository repository})

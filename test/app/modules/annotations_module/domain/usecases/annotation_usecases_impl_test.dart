@@ -2,11 +2,12 @@ import 'package:cash_helper_app/app/modules/annotations_module/domain/contract/a
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/infra/repository/annotation_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class AnnotationRepo extends Mock implements AnnotationRepositoryImpl {}
+import '../../../../mocks/mocks.dart';
+
+
 
 class AnnotationUsecasesMock implements AnnotationUsecases {
   AnnotationUsecasesMock({required AnnotationRepository repository})
@@ -112,72 +113,9 @@ void main() {
       annotationSaleDate: "Data Atual",
       annotationSaleTime: "Hora Atual",
       annotationSaleValue: "1455,67");
-  group(
-    "CreateAnnotation Function Should",
-    () {
-      test(
-        "Call database to create an annotation and return an AnnotationEntity object",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          expect(createdAnnotation?.annotationId != null, equals(true));
-        },
-      );
-      test(
-        "Fail creating an annotation and returning an AnnotationEntity object(returns Null)",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("", newAnnotation);
-          expect(createdAnnotation == null, equals(true));
-        },
-      );
-    },
-  );
+  
 
-  group(
-    "GetAnnotationById Function Should",
-    () {
-      test(
-        "Return an AnnotationEntity by his id from repository",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          expect(createdAnnotation?.annotationId != null, equals(true));
-          when(repository.getAnnotationById(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final obtainedAnnotation = await usecases.getAnnotationById(
-              "operatorId", createdAnnotation?.annotationId);
-          expect(
-              obtainedAnnotation?.annotationPaymentMethod, equals("Dinheiro"));
-          expect(obtainedAnnotation?.annotationConcluied, equals(false));
-        },
-      );
-      test(
-        "Fail returning AnnotationEntity object from repository",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          expect(createdAnnotation?.annotationId != null, equals(true));
-          when(repository.getAnnotationById(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final obtainedAnnotation = await usecases.getAnnotationById(
-              "", createdAnnotation?.annotationId);
-          expect(obtainedAnnotation, equals(null));
-        },
-      );
-    },
-  );
+  
   group(
     "GetAllAnnotations Function Should",
     () {

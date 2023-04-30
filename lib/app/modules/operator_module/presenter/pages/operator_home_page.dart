@@ -176,7 +176,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   child: Text(
                                     "Últimas anotações:",
                                     style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                        Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                   ),
                                 ),
                                 Padding(

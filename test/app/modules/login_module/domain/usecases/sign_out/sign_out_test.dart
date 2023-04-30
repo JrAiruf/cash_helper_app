@@ -5,7 +5,7 @@ import 'package:cash_helper_app/app/modules/operator_module/infra/models/operato
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../../mocks/login_module_mocks.dart';
+import '../../../../../mocks/mocks.dart';
 import '../get_operator_by_id/get_operator_by_id_test.dart';
 import '../login/login_test.dart';
 import '../register_operator/register_operator_test.dart';

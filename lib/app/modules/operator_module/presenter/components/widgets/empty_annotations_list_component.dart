@@ -18,7 +18,10 @@ class EmptyAnnotationsListComponent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: Text(
             "Últimas anotações:",
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(color: surfaceColor),
           ),
         ),
         Padding(
