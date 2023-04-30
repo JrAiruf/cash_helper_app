@@ -280,7 +280,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           height: 60,
                           radius: 12,
                           onPressed: () => Modular.to.pushNamed(
-                            "./operator-area/${currentOperator.operatorId}",
+                            "./operator-area", arguments: currentOperator
                           ),
                           buttonName: "Área do operador",
                           backgroundColor: tertiaryColor,

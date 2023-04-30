@@ -75,9 +75,9 @@ class OperatorModule extends Module {
       ),
     ),
     ChildRoute(
-      "/operator-area/:operatorId",
+      "/operator-area",
       child: (_, args) => OperatorArea(
-        operatorId: args.params["operatorId"],
+        operatorEntity: args.data,
       ),
     ),
   ];

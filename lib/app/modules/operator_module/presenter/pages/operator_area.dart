@@ -14,24 +14,17 @@ import '../components/cash_helper_bottom_navigation_item.dart';
 class OperatorArea extends StatefulWidget {
   OperatorArea(
       {super.key,
-      required this.operatorId,
+      required this.operatorEntity,
       this.position = BottomNavigationBarPosition.operatorHome});
 
-  final String operatorId;
+  final OperatorEntity operatorEntity;
   BottomNavigationBarPosition? position;
   @override
   State<OperatorArea> createState() => _OperatorArea();
 }
-
-final _loginStore = Modular.get<LoginStore>();
 final _operatorPageController = PageController();
 
 class _OperatorArea extends State<OperatorArea> {
-  @override
-  void initState() {
-    _loginStore.getOperatorById(widget.operatorId, "operator");
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,29 +35,13 @@ class _OperatorArea extends State<OperatorArea> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    return ValueListenableBuilder(
-      valueListenable: _loginStore,
-      builder: (_, operatorState, __) {
-        if (operatorState is LoginLoadingState) {
-          return Container(
-            decoration: BoxDecoration(color: primaryColor),
-            child: Center(
-              child: CircularProgressIndicator(
-                color: indicatorColor,
-              ),
-            ),
-          );
-        }
-        if (operatorState is LoginSuccessState) {
-          final currentOperator = operatorState.operatorEntity;
-          return Scaffold(
+    return  Scaffold(
             appBar: AppBar(
               leading: IconButton(
                 color: surfaceColor,
                 onPressed: () {
                   Modular.to.navigate("/operator-module/",
-                      arguments: currentOperator);
+                      arguments: widget.operatorEntity);
                 },
                 icon: const Icon(Icons.arrow_back),
               ),
@@ -80,7 +57,7 @@ class _OperatorArea extends State<OperatorArea> {
                 controller: _operatorPageController,
                 children: [
                   OperatorInitialPage(
-                    operatorId: currentOperator.operatorId!,
+                    operatorId: widget.operatorEntity.operatorId!,
                     pageController: _operatorPageController,
                     position: BottomNavigationBarPosition.operatorHome,
                   ),
@@ -167,10 +144,5 @@ class _OperatorArea extends State<OperatorArea> {
               ),
             ),
           );
-        } else {
-          return Container();
-        }
-      },
-    );
   }
 }
