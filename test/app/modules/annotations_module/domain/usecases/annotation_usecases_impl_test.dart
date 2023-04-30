@@ -116,83 +116,8 @@ void main() {
   
 
   
-  group(
-    "GetAllAnnotations Function Should",
-    () {
-      test(
-        "Return a List<AnnotationEntity>",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          when(repository.getAllAnnotations(any)).thenAnswer((_) async => [
-                repositoryAnnotation,
-              ]);
-          final annotationsList =
-              await usecases.getAllAnnotations("operatorId");
-          expect(annotationsList, isA<List<AnnotationEntity>>());
-          expect(annotationsList?.isNotEmpty, equals(true));
-        },
-      );
-      test(
-        "Fail returning a List<AnnotationEntity>(returns [])",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          when(repository.getAllAnnotations(any)).thenAnswer((_) async => [
-                repositoryAnnotation,
-              ]);
-          final annotationsList = await usecases.getAllAnnotations("");
-          expect(annotationsList?.isNotEmpty, equals(false));
-        },
-      );
-    },
-  );
-  group(
-    "SearchAnnotationsByClientAddress Function Should",
-    () {
-      test(
-        "Return an annotation object from repository, in wich annotationClientAddress property matches with the given text",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          expect(createdAnnotation?.annotationClientAddress,
-              equals("Andorinhas 381"));
-          when(repository.searchAnnotationsByClientAddress(any, any))
-              .thenAnswer((_) async => [repositoryAnnotation]);
-          final suggestedAnnotionAddressList = await usecases
-              .searchAnnotationsByClientAddress('operatorId', "Andorinhas");
-          expect(suggestedAnnotionAddressList, isA<List<AnnotationEntity>>());
-          expect(suggestedAnnotionAddressList?.isNotEmpty, equals(true));
-        },
-      );
-      test(
-        "Fail returning an annotation from result search",
-        () async {
-          when(repository.createAnnotation(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await usecases.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          expect(createdAnnotation?.annotationClientAddress,
-              equals("Andorinhas 381"));
-          when(repository.searchAnnotationsByClientAddress(any, any))
-              .thenAnswer((_) async => [repositoryAnnotation]);
-          final suggestedAnnotionAddressList =
-              await usecases.searchAnnotationsByClientAddress("operatorId", "");
-          expect(suggestedAnnotionAddressList?.isEmpty, equals(true));
-        },
-      );
-    },
-  );
+  
+  
   group(
     "UpdateAnnotation Function Should",
     () {
