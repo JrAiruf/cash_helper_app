@@ -57,7 +57,7 @@ class _OperatorArea extends State<OperatorArea> {
                 controller: _operatorPageController,
                 children: [
                   OperatorInitialPage(
-                    operatorId: widget.operatorEntity.operatorId!,
+                    operatorEntity: widget.operatorEntity,
                     pageController: _operatorPageController,
                     position: BottomNavigationBarPosition.operatorHome,
                   ),
