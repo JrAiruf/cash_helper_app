@@ -82,20 +82,13 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 150,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [Text("Botão Aqui")],
-                    ),
-                    SizedBox(height: 20),
+                    SizedBox(height: height * 0.27),
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Text(
                           _doneAnnotations ? "Finalizadas" : "Não Finalizadas"),
                     ),
-                    SizedBox(height: 35),
+                    const SizedBox(height: 35),
                     SizedBox(
                       height: height * 0.25,
                       child: PageView(
@@ -114,8 +107,6 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 50),
-                    Text("Segundo Componente"),
                   ],
                 ),
               ),
