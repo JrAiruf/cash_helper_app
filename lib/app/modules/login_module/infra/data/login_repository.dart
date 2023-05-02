@@ -1,4 +1,4 @@
-import 'package:cash_helper_app/app/modules/operator_module/infra/models/operator_model.dart';
+import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
 
 abstract class LoginRepository {
 Future<OperatorModel?>? register(OperatorModel? newOperator, String? collection);

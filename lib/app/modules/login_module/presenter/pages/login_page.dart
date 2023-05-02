@@ -4,7 +4,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/l
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../operator_module/domain/entities/operator_entity.dart';
+import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
 

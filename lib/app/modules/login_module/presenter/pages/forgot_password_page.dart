@@ -1,7 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../stores/login_store.dart';

@@ -1,7 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 
-import '../../../../operator_module/infra/models/operator_model.dart';
+import '../../../../user_module/infra/models/operator_model.dart';
 import '../../../../../helpers/data_verifier.dart';
 import '../../../infra/data/login_repository.dart';
 

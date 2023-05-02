@@ -2,7 +2,7 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../operator_module/domain/entities/operator_entity.dart';
+import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/cash_helper_text_field.dart';
 import '../components/visibility_icon_component.dart';
 import '../controllers/login_controller.dart';

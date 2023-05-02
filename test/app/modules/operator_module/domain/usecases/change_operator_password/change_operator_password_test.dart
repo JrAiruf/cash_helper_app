@@ -1,7 +1,7 @@
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/usecases/change_operator_password/ichange_operator_password.dart';
-import 'package:cash_helper_app/app/modules/operator_module/infra/data/operator_repository.dart';
-import 'package:cash_helper_app/app/modules/operator_module/infra/models/operator_model.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/usecases/change_operator_password/ichange_operator_password.dart';
+import 'package:cash_helper_app/app/modules/user_module/infra/data/operator_repository.dart';
+import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 

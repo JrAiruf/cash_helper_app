@@ -3,7 +3,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../operator_module/domain/entities/operator_entity.dart';
+import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
 import '../controllers/login_controller.dart';

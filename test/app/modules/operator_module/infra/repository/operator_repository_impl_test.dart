@@ -1,6 +1,6 @@
-import 'package:cash_helper_app/app/modules/operator_module/external/data/operator_database.dart';
-import 'package:cash_helper_app/app/modules/operator_module/infra/data/operator_repository.dart';
-import 'package:cash_helper_app/app/modules/operator_module/infra/models/operator_model.dart';
+import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
+import 'package:cash_helper_app/app/modules/user_module/infra/data/operator_repository.dart';
+import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -18,7 +18,7 @@ class OperatorRepositoryMock implements OperatorRepository {
   Future<void> changeOperatorEmail(String? newEmail, String? operatorCode,
       String? operatorPassword, String? collection) async {
     if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
-      return await _database.changeOperatorEmail(
+      return await _database.changeUserEmail(
           newEmail, operatorCode, operatorPassword, collection);
     } else {
       return;
@@ -29,7 +29,7 @@ class OperatorRepositoryMock implements OperatorRepository {
   Future<void> deleteOperatorAccount(String? operatorCode, String? newEmail,
       String? operatorPassword, String? collection) async {
     if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
-      return await _database.deleteOperatorAccount(
+      return await _database.deleteUserAccount(
           operatorCode, newEmail, operatorPassword, collection);
     } else {
       return;
@@ -40,7 +40,7 @@ class OperatorRepositoryMock implements OperatorRepository {
   Future? changeOperatorPassword(String? newPassword, String? operatorCode,
       String? currentPassword, String? collection) async {
     if (_validOperatorData(newPassword, operatorCode, currentPassword)) {
-      return await _database.changeOperatorPassword(
+      return await _database.changeUserPassword(
           newPassword, operatorCode, currentPassword, collection);
     } else {
       return;
@@ -86,7 +86,7 @@ void main() {
   );
 
   group(
-    "ChangeOperatorEmail Function should",
+    "changeUserEmail Function should",
     () {
       test(
         "Call database function to change operator's email",
@@ -99,7 +99,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeOperatorEmail(any, any, any, any))
+          when(operatorDatabase.changeUserEmail(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.changeOperatorEmail(
               "josy_kelly@email.com",
@@ -123,7 +123,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeOperatorEmail(any, any, any, any))
+          when(operatorDatabase.changeUserEmail(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.changeOperatorEmail("josy_kelly@email.com",
               "", createdOperator?.operatorPassword, "");
@@ -148,7 +148,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.deleteOperatorAccount(any, any, any, any))
+          when(operatorDatabase.deleteUserAccount(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.deleteOperatorAccount(
               createdOperator?.operatorCode,
@@ -173,7 +173,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.deleteOperatorAccount(any, any, any, any))
+          when(operatorDatabase.deleteUserAccount(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.deleteOperatorAccount(
               createdOperator?.operatorCode,
@@ -203,7 +203,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeOperatorPassword(any, any, any, any))
+          when(operatorDatabase.changeUserPassword(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.changeOperatorPassword(
               "newPassword",
@@ -228,7 +228,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeOperatorPassword(any, any, any, any))
+          when(operatorDatabase.changeUserPassword(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.changeOperatorPassword(
               "newPassword",
@@ -313,7 +313,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeOperatorPassword(any, any, any, any))
+          when(operatorDatabase.changeUserPassword(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.changeOperatorPassword(
               "newPassword",
@@ -338,7 +338,7 @@ void main() {
               newOperator, newOperator.operatorOcupation);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeOperatorPassword(any, any, any, any))
+          when(operatorDatabase.changeUserPassword(any, any, any, any))
               .thenReturn(null);
           await operatorRepository.changeOperatorPassword(
               "newPassword",

@@ -43,6 +43,8 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
             .set(enterpriseMap);
       } on FirebaseAuthException catch (e) {
         throw CreateAccountError(message: e.message!);
+      } on FirebaseException catch (e) {
+        throw CreateAccountError(message: e.message!);
       }
     } else {
       return;
@@ -71,8 +73,7 @@ void main() {
     authMock = MockFirebaseAuth(mockUser: user);
     firebaseMock = FakeFirebaseFirestore();
     uuid = const Uuid();
-    database = EnterpriseDatabaseMock(
-        database: firebaseMock, auth: authMock, uuid: uuid);
+    database = EnterpriseDatabaseMock(database: firebaseMock, auth: authMock, uuid: uuid);
   });
   group(
     'CreateEnterpriseAccount Function should ...',

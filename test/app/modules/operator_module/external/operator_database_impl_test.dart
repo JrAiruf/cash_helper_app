@@ -1,5 +1,5 @@
-import 'package:cash_helper_app/app/modules/operator_module/external/data/operator_database.dart';
-import 'package:cash_helper_app/app/modules/operator_module/external/errors/operation_errors.dart';
+import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
+import 'package:cash_helper_app/app/modules/user_module/external/errors/operation_errors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +19,7 @@ class OperatorDatabaseMock implements OperatorDatabase {
   final FirebaseFirestore _datasource;
 
   @override
-  Future<void> changeOperatorEmail(String? newEmail, String? operatorCode,
+  Future<void> changeUserEmail(String? newEmail, String? operatorCode,
       String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
     if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
@@ -42,7 +42,7 @@ class OperatorDatabaseMock implements OperatorDatabase {
   }
 
   @override
-  Future<void> deleteOperatorAccount(
+  Future<void> deleteUserAccount(
       String? operatorCode,
       String? operatorEmail,
       String? operatorPassword,
@@ -71,7 +71,7 @@ class OperatorDatabaseMock implements OperatorDatabase {
   }
 
   @override
-  Future<void> changeOperatorPassword(String? newPassword, String? operatorCode,
+  Future<void> changeUserPassword(String? newPassword, String? operatorCode,
       String? currentPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
     if (_validOperatorData(newPassword, operatorCode, currentPassword)) {
@@ -170,7 +170,7 @@ void main() {
         () async {
           final createdOperator = await loginDatabase.register(
               newOperator, newOperator["operatorOcupation"]);
-          await database.changeOperatorEmail(
+          await database.changeUserEmail(
               "operator@email.com",
               createdOperator?["operatorCode"],
               createdOperator?["operatorPassword"],
@@ -195,7 +195,7 @@ void main() {
         () async {
           final createdOperator = await loginDatabase.register(
               newOperator, newOperator["operatorOcupation"]);
-          await database.changeOperatorEmail(
+          await database.changeUserEmail(
               "operator@email.com",
               null,
               createdOperator?["operatorPassword"],
@@ -224,7 +224,7 @@ void main() {
         () async {
           final createdOperator =
               await loginDatabase.register(newOperator, "deleteCollection");
-          await database.deleteOperatorAccount(
+          await database.deleteUserAccount(
               createdOperator?["operatorCode"],
               createdOperator?["operatorEmail"],
               createdOperator?["operatorPassword"],
@@ -239,7 +239,7 @@ void main() {
         () async {
           final createdOperator =
               await loginDatabase.register(newOperator, "otherCollection");
-          await database.deleteOperatorAccount(createdOperator?["operatorCode"],
+          await database.deleteUserAccount(createdOperator?["operatorCode"],
               null, createdOperator?["operatorPassword"], "otherCollection");
           final databaseDocsList =
               await firebaseMock.collection("otherCollection").get();
@@ -256,7 +256,7 @@ void main() {
         () async {
           final createdOperator = await loginDatabase.register(
               newOperator, newOperator["operatorOcupation"]);
-          await database.changeOperatorPassword(
+          await database.changeUserPassword(
               "newPassword",
               createdOperator?["operatorCode"],
               createdOperator?["operatorPassword"],
@@ -278,7 +278,7 @@ void main() {
         () async {
           final createdOperator = await loginDatabase.register(
               newOperator, newOperator["operatorOcupation"]);
-          await database.changeOperatorPassword(
+          await database.changeUserPassword(
               "newPassword",
               null,
               createdOperator?["operatorPassword"],

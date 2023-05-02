@@ -5,7 +5,7 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/registe
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/reset_operator_password/ireset_operator_password.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';

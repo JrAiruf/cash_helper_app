@@ -1,8 +1,8 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
 
 import '../../../../../helpers/data_verifier.dart';
-import '../../../../operator_module/domain/entities/operator_entity.dart';
-import '../../../../operator_module/infra/models/operator_model.dart';
+import '../../../../user_module/domain/entities/operator_entity.dart';
+import '../../../../user_module/infra/models/operator_model.dart';
 import '../../../infra/data/login_repository.dart';
 
 class GetOperatorById implements IGetOperatorById {
