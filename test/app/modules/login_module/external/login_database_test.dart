@@ -252,8 +252,7 @@ void main() {
             .get();
         expect(result.docs.isEmpty, equals(false));
         expect(createdOperator, isA<Map<String, dynamic>>());
-        expect(
-            database.operatorData?["operatorEmail"], equals("josy@email.com"));
+        expect(database.operatorData?["operatorEmail"], equals("josy@email.com"));
       });
       test("Fail to create the operator document in firebase", () async {
         final createdOperator =

@@ -6,6 +6,7 @@ class EnterpriseModel {
   String? enterpriseCnpj;
   String? enterpriseName;
   String? enterpriseEmail;
+  String? enterprisePassword;
   String? enterprisePhoneNumber;
   String? enterpriseCode;
   String? enterpriseCity;
@@ -19,6 +20,7 @@ class EnterpriseModel {
     this.enterpriseCnpj,
     this.enterpriseName,
     this.enterpriseEmail,
+    this.enterprisePassword,
     this.enterprisePhoneNumber,
     this.enterpriseCode,
     this.enterpriseCity,

@@ -4,6 +4,7 @@ class EnterpriseEntity {
   final String enterpriseCnpj;
   final String enterpriseName;
   final String enterpriseEmail;
+  final String enterprisePassword;
   final String enterprisePhoneNumber;
   final String enterpriseCode;
   final String enterpriseCity;
@@ -17,6 +18,7 @@ class EnterpriseEntity {
     required this.enterpriseCnpj,
     required this.enterpriseName,
     required this.enterpriseEmail,
+    required this.enterprisePassword,
     required this.enterprisePhoneNumber,
     required this.enterpriseCode,
     required this.enterpriseCity,
