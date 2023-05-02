@@ -15,6 +15,7 @@ class EnterpriseTestObjects {
     'enterpriseAddressStreet': "Andorinhas",
     'enterpriseAddressNumber': 381
   };
+  
   static final enterpriseModel = EnterpriseModel(
       enterpriseId: "enterpriseId",
       enterpriseCnpj: "00000000000122",
@@ -27,7 +28,7 @@ class EnterpriseTestObjects {
       enterpriseState: "Minas Gerais",
       enterpriseAddressStreet: "Andorinhas",
       enterpriseAddressNumber: 381);
-      
+
   static final enterpriseEntity = EnterpriseEntity(
       enterpriseId: "enterpriseId",
       enterpriseCnpj: "00000000000122",
