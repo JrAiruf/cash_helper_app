@@ -39,7 +39,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: "operator",
+    businessPosition: "operator",
   );
   group(
     "ResetOperatorPassword function should",
@@ -100,7 +100,7 @@ final repositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: "operator",
+  businessPosition: "operator",
 );
 final modifiedRepositoryOperator = OperatorModel(
   operatorId: 'q34u6hu1qeuyoio',
@@ -112,5 +112,5 @@ final modifiedRepositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: "operator",
+  businessPosition: "operator",
 );

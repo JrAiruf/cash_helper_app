@@ -36,7 +36,7 @@ class OperatorCardComponent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Ocupação:", style: fontSize),
-                  Text(operatorEntity.operatorOcupation ?? "", style: fontSize),
+                  Text(operatorEntity.businessPosition ?? "", style: fontSize),
                 ],
               ),
               Row(

@@ -51,7 +51,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
 
   @override
   Future<Map<String, dynamic>?>? register(
-      Map<String, dynamic>? newOperator, String? collection) async {
+      Map<String, dynamic>? newOperator,String? enterpriseId, String? collection) async {
     try {
       final userCredentials = await _auth
           .createUserWithEmailAndPassword(
@@ -86,7 +86,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
 
   @override
   Future<Map<String, dynamic>?>? login(
-      String? email, String? password, String? collection) async {
+      String? email, String? password,String? enterpriseId, String? collection) async {
     try {
       if (_validCredentials(email, password) && collection!.isNotEmpty) {
         _authUser = await _auth
@@ -94,7 +94,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
             .then((value) => value.user)
             .catchError(
           (e) {
-            throw AuthenticationError();
+            throw AuthenticationError(message: e.toString());
           },
         );
         operatorData = await _database
@@ -108,12 +108,12 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       }
     } on FirebaseAuthException catch (e) {
       Exception(e.toString());
-      throw AuthenticationError();
+      throw AuthenticationError(message: e.toString());
     }
   }
 
   @override
-  Future<Map<String, dynamic>?>? getOperatorById(
+  Future<Map<String, dynamic>?>? getOperatorById(String? enterpriseId,
       String? operatorId, String? collection) async {
     try {
       if (_validOperatorInformations(operatorId, collection)) {
@@ -128,13 +128,13 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       }
     } catch (e) {
       Exception(e.toString());
-      throw OperatorNotFound();
+      throw OperatorNotFound(message: e.toString());
     }
   }
 
   @override
   Future<bool>? checkOperatorDataForResetPassword(
-      String? email, String? operatorCode, String? collection) async {
+      String? email, String? operatorCode,String? enterpriseId, String? collection) async {
     if (email != null && operatorCode != null && collection != null) {
       final operatorsCollection = await _database.collection(collection).get();
       final checkedOperator = operatorsCollection.docs.firstWhere(
@@ -149,7 +149,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
 
   @override
   Future<void>? resetOperatorPassword(
-      String? email, String? operatorCode, String? newPassword) async {
+      String? email, String? operatorCode,String? enterpriseId, String? newPassword) async {
     try {
       final operatorsList = await _database.collection("operator").get();
       if (_validOperatorValues(email, operatorCode)) {
@@ -158,7 +158,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
                 operator["operatorEmail"] == email &&
                 operator["operatorCode"] == operatorCode)
             .data();
-        await login(email, databaseOperator["operatorPassword"],
+        await login(email, databaseOperator["operatorPassword"],"",
             databaseOperator["operatorOcupation"]);
         await _auth.currentUser?.updatePassword(newPassword!);
         final operatorsCollection =

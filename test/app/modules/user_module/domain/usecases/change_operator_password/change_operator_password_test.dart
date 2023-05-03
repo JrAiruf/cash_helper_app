@@ -46,7 +46,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: "operator",
+    businessPosition: "operator",
   );
   group(
     "ChangeOperatorPassword function should",
@@ -59,7 +59,7 @@ void main() {
           when(loginRepository.getOperatorById(any, any))
               .thenAnswer((_) async => modifiedRepositoryOperator);
           final createdOperator = await register(
-              newOperator, newOperator.operatorOcupation);
+              newOperator, newOperator.businessPosition);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
           when(operatorRepository.changeOperatorPassword(any, any, any, any))
@@ -83,7 +83,7 @@ void main() {
           when(loginRepository.getOperatorById(any, any))
               .thenAnswer((_) async => repositoryOperator);
           final createdOperator = await register(
-              newOperator, newOperator.operatorOcupation);
+              newOperator, newOperator.businessPosition);
           expect(createdOperator != null, equals(true));
           expect(createdOperator?.operatorName, equals("Josy Kelly"));
           when(operatorRepository.changeOperatorPassword(any, any, any, any))
@@ -108,7 +108,7 @@ final repositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: "operator",
+  businessPosition: "operator",
 );
 
 final modifiedRepositoryOperator = OperatorModel(
@@ -121,5 +121,5 @@ final modifiedRepositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: "operator",
+  businessPosition: "operator",
 );

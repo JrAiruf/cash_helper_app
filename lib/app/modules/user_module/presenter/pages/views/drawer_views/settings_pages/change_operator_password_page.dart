@@ -292,7 +292,7 @@ class _ChangeOperatorPasswordPageState
                                       _newPassword!,
                                       _operatorCode!,
                                       _operatorPassword!,
-                                      widget.operatorEntity.operatorOcupation!)
+                                      widget.operatorEntity.businessPosition!)
                                   .catchError(
                                 (e) {
                                   _controller.modificationEmailFailure(context);

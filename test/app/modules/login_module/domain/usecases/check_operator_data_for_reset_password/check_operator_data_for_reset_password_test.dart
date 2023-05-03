@@ -36,7 +36,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: "operator",
+    businessPosition: "operator",
   );
  group(
     "CheckOperatorDataForResetPassword function should",

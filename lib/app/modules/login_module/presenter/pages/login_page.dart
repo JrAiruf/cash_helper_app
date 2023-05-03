@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                               .login(
                                   _userLogin.operatorEmail,
                                   _userLogin.operatorPassword,
-                                  _userLogin.operatorOcupation ?? "operator")
+                                  _userLogin.businessPosition ?? "operator")
                               ?.then((value) => value)
                               .catchError((e) {
                             _loginController.onFail(context);

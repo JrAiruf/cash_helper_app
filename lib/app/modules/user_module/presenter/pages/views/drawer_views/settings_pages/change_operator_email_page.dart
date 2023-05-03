@@ -254,7 +254,7 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
                                       widget.operatorEntity.operatorEmail!,
                                       _operatorCode!,
                                       _operatorPassword!,
-                                      widget.operatorEntity.operatorOcupation!)
+                                      widget.operatorEntity.businessPosition!)
                                   .catchError((e) {
                                 _controller.modificationEmailFailure(context);
                               });

@@ -1,24 +1,22 @@
 class ManagerEntity {
   final String managerId;
-  final int managerNumber;
   final String managerName;
   final String managerEmail;
   final String managerPassword;
   final String managerCode;
-  final String managerOppening;
-  final String managerClosing;
-  final bool managerEnabled;
-  final String managerOcupation;
+  final String managerPhone;
+  final String managerCpf;
+  final String managerRg;
+  final String businessPosition;
 
   ManagerEntity(
-      {required this.managerId,
-      required this.managerNumber,
-      required this.managerName,
-      required this.managerEmail,
-      required this.managerPassword,
-      required this.managerCode,
-      required this.managerOppening,
-      required this.managerClosing,
-      required this.managerEnabled,
-      required this.managerOcupation});
+      this.managerId,
+      this.managerName,
+      this.managerEmail,
+      this.managerPassword,
+      this.managerCode,
+      this.managerPhone,
+      this.managerCpf,
+      this.managerRg,
+      this.businessPosition);
 }

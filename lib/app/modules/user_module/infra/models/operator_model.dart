@@ -12,7 +12,7 @@ class OperatorModel {
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
-  String? operatorOcupation;
+  String? businessPosition;
   OperatorModel({
     this.operatorId,
     this.operatorNumber,
@@ -23,7 +23,7 @@ class OperatorModel {
     this.operatorOppening,
     this.operatorClosing,
     this.operatorEnabled,
-    this.operatorOcupation,
+    this.businessPosition,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,7 +37,7 @@ class OperatorModel {
       'operatorOppening': operatorOppening,
       'operatorClosing': operatorClosing,
       'operatorEnabled': operatorEnabled,
-      'operatorOcupation': operatorOcupation,
+      'businessPosition': businessPosition,
     };
   }
 
@@ -52,7 +52,7 @@ class OperatorModel {
       operatorOppening: map['operatorOppening'],
       operatorClosing: map['operatorClosing'],
       operatorEnabled: map['operatorEnabled'],
-      operatorOcupation: map['operatorOcupation'],
+      businessPosition: map['businessPosition'],
     );
   }
 
@@ -67,7 +67,7 @@ class OperatorModel {
       operatorOppening: operator.operatorOppening,
       operatorClosing: operator.operatorClosing,
       operatorEnabled: operator.operatorEnabled,
-      operatorOcupation: operator.operatorOcupation,
+      businessPosition: operator.businessPosition,
     );
   }
 
@@ -82,7 +82,7 @@ class OperatorModel {
       operatorOppening: operator.operatorOppening,
       operatorClosing: operator.operatorClosing,
       operatorEnabled: operator.operatorEnabled,
-      operatorOcupation: operator.operatorOcupation,
+      businessPosition: operator.businessPosition,
     );
   }
 

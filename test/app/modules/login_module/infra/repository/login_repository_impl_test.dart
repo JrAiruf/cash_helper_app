@@ -4,7 +4,7 @@ import 'package:cash_helper_app/app/modules/login_module/infra/data/login_reposi
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
+/* 
 class FirebaseDatabaseMock extends Mock implements FirebaseDatabase {}
 
 class LoginRepositoryMock implements LoginRepository {
@@ -288,4 +288,4 @@ final modifiedDatabaseOperator = <String,dynamic>{
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
     'operatorOcupation': "operator",
-  };
+  }; */

@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import '../../../login_module/infra/repository/login_repository_impl_test.dart';
 
 class OperatorDatabaseMock extends Mock implements OperatorDatabase {}
-
+/* 
 class OperatorRepositoryMock implements OperatorRepository {
   OperatorRepositoryMock({required OperatorDatabase database})
       : _database = database;
@@ -380,3 +380,4 @@ final modifiedDatabaseOperator = <String, dynamic>{
   'operatorEnabled': false,
   'operatorOcupation': "operator",
 };
+ */

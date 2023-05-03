@@ -40,7 +40,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: "operator",
+    businessPosition: "operator",
   );
   group(
     "Login function should",
@@ -58,7 +58,7 @@ void main() {
           final loginOperator = await login(
               createdOperator?.operatorEmail,
               createdOperator?.operatorPassword,
-              createdOperator?.operatorOcupation.toString());
+              createdOperator?.businessPosition.toString());
           expect(loginOperator, isA<OperatorEntity>());
           expect(loginOperator?.operatorId != null, equals(true));
         },
@@ -90,5 +90,5 @@ final repositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: "operator",
+  businessPosition: "operator",
 );

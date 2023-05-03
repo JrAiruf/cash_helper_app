@@ -39,7 +39,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: "operator",
+    businessPosition: "operator",
   );
   group(
     "Register function should",
@@ -80,5 +80,5 @@ final repositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: "operator",
+  businessPosition: "operator",
 );

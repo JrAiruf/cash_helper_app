@@ -214,7 +214,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       _createOperatorFormKey.currentState!.validate();
                       _createOperatorFormKey.currentState!.save();
                       _cashierOperator.operatorClosing = 'Pendente';
-                      _cashierOperator.operatorOcupation = "operator";
+                      _cashierOperator.businessPosition = "operator";
                       _cashierOperator.operatorEnabled =
                           startWithEnabledOperator ?? false ? true : false;
                       _cashierOperator.operatorOppening =
@@ -229,7 +229,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           });
                           final newOperator = await _loginStore
                               .register(_cashierOperator,
-                                  _cashierOperator.operatorOcupation!)
+                                  _cashierOperator.businessPosition!)
                               ?.then((value) => value)
                               .catchError((e) {
                             if (e.toString().contains("already-in-use")) {

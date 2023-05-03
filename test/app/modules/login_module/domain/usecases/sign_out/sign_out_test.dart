@@ -37,7 +37,7 @@ void main() {
     operatorOppening: 'operatorOppening',
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
-    operatorOcupation: "operator",
+    businessPosition: "operator",
   );
   test(
     "Should sign out the application",
@@ -54,7 +54,7 @@ void main() {
       final loginOperator = await login(
           createdOperator?.operatorEmail,
           createdOperator?.operatorPassword,
-          createdOperator?.operatorOcupation.toString());
+          createdOperator?.businessPosition.toString());
       expect(loginOperator, isA<OperatorEntity>());
       expect(loginOperator?.operatorId != null, equals(true));
       await signOut();
@@ -74,5 +74,5 @@ final repositoryOperator = OperatorModel(
   operatorOppening: 'operatorOppening',
   operatorClosing: 'operatorClosing',
   operatorEnabled: false,
-  operatorOcupation: "operator",
+  businessPosition: "operator",
 );

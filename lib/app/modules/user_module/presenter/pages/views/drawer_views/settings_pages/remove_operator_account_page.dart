@@ -236,7 +236,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                         _operatorEmail!,
                                         _operatorPassword!,
                                         widget
-                                            .operatorEntity.operatorOcupation!)
+                                            .operatorEntity.businessPosition!)
                                     .catchError((e) {
                                   _controller.deletionFailure(context);
                                 });
