@@ -129,7 +129,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                             _loginController.onFail(context);
                           });
                           if (recoveredOperator != null) {
-                            Modular.to.navigate("/operator-module/",
+                            Modular.to.navigate("/user-module/",
                                 arguments: recoveredOperator);
                           } else {
                             setState(() {

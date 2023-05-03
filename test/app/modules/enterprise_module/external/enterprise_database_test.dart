@@ -73,7 +73,8 @@ void main() {
     authMock = MockFirebaseAuth(mockUser: user);
     firebaseMock = FakeFirebaseFirestore();
     uuid = const Uuid();
-    database = EnterpriseDatabaseMock(database: firebaseMock, auth: authMock, uuid: uuid);
+    database = EnterpriseDatabaseMock(
+        database: firebaseMock, auth: authMock, uuid: uuid);
   });
   group(
     'CreateEnterpriseAccount Function should ...',
@@ -84,6 +85,9 @@ void main() {
           await database
               .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
           final result = await firebaseMock.collection("enterprise").get();
+          final enterpriseMap = result.docs.first;
+          expect(enterpriseMap.data()["enterpriseId"] != null, equals(true));
+          expect(enterpriseMap.data()["enterpriseCode"] != null, equals(true));
           expect(result.docs.isNotEmpty, equals(true));
         },
       );

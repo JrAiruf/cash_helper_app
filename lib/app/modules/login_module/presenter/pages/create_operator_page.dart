@@ -245,7 +245,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           if (newOperator != null) {
                             _createOperatorController
                                 .operatorCreatedSucessfully(context);
-                            Modular.to.navigate("/operator-module/",
+                            Modular.to.navigate("/user-module/",
                                 arguments: newOperator);
                           } else {
                             _createOperatorController.onFail(context);

@@ -19,18 +19,18 @@ import '../presenter/pages/views/drawer_views/settings_pages/change_operator_pas
 import '../presenter/pages/views/drawer_views/settings_pages/remove_operator_account_page.dart';
 import '../presenter/stores/operator_store.dart';
 
-abstract class AppOperatorModule {
+abstract class AppUserModule {
   static routes() => ModuleRoute(
-        "/operator-module",
-        module: OperatorModule.instance,
+        "/user-module",
+        module: UserModule.instance,
         transition: TransitionType.fadeIn,
       );
-  static final module = OperatorModule.instance;
+  static final module = UserModule.instance;
 }
 
-class OperatorModule extends Module {
-  OperatorModule._();
-  static final instance = OperatorModule._();
+class UserModule extends Module {
+  UserModule._();
+  static final instance = UserModule._();
 
   @override
   List<Bind<Object>> get binds => bindList;
