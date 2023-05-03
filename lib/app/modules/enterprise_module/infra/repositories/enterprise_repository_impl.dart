@@ -7,21 +7,32 @@ class EnterpriseRepositoryImpl implements EnterpriseRepository {
   EnterpriseRepositoryImpl({
     required ApplicationEnterpriseDatabase database,
     required DataVerifier dataVerifier,
-  }) :
-   _database = database,
-   _dataVerifier = dataVerifier;
+  })  : _database = database,
+        _dataVerifier = dataVerifier;
 
   final ApplicationEnterpriseDatabase _database;
   final DataVerifier _dataVerifier;
+
   @override
-  Future? createEnterpriseAccount(EnterpriseModel? enterpriseModel) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<EnterpriseModel?>? createEnterpriseAccount(
+      EnterpriseModel? enterpriseModel) async {
+    if (_dataVerifier.objectVerifier(object: enterpriseModel?.toMap() ?? {})) {
+      final enterpriseDatabaseMap =
+          await _database.createEnterpriseAccount(enterpriseModel?.toMap());
+      return EnterpriseModel.fromMap(enterpriseDatabaseMap);
+    } else {
+      return null;
+    }
   }
 
   @override
-  Future getEnterpriseByCode(String? enterpriseCode) {
-    // TODO: implement getEnterpriseByCode
-    throw UnimplementedError();
+  Future<EnterpriseModel?>? getEnterpriseByCode(String? enterpriseCode) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseCode])) {
+      final enterpriseDatabaseMap =
+          await _database.getEnterpriseByCode(enterpriseCode);
+      return EnterpriseModel.fromMap(enterpriseDatabaseMap);
+    } else {
+      return null;
+    }
   }
 }
