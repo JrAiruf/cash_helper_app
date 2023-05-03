@@ -43,23 +43,33 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
             .set(enterpriseMap);
       } on FirebaseAuthException catch (e) {
         throw CreateAccountError(message: e.message!);
-      } on FirebaseException catch (e) {
-        throw CreateAccountError(message: e.message!);
+      } catch (e) {
+        throw CreateAccountError(message: e.toString());
       }
     } else {
       return;
     }
   }
 
+  @override
+  Future<Map<String, dynamic>?> getEnterpriseByCode(
+      String enterpriseCode) async {
+    try {
+      final enterprisesDocumentsList =
+          await _database.collection("enterprise").get();
+      final mathcerEntepriseDocument = enterprisesDocumentsList.docs.firstWhere(
+          (element) => element.data()["enterpriseCode"] == enterpriseCode);
+      return mathcerEntepriseDocument.data().isNotEmpty
+          ? mathcerEntepriseDocument.data()
+          : null;
+    } catch (e) {
+      throw EnterpriseAccountNotFoundError(message: e.toString());
+    }
+  }
+
   String _createEnterpriseCode(String source, int hashSize) {
     final index = source.length ~/ source.length - 1;
     return source.substring(index, index + hashSize);
-  }
-  
-  @override
-  Future getEnterpriseByCode(String enterpriseCode) {
-    // TODO: implement getEnterpriseByCode
-    throw UnimplementedError();
   }
 }
 
@@ -83,7 +93,7 @@ void main() {
         database: firebaseMock, auth: authMock, uuid: uuid);
   });
   group(
-    'CreateEnterpriseAccount Function should ...',
+    'CreateEnterpriseAccount Function should',
     () {
       test(
         'Create and Save an enterprise account in database',
@@ -103,6 +113,35 @@ void main() {
           await database.createEnterpriseAccount({});
           final result = await firebaseMock.collection("enterprise").get();
           expect(result.docs.isEmpty, equals(true));
+        },
+      );
+    },
+  );
+  group(
+    'GetEnterpriseByCode Function should',
+    () {
+      test(
+        'Return a map containing enterprise data',
+        () async {
+          await database
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final enterpriseMap = enterprisesList.docs.first;
+          final result = await database
+              .getEnterpriseByCode(enterpriseMap["enterpriseCode"]);
+          expect(result, isA<Map<String, dynamic>>());
+          expect(result != null, equals(true));
+          expect(result?["enterpriseName"], equals("PrimeSoftware"));
+        },
+      );
+      test(
+        'Fail to return enterprise data',
+        () async {
+          expect(
+            () async => database.getEnterpriseByCode(""),
+            throwsA(isA<EnterpriseAccountNotFoundError>()),
+          );
         },
       );
     },
