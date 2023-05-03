@@ -19,13 +19,19 @@ class EnterpriseRepositoryMock implements EnterpriseRepository {
   final DataVerifier _dataVerifier;
 
   @override
-  Future? createEnterpriseAccount(EnterpriseModel? enterpriseModel) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<EnterpriseModel?>? createEnterpriseAccount(
+      EnterpriseModel? enterpriseModel) async {
+    if (_dataVerifier.objectVerifier(object: enterpriseModel?.toMap() ?? {})) {
+      final enterpriseDatabaseMap =
+          await _database.createEnterpriseAccount(enterpriseModel?.toMap());
+      return EnterpriseModel.fromMap(enterpriseDatabaseMap);
+    } else {
+      return null;
+    }
   }
 
   @override
-  Future getEnterpriseByCode(String? enterpriseCode) {
+  Future<EnterpriseModel?>? getEnterpriseByCode(String? enterpriseCode) {
     // TODO: implement getEnterpriseByCode
     throw UnimplementedError();
   }
@@ -47,9 +53,8 @@ void main() {
       test(
         'Call database function to create an enterprise account, and verify function parameters',
         () async {
-          when(database
-                  .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap))
-              .thenAnswer((_) async => null);
+          when(database.createEnterpriseAccount(any))
+              .thenAnswer((_) async => EnterpriseTestObjects.enterpriseMap);
           final createdEnterprise = await repository
               .createEnterpriseAccount(EnterpriseTestObjects.enterpriseModel);
           expect(createdEnterprise, isA<EnterpriseModel>());
@@ -66,10 +71,28 @@ void main() {
       );
     },
   );
-  test(
-    'enterprise repository impl ...',
-    () async {
-      // TODO: Implement test
+  group(
+    "CreateEnterpriseAccount Function should",
+    () {
+      test(
+        'Call database function to create an enterprise account, and verify function parameters',
+        () async {
+          when(database.createEnterpriseAccount(any))
+              .thenAnswer((_) async => EnterpriseTestObjects.enterpriseMap);
+          final createdEnterprise = await repository
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseModel);
+          expect(createdEnterprise, isA<EnterpriseModel>());
+          expect(createdEnterprise != null, equals(true));
+        },
+      );
+      test(
+        'Fail with invalid parameters',
+        () async {
+          final createdEnterprise =
+              await repository.createEnterpriseAccount(null);
+          expect(createdEnterprise == null, equals(true));
+        },
+      );
     },
   );
 }

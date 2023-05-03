@@ -12,4 +12,7 @@ class DataVerifier {
     }
     return verified;
   }
+
+  bool objectVerifier({required Map object}) =>
+      object.isNotEmpty && !object.values.contains("");
 }

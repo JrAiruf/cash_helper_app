@@ -23,12 +23,12 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
   Map<String, dynamic> enterpriseData = {};
 
   @override
-  Future<Map<String, dynamic>> createEnterpriseAccount(
-      Map<String, dynamic> enterpriseMap) async {
+  Future<Map<String, dynamic>>? createEnterpriseAccount(
+      Map<String, dynamic>? enterpriseMap) async {
     try {
       final enterpriseCredentials = await _auth
           .createUserWithEmailAndPassword(
-              email: enterpriseMap['enterpriseEmail'],
+              email: enterpriseMap!['enterpriseEmail'],
               password: enterpriseMap['enterprisePassword'])
           .catchError((e) {
         throw CreateAccountError(message: e.toString());
@@ -54,7 +54,7 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
 
   @override
   Future<Map<String, dynamic>?> getEnterpriseByCode(
-      String enterpriseCode) async {
+      String? enterpriseCode) async {
     try {
       final enterprisesDocumentsList =
           await _database.collection("enterprise").get();
@@ -101,7 +101,7 @@ void main() {
         () async {
           final enterpriseMap = await database
               .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          expect(enterpriseMap["enterpriseId"] != null, equals(true));
+          expect(enterpriseMap!["enterpriseId"] != null, equals(true));
           expect(enterpriseMap["enterpriseCode"] != null, equals(true));
         },
       );
@@ -123,7 +123,7 @@ void main() {
           final enterpriseMap = await database
               .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
           final result = await database
-              .getEnterpriseByCode(enterpriseMap["enterpriseCode"]);
+              .getEnterpriseByCode(enterpriseMap!["enterpriseCode"]);
           expect(result, isA<Map<String, dynamic>>());
           expect(result != null, equals(true));
           expect(result?["enterpriseName"], equals("PrimeSoftware"));

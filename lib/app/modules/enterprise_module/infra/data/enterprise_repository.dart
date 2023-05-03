@@ -2,5 +2,5 @@ import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/enter
 
 abstract class EnterpriseRepository {
   Future<dynamic>? createEnterpriseAccount(EnterpriseModel? enterpriseModel);
-  Future<dynamic> getEnterpriseByCode(String? enterpriseCode);
+  Future<dynamic>? getEnterpriseByCode(String? enterpriseCode);
 }
