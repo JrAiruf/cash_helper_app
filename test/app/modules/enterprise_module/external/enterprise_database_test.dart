@@ -55,6 +55,12 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
     final index = source.length ~/ source.length - 1;
     return source.substring(index, index + hashSize);
   }
+  
+  @override
+  Future getEnterpriseByCode(String enterpriseCode) {
+    // TODO: implement getEnterpriseByCode
+    throw UnimplementedError();
+  }
 }
 
 void main() {

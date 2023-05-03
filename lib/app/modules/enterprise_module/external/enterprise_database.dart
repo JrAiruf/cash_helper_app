@@ -51,5 +51,11 @@ EnterpriseDatabase({
   String _createEnterpriseCode(String source, int hashSize) {
     final index = source.length ~/ source.length - 1;
     return source.substring(index, index + hashSize);
+  }
+  
+  @override
+  Future getEnterpriseByCode(String enterpriseCode) {
+    // TODO: implement getEnterpriseByCode
+    throw UnimplementedError();
   } 
 }
