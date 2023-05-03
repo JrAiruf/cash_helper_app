@@ -20,34 +20,35 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
   final Uuid _uuid;
+  Map<String, dynamic> enterpriseData = {};
 
   @override
-  Future<void> createEnterpriseAccount(
+  Future<Map<String, dynamic>> createEnterpriseAccount(
       Map<String, dynamic> enterpriseMap) async {
-    if (enterpriseMap.isNotEmpty) {
-      try {
-        final enterpriseCredentials = await _auth
-            .createUserWithEmailAndPassword(
-                email: enterpriseMap['enterpriseEmail'],
-                password: enterpriseMap['enterprisePassword'])
-            .catchError((e) {
-          throw CreateAccountError(message: e.toString());
-        });
-        enterpriseMap["enterpriseId"] = enterpriseCredentials.user?.uid;
-        final operatorCodeResource = _uuid.v1();
-        final enterpriseCode = _createEnterpriseCode(operatorCodeResource, 8);
-        enterpriseMap["enterpriseCode"] = enterpriseCode;
-        await _database
-            .collection("enterprise")
-            .doc(enterpriseMap["enterpriseId"])
-            .set(enterpriseMap);
-      } on FirebaseAuthException catch (e) {
-        throw CreateAccountError(message: e.message!);
-      } catch (e) {
+    try {
+      final enterpriseCredentials = await _auth
+          .createUserWithEmailAndPassword(
+              email: enterpriseMap['enterpriseEmail'],
+              password: enterpriseMap['enterprisePassword'])
+          .catchError((e) {
         throw CreateAccountError(message: e.toString());
-      }
-    } else {
-      return;
+      });
+      enterpriseMap["enterpriseId"] = enterpriseCredentials.user?.uid;
+      final operatorCodeResource = _uuid.v1();
+      final enterpriseCode = _createEnterpriseCode(operatorCodeResource, 8);
+      enterpriseMap["enterpriseCode"] = enterpriseCode;
+      await _database
+          .collection("enterprise")
+          .doc(enterpriseMap["enterpriseId"])
+          .set(enterpriseMap);
+      enterpriseData = await _database
+          .collection("enterprise")
+          .doc(enterpriseMap["enterpriseId"])
+          .get()
+          .then((value) => value.data() ?? {});
+      return enterpriseMap;
+    } catch (e) {
+      throw CreateAccountError(message: e.toString());
     }
   }
 
@@ -98,21 +99,17 @@ void main() {
       test(
         'Create and Save an enterprise account in database',
         () async {
-          await database
+          final enterpriseMap = await database
               .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final result = await firebaseMock.collection("enterprise").get();
-          final enterpriseMap = result.docs.first;
-          expect(enterpriseMap.data()["enterpriseId"] != null, equals(true));
-          expect(enterpriseMap.data()["enterpriseCode"] != null, equals(true));
-          expect(result.docs.isNotEmpty, equals(true));
+          expect(enterpriseMap["enterpriseId"] != null, equals(true));
+          expect(enterpriseMap["enterpriseCode"] != null, equals(true));
         },
       );
       test(
         'Fail to create enterprise account',
         () async {
-          await database.createEnterpriseAccount({});
-          final result = await firebaseMock.collection("enterprise").get();
-          expect(result.docs.isEmpty, equals(true));
+          expect(() async => database.createEnterpriseAccount({}),
+              throwsA(isA<CreateAccountError>()));
         },
       );
     },
@@ -123,11 +120,8 @@ void main() {
       test(
         'Return a map containing enterprise data',
         () async {
-          await database
+          final enterpriseMap = await database
               .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final enterprisesList =
-              await firebaseMock.collection("enterprise").get();
-          final enterpriseMap = enterprisesList.docs.first;
           final result = await database
               .getEnterpriseByCode(enterpriseMap["enterpriseCode"]);
           expect(result, isA<Map<String, dynamic>>());
