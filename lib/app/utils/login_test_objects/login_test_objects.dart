@@ -9,7 +9,7 @@ class LoginTestObjects {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
-    'operatorOcupation': "operator",
+    'businessPosition': "operator",
   };
   static final Map<String, dynamic> modifiedUser = {
     'operatorId': 'q34u6hu1qeuyoio',
@@ -21,7 +21,7 @@ class LoginTestObjects {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': true,
-    'operatorOcupation': "Admin",
+    'businessPosition': "Admin",
   };
   static final Map<String, dynamic> testOperator = {
     'operatorId': 'q34u6hu1qeuyoio',
@@ -33,7 +33,7 @@ class LoginTestObjects {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
-    'operatorOcupation': "operator",
+    'businessPosition': "operator",
   };
   static final Map<String, dynamic> deletionOperator = {
     'operatorId': 'q34u6hu1qeuyoio',
@@ -45,7 +45,7 @@ class LoginTestObjects {
     'operatorOppening': 'operatorOppening',
     'operatorClosing': 'operatorClosing',
     'operatorEnabled': false,
-    'operatorOcupation': "operator",
+    'businessPosition': "operator",
   };
 
   static final Map<String, dynamic> newManager = {
@@ -57,6 +57,6 @@ class LoginTestObjects {
     'managerPhone': '35272307',
     'managerCpf': '00000033302',
     'managerRg': '342345642',
-    'managerOcupation': 'manager',
+    'businessPosition': 'manager',
   };
 }

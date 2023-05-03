@@ -59,8 +59,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           ? await _database
               .collection("enterprise")
               .doc(enterpriseId)
-              .collection(newOperator["managerOcupation"] ??
-                  newOperator["operatorOcupation"])
+              .collection(newOperator["businessPosition"])
               .doc(newUserId)
               .set(newOperator)
           : null;
@@ -68,8 +67,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           ? userData = await _database
               .collection("enterprise")
               .doc(enterpriseId)
-              .collection(newOperator["managerOcupation"] ??
-                  newOperator["operatorOcupation"])
+              .collection(newOperator["businessPosition"])
               .doc(newUserId)
               .get()
               .then((value) => value.data())
@@ -114,8 +112,12 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   Future<Map<String, dynamic>?>? getOperatorById(
       String? enterpriseId, String? operatorId, String? collection) async {
     try {
-      if (_dataVerifier.validateInputData(inputs: [operatorId, collection])) {
-        final databaseCollection = _database.collection(collection!);
+      if (_dataVerifier
+          .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
+        final databaseCollection = _database
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection(collection!);
         userData = await databaseCollection
             .doc(operatorId)
             .get()
@@ -216,11 +218,11 @@ void main() {
         final createdOperator = await database.register(
             LoginTestObjects.newOperator,
             createdEnterprise["enterpriseId"],
-            LoginTestObjects.newOperator["operatorOcupation"]);
+            LoginTestObjects.newOperator["businessPosition"]);
         final result = await firebaseMock
             .collection("enterprise")
             .doc(createdEnterprise["enterpriseId"])
-            .collection(createdOperator?["operatorOcupation"])
+            .collection(createdOperator?["businessPosition"])
             .get();
         expect(result.docs.isEmpty, equals(false));
         expect(createdOperator, isA<Map<String, dynamic>>());
@@ -244,11 +246,11 @@ void main() {
       final createdManager = await database.register(
           LoginTestObjects.newManager,
           createdEnterprise["enterpriseId"],
-          LoginTestObjects.newManager["managerOcupation"]);
+          LoginTestObjects.newManager["businessPosition"]);
       final result = await firebaseMock
           .collection("enterprise")
           .doc(createdEnterprise["enterpriseId"])
-          .collection(createdManager?["managerOcupation"])
+          .collection(createdManager?["businessPosition"])
           .get();
       expect(result.docs.isEmpty, equals(false));
       expect(createdManager, isA<Map<String, dynamic>>());
@@ -277,15 +279,15 @@ void main() {
           final createdOperator = await database.register(
               LoginTestObjects.newOperator,
               createdEnterprise["enterpriseId"],
-              LoginTestObjects.newOperator["operatorOcupation"]);
+              LoginTestObjects.newOperator["businessPosition"]);
           final loginOperator = await database.login(
               createdOperator?["operatorEmail"],
               createdOperator?["operatorPassword"],
               createdEnterprise["enterpriseId"],
-              createdOperator?["operatorOcupation"]);
+              createdOperator?["businessPosition"]);
           expect(loginOperator != null, equals(true));
           expect(loginOperator?["operatorId"] != null, equals(true));
-          expect(loginOperator?["operatorOcupation"], equals("operator"));
+          expect(loginOperator?["businessPosition"], equals("operator"));
         },
       );
       test(
@@ -299,7 +301,7 @@ void main() {
           final createdOperator = await database.register(
               LoginTestObjects.newOperator,
               createdEnterprise["enterpriseId"],
-              LoginTestObjects.newOperator["operatorOcupation"]);
+              LoginTestObjects.newOperator["businessPosition"]);
           final loginOperator = await database.login(
               createdOperator?["operatorEmail"], "", "", "");
           expect(loginOperator, equals(null));
@@ -321,71 +323,56 @@ void main() {
           final createdManager = await database.register(
               LoginTestObjects.newManager,
               createdEnterprise["enterpriseId"],
-              LoginTestObjects.newManager["managerOcupation"]);
+              LoginTestObjects.newManager["businessPosition"]);
           final loginOperator = await database.login(
               createdManager?["managerEmail"],
               createdManager?["managerPassword"],
               createdEnterprise["enterpriseId"],
-              createdManager?["managerOcupation"]);
+              createdManager?["businessPosition"]);
           expect(loginOperator != null, equals(true));
-          expect(loginOperator?["operatorId"] != null, equals(true));
-          expect(loginOperator?["operatorOcupation"], equals("operator"));
-        },
-      );
-      test(
-        "Fail to sign in",
-        () async {
-          await enterpriseDatabase
-              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final enterprisesList =
-              await firebaseMock.collection("enterprise").get();
-          final createdEnterprise = enterprisesList.docs.first.data();
-          final createdManager = await database.register(
-              LoginTestObjects.newManager,
-              createdEnterprise["enterpriseId"],
-              LoginTestObjects.newManager["operatorOcupation"]);
-          final loginOperator = await database.login(
-              createdManager?["operatorEmail"], "", "", "");
-          expect(loginOperator, equals(null));
+          expect(loginOperator?["managerId"] != null, equals(true));
+          expect(loginOperator?["businessPosition"], equals("manager"));
         },
       );
     },
   );
-}
-  /* 
   group(
     "GetOperatorById function should",
     () {
       test(
         "Return a Map from firebase containing all operator data",
         () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
           final createdOperator = await database.register(
-              newOperator, newOperator["operatorOcupation"]);
-          final result = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
-              .get();
-          expect(result.docs.isNotEmpty, equals(true));
-          await database.getOperatorById(createdOperator?["operatorId"],
-              createdOperator?["operatorOcupation"]);
-          expect(database.operatorData != null, equals(true));
+              LoginTestObjects.newOperator,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newOperator["businessPosition"]);
+          final result = await database.getOperatorById(
+              createdEnterprise["enterpriseId"],
+              createdOperator?["operatorId"],
+              createdOperator?["businessPosition"]);
+          expect(result, isA<Map<String, dynamic>>());
+          expect(result?["operatorId"] != null, equals(true));
+          expect(database.userData != null, equals(true));
         },
       );
       test(
         "Fail returning operator data",
         () async {
-          await database.register(
-              newOperator, newOperator["operatorOcupation"]);
-          final result = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
-              .get();
-          expect(result.docs.isNotEmpty, equals(true));
           final operatorData = await database.getOperatorById(
-              "", newOperator["operatorOcupation"]);
+              "", "", LoginTestObjects.newOperator["businessPosition"]);
           expect(operatorData == null, equals(true));
         },
       );
     },
   );
+}
+  /* 
+  
   group(
     "CheckOperatorDataForResetPassword function should",
     () {
