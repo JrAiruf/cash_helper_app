@@ -33,7 +33,7 @@ class LoginRepositoryImpl implements LoginRepository {
   Future<OperatorModel?>? getOperatorById(
       String? operatorId, String? collection) async {
 if (operatorId != null && collection != null) {
-  final databaseOperator = await _datasource.getOperatorById(operatorId,"", collection);
+  final databaseOperator = await _datasource.getUserById(operatorId,"", collection);
   return OperatorModel.fromMap(databaseOperator ?? {});
 } else {
   return null;

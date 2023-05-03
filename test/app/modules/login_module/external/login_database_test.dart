@@ -109,7 +109,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? getOperatorById(
+  Future<Map<String, dynamic>?>? getUserById(
       String? enterpriseId, String? operatorId, String? collection) async {
     try {
       if (_dataVerifier
@@ -351,7 +351,7 @@ void main() {
               LoginTestObjects.newOperator,
               createdEnterprise["enterpriseId"],
               LoginTestObjects.newOperator["businessPosition"]);
-          final result = await database.getOperatorById(
+          final result = await database.getUserById(
               createdEnterprise["enterpriseId"],
               createdOperator?["operatorId"],
               createdOperator?["businessPosition"]);
@@ -363,7 +363,7 @@ void main() {
       test(
         "Fail returning operator data",
         () async {
-          final operatorData = await database.getOperatorById(
+          final operatorData = await database.getUserById(
               "", "", LoginTestObjects.newOperator["businessPosition"]);
           expect(operatorData == null, equals(true));
         },

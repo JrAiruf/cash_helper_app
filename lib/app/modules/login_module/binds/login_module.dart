@@ -74,6 +74,7 @@ class LoginModule extends Module {
         database: i(),
         auth: i(),
         uuid: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<LoginRepository>(
