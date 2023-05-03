@@ -31,9 +31,14 @@ class EnterpriseRepositoryMock implements EnterpriseRepository {
   }
 
   @override
-  Future<EnterpriseModel?>? getEnterpriseByCode(String? enterpriseCode) {
-    // TODO: implement getEnterpriseByCode
-    throw UnimplementedError();
+  Future<EnterpriseModel?>? getEnterpriseByCode(String? enterpriseCode) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseCode])) {
+      final enterpriseDatabaseMap =
+          await _database.getEnterpriseByCode(enterpriseCode);
+      return EnterpriseModel.fromMap(enterpriseDatabaseMap);
+    } else {
+      return null;
+    }
   }
 }
 
@@ -72,25 +77,24 @@ void main() {
     },
   );
   group(
-    "CreateEnterpriseAccount Function should",
+    "GetEnterpriseByCode Function should",
     () {
       test(
-        'Call database function to create an enterprise account, and verify function parameters',
+        'Call database function to return enterprise data, convert it to an EnterpriseModel,and verify function parameters',
         () async {
-          when(database.createEnterpriseAccount(any))
+          when(database.getEnterpriseByCode(any))
               .thenAnswer((_) async => EnterpriseTestObjects.enterpriseMap);
-          final createdEnterprise = await repository
-              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseModel);
-          expect(createdEnterprise, isA<EnterpriseModel>());
-          expect(createdEnterprise != null, equals(true));
+          final retrivedEnterpriseModel =
+              await repository.getEnterpriseByCode("enterpriseCode");
+          expect(retrivedEnterpriseModel, isA<EnterpriseModel>());
+          expect(retrivedEnterpriseModel != null, equals(true));
         },
       );
       test(
         'Fail with invalid parameters',
         () async {
-          final createdEnterprise =
-              await repository.createEnterpriseAccount(null);
-          expect(createdEnterprise == null, equals(true));
+          final retrivedEnterprise = await repository.getEnterpriseByCode(null);
+          expect(retrivedEnterprise == null, equals(true));
         },
       );
     },

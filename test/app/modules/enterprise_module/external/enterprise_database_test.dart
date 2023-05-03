@@ -53,7 +53,7 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?> getEnterpriseByCode(
+  Future<Map<String, dynamic>?>? getEnterpriseByCode(
       String? enterpriseCode) async {
     try {
       final enterprisesDocumentsList =
