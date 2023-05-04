@@ -10,17 +10,10 @@ GetManagerById({required LoginRepository repository})
       : _repository = repository;
 
   final LoginRepository _repository;
-  final _dataVerifier = DataVerifier();
-  @override
+   @override
   Future<ManagerEntity?> call(
       String? enterpriseId, String? operatorId, String? collection) async {
-    if (_dataVerifier
-        .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
-      final operatorModel =
-          await _repository.getUserById(enterpriseId, operatorId, collection);
-      return ManagerModel.toEntityData(operatorModel ?? ManagerModel());
-    } else {
-      return ManagerEntity();
-    }
+    final operatorModel = await _repository.getUserById(enterpriseId, operatorId, collection);
+    return ManagerModel.toEntityData(operatorModel ?? ManagerModel());
   }
 }

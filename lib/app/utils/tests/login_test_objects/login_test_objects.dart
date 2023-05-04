@@ -100,7 +100,7 @@ class LoginTestObjects {
     managerRg: '342345642',
     businessPosition: "operator",
   );
-  final newOperatorEntity = OperatorEntity(
+  static final newOperatorEntity = OperatorEntity(
     operatorId: 'q34u6hu1qeuyoio',
     operatorNumber: 1,
     operatorName: ' Josy Kelly',

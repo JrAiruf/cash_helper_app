@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/login_module/infra/data/login_repository.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
+import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -16,43 +17,26 @@ class RegisterOperatorUsecaseMock implements IRegisterOperator {
   final _dataVerifier = DataVerifier();
 
   @override
-  Future<OperatorEntity?> call(OperatorEntity? newOperator, String? collection) async {
-    if (_dataVerifier
-        .validateInputData(inputs: [newOperator?.operatorId, collection])) {
+  Future<OperatorEntity?> call(OperatorEntity? newOperator,String? enterpriseId,  String? collection) async {
      final operatorModelData = OperatorModel.fromEntityData(newOperator ?? OperatorEntity());
-      final operatorModel = await _repository.register(operatorModelData, collection) ?? OperatorModel();
+      final operatorModel = await _repository.register(operatorModelData, enterpriseId, collection) ?? OperatorModel();
       return OperatorModel.toEntityData(operatorModel);
-    } else {
-      return null;
-  }}
+   }
 }
 
 void main() {
   final repository = LoginRepositoryMock();
   final registerOperator = RegisterOperatorUsecaseMock(repository: repository);
-  final newOperator = OperatorEntity(
-    operatorId: 'q34u6hu1qeuyoio',
-    operatorNumber: 1,
-    operatorName: ' Josy Kelly',
-    operatorEmail: 'josy@email.com',
-    operatorPassword: '12345678',
-    operatorOppening: 'operatorOppening',
-    operatorClosing: 'operatorClosing',
-    operatorEnabled: false,
-    businessPosition: "operator",
-  );
   group(
     "Register function should",
     () {
       test(
         "Convert the object coming from repository, to register a new operator",
         () async {
-          when(repository.register(any, any))
-              .thenAnswer((_) async => repositoryOperator);
-          when(repository.login(any, any, any))
-              .thenAnswer((_) async => repositoryOperator);
+          when(repository.register(any, any, any))
+              .thenAnswer((_) async => LoginTestObjects.newOperatorModel);
           final createdOperator =
-              await registerOperator(newOperator, "collection");
+              await registerOperator(LoginTestObjects.newOperatorEntity, "enterpriseId", "collection");
           expect(createdOperator, isA<OperatorEntity>());
           expect(createdOperator?.operatorId != null, equals(true));
         },
@@ -60,25 +44,12 @@ void main() {
       test(
         "Fail to convert the object",
         () async {
-          when(repository.register(any, any))
+          when(repository.register(any, any,any))
               .thenAnswer((_) async => null);
-          final createdOperator = await registerOperator(null, "collection");
+          final createdOperator = await registerOperator(null,"", "collection");
           expect(createdOperator?.operatorId == null, equals(true));
         },
       );
     },
   );
 }
-
-final repositoryOperator = OperatorModel(
-  operatorId: 'q34u6hu1qeuyoio',
-  operatorNumber: 1,
-  operatorName: 'Josy Kelly',
-  operatorEmail: 'josy@email.com',
-  operatorPassword: '12345678',
-  operatorCode: '123456',
-  operatorOppening: 'operatorOppening',
-  operatorClosing: 'operatorClosing',
-  operatorEnabled: false,
-  businessPosition: "operator",
-);

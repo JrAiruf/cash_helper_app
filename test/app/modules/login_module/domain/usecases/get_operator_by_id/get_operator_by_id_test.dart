@@ -13,18 +13,11 @@ class GetOperatorByIdMock implements IGetOperatorById {
       : _repository = repository;
 
   final LoginRepository _repository;
-  final _dataVerifier = DataVerifier();
   @override
   Future<OperatorEntity?> call(
       String? enterpriseId, String? operatorId, String? collection) async {
-    if (_dataVerifier
-        .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
-      final operatorModel =
-          await _repository.getUserById(enterpriseId, operatorId, collection);
-      return OperatorModel.toEntityData(operatorModel ?? OperatorModel());
-    } else {
-      return OperatorEntity();
-    }
+    final operatorModel = await _repository.getUserById(enterpriseId, operatorId, collection);
+    return OperatorModel.toEntityData(operatorModel ?? OperatorModel());
   }
 }
 
@@ -52,7 +45,8 @@ void main() {
         () async {
           when(repository.getUserById(any, any, any))
               .thenAnswer((_) async => null);
-          final retriviedOperator = await getOperatorById("", "operatorId", "collection");
+          final retriviedOperator =
+              await getOperatorById("", "operatorId", "collection");
           expect(retriviedOperator?.operatorId == null, equals(true));
         },
       );

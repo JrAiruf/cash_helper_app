@@ -13,10 +13,10 @@ class RegisterOperator implements IRegisterOperator {
   final _dataVerifier = DataVerifier();
 
   @override
-  Future<OperatorEntity?> call(OperatorEntity? newOperator, String? collection) async {
+  Future<OperatorEntity?> call(OperatorEntity? newOperator,String? enterpriseId,  String? collection) async {
     if (_dataVerifier.validateInputData(inputs: [newOperator?.operatorId, collection])) {
      final operatorModelData = OperatorModel.fromEntityData(newOperator ?? OperatorEntity());
-      final operatorModel = await _repository.register(operatorModelData, collection) ?? OperatorModel();
+      final operatorModel = await _repository.register(operatorModelData, enterpriseId, collection) ?? OperatorModel();
       return OperatorModel.toEntityData(operatorModel);
     } else {
       return null;
