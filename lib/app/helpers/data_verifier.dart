@@ -18,7 +18,7 @@ class DataVerifier {
   }
 
   bool objectVerifier({required Map object}) =>
-      object.isNotEmpty && !object.values.contains("") && !object.values.contains(null);
+      object.isNotEmpty && !object.values.contains("");
   bool operatorModelVerifier({required dynamic model}) => model.runtimeType == OperatorModel;
   bool managerModelVerifier({required dynamic model}) => model.runtimeType == ManagerModel;
   bool operatorMapVerifier({required Map map}) => map.keys.contains("operatorId");

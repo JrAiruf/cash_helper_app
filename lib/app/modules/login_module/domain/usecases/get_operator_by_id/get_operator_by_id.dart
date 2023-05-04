@@ -12,9 +12,9 @@ GetOperatorById({required LoginRepository repository})
   final LoginRepository _repository;
   final _dataVerifier = DataVerifier();
   @override
-  Future<OperatorEntity?> call(String? operatorId, String? collection) async {
+  Future<OperatorEntity?> call(String? enterpriseId, String? operatorId, String? collection) async {
    if(_dataVerifier.validateInputData(inputs: [operatorId,collection])){
-        final operatorModel = await _repository.getOperatorById(operatorId, collection);
+        final operatorModel = await _repository.getUserById(enterpriseId, operatorId, collection);
         return OperatorModel.toEntityData(operatorModel ?? OperatorModel());
    } else {
     return OperatorEntity();
