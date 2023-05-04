@@ -9,14 +9,14 @@ class ManagerEntity {
   final String managerRg;
   final String businessPosition;
 
-  ManagerEntity(
-      this.managerId,
-      this.managerName,
-      this.managerEmail,
-      this.managerPassword,
-      this.managerCode,
-      this.managerPhone,
-      this.managerCpf,
-      this.managerRg,
-      this.businessPosition);
+  ManagerEntity({
+     required this.managerId,
+     required this.managerName,
+     required this.managerEmail,
+     required this.managerPassword,
+     required this.managerCode,
+     required this.managerPhone,
+     required this.managerCpf,
+     required this.managerRg,
+     required this.businessPosition});
 }

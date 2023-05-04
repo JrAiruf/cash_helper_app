@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../../domain/entities/manager_entity.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class ManagerModel {
   String? managerId;
@@ -49,6 +51,33 @@ class ManagerModel {
       managerCpf: map['managerCpf'],
       managerRg: map['managerRg'],
       businessPosition: map['businessPosition'],
+    );
+  }
+
+  static ManagerModel fromEntityData(ManagerEntity managerModel) {
+    return ManagerModel(
+      managerId:managerModel.managerId,
+      managerName:managerModel.managerName,
+      managerEmail:managerModel.managerEmail,
+      managerPassword:managerModel.managerPassword,
+      managerCode:managerModel.managerCode,
+      managerPhone:managerModel.managerPhone,
+      managerCpf:managerModel.managerCpf,
+      managerRg:managerModel.managerRg,
+      businessPosition:managerModel.businessPosition,
+    );
+  }
+  static ManagerEntity toEntityData(ManagerModel managerModel) {
+    return ManagerEntity(
+      managerId:managerModel.managerId!,
+      managerName:managerModel.managerName!,
+      managerEmail:managerModel.managerEmail!,
+      managerPassword:managerModel.managerPassword!,
+      managerCode:managerModel.managerCode!,
+      managerPhone:managerModel.managerPhone!,
+      managerCpf:managerModel.managerCpf!,
+      managerRg:managerModel.managerRg!,
+      businessPosition:managerModel.businessPosition!,
     );
   }
 

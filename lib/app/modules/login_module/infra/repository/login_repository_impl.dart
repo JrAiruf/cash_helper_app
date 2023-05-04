@@ -9,7 +9,7 @@ class LoginRepositoryImpl implements LoginRepository {
   final ApplicationLoginDatabase _datasource;
 
   @override
-  Future<OperatorModel?>? register(OperatorModel? newOperator,String? enterpriseId, String? collection) async {
+  Future<OperatorModel?>? register(dynamic newOperator,String? enterpriseId, String? collection) async {
     if (newOperator != null && collection !=null) {
       final databaseOperator = await _datasource.register(newOperator.toMap(),"", collection);
       return OperatorModel.fromMap(databaseOperator ?? {});
@@ -30,7 +30,7 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<OperatorModel?>? getOperatorById(
+  Future<OperatorModel?>? getOperatorById(String? enterpriseId, 
       String? operatorId, String? collection) async {
 if (operatorId != null && collection != null) {
   final databaseOperator = await _datasource.getUserById(operatorId,"", collection);

@@ -29,7 +29,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   final Uuid _uuid;
   final DataVerifier _dataVerifier;
   User? _authUser;
-  Map<String, dynamic>? userData;
+  Map<String, dynamic> userData = {};
   String _createUserCode(String source, int hashSize) {
     final index = source.length ~/ source.length;
     return source.substring(index, index + hashSize);
@@ -70,8 +70,8 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
               .collection(newOperator["businessPosition"])
               .doc(newUserId)
               .get()
-              .then((value) => value.data())
-          : userData = null;
+              .then((value) => value.data() ?? {})
+          : userData = {};
       return userData;
     } on FirebaseException catch (e) {
       throw Exception(e.toString());
@@ -98,7 +98,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
             .collection(collection!)
             .doc(_authUser!.uid)
             .get()
-            .then((value) => value.data());
+            .then((value) => value.data() ?? {});
         return userData;
       } else {
         return null;
@@ -121,7 +121,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         userData = await databaseCollection
             .doc(operatorId)
             .get()
-            .then((value) => value.data());
+            .then((value) => value.data() ?? {});
         return userData;
       } else {
         return null;
@@ -176,7 +176,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   @override
   Future<void>? signOut() async {
     await _auth.signOut();
-    userData?.clear();
+    userData.clear();
   }
 }
 
@@ -226,7 +226,7 @@ void main() {
             .get();
         expect(result.docs.isEmpty, equals(false));
         expect(createdOperator, isA<Map<String, dynamic>>());
-        expect(database.userData?["operatorId"] != null, equals(true));
+        expect(database.userData["operatorId"] != null, equals(true));
       });
       test("Fail to create the operator document in firebase", () async {
         final createdOperator = await database.register(
@@ -254,7 +254,7 @@ void main() {
           .get();
       expect(result.docs.isEmpty, equals(false));
       expect(createdManager, isA<Map<String, dynamic>>());
-      expect(database.userData?["managerId"] != null, equals(true));
+      expect(database.userData["managerId"] != null, equals(true));
     });
     test("Fail to create the operator document in firebase", () async {
       final createdManager = await database.register(

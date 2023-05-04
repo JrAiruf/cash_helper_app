@@ -38,17 +38,36 @@ class LoginRepositoryMock implements LoginRepository {
   }
 
   @override
-  Future<dynamic>? login(String? email, String? password,
-      String? enterpriseId, String? collection) async {
-    // TODO: implement login
-    throw UnimplementedError();
+  Future<dynamic>? login(String? email, String? password, String? enterpriseId,
+      String? collection) async {
+    if (_dataVerifier.validateInputData(
+        inputs: [email, password, enterpriseId, collection])) {
+      final databaseMap =
+          await _datasource.login(email, password, enterpriseId, collection);
+      if (_dataVerifier.operatorMapVerifier(map: databaseMap)) {
+        return OperatorModel.fromMap(databaseMap);
+      } else if (_dataVerifier.managerMapVerifier(map: databaseMap)) {
+        return ManagerModel.fromMap(databaseMap);
+      }
+    } else {
+      return null;
+    }
   }
 
   @override
-  Future<OperatorModel?>? getOperatorById(
-      String? operatorId, String? collection) {
-    // TODO: implement getOperatorById
-    throw UnimplementedError();
+  Future<dynamic>? getUserById(
+      String? enterpriseId, String? operatorId, String? collection) async {
+    if (_dataVerifier
+        .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
+       final databaseMap = await _datasource.getUserById(enterpriseId, operatorId, collection);
+       if (_dataVerifier.operatorMapVerifier(map: databaseMap ?? {})) {
+           return OperatorModel.fromMap(databaseMap);
+       } else if (_dataVerifier.managerMapVerifier(map: databaseMap ?? {})) {
+        return ManagerModel.fromMap(databaseMap);
+      }
+    } else {
+      return null;
+    }
   }
 
   @override
@@ -125,65 +144,70 @@ void main() {
       test(
         "Convert data coming from database and authentitcate operator user successfully",
         () async {
-          when(datasource.login(any, any, any,any)).thenAnswer((_) async => LoginTestObjects.newOperator);
-          final loggedUser = await repository.login("email","password", "enterpriseId","collection");
+          when(datasource.login(any, any, any, any))
+              .thenAnswer((_) async => LoginTestObjects.newOperator);
+          final loggedUser = await repository.login(
+              "email", "password", "enterpriseId", "collection");
           expect(loggedUser, isA<OperatorModel>());
           expect(loggedUser?.operatorId != null, equals(true));
-          
         },
       );
       test(
         "Convert data coming from database and authentitcate a manager successfully",
         () async {
-          when(datasource.login(any, any, any,any)).thenAnswer((_) async => LoginTestObjects.newManager);
-          final loggedUser = await repository.login("email","password", "enterpriseId","collection");
+          when(datasource.login(any, any, any, any))
+              .thenAnswer((_) async => LoginTestObjects.newManager);
+          final loggedUser = await repository.login(
+              "email", "password", "enterpriseId", "collection");
           expect(loggedUser, isA<ManagerModel>());
-          expect(loggedUser?.operatorId != null, equals(true));
-          
+          expect(loggedUser?.managerId != null, equals(true));
         },
       );
       test(
         "Fail Converting data and signing in",
         () async {
-          when(datasource.login(any,any, any, any)).thenAnswer((_) async => LoginTestObjects.newOperator);
-          final loginOperator = await repository.login("email",null,null, "collection");
+          when(datasource.login(any, any, any, any))
+              .thenAnswer((_) async => {});
+          final loginOperator =
+              await repository.login("email", null, null, "collection");
           expect(loginOperator, equals(null));
         },
       );
     },
   );
-  /*
+  
   group(
     "GetOperatorById function should",
     () {
       test(
         "Convert data coming from database and return an OperatorModel object",
         () async {
-          when(datasource.register(any, any)).thenAnswer((_) async => databaseOperator);
-          when(datasource.getOperatorById(any, any)).thenAnswer((_) async => databaseOperator);
-          final createdOperator = await repository.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorModel>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          final retriviedOperator = await repository.getOperatorById(createdOperator?.operatorEmail, "collection");
-          expect(retriviedOperator, isA<OperatorModel>());
-          expect(retriviedOperator != null, equals(true));
-          expect(retriviedOperator?.operatorId != null, equals(true));
+          when(datasource.getUserById(any, any,any)).thenAnswer((_) async => LoginTestObjects.newOperator);
+          final retrivedUser = await repository.getUserById("enterpriseId","operatorId", "collection");
+          expect(retrivedUser, isA<OperatorModel>());
+          expect(retrivedUser?.operatorId != null, equals(true));
+        },
+      );
+      test(
+        "Convert data coming from database and return an ManagerModel object",
+        () async {
+          when(datasource.getUserById(any, any,any)).thenAnswer((_) async => LoginTestObjects.newManager);
+          final retrivedUser = await repository.getUserById("enterpriseId","managerId", "collection");
+          expect(retrivedUser, isA<ManagerModel>());
+          expect(retrivedUser?.managerId != null, equals(true));
         },
       );
       test(
         "Fail Converting data and returnining the object",
         () async {
-          when(datasource.register(any, any)).thenAnswer((_) async => databaseOperator);
-          when(datasource.getOperatorById(any, any)).thenAnswer((_) async => databaseOperator);
-          final createdOperator = await repository.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorModel>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          final retriviedOperator = await repository.getOperatorById(null, "collection");
+          when(datasource.getUserById(any,any, any)).thenAnswer((_) async => null);
+          final retriviedOperator = await repository.getUserById(null, "","collection");
           expect(retriviedOperator?.operatorId == null, equals(true));
         },
       );
     },
   );
+  /*
   group(
     "CheckOperatorDataForResetPassword function should",
     () {
