@@ -14,8 +14,6 @@ class RegisterOperatorUsecaseMock implements IRegisterOperator {
       : _repository = repository;
 
   final LoginRepository _repository;
-  final _dataVerifier = DataVerifier();
-
   @override
   Future<OperatorEntity?> call(OperatorEntity? newOperator,String? enterpriseId,  String? collection) async {
      final operatorModelData = OperatorModel.fromEntityData(newOperator ?? OperatorEntity());
