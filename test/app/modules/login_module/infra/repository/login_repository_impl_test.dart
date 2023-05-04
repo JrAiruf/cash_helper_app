@@ -38,8 +38,8 @@ class LoginRepositoryMock implements LoginRepository {
   }
 
   @override
-  Future<OperatorModel?>? login(String? email, String? password,
-      String? enterpriseId, String? collection) {
+  Future<dynamic>? login(String? email, String? password,
+      String? enterpriseId, String? collection) async {
     // TODO: implement login
     throw UnimplementedError();
   }
@@ -119,11 +119,11 @@ void main() {
       );
     },
   );
-  /*group(
+  group(
     "Login function should",
     () {
       test(
-        "Convert data coming from database and signIn successfully",
+        "Convert data coming from database and authentitcate operator user successfully",
         () async {
           when(datasource.login(any, any, any,any)).thenAnswer((_) async => LoginTestObjects.newOperator);
           final loggedUser = await repository.login("email","password", "enterpriseId","collection");
@@ -133,19 +133,26 @@ void main() {
         },
       );
       test(
+        "Convert data coming from database and authentitcate a manager successfully",
+        () async {
+          when(datasource.login(any, any, any,any)).thenAnswer((_) async => LoginTestObjects.newManager);
+          final loggedUser = await repository.login("email","password", "enterpriseId","collection");
+          expect(loggedUser, isA<ManagerModel>());
+          expect(loggedUser?.operatorId != null, equals(true));
+          
+        },
+      );
+      test(
         "Fail Converting data and signing in",
         () async {
-         when(datasource.register(any,any, any)).thenAnswer((_) async => databaseOperator);
-          when(datasource.login(any,any, any, any)).thenAnswer((_) async => null);
-          final createdOperator = await repository.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorModel>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          final loginOperator = await repository.login(null,"", "", "");
+          when(datasource.login(any,any, any, any)).thenAnswer((_) async => LoginTestObjects.newOperator);
+          final loginOperator = await repository.login("email",null,null, "collection");
           expect(loginOperator, equals(null));
         },
       );
     },
   );
+  /*
   group(
     "GetOperatorById function should",
     () {
