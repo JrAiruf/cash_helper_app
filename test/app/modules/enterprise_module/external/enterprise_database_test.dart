@@ -1,6 +1,6 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/external/data/application_enterprise_database.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/external/errors/enterprise_database_errors.dart';
-import 'package:cash_helper_app/app/utils/enterprise_test_objects/test_objects.dart';
+import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

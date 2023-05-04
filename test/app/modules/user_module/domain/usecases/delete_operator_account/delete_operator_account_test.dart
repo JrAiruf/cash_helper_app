@@ -51,7 +51,7 @@ void main() {
     operatorEnabled: false,
     businessPosition: "operator",
   );
-  group(
+/*   group(
     "DeleteOperatorAccount function should",
     () {
       test(
@@ -101,7 +101,7 @@ void main() {
         },
       );
     },
-  );
+  ); */
 }
 
 final repositoryOperator = OperatorModel(

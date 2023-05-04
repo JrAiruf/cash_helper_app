@@ -2,7 +2,7 @@ import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/en
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/get_enterprise_by_code/iget_enterprise_by_code.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/data/enterprise_repository.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/enterprise_model.dart';
-import 'package:cash_helper_app/app/utils/enterprise_test_objects/test_objects.dart';
+import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 

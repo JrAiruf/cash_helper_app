@@ -1,8 +1,8 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
-import 'package:cash_helper_app/app/utils/enterprise_test_objects/test_objects.dart';
-import 'package:cash_helper_app/app/utils/login_test_objects/login_test_objects.dart';
+import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
+import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

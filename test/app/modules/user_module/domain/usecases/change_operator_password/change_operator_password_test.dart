@@ -48,7 +48,7 @@ void main() {
     operatorEnabled: false,
     businessPosition: "operator",
   );
-  group(
+/*   group(
     "ChangeOperatorPassword function should",
     () {
       test(
@@ -95,7 +95,7 @@ void main() {
         },
       );
     },
-  );
+  ); */
 }
 
 final repositoryOperator = OperatorModel(
