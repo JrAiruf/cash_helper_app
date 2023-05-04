@@ -68,15 +68,15 @@ class ManagerModel {
   }
   static ManagerEntity toEntityData(ManagerModel managerModel) {
     return ManagerEntity(
-      managerId:managerModel.managerId!,
-      managerName:managerModel.managerName!,
-      managerEmail:managerModel.managerEmail!,
-      managerPassword:managerModel.managerPassword!,
-      managerCode:managerModel.managerCode!,
-      managerPhone:managerModel.managerPhone!,
-      managerCpf:managerModel.managerCpf!,
-      managerRg:managerModel.managerRg!,
-      businessPosition:managerModel.businessPosition!,
+      managerId:managerModel.managerId,
+      managerName:managerModel.managerName,
+      managerEmail:managerModel.managerEmail,
+      managerPassword:managerModel.managerPassword,
+      managerCode:managerModel.managerCode,
+      managerPhone:managerModel.managerPhone,
+      managerCpf:managerModel.managerCpf,
+      managerRg:managerModel.managerRg,
+      businessPosition:managerModel.businessPosition,
     );
   }
 
