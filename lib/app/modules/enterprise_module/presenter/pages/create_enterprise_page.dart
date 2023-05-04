@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/controller/enterprise_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -16,7 +17,7 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
   final _createOperatorFormKey = GlobalKey<FormState>();
   // final _loginStore = Modular.get<EnterpriseStore>();
   // final _loginStore = Modular.get<LoginStore>();
-  final _createOperatorController = Modular.get<LoginController>();
+  final _enterpriseController = Modular.get<EnterpriseController>();
   bool? startWithEnabledOperator;
   final _cashierOperator = OperatorEntity();
   String? _confirmationPassword;
@@ -36,7 +37,7 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Visibility(
-        visible: _createOperatorController.loadingData,
+        visible: _enterpriseController.loadingData,
         replacement: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Container(
@@ -91,12 +92,12 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                     primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
-                                        _createOperatorController
-                                            .cashierNameValidate(value),
+                                        _enterpriseController
+                                            .cnpjValidate(value),
                                     onSaved: (value) =>
                                         _cashierOperator.operatorName = value,
-                                    controller: _createOperatorController
-                                        .cashierNameField,
+                                    controller: _enterpriseController
+                                        .cnpjField,
                                     label: 'CNPJ',
                                   ),
                                   CashHelperTextFieldComponent(
@@ -104,12 +105,12 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                     primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
-                                        _createOperatorController
-                                            .emailValidate(value),
+                                        _enterpriseController
+                                            .enterpriseNameValidate(value),
                                     onSaved: (value) =>
                                         _cashierOperator.operatorEmail = value,
-                                    controller: _createOperatorController
-                                        .newOperatorEmailField,
+                                    controller: _enterpriseController
+                                        .enterpriseNameField,
                                     label: 'Nome da Empresa',
                                   ),
                                   CashHelperTextFieldComponent(
@@ -119,12 +120,12 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                     obscureText:
                                         _passwordVisible == true ? false : true,
                                     validator: (value) =>
-                                        _createOperatorController
-                                            .passwordValidate(value),
+                                        _enterpriseController
+                                            .cityValidate(value),
                                     onSaved: (value) => _cashierOperator
                                         .operatorPassword = value,
-                                    controller: _createOperatorController
-                                        .newOperatorPasswordField,
+                                    controller: _enterpriseController
+                                        .cityField,
                                     label: 'Cidade',
                                   ),
                                   CashHelperTextFieldComponent(
@@ -136,12 +137,12 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                             ? false
                                             : true,
                                     validator: (value) =>
-                                        _createOperatorController
-                                            .passwordValidate(value),
+                                        _enterpriseController
+                                            .cepValidate(value),
                                     onSaved: (value) =>
                                         _confirmationPassword = value,
-                                    controller: _createOperatorController
-                                        .newOperatorPasswordField,
+                                    controller: _enterpriseController
+                                        .cepField,
                                     label: 'CEP',
                                   ),
                                   CashHelperTextFieldComponent(
@@ -151,12 +152,12 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                     obscureText:
                                         _passwordVisible == true ? false : true,
                                     validator: (value) =>
-                                        _createOperatorController
-                                            .passwordValidate(value),
+                                        _enterpriseController
+                                            .stateValidate(value),
                                     onSaved: (value) => _cashierOperator
                                         .operatorPassword = value,
-                                    controller: _createOperatorController
-                                        .newOperatorPasswordField,
+                                    controller: _enterpriseController
+                                        .stateField,
                                     label: 'Estado',
                                   ),
                                   Row(
@@ -173,12 +174,12 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                                   ? false
                                                   : true,
                                           validator: (value) =>
-                                              _createOperatorController
-                                                  .passwordValidate(value),
+                                              _enterpriseController
+                                                  .streetValidate(value),
                                           onSaved: (value) =>
                                               _confirmationPassword = value,
-                                          controller: _createOperatorController
-                                              .newOperatorPasswordField,
+                                          controller: _enterpriseController
+                                              .streetField,
                                           label: 'Rua',
                                         ),
                                       ),
@@ -195,12 +196,12 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                                   ? false
                                                   : true,
                                           validator: (value) =>
-                                              _createOperatorController
-                                                  .passwordValidate(value),
+                                              _enterpriseController
+                                                  .addressNumberValidate(value),
                                           onSaved: (value) =>
                                               _confirmationPassword = value,
-                                          controller: _createOperatorController
-                                              .newOperatorPasswordField,
+                                          controller: _enterpriseController
+                                              .addressNumberField,
                                           label: 'Número',
                                         ),
                                       ),
@@ -211,13 +212,13 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                     primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
-                                        _createOperatorController
-                                            .cashierNumberValidate(value),
+                                        _enterpriseController
+                                            .phoneNumberValidate(value),
                                     onSaved: (value) => _cashierOperator
                                         .operatorNumber = int.tryParse(value!),
                                     label: 'Telefone',
-                                    controller: _createOperatorController
-                                        .cashierNumberField,
+                                    controller: _enterpriseController
+                                        .enterpriseEmailField,
                                     input: TextInputType.phone,
                                   ),
                                 ],
