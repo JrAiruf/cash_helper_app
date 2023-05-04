@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import '../../domain/entities/enterprise_entity.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class EnterpriseModel {
   String? enterpriseId;
@@ -59,6 +61,39 @@ class EnterpriseModel {
       enterpriseState: map['enterpriseState'],
       enterpriseAddressStreet: map['enterpriseAddressStreet'],
       enterpriseAddressNumber: map['enterpriseAddressNumber'],
+    );
+  }
+  static EnterpriseEntity toEntityData(EnterpriseModel enterpriseModel) {
+    return EnterpriseEntity(
+      enterpriseId: enterpriseModel.enterpriseId!,
+      enterpriseCnpj: enterpriseModel.enterpriseCnpj!,
+      enterpriseName: enterpriseModel.enterpriseName!,
+      enterpriseEmail: enterpriseModel.enterpriseEmail!,
+      enterprisePassword: enterpriseModel.enterprisePassword!,
+      enterprisePhoneNumber: enterpriseModel.enterprisePhoneNumber!,
+      enterpriseCode: enterpriseModel.enterpriseCode!,
+      enterpriseCity: enterpriseModel.enterpriseCity!,
+      enterpriseCep: enterpriseModel.enterpriseCep!,
+      enterpriseState: enterpriseModel.enterpriseState!,
+      enterpriseAddressStreet: enterpriseModel.enterpriseAddressStreet!,
+      enterpriseAddressNumber: enterpriseModel.enterpriseAddressNumber!,
+    );
+  }
+
+  static EnterpriseModel fromEntityData(EnterpriseEntity enterpriseEntity) {
+    return EnterpriseModel(
+      enterpriseId: enterpriseEntity.enterpriseId,
+      enterpriseCnpj: enterpriseEntity.enterpriseCnpj,
+      enterpriseName: enterpriseEntity.enterpriseName,
+      enterpriseEmail: enterpriseEntity.enterpriseEmail,
+      enterprisePassword: enterpriseEntity.enterprisePassword,
+      enterprisePhoneNumber: enterpriseEntity.enterprisePhoneNumber,
+      enterpriseCode: enterpriseEntity.enterpriseCode,
+      enterpriseCity: enterpriseEntity.enterpriseCity,
+      enterpriseCep: enterpriseEntity.enterpriseCep,
+      enterpriseState: enterpriseEntity.enterpriseState,
+      enterpriseAddressStreet: enterpriseEntity.enterpriseAddressStreet,
+      enterpriseAddressNumber: enterpriseEntity.enterpriseAddressNumber,
     );
   }
 
