@@ -15,7 +15,9 @@ class CreateEnterpriseAccountMock implements ICreateEnterpriseAccount {
   final EnterpriseRepository _repository;
   @override
   Future<EnterpriseEntity?>? call(EnterpriseEntity enterpriseEntity) async {
-    /* final enterpriseModel = EnterpriseModel.() */
+    final enterpriseModel = EnterpriseModel.fromEntityData(enterpriseEntity);
+    final enterprise = await _repository.createEnterpriseAccount(enterpriseModel);
+    return EnterpriseModel.toEntityData(enterprise);
   }
 }
 
@@ -26,26 +28,15 @@ void main() {
     repository = EnterpriseRepoMock();
     usecase = CreateEnterpriseAccountMock(repository: repository);
   });
-  group(
-    "CreateEnterpriseAccount Function should",
-    () {
-      test(
-        'Call Repository to create an enterprise account',
-        () async {
-          when(repository.createEnterpriseAccount(any))
-              .thenAnswer((_) async => EnterpriseTestObjects.enterpriseModel);
-          final enterprise =
-              await usecase(EnterpriseTestObjects.enterpriseEntity);
-          expect(enterprise, isA<EnterpriseEntity>());
-          expect(enterprise != null, equals(true));
-        },
-      );
-      test(
-        'Fail to create enterprise account',
-        () async {
-          // TODO: Implement test
-        },
-      );
+
+  test(
+    'CreateEnterpriseAccount Function should Call Repository to create an enterprise account',
+    () async {
+      when(repository.createEnterpriseAccount(any))
+          .thenAnswer((_) async => EnterpriseTestObjects.enterpriseModel);
+      final enterprise = await usecase(EnterpriseTestObjects.enterpriseEntity);
+      expect(enterprise, isA<EnterpriseEntity>());
+      expect(enterprise != null, equals(true));
     },
   );
 }
