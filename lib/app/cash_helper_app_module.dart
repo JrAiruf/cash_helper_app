@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/binds/enterprise_binds.dart';
 import 'package:cash_helper_app/app/modules/login_module/binds/login_module.dart';
 import 'package:cash_helper_app/app/modules/user_module/binds/user_module.dart';
 import 'package:cash_helper_app/shared/stores/app_store.dart';
@@ -15,6 +16,7 @@ class CashHelperAppModule extends Module {
       ];
   @override
   List<ModularRoute> get routes => [
+        AppEnterpriseModule.routes(),
         AppLoginModule.routes(),
         AppUserModule.routes(),
         AppAnnotationModule.routes(),

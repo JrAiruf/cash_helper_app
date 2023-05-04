@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -28,6 +29,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final surfaceColor = Theme.of(context).colorScheme.onSurface;
+    final surface = Theme.of(context).colorScheme.surface;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     return Scaffold(
@@ -122,11 +124,17 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                       children: [
                         Text(
                           "Sua empresa não é cadastrada?",
-                          style: Theme.of(context).textTheme.displaySmall,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surface),
                         ),
                         SizedBox(height: height * 0.02),
                         CashHelperElevatedButton(
-                          onPressed: () async {},
+                          onPressed: () {
+                            Modular.to
+                                .pushNamed(EnterpriseRoutes.createEnterprise);
+                          },
                           radius: 12,
                           width: width,
                           height: 65,

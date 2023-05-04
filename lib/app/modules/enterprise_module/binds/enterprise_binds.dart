@@ -1,3 +1,5 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/create_enterprise_page.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../external/data/application_enterprise_database.dart';
@@ -23,7 +25,9 @@ class EnterpriseModule extends Module {
   @override
   List<ModularRoute> get routes => routesList;
 
-  final routesList = <ModularRoute>[];
+  final routesList = <ModularRoute>[
+    ChildRoute(EnterpriseRoutes.createEnterprise, child:(_,args) => const CreateEnterprisePage())
+  ];
 
   final bindList = <Bind>[
     Bind<ApplicationEnterpriseDatabase>(

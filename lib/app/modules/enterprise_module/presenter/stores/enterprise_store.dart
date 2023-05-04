@@ -1,6 +1,20 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_states.dart';
 import 'package:flutter/cupertino.dart';
 
-class EnterpriseStore extends ValueNotifier<EnterpriseStates>{
-  EnterpriseStore() : super(EnterpriseStoreInitialState());
+import '../../domain/usecases/create_enterprise_account/icreate_enterprise_account.dart';
+import '../../domain/usecases/get_enterprise_by_code/iget_enterprise_by_code.dart';
+
+class EnterpriseStore extends ValueNotifier<EnterpriseStates> {
+  EnterpriseStore({
+    required ICreateEnterpriseAccount createEnterpriseAccount,
+    required IGetEnterpriseByCode iGetEnterpriseByCode,
+  })  : 
+  _createEnterpriseAccount = createEnterpriseAccount,
+  _iGetEnterpriseByCode = iGetEnterpriseByCode,
+        super(EnterpriseStoreInitialState());
+
+  final ICreateEnterpriseAccount _createEnterpriseAccount;
+  final IGetEnterpriseByCode _iGetEnterpriseByCode;
+
+  
 }
