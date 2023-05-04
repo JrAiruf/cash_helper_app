@@ -9,6 +9,7 @@ import 'package:cash_helper_app/app/modules/login_module/external/login_database
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/forgot_password_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_operator_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/login_page.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -21,6 +22,7 @@ import '../domain/usecases/reset_operator_password/reset_operator_password.dart'
 import '../infra/data/login_repository.dart';
 import '../infra/repository/login_repository_impl.dart';
 import '../presenter/controllers/login_controller.dart';
+import '../presenter/pages/enterprise_auth_page.dart';
 import '../presenter/pages/recovery_password_page.dart';
 import '../presenter/stores/login_store.dart';
 
@@ -58,6 +60,10 @@ class LoginModule extends Module {
     ChildRoute(
       "/login",
       child: (_, args) => const LoginPage(),
+    ),
+    ChildRoute(
+      LoginRoutes.initial,
+      child: (_, args) => const EnterpriseAuthPage(),
     ),
   ];
 

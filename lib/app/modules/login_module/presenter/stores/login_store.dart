@@ -40,7 +40,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     final operatorEntity = await _registerOperator(newOperator, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState(message: "Usuário não criado");
+        : value = LoginErrorState();
     return operatorEntity;
   }
 
@@ -50,7 +50,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     final operatorEntity = await _login(email, password, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState(message: "Usuário não encontrado");
+        : value = LoginErrorState();
     return operatorEntity;
   }
 
@@ -60,7 +60,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         await _getOperatorById(operatorId, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState(message: "Usuário não encontrado");
+        : value = LoginErrorState();
   }
 
   Future<bool>? checkOperatorDataForResetPassword(
