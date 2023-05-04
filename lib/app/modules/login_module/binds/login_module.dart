@@ -80,6 +80,7 @@ class LoginModule extends Module {
     Bind<LoginRepository>(
       (i) => LoginRepositoryImpl(
         datasource: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<IRegisterOperator>(
@@ -90,6 +91,7 @@ class LoginModule extends Module {
     Bind<ILogin>(
       (i) => Login(
         repository: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<IGetOperatorById>(
