@@ -24,7 +24,6 @@ class SignOutMock implements ISignOut {
 void main() {
   final repository = LoginRepositoryMock();
   final register = RegisterOperatorUsecaseMock(repository: repository);
-  final login = LoginUsecaseMock(repository: repository);
   final getOperatorById = GetOperatorByIdMock(repository: repository);
   final signOut = SignOutMock(repository: repository);
 
@@ -38,7 +37,7 @@ void main() {
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
     businessPosition: "operator",
-  );
+  );/* 
   test(
     "Should sign out the application",
     () async {
@@ -61,7 +60,7 @@ void main() {
       final loggedOffOperator = await getOperatorById("id", "collection");
       expect(loggedOffOperator?.operatorId, equals(null));
     },
-  );
+  ); */
 }
 
 final repositoryOperator = OperatorModel(

@@ -16,7 +16,7 @@ final _loginStore = Modular.get<LoginStore>();
 class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
   @override
   void initState() {
-    _loginStore.getOperatorById(widget.operatorId, "operator");
+    _loginStore.getOperatorById("",widget.operatorId, "operator");
     super.initState();
   }
 

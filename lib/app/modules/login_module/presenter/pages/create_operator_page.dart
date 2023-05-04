@@ -228,7 +228,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                             _createOperatorController.loadingData = true;
                           });
                           final newOperator = await _loginStore
-                              .register(_cashierOperator,
+                              .register(_cashierOperator,"",
                                   _cashierOperator.businessPosition!)
                               ?.then((value) => value)
                               .catchError((e) {

@@ -35,9 +35,9 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   bool loadingData = false;
 
   Future<OperatorEntity?>? register(
-      OperatorEntity newOperator, String collection) async {
+      OperatorEntity newOperator, String enterpriseId, String collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _registerOperator(newOperator, collection);
+    final operatorEntity = await _registerOperator(newOperator, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState(message: "Usuário não criado");
@@ -45,19 +45,19 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   }
 
   Future<OperatorEntity?>? login(
-      String? email, String? password, String? collection) async {
+      String? email, String? password, String enterpriseId, String? collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _login(email, password, collection);
+    final operatorEntity = await _login(email, password, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState(message: "Usuário não encontrado");
     return operatorEntity;
   }
 
-  Future<void>? getOperatorById(String operatorId, String collection) async {
+  Future<void>? getOperatorById(String operatorId, String enterpriseId, String collection) async {
     value = LoginLoadingState();
     final operatorEntity =
-        await _getOperatorById(operatorId, collection);
+        await _getOperatorById(operatorId, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState(message: "Usuário não encontrado");

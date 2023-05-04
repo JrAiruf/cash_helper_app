@@ -12,7 +12,6 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/pages/login_p
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../domain/contract/login_usecases.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/check_operator_data_for_reset_password.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
 import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
@@ -57,7 +56,7 @@ class LoginModule extends Module {
       child: (_, args) => RecoveryPasswordPage(operatorEntity: args.data),
     ),
     ChildRoute(
-      "/",
+      "/login",
       child: (_, args) => const LoginPage(),
     ),
   ];

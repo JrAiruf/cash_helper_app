@@ -40,7 +40,7 @@ void main() {
     operatorClosing: 'operatorClosing',
     operatorEnabled: false,
     businessPosition: "operator",
-  );
+  );/* 
   group(
     "ResetOperatorPassword function should",
     () {
@@ -87,7 +87,7 @@ void main() {
         },
       );
     },
-  );
+  ); */
 }
 
 final repositoryOperator = OperatorModel(

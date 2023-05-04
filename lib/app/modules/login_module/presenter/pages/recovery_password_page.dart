@@ -122,8 +122,11 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               widget.operatorEntity.operatorCode!,
                               _operatorEntity.operatorPassword!);
                           final recoveredOperator = await _loginStore
-                              .login(widget.operatorEntity.operatorEmail,
-                                  _operatorEntity.operatorPassword, "operator")
+                              .login(
+                                  widget.operatorEntity.operatorEmail,
+                                  _operatorEntity.operatorPassword,
+                                  "",
+                                  "operator")
                               ?.then((currentOperator) => currentOperator)
                               .catchError((e) {
                             _loginController.onFail(context);

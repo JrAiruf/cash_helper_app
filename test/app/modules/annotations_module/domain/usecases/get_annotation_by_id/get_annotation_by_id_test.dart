@@ -1,14 +1,14 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_annotation_by_id/iget_annotation_by_id.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import '../../../../../mocks/mocks.dart';
 import '../create_annotation/create_annotation_test.dart';
 
-class GetAnnotationByIdMock implements IGetOperatorById {
+class GetAnnotationByIdMock implements IGetAnnotationById {
   GetAnnotationByIdMock({required AnnotationRepository repository})
       : _repository = repository;
 
