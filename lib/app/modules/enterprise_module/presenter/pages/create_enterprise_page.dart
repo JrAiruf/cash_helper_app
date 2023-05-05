@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
+import '../../../login_module/presenter/components/visibility_icon_component.dart';
 import '../controller/enterprise_controller.dart';
 import '../stores/enterprise_store.dart';
 
@@ -22,12 +23,14 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
   final _enterpriseController = Modular.get<EnterpriseController>();
   final _enterpriseStore = Modular.get<EnterpriseStore>();
   String? _confirmationPassword = "";
+  bool _passwordVisible = false;
+  bool _confirmPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final surfaceColor = Theme.of(context).colorScheme.onSurface;
     final surface = Theme.of(context).colorScheme.surface;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
 
@@ -100,8 +103,8 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       CashHelperTextFieldComponent(
-                                        textColor: onSurface,
-                                        primaryColor: onSurface,
+                                        textColor: surfaceColor,
+                                        primaryColor: surfaceColor,
                                         radius: 15,
                                         validator: (value) =>
                                             _enterpriseController
@@ -119,8 +122,20 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                               .bodySmall),
                                       const SizedBox(height: 15),
                                       CashHelperTextFieldComponent(
-                                        textColor: onSurface,
-                                        primaryColor: onSurface,
+                                        textColor: surfaceColor,
+                                        primaryColor: surfaceColor,
+                                        suffixIcon: VisibilityIconComponent(
+                                            iconColor: surfaceColor,
+                                            onTap: () {
+                                              setState(() {
+                                                _passwordVisible =
+                                                    !_passwordVisible;
+                                              });
+                                            },
+                                            forVisibility: Icons.visibility,
+                                            forHideContent:
+                                                Icons.visibility_off,
+                                            condition: _passwordVisible),
                                         radius: 15,
                                         validator: (value) =>
                                             _enterpriseController
@@ -130,11 +145,25 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                             .enterprisePassword = value,
                                         controller: _enterpriseController
                                             .newEnterprisePasswordField,
+                                        obscureText:
+                                            _passwordVisible ? false : true,
                                         label: 'Senha',
                                       ),
                                       CashHelperTextFieldComponent(
-                                        textColor: onSurface,
-                                        primaryColor: onSurface,
+                                        textColor: surfaceColor,
+                                        primaryColor: surfaceColor,
+                                        suffixIcon: VisibilityIconComponent(
+                                            iconColor: surfaceColor,
+                                            onTap: () {
+                                              setState(() {
+                                                _confirmPasswordVisible =
+                                                    !_confirmPasswordVisible;
+                                              });
+                                            },
+                                            forVisibility: Icons.visibility,
+                                            forHideContent:
+                                                Icons.visibility_off,
+                                            condition: _confirmPasswordVisible),
                                         radius: 15,
                                         validator: (value) =>
                                             _enterpriseController
@@ -143,6 +172,9 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                             _confirmationPassword = value,
                                         controller:
                                             _enterpriseController.cityField,
+                                        obscureText: _confirmPasswordVisible
+                                            ? false
+                                            : true,
                                         label: 'Confirmar Senha',
                                       ),
                                     ],
