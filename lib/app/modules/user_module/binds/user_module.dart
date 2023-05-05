@@ -41,7 +41,7 @@ class UserModule extends Module {
 
   final routesList = <ModularRoute>[
     ChildRoute(
-      "${UserRoutes.managerHomePage}:enterpriseId",
+      "/manager-home-page/:enterpriseId",
       child: (_, args) => ManagerHomePage(
         managerEntity: args.data,
       ),

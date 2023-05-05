@@ -15,5 +15,5 @@ class EnterpriseRoutes {
 }
 
 class UserRoutes {
-  static const managerHomePage = "/manager-home-page/";
+  static const managerHomePage = "/user-module/manager-home-page/";
 }
