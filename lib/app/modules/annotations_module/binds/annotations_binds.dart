@@ -1,5 +1,4 @@
-import 'package:cash_helper_app/app/modules/annotations_module/domain/contract/annotation_usecases.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/annotation_usecases_impl.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_all_annotations/iget_all_annotations.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
@@ -10,20 +9,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 
+import '../domain/usecases/create_annotation/create_annotation.dart';
+import '../domain/usecases/create_annotation/icreate_annotation.dart';
+import '../domain/usecases/delete_annotation/delete_annotation.dart';
+import '../domain/usecases/delete_annotation/idelete_annotation.dart';
+import '../domain/usecases/finish_annotation/finish_annotation.dart';
+import '../domain/usecases/finish_annotation/ifinish_annotation.dart';
+import '../domain/usecases/get_all_annotations/get_all_annotations.dart';
+import '../domain/usecases/get_annotation_by_id/get_annotation_by_id.dart';
+import '../domain/usecases/get_annotation_by_id/iget_annotation_by_id.dart';
+import '../domain/usecases/search_annotations_by_client_address/isearch_annotations_by_client_address.dart';
+import '../domain/usecases/search_annotations_by_client_address/search_annotations_by_client_address.dart';
+import '../domain/usecases/update_annotation/iupdate_annotation.dart';
+import '../domain/usecases/update_annotation/update_annotation.dart';
 import '../presenter/pages/create_annotations_page.dart';
 
-abstract class AnnotationsModule {
+abstract class AppAnnotationModule {
   static routes() => ModuleRoute(
         "/annotations-module",
-        module: AnnotationModuleCore.instance,
+        module: AnnotationModule.instance,
         transition: TransitionType.fadeIn,
       );
-  static final binds = AnnotationModuleCore.instance.binds;
+  static final module = AnnotationModule.instance;
 }
 
-class AnnotationModuleCore extends Module {
-  AnnotationModuleCore._();
-  static final instance = AnnotationModuleCore._();
+class AnnotationModule extends Module {
+  AnnotationModule._();
+  static final instance = AnnotationModule._();
   @override
   List<Bind<Object>> get binds => bindsList;
   @override
@@ -44,27 +56,63 @@ class AnnotationModuleCore extends Module {
         datasource: i(),
       ),
     ),
-    Bind<AnnotationUsecases>(
-      (i) => AnnotationUsecasesImpl(
+    Bind<ICreateAnnotation>(
+      (i) => CreateAnnotation(
+        repository: i(),
+      ),
+    ),
+    Bind<IDeleteAnnotation>(
+      (i) => DeleteAnnotation(
+        repository: i(),
+      ),
+    ),
+    Bind<IFinishAnnotation>(
+      (i) => FinishAnnotation(
+        repository: i(),
+      ),
+    ),
+    Bind<IGetAllAnnotations>(
+      (i) => GetAllAnnotations(
+        repository: i(),
+      ),
+    ),
+    Bind<IGetAnnotationById>(
+      (i) => GetAnnotationById(
+        repository: i(),
+      ),
+    ),
+    Bind<ISearchAnnotationsByClientAddress>(
+      (i) => SearchAnnotationsByClientAddress(
+        repository: i(),
+      ),
+    ),
+    Bind<IUpdateAnnotation>(
+      (i) => UpdateAnnotation(
         repository: i(),
       ),
     ),
     Bind<AnnotationsListStore>(
       (i) => AnnotationsListStore(
-        usecases: i(),
+        getAllAnnotations: i(),
+        searchAnnotationsByClientAddress: i(),
       ),
     ),
     Bind<AnnotationStore>(
       (i) => AnnotationStore(
-        usecases: i(),
+        createAnnotation: i(),
+        getAnnotationById: i(),
+        updateAnnotation: i(),
+        finishAnnotation: i(),
+        deleteAnnotation: i(),
       ),
     ),
   ];
 
   final routesList = <ModularRoute>[
     ChildRoute(
-      "/",
-      child: (_, args) =>const CreateAnnotationsPage(),
+      "/:operatorId",
+      child: (_, args) =>
+          CreateAnnotationsPage(operatorId: args.params["operatorId"]),
     ),
     ChildRoute(
       "/name",

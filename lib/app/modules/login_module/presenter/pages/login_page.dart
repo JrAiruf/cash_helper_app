@@ -1,9 +1,10 @@
 // ignore_for_file: unnecessary_string_interpolations
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../operator_module/domain/entities/operator_entity.dart';
+import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
 
@@ -18,6 +19,7 @@ final _loginFormKey = GlobalKey<FormState>();
 final _loginStore = Modular.get<LoginStore>();
 final _loginController = Modular.get<LoginController>();
 final _userLogin = OperatorEntity();
+bool _passwordVisible = false;
 
 class _LoginPageState extends State<LoginPage> {
   @override
@@ -25,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.onSurface;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     return Scaffold(
@@ -67,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   CashHelperTextFieldComponent(
+                                    primaryColor: surfaceColor,
                                     radius: 15,
                                     validator: (value) =>
                                         _loginController.emailValidate(value),
@@ -79,8 +83,21 @@ class _LoginPageState extends State<LoginPage> {
                                     height: 30,
                                   ),
                                   CashHelperTextFieldComponent(
+                                    primaryColor: surfaceColor,
+                                    suffixIcon: VisibilityIconComponent(
+                                        iconColor: surfaceColor,
+                                        onTap: () {
+                                          setState(() {
+                                            _passwordVisible =
+                                                !_passwordVisible;
+                                          });
+                                        },
+                                        forVisibility: Icons.visibility,
+                                        forHideContent: Icons.visibility_off,
+                                        condition: _passwordVisible),
                                     radius: 15,
-                                    obscureText: true,
+                                    obscureText:
+                                        _passwordVisible == true ? false : true,
                                     validator: (value) => _loginController
                                         .passwordValidate(value),
                                     onSaved: (value) =>
@@ -103,11 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             Modular.to.pushNamed("./create-new-operator");
                           },
-                          child: const Text(
+                          child: Text(
                             'Criar conta',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                            style: Theme.of(context).textTheme.displaySmall,
                           ),
                         ),
                       ),
@@ -154,13 +169,14 @@ class _LoginPageState extends State<LoginPage> {
                               .login(
                                   _userLogin.operatorEmail,
                                   _userLogin.operatorPassword,
-                                  _userLogin.operatorOcupation ?? "operator")
+                                  "",
+                                  _userLogin.businessPosition ?? "operator")
                               ?.then((value) => value)
                               .catchError((e) {
                             _loginController.onFail(context);
                           });
                           loggedUser != null
-                              ? Modular.to.navigate("/operator-module/",
+                              ? Modular.to.navigate("/user-module/",
                                   arguments: loggedUser)
                               : null;
                         }
@@ -173,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 65,
                       buttonName: 'Entrar',
                       fontSize: 20,
-                      nameColor: Colors.white,
+                      nameColor: surfaceColor,
                       backgroundColor: seccondaryColor,
                     ),
                   ),

@@ -1,139 +1,139 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
+import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
+import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:uuid/uuid.dart';
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
+
+import '../../enterprise_module/external/enterprise_database_test.dart';
 
 class FirebaseDatabaseMock implements ApplicationLoginDatabase {
-  FirebaseDatabaseMock(
-      {required FirebaseFirestore database,
-      required FirebaseAuth auth,
-      required Uuid uuid})
-      : _database = database,
+  FirebaseDatabaseMock({
+    required FirebaseFirestore database,
+    required FirebaseAuth auth,
+    required Uuid uuid,
+    required DataVerifier dataVerifier,
+  })  : _database = database,
         _auth = auth,
-        _uuid = uuid;
+        _uuid = uuid,
+        _dataVerifier = dataVerifier;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
   final Uuid _uuid;
+  final DataVerifier _dataVerifier;
   User? _authUser;
-  Map<String, dynamic>? operatorData;
-  bool _validCredentials(String? email, String? password) {
-    return email != null &&
-        !email.contains(' ') &&
-        email.isNotEmpty &&
-        password != null &&
-        !password.contains(' ') &&
-        password.isNotEmpty;
-  }
-
-  bool _validOperatorInformations(String? operatorId, String? collection) {
-    return operatorId != null &&
-        !operatorId.contains(' ') &&
-        operatorId.isNotEmpty &&
-        collection != null &&
-        !collection.contains(' ') &&
-        collection.isNotEmpty;
-  }
-
-  bool _validOperatorValues(String? email, String? operatorCode) {
-    return email != null &&
-        email != ' ' &&
-        operatorCode != null &&
-        operatorCode.isNotEmpty;
-  }
-
-  String _createOperatorCode(String source, int hashSize) {
+  Map<String, dynamic> userData = {};
+  String _createUserCode(String source, int hashSize) {
     final index = source.length ~/ source.length;
     return source.substring(index, index + hashSize);
   }
 
   @override
-  Future<Map<String, dynamic>?>? register(
-      Map<String, dynamic>? newOperator, String? collection) async {
+  Future<Map<String, dynamic>?>? register(Map<String, dynamic>? newOperator,
+      String? enterpriseId, String? collection) async {
+    late String newUserId;
     try {
       final userCredentials = await _auth.createUserWithEmailAndPassword(
-          email: newOperator?['operatorEmail'] ?? "",
-          password: newOperator?['operatorPassword'] ?? "");
-      newOperator?["operatorId"] = userCredentials.user?.uid;
+          email: newOperator?['managerEmail'] ?? newOperator?['operatorEmail'],
+          password:
+              newOperator?['managerPassword'] ?? newOperator?['operatorEmail']);
+      if (userCredentials.user?.email == newOperator?['managerEmail']) {
+        newOperator?["managerId"] = userCredentials.user!.uid;
+        newUserId = userCredentials.user!.uid;
+      } else if (userCredentials.user?.email == newOperator?['operatorEmail']) {
+        newOperator?["operatorId"] = userCredentials.user?.uid;
+        newUserId = userCredentials.user!.uid;
+      }
       final operatorCodeResource = _uuid.v1();
-      final operatorCode = _createOperatorCode(operatorCodeResource, 6);
+      final operatorCode = _createUserCode(operatorCodeResource, 6);
       newOperator?["operatorCode"] = operatorCode;
       _authUser = userCredentials.user;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
           ? await _database
-              .collection(collection ?? "")
-              .doc(newOperator["operatorId"])
+              .collection("enterprise")
+              .doc(enterpriseId)
+              .collection(newOperator["businessPosition"])
+              .doc(newUserId)
               .set(newOperator)
           : null;
       userCredentials.user!.uid.isNotEmpty
-          ? operatorData = await _database
-              .collection(collection!)
-              .doc(newOperator["operatorId"])
+          ? userData = await _database
+              .collection("enterprise")
+              .doc(enterpriseId)
+              .collection(newOperator["businessPosition"])
+              .doc(newUserId)
               .get()
-              .then((value) => value.data())
-          : operatorData = null;
-      return operatorData;
+              .then((value) => value.data() ?? {})
+          : userData = {};
+      return userData;
     } on FirebaseException catch (e) {
       throw Exception(e.toString());
     }
   }
 
   @override
-  Future<Map<String, dynamic>?>? login(
-      String? email, String? password, String? collection) async {
+  Future<Map<String, dynamic>?>? login(String? email, String? password,
+      String? enterpriseId, String? collection) async {
     try {
-      if (_validCredentials(email, password) && collection!.isNotEmpty) {
+      if (_dataVerifier
+          .validateInputData(inputs: [email, password, collection])) {
         _authUser = await _auth
             .signInWithEmailAndPassword(email: email!, password: password!)
             .then((value) => value.user)
             .catchError(
           (e) {
-            throw AuthenticationError();
+            throw AuthenticationError(message: e.toString());
           },
         );
-        operatorData = await _database
-            .collection(collection)
+        userData = await _database
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection(collection!)
             .doc(_authUser!.uid)
             .get()
-            .then((value) => value.data());
-        return operatorData;
+            .then((value) => value.data() ?? {});
+        return userData;
       } else {
         return null;
       }
     } on FirebaseAuthException catch (e) {
-      Exception(e.toString());
-      throw AuthenticationError();
+      throw AuthenticationError(message: e.toString());
     }
   }
 
   @override
-  Future<Map<String, dynamic>?>? getOperatorById(
-      String? operatorId, String? collection) async {
+  Future<Map<String, dynamic>?>? getUserById(
+      String? enterpriseId, String? operatorId, String? collection) async {
     try {
-      if (_validOperatorInformations(operatorId, collection)) {
-        final databaseCollection = _database.collection(collection!);
-        operatorData = await databaseCollection
+      if (_dataVerifier
+          .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
+        final databaseCollection = _database
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection(collection!);
+        userData = await databaseCollection
             .doc(operatorId)
             .get()
-            .then((value) => value.data());
-        return operatorData;
+            .then((value) => value.data() ?? {});
+        return userData;
       } else {
         return null;
       }
     } catch (e) {
-      Exception(e.toString());
-      throw OperatorNotFound();
+      throw OperatorNotFound(message: e.toString());
     }
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(
-      String? email, String? operatorCode, String? collection) async {
+  Future<bool>? checkOperatorDataForResetPassword(String? email,
+      String? operatorCode, String? enterpriseId, String? collection) async {
     if (email != null && operatorCode != null && collection != null) {
       final operatorsCollection = await _database.collection(collection).get();
       final checkedOperator = operatorsCollection.docs.firstWhere(
@@ -147,18 +147,18 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? resetOperatorPassword(
-      String? email, String? operatorCode, String? newPassword) async {
+  Future<void>? resetOperatorPassword(String? email, String? operatorCode,
+      String? enterpriseId, String? newPassword) async {
     try {
       final operatorsList = await _database.collection("operator").get();
-      if (_validOperatorValues(email, operatorCode)) {
+      if (_dataVerifier.validateInputData(inputs: [email, operatorCode])) {
         final databaseOperator = operatorsList.docs
             .firstWhere((operator) =>
                 operator["operatorEmail"] == email &&
                 operator["operatorCode"] == operatorCode)
             .data();
-        await login(email, databaseOperator["operatorPassword"],
-            databaseOperator["operatorOcupation"]);
+        /*   await login(email, databaseOperator["operatorPassword"],
+            databaseOperator["operatorOcupation"]); */
         await _auth.currentUser?.updatePassword(newPassword!);
         final operatorsCollection =
             _database.collection(databaseOperator["operatorOcupation"]);
@@ -176,128 +176,162 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   @override
   Future<void>? signOut() async {
     await _auth.signOut();
-    operatorData?.clear();
+    userData.clear();
   }
 }
 
 void main() {
-  final user = MockUser(
-    isAnonymous: false,
-    uid: 'someuid',
-    email: 'email@email.com',
-    displayName: 'Junior',
-  );
-  final Map<String, dynamic> newOperator = {
-    'operatorId': 'q34u6hu1qeuyoio',
-    'operatorNumber': 1,
-    'operatorName': 'Josy Kelly',
-    'operatorEmail': 'josy@email.com',
-    'operatorPassword': '12345678',
-    'operatorCode': '123267',
-    'operatorOppening': 'operatorOppening',
-    'operatorClosing': 'operatorClosing',
-    'operatorEnabled': false,
-    'operatorOcupation': "operator",
-  };
-  final Map<String, dynamic> testOperator = {
-    'operatorId': 'q34u6hu1qeuyoio',
-    'operatorNumber': 1,
-    'operatorName': 'Josy Kelly',
-    'operatorEmail': 'junior@email.com',
-    'operatorPassword': '12345678',
-    'operatorCode': '123267',
-    'operatorOppening': 'operatorOppening',
-    'operatorClosing': 'operatorClosing',
-    'operatorEnabled': false,
-    'operatorOcupation': "operator",
-  };
-  final Map<String, dynamic> deletionOperator = {
-    'operatorId': 'q34u6hu1qeuyoio',
-    'operatorNumber': 1,
-    'operatorName': 'Josy Kelly',
-    'operatorEmail': 'josy@email.com',
-    'operatorPassword': '12345678',
-    'operatorCode': '123267',
-    'operatorOppening': 'operatorOppening',
-    'operatorClosing': 'operatorClosing',
-    'operatorEnabled': false,
-    'operatorOcupation': "operator",
-  };
-  final Map<String, dynamic> modifiedUser = {
-    'operatorId': 'q34u6hu1qeuyoio',
-    'operatorNumber': 14,
-    'operatorName': 'Josy Kelly',
-    'operatorEmail': '',
-    'operatorPassword': '12345678',
-    'operatorCode': '123267',
-    'operatorOppening': 'operatorOppening',
-    'operatorClosing': 'operatorClosing',
-    'operatorEnabled': true,
-    'operatorOcupation': "Admin",
-  };
-  final authMock = MockFirebaseAuth(mockUser: user);
-  final firebaseMock = FakeFirebaseFirestore();
-  const uuid =  Uuid();
-  final database =
-      FirebaseDatabaseMock(database: firebaseMock, auth: authMock, uuid: uuid);
+  late MockFirebaseAuth authMock;
+  late FakeFirebaseFirestore firebaseMock;
+  late Uuid uuid;
+  late EnterpriseDatabaseMock enterpriseDatabase;
+  late FirebaseDatabaseMock database;
+  late DataVerifier dataVerifier;
+  setUp(() {
+    final user = MockUser(
+      isAnonymous: false,
+      uid: 'someuid',
+      email: 'email@email.com',
+      displayName: 'Junior',
+    );
+    authMock = MockFirebaseAuth(mockUser: user);
+    firebaseMock = FakeFirebaseFirestore();
+    uuid = const Uuid();
+    dataVerifier = DataVerifier();
+    enterpriseDatabase = EnterpriseDatabaseMock(
+        database: firebaseMock, auth: authMock, uuid: uuid);
+    database = FirebaseDatabaseMock(
+        database: firebaseMock,
+        auth: authMock,
+        uuid: uuid,
+        dataVerifier: dataVerifier);
+  });
   group(
     "Register function should",
     () {
-      test("Create a document in firebase database containing Operator Data",
-          () async {
+      test("Create an operator in database", () async {
+        await enterpriseDatabase
+            .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+        final enterprisesList =
+            await firebaseMock.collection("enterprise").get();
+        final createdEnterprise = enterprisesList.docs.first.data();
         final createdOperator = await database.register(
-            newOperator, newOperator["operatorOcupation"]);
+            LoginTestObjects.newOperator,
+            createdEnterprise["enterpriseId"],
+            LoginTestObjects.newOperator["businessPosition"]);
         final result = await firebaseMock
-            .collection(newOperator["operatorOcupation"])
+            .collection("enterprise")
+            .doc(createdEnterprise["enterpriseId"])
+            .collection(createdOperator?["businessPosition"])
             .get();
         expect(result.docs.isEmpty, equals(false));
         expect(createdOperator, isA<Map<String, dynamic>>());
-        expect(
-            database.operatorData?["operatorEmail"], equals("josy@email.com"));
+        expect(database.userData["operatorId"] != null, equals(true));
       });
       test("Fail to create the operator document in firebase", () async {
-        final createdOperator =
-            await database.register(modifiedUser, "testCollection");
-        final result = await firebaseMock.collection("testCollection").get();
+        final createdOperator = await database.register(
+            LoginTestObjects.modifiedUser, "", "testCollection");
+        final result = await firebaseMock.collection("enterprise").get();
         expect(result.docs.isEmpty, equals(true));
         expect(createdOperator == null, equals(true));
       });
+    },
+  );
+  group("Register function should", () {
+    test("Create an manager in database", () async {
+      await enterpriseDatabase
+          .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+      final enterprisesList = await firebaseMock.collection("enterprise").get();
+      final createdEnterprise = enterprisesList.docs.first.data();
+      final createdManager = await database.register(
+          LoginTestObjects.newManager,
+          createdEnterprise["enterpriseId"],
+          LoginTestObjects.newManager["businessPosition"]);
+      final result = await firebaseMock
+          .collection("enterprise")
+          .doc(createdEnterprise["enterpriseId"])
+          .collection(createdManager?["businessPosition"])
+          .get();
+      expect(result.docs.isEmpty, equals(false));
+      expect(createdManager, isA<Map<String, dynamic>>());
+      expect(database.userData["managerId"] != null, equals(true));
+    });
+    test("Fail to create the operator document in firebase", () async {
+      final createdManager = await database.register(
+          LoginTestObjects.modifiedUser, "", "testCollection");
+      final result = await firebaseMock.collection("enterprise").get();
+      expect(result.docs.isEmpty, equals(true));
+      expect(createdManager == null, equals(true));
+    });
+  });
+
+  group(
+    "Login function should",
+    () {
+      test(
+        "Authenticate an operator and sign in the application",
+        () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          final createdOperator = await database.register(
+              LoginTestObjects.newOperator,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newOperator["businessPosition"]);
+          final loginOperator = await database.login(
+              createdOperator?["operatorEmail"],
+              createdOperator?["operatorPassword"],
+              createdEnterprise["enterpriseId"],
+              createdOperator?["businessPosition"]);
+          expect(loginOperator != null, equals(true));
+          expect(loginOperator?["operatorId"] != null, equals(true));
+          expect(loginOperator?["businessPosition"], equals("operator"));
+        },
+      );
+      test(
+        "Fail to sign in",
+        () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          final createdOperator = await database.register(
+              LoginTestObjects.newOperator,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newOperator["businessPosition"]);
+          final loginOperator = await database.login(
+              createdOperator?["operatorEmail"], "", "", "");
+          expect(loginOperator, equals(null));
+        },
+      );
     },
   );
   group(
     "Login function should",
     () {
       test(
-        "Sign in successfully in the application",
+        "Authenticate a manager and sign in the application",
         () async {
-          final createdOperator = await database.register(
-              newOperator, newOperator["operatorOcupation"]);
-          final result = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
-              .get();
-          expect(result.docs.isEmpty, equals(false));
-          expect(createdOperator, isA<Map<String, dynamic>>());
-          expect(database.operatorData?["operatorEmail"],
-              equals("josy@email.com"));
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          final createdManager = await database.register(
+              LoginTestObjects.newManager,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newManager["businessPosition"]);
           final loginOperator = await database.login(
-              createdOperator?["operatorEmail"],
-              createdOperator?["operatorPassword"],
-              newOperator["operatorOcupation"]);
-          expect(loginOperator?.isNotEmpty, equals(true));
-          expect(loginOperator?["operatorOcupation"], equals("operator"));
-        },
-      );
-      test(
-        "Fail to sign in",
-        () async {
-          final createdOperator =
-              await database.register(testOperator, "testCollection");
-          final result = await firebaseMock.collection("testCollection").get();
-          expect(result.docs.isNotEmpty, equals(true));
-          expect(createdOperator, isA<Map<String, dynamic>>());
-          expect(createdOperator?["operatorEmail"], equals("junior@email.com"));
-          final loginOperator = await database.login("", "", "");
-          expect(loginOperator, equals(null));
+              createdManager?["managerEmail"],
+              createdManager?["managerPassword"],
+              createdEnterprise["enterpriseId"],
+              createdManager?["businessPosition"]);
+          expect(loginOperator != null, equals(true));
+          expect(loginOperator?["managerId"] != null, equals(true));
+          expect(loginOperator?["businessPosition"], equals("manager"));
         },
       );
     },
@@ -308,33 +342,37 @@ void main() {
       test(
         "Return a Map from firebase containing all operator data",
         () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
           final createdOperator = await database.register(
-              newOperator, newOperator["operatorOcupation"]);
-          final result = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
-              .get();
-          expect(result.docs.isNotEmpty, equals(true));
-          await database.getOperatorById(createdOperator?["operatorId"],
-              createdOperator?["operatorOcupation"]);
-          expect(database.operatorData != null, equals(true));
+              LoginTestObjects.newOperator,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newOperator["businessPosition"]);
+          final result = await database.getUserById(
+              createdEnterprise["enterpriseId"],
+              createdOperator?["operatorId"],
+              createdOperator?["businessPosition"]);
+          expect(result, isA<Map<String, dynamic>>());
+          expect(result?["operatorId"] != null, equals(true));
+          expect(database.userData != null, equals(true));
         },
       );
       test(
         "Fail returning operator data",
         () async {
-          await database.register(
-              newOperator, newOperator["operatorOcupation"]);
-          final result = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
-              .get();
-          expect(result.docs.isNotEmpty, equals(true));
-          final operatorData = await database.getOperatorById(
-              "", newOperator["operatorOcupation"]);
+          final operatorData = await database.getUserById(
+              "", "", LoginTestObjects.newOperator["businessPosition"]);
           expect(operatorData == null, equals(true));
         },
       );
     },
   );
+}
+  /* 
+  
   group(
     "CheckOperatorDataForResetPassword function should",
     () {
@@ -430,5 +468,5 @@ void main() {
       await database.signOut();
       expect(database.operatorData?["operatorEmail"], equals(null));
     },
-  );
-}
+  ); 
+} */

@@ -1,15 +1,22 @@
-import 'package:cash_helper_app/app/modules/annotations_module/domain/contract/annotation_usecases.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_all_annotations/iget_all_annotations.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/search_annotations_by_client_address/isearch_annotations_by_client_address.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotation_states.dart';
 import 'package:flutter/foundation.dart';
 
 class AnnotationsListStore extends ValueNotifier<AnnotationsListStates> {
-  AnnotationsListStore({required AnnotationUsecases usecases}) : _usecases = usecases, super(InitialAnnotationsListState());
+  AnnotationsListStore({
+    required IGetAllAnnotations getAllAnnotations,
+    required ISearchAnnotationsByClientAddress searchAnnotationsByClientAddress,
+  })  : _getAllAnnotations = getAllAnnotations,
+        _searchAnnotationsByClientAddress = searchAnnotationsByClientAddress,
+        super(InitialAnnotationsListState());
 
-  final AnnotationUsecases _usecases;
+  final IGetAllAnnotations _getAllAnnotations;
+  final ISearchAnnotationsByClientAddress _searchAnnotationsByClientAddress;
 
   Future<void> getAllAnnotations(String? operatorId) async {
     value = LoadingAnnotationsListState();
-    final annotationsList = await _usecases.getAllAnnotations(operatorId) ?? [];
+    final annotationsList = await _getAllAnnotations(operatorId) ?? [];
     if (annotationsList.isNotEmpty) {
       value = RetrievedAnnotationsListState(annotationsList: annotationsList);
     } else {

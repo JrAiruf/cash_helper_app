@@ -61,6 +61,7 @@ class AnnotationModel {
       annotationConcluied: annotationModel.annotationConcluied,
     );
   }
+
   static AnnotationModel fromEntityData(AnnotationEntity annotationEntity) {
     return AnnotationModel(
       annotationId: annotationEntity.annotationId,
@@ -72,6 +73,17 @@ class AnnotationModel {
       annotationReminder: annotationEntity.annotationReminder,
       annotationConcluied: annotationEntity.annotationConcluied,
     );
+  }
+
+  static AnnotationEntity copyWith(AnnotationEntity annotationEntity) {
+    return AnnotationEntity(
+        annotationSaleTime: annotationEntity.annotationSaleTime,
+        annotationSaleDate: annotationEntity.annotationSaleDate,
+        annotationSaleValue: annotationEntity.annotationSaleValue,
+        annotationPaymentMethod: annotationEntity.annotationPaymentMethod,
+        annotationReminder: annotationEntity.annotationReminder,
+        annotationClientAddress: annotationEntity.annotationClientAddress,
+        annotationConcluied: annotationEntity.annotationConcluied);
   }
 
   String toJson() => json.encode(toMap());

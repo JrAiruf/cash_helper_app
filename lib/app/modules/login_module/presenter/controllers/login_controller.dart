@@ -40,6 +40,7 @@ class LoginController {
         ? null
         : 'Nome Inválido! Insira o nome do caixa.';
   }
+
   String? cashierCodeValidate(String? value) {
     return value!.isNotEmpty && value != '' && value.length == 6
         ? null
@@ -169,37 +170,6 @@ class LoginController {
       ),
     );
   }
-  recoveryEmailTrialFail(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        backgroundColor: Colors.redAccent,
-        elevation: 5,
-        duration: const Duration(seconds: 2),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.07,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'Dados incorretos. Tente novamente',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
-              ),
-              Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   checkInformationTrialFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -270,7 +240,7 @@ class LoginController {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 5,
         duration: const Duration(seconds: 2),
         content: SizedBox(
@@ -303,6 +273,7 @@ class LoginController {
     showDialog(
       context: context,
       builder: (_) {
+        final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -313,11 +284,11 @@ class LoginController {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('Deseja Sair?',
+                Text('Deseja Sair?',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Colors.white)),
+                        color: surfaceColor)),
                 const SizedBox(height: 80),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -325,13 +296,13 @@ class LoginController {
                     TextButton(
                       onPressed: onPressed,
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Sim',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                     TextButton(
@@ -339,13 +310,13 @@ class LoginController {
                         Modular.to.pop();
                       },
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.white)),
-                      child: const Text(
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
                         'Não',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.white),
+                            color: surfaceColor),
                       ),
                     ),
                   ],

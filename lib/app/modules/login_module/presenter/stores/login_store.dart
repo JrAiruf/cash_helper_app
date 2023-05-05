@@ -1,56 +1,81 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/contract/login_usecases.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/reset_operator_password/ireset_operator_password.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/cupertino.dart';
 
-class LoginStore extends ValueNotifier<LoginStates?> {
-  LoginStore({required LoginUsecases usecases}) : _usecases = usecases, super(LoginInitialState());
+import '../../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
 
-  final LoginUsecases _usecases;
+class LoginStore extends ValueNotifier<LoginStates?> {
+  LoginStore({
+    required IRegisterOperator registerOperator,
+    required ILogin login,
+    required IGetOperatorById getOperatorById,
+    required ICheckOperatorDataForResetPassword checkOperatorDataForResetPassword,
+    required IResetOperatorPassword resetOperatorPassword,
+    required ISignOut signOut,
+  })  :_registerOperator = registerOperator,
+   _login = login,
+   _getOperatorById = getOperatorById,
+   _checkOperatorDataForResetPassword = checkOperatorDataForResetPassword,
+   _resetOperatorPassword = resetOperatorPassword,
+   _signOut = signOut,
+        super(LoginInitialState());
+
+  final IRegisterOperator _registerOperator;
+  final ILogin _login;
+  final IGetOperatorById _getOperatorById;
+  final ICheckOperatorDataForResetPassword _checkOperatorDataForResetPassword;
+  final IResetOperatorPassword _resetOperatorPassword;
+  final ISignOut _signOut;
   bool loadingData = false;
 
   Future<OperatorEntity?>? register(
-      OperatorEntity newOperator, String collection) async {
+      OperatorEntity newOperator, String enterpriseId, String collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _usecases.register(newOperator, collection);
+    final operatorEntity = await _registerOperator(newOperator, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState(message: "Usuário não criado");
+        : value = LoginErrorState();
     return operatorEntity;
   }
 
   Future<OperatorEntity?>? login(
-      String? email, String? password, String? collection) async {
+      String? email, String? password, String enterpriseId, String? collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _usecases.login(email, password, collection);
+    final operatorEntity = await _login(email, password, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState(message: "Usuário não encontrado");
+        : value = LoginErrorState();
     return operatorEntity;
   }
 
-  Future<void>? getOperatorById(String operatorId, String collection) async {
+  Future<void>? getOperatorById(String operatorId, String enterpriseId, String collection) async {
     value = LoginLoadingState();
     final operatorEntity =
-        await _usecases.getOperatorById(operatorId, collection);
+        await _getOperatorById(operatorId, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState(message: "Usuário não encontrado");
+        : value = LoginErrorState();
   }
 
   Future<bool>? checkOperatorDataForResetPassword(
       String email, String operatorCode, String collection) async {
-    return await _usecases.checkOperatorDataForResetPassword(
-        email, operatorCode, collection)!;
+    return await _checkOperatorDataForResetPassword(
+        email, operatorCode, collection);
   }
 
   Future<void>? resetOperatorPassword(
       String email, String operatorCode, String newPassword) async {
-    await _usecases.resetOperatorPassword(email, operatorCode, newPassword);
+    await _resetOperatorPassword(email, operatorCode, newPassword);
   }
 
   Future<void> signOut() async {
-    await _usecases.signOut();
+    await _signOut();
     value = null;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../stores/login_store.dart';
@@ -22,7 +22,9 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
       appBar: AppBar(),
@@ -56,13 +58,16 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   SizedBox(height: height * 0.1),
                   Text(
                     "Recuperar Senha",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.1),
-                  Text(
-                    "Informe os dados necessários:",
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
+                  Text("Informe os dados necessários:",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: surfaceColor,
+                          ),),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Form(
@@ -130,7 +135,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     buttonName: 'Próximo',
                     fontSize: 20,
                     nameColor: Colors.white,
-                    backgroundColor: tertiaryColor,
+                    backgroundColor: secondaryColor,
                   ),
                 ],
               ),

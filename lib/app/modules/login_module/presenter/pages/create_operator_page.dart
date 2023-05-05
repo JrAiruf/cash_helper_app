@@ -2,8 +2,9 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../operator_module/domain/entities/operator_entity.dart';
+import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/cash_helper_text_field.dart';
+import '../components/visibility_icon_component.dart';
 import '../controllers/login_controller.dart';
 import '../stores/login_store.dart';
 
@@ -21,12 +22,15 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
   bool? startWithEnabledOperator;
   final _cashierOperator = OperatorEntity();
   String? _confirmationPassword;
+  bool _passwordVisible = false;
+  bool _confirmationPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final minutesDateTime = DateTime.now().minute;
@@ -74,6 +78,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
                                         _createOperatorController
@@ -85,6 +91,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Nome',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
                                         _createOperatorController
@@ -96,8 +104,21 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Email',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
+                                    suffixIcon: VisibilityIconComponent(
+                                        onTap: () {
+                                          setState(() {
+                                            _passwordVisible =
+                                                !_passwordVisible;
+                                          });
+                                        },
+                                        forVisibility: Icons.visibility,
+                                        forHideContent: Icons.visibility_off,
+                                        condition: _passwordVisible),
                                     radius: 15,
-                                    obscureText: true,
+                                    obscureText:
+                                        _passwordVisible == true ? false : true,
                                     validator: (value) =>
                                         _createOperatorController
                                             .passwordValidate(value),
@@ -108,8 +129,23 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Senha',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
+                                    suffixIcon: VisibilityIconComponent(
+                                        onTap: () {
+                                          setState(() {
+                                            _confirmationPasswordVisible =
+                                                !_confirmationPasswordVisible;
+                                          });
+                                        },
+                                        forVisibility: Icons.visibility,
+                                        forHideContent: Icons.visibility_off,
+                                        condition: _passwordVisible),
                                     radius: 15,
-                                    obscureText: true,
+                                    obscureText:
+                                        _confirmationPasswordVisible == true
+                                            ? false
+                                            : true,
                                     validator: (value) =>
                                         _createOperatorController
                                             .passwordValidate(value),
@@ -120,6 +156,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     label: 'Confirmar senha',
                                   ),
                                   CashHelperTextFieldComponent(
+                                    textColor: onSurface,
+                                    primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
                                         _createOperatorController
@@ -176,8 +214,9 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       _createOperatorFormKey.currentState!.validate();
                       _createOperatorFormKey.currentState!.save();
                       _cashierOperator.operatorClosing = 'Pendente';
-                      _cashierOperator.operatorOcupation = "operator";
-                      _cashierOperator.operatorEnabled = startWithEnabledOperator ?? false ? true : false;
+                      _cashierOperator.businessPosition = "operator";
+                      _cashierOperator.operatorEnabled =
+                          startWithEnabledOperator ?? false ? true : false;
                       _cashierOperator.operatorOppening =
                           _cashierOperator.operatorEnabled == true
                               ? cashierOppeningTime
@@ -189,8 +228,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                             _createOperatorController.loadingData = true;
                           });
                           final newOperator = await _loginStore
-                              .register(_cashierOperator,
-                                  _cashierOperator.operatorOcupation!)
+                              .register(_cashierOperator,"",
+                                  _cashierOperator.businessPosition!)
                               ?.then((value) => value)
                               .catchError((e) {
                             if (e.toString().contains("already-in-use")) {
@@ -206,7 +245,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           if (newOperator != null) {
                             _createOperatorController
                                 .operatorCreatedSucessfully(context);
-                            Modular.to.navigate("/operator-module/",
+                            Modular.to.navigate("/user-module/",
                                 arguments: newOperator);
                           } else {
                             _createOperatorController.onFail(context);

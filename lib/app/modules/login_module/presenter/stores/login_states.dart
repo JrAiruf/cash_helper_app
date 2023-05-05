@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cash_helper_app/app/modules/operator_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 
 abstract class LoginStates {}
 
@@ -14,8 +14,4 @@ class LoginSuccessState extends LoginStates {
   final OperatorEntity operatorEntity;
 }
 
-class LoginErrorState extends LoginStates {
-  LoginErrorState({required this.message});
-  final String message;
-
-}
+class LoginErrorState extends LoginStates {}

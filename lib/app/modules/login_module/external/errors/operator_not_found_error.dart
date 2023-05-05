@@ -1,1 +1,4 @@
-class OperatorNotFound implements Exception {}
+class OperatorNotFound implements Exception {
+  OperatorNotFound({required this.message});
+  final String message;
+}

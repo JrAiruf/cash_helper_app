@@ -38,7 +38,8 @@ class CashHelperElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         buttonName ?? '',
-        style: TextStyle(color: nameColor, fontSize: fontSize ?? 20),
+        style: TextStyle(
+            color: nameColor ?? Colors.white, fontSize: fontSize ?? 20),
       ),
     );
   }

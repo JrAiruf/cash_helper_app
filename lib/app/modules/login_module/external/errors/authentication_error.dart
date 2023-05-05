@@ -1,1 +1,4 @@
-class AuthenticationError implements Exception {}
+class AuthenticationError implements Exception {
+  AuthenticationError({required this.message});
+  final String message;
+}

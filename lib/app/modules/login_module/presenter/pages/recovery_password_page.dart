@@ -3,7 +3,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../operator_module/domain/entities/operator_entity.dart';
+import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
 import '../controllers/login_controller.dart';
@@ -27,6 +27,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
@@ -50,8 +51,10 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                       color: tertiaryColor,
                     ),
                   ),
-                    SizedBox(height: height * 0.4),
-                    const Text("Aguarde...",)
+                  SizedBox(height: height * 0.4),
+                  const Text(
+                    "Aguarde...",
+                  )
                 ],
               ),
               child: Column(
@@ -60,7 +63,10 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   SizedBox(height: height * 0.1),
                   Text(
                     "Recuperar Senha",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.1),
                   Text(
@@ -116,14 +122,17 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               widget.operatorEntity.operatorCode!,
                               _operatorEntity.operatorPassword!);
                           final recoveredOperator = await _loginStore
-                              .login(widget.operatorEntity.operatorEmail,
-                                  _operatorEntity.operatorPassword, "operator")
+                              .login(
+                                  widget.operatorEntity.operatorEmail,
+                                  _operatorEntity.operatorPassword,
+                                  "",
+                                  "operator")
                               ?.then((currentOperator) => currentOperator)
                               .catchError((e) {
                             _loginController.onFail(context);
                           });
                           if (recoveredOperator != null) {
-                            Modular.to.navigate("/operator-module/",
+                            Modular.to.navigate("/user-module/",
                                 arguments: recoveredOperator);
                           } else {
                             setState(() {
