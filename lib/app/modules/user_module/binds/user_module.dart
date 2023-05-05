@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/modules/user_module/external/operator_databa
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator_area.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../routes/app_routes.dart';
 import '../domain/usecases/change_operator_email/change_operator_email.dart';
 import '../domain/usecases/change_operator_email/ichange_operator_email.dart';
 import '../domain/usecases/change_operator_password/change_operator_password.dart';
@@ -11,6 +12,7 @@ import '../domain/usecases/delete_operator_account/delete_operator_account.dart'
 import '../domain/usecases/delete_operator_account/idelete_operator_account.dart';
 import '../infra/data/operator_repository.dart';
 import '../infra/repository/operator_repository_impl.dart';
+import '../presenter/pages/manager_home_page.dart';
 import '../presenter/pages/operator_home_page.dart';
 import '../presenter/pages/views/drawer_views/operator_profile_page.dart';
 import '../presenter/pages/views/drawer_views/operator_settings_page.dart';
@@ -38,6 +40,12 @@ class UserModule extends Module {
   List<ModularRoute> get routes => routesList;
 
   final routesList = <ModularRoute>[
+    ChildRoute(
+      "${UserRoutes.managerHomePage}:enterpriseId",
+      child: (_, args) => ManagerHomePage(
+        managerEntity: args.data,
+      ),
+    ),
     ChildRoute(
       "/",
       child: (_, args) => OperartorHomePage(

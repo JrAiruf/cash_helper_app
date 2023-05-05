@@ -18,17 +18,17 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     required IRegisterOperator registerOperator,
     required ILogin login,
     required IGetOperatorById getOperatorById,
-    required ICheckOperatorDataForResetPassword checkOperatorDataForResetPassword,
+    required ICheckOperatorDataForResetPassword
+        checkOperatorDataForResetPassword,
     required IResetOperatorPassword resetOperatorPassword,
     required ISignOut signOut,
-  })  :
-  _registerOperator = registerOperator,
-  _registerManager = registerManager,
-   _login = login,
-   _getOperatorById = getOperatorById,
-   _checkOperatorDataForResetPassword = checkOperatorDataForResetPassword,
-   _resetOperatorPassword = resetOperatorPassword,
-   _signOut = signOut,
+  })  : _registerOperator = registerOperator,
+        _registerManager = registerManager,
+        _login = login,
+        _getOperatorById = getOperatorById,
+        _checkOperatorDataForResetPassword = checkOperatorDataForResetPassword,
+        _resetOperatorPassword = resetOperatorPassword,
+        _signOut = signOut,
         super(LoginInitialState());
 
   final IRegisterManager _registerManager;
@@ -40,37 +40,43 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   final ISignOut _signOut;
   bool loadingData = false;
 
-  Future<OperatorEntity?>? register(
-      OperatorEntity newOperator, String enterpriseId, String collection) async {
+  Future<OperatorEntity?>? register(OperatorEntity newOperator,
+      String enterpriseId, String collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _registerOperator(newOperator, enterpriseId, collection);
+    final operatorEntity =
+        await _registerOperator(newOperator, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState();
     return operatorEntity;
   }
-  Future<void>? registerManager(ManagerEntity newManager, String enterpriseId, String collection) async {
+
+  Future<void>? registerManager(
+      ManagerEntity newManager, String enterpriseId, String collection) async {
     value = LoginLoadingState();
-    final managerEntity = await _registerManager(newManager, enterpriseId, collection);
+    final managerEntity =
+        await _registerManager(newManager, enterpriseId, collection);
     managerEntity != null
         ? value = ManagerLoginSuccessState(managerEntity: managerEntity)
         : value = LoginErrorState();
   }
 
-  Future<OperatorEntity?>? login(
-      String? email, String? password, String enterpriseId, String? collection) async {
+  Future<OperatorEntity?>? login(String? email, String? password,
+      String enterpriseId, String? collection) async {
     value = LoginLoadingState();
-    final operatorEntity = await _login(email, password, enterpriseId, collection);
+    final operatorEntity =
+        await _login(email, password, enterpriseId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState();
     return operatorEntity;
   }
 
-  Future<void>? getOperatorById(String operatorId, String enterpriseId, String collection) async {
+  Future<void>? getOperatorById(
+      String enterpriseId, String operatorId, String collection) async {
     value = LoginLoadingState();
     final operatorEntity =
-        await _getOperatorById(operatorId, enterpriseId, collection);
+        await _getOperatorById(enterpriseId, operatorId, collection);
     operatorEntity != null
         ? value = LoginSuccessState(operatorEntity: operatorEntity)
         : value = LoginErrorState();

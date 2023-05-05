@@ -39,6 +39,8 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   Future<Map<String, dynamic>?>? register(Map<String, dynamic>? newOperator,
       String? enterpriseId, String? collection) async {
     late String newUserId;
+     final operatorCodeResource = _uuid.v1();
+      final operatorCode = _createUserCode(operatorCodeResource, 6);
     try {
       final userCredentials = await _auth.createUserWithEmailAndPassword(
           email: newOperator?['managerEmail'] ?? newOperator?['operatorEmail'],
@@ -46,13 +48,12 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
               newOperator?['managerPassword'] ?? newOperator?['operatorEmail']);
       if (userCredentials.user?.email == newOperator?['managerEmail']) {
         newOperator?["managerId"] = userCredentials.user!.uid;
+         newOperator?["managerCode"] = operatorCode;
         newUserId = userCredentials.user!.uid;
       } else if (userCredentials.user?.email == newOperator?['operatorEmail']) {
         newOperator?["operatorId"] = userCredentials.user?.uid;
         newUserId = userCredentials.user!.uid;
       }
-      final operatorCodeResource = _uuid.v1();
-      final operatorCode = _createUserCode(operatorCodeResource, 6);
       newOperator?["operatorCode"] = operatorCode;
       _authUser = userCredentials.user;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
@@ -227,13 +228,14 @@ void main() {
         expect(result.docs.isEmpty, equals(false));
         expect(createdOperator, isA<Map<String, dynamic>>());
         expect(database.userData["operatorId"] != null, equals(true));
+        expect(database.userData["operatorCode"] != null, equals(true));
       });
       test("Fail to create the operator document in firebase", () async {
         final createdOperator = await database.register(
             LoginTestObjects.modifiedUser, "", "testCollection");
         final result = await firebaseMock.collection("enterprise").get();
         expect(result.docs.isEmpty, equals(true));
-        expect(createdOperator == null, equals(true));
+        expect(createdOperator?.isEmpty, equals(true));
       });
     },
   );
@@ -255,13 +257,14 @@ void main() {
       expect(result.docs.isEmpty, equals(false));
       expect(createdManager, isA<Map<String, dynamic>>());
       expect(database.userData["managerId"] != null, equals(true));
+      expect(database.userData["managerCode"] != null, equals(true));
     });
     test("Fail to create the operator document in firebase", () async {
       final createdManager = await database.register(
           LoginTestObjects.modifiedUser, "", "testCollection");
       final result = await firebaseMock.collection("enterprise").get();
       expect(result.docs.isEmpty, equals(true));
-      expect(createdManager == null, equals(true));
+     expect(createdManager?.isEmpty, equals(true));
     });
   });
 

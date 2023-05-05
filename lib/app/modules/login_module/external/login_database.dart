@@ -32,6 +32,8 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   Future<Map<String, dynamic>?>? register(Map<String, dynamic>? newOperator,
       String? enterpriseId, String? collection) async {
     late String newUserId;
+     final operatorCodeResource = _uuid.v1();
+      final operatorCode = _createUserCode(operatorCodeResource, 6);
     try {
       final userCredentials = await _auth.createUserWithEmailAndPassword(
           email: newOperator?['managerEmail'] ?? newOperator?['operatorEmail'],
@@ -39,13 +41,12 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
               newOperator?['managerPassword'] ?? newOperator?['operatorEmail']);
       if (userCredentials.user?.email == newOperator?['managerEmail']) {
         newOperator?["managerId"] = userCredentials.user!.uid;
+         newOperator?["managerCode"] = operatorCode;
         newUserId = userCredentials.user!.uid;
       } else if (userCredentials.user?.email == newOperator?['operatorEmail']) {
         newOperator?["operatorId"] = userCredentials.user?.uid;
         newUserId = userCredentials.user!.uid;
       }
-      final operatorCodeResource = _uuid.v1();
-      final operatorCode = _createUserCode(operatorCodeResource, 6);
       newOperator?["operatorCode"] = operatorCode;
       _authUser = userCredentials.user;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
@@ -63,8 +64,8 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
               .collection(newOperator["businessPosition"])
               .doc(newUserId)
               .get()
-              .then((value) => value.data())
-          : userData = null;
+              .then((value) => value.data() ?? {})
+          : userData = {};
       return userData;
     } on FirebaseException catch (e) {
       throw Exception(e.toString());

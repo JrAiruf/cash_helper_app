@@ -13,3 +13,7 @@ class EnterpriseRoutes {
   static const createEnterprise = "/create-enterprise-page";
   static const enterpriseCreated = "/enterprise-created-page";
 }
+
+class UserRoutes {
+  static const managerHomePage = "/manager-home-page/";
+}

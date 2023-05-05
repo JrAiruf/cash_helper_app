@@ -2,6 +2,7 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../enterprise_module/domain/entities/enterprise_business_position.dart';
 import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/cash_helper_text_field.dart';
 import '../components/visibility_icon_component.dart';
@@ -214,7 +215,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       _createOperatorFormKey.currentState!.validate();
                       _createOperatorFormKey.currentState!.save();
                       _cashierOperator.operatorClosing = 'Pendente';
-                      _cashierOperator.businessPosition = "operator";
+                      _cashierOperator.businessPosition = EnterpriseBusinessPosition.cashOperator.position;
                       _cashierOperator.operatorEnabled =
                           startWithEnabledOperator ?? false ? true : false;
                       _cashierOperator.operatorOppening =

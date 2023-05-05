@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../../routes/app_routes.dart';
 import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../domain/entities/enterprise_entity.dart';
 
@@ -61,7 +63,10 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 15),
                     child: CashHelperElevatedButton(
-                      onPressed: () async {},
+                      onPressed: () {
+                        Modular.to.navigate(LoginRoutes.createManager,
+                            arguments: widget.enterpriseEntity);
+                      },
                       width: width,
                       height: 65,
                       buttonName: 'Próximo',

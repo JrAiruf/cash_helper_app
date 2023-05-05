@@ -7,6 +7,7 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_ou
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/sign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_manager_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/forgot_password_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_operator_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/login_page.dart';
@@ -50,7 +51,11 @@ class LoginModule extends Module {
 
   final routesList = <ModularRoute>[
     ChildRoute(
-      "/create-new-operator",
+      LoginRoutes.createManager,
+      child: (_, args) => CreateManagerPage(enterpriseEntity: args.data),
+    ),
+    ChildRoute(
+      LoginRoutes.createOperator,
       child: (_, args) => const CreateOperatorPage(),
     ),
     ChildRoute(
