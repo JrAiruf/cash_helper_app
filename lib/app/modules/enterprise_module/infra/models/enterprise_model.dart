@@ -67,13 +67,13 @@ class EnterpriseModel {
   }
   static EnterpriseEntity toEntityData(EnterpriseModel enterpriseModel) {
     return EnterpriseEntity(
-      enterpriseId: enterpriseModel.enterpriseId!,
+      enterpriseId: enterpriseModel.enterpriseId ?? "",
       enterpriseCnpj: enterpriseModel.enterpriseCnpj!,
       enterpriseName: enterpriseModel.enterpriseName!,
       enterpriseEmail: enterpriseModel.enterpriseEmail!,
       enterprisePassword: enterpriseModel.enterprisePassword!,
       enterprisePhoneNumber: enterpriseModel.enterprisePhoneNumber!,
-      enterpriseCode: enterpriseModel.enterpriseCode!,
+      enterpriseCode: enterpriseModel.enterpriseCode ?? "",
       enterpriseCity: enterpriseModel.enterpriseCity!,
       enterpriseCep: enterpriseModel.enterpriseCep!,
       enterpriseState: enterpriseModel.enterpriseState!,

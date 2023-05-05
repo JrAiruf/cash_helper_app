@@ -1,4 +1,3 @@
-// ignore_for_file: unnecessary_string_interpolations
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
@@ -157,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: CashHelperElevatedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         _loginFormKey.currentState!.validate();
                         _loginFormKey.currentState!.save();
 
@@ -165,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             _loginController.loadingData = true;
                           });
-                          final loggedUser = await _loginStore
+                          _loginStore
                               .login(
                                   _userLogin.operatorEmail,
                                   _userLogin.operatorPassword,
@@ -175,10 +174,6 @@ class _LoginPageState extends State<LoginPage> {
                               .catchError((e) {
                             _loginController.onFail(context);
                           });
-                          loggedUser != null
-                              ? Modular.to.navigate("/user-module/",
-                                  arguments: loggedUser)
-                              : null;
                         }
                         setState(() {
                           _loginController.loadingData = false;

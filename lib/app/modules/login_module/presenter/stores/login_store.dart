@@ -61,7 +61,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         : value = LoginErrorState();
   }
 
-  Future<OperatorEntity?>? login(String? email, String? password,
+  Future<void>? login(String? email, String? password,
       String enterpriseId, String? collection) async {
     value = LoginLoadingState();
     final operatorEntity =

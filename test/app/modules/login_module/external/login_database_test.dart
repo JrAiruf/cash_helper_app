@@ -368,7 +368,7 @@ void main() {
         () async {
           final operatorData = await database.getUserById(
               "", "", LoginTestObjects.newOperator["businessPosition"]);
-          expect(operatorData == null, equals(true));
+          expect(operatorData?.isEmpty, equals(true));
         },
       );
     },
