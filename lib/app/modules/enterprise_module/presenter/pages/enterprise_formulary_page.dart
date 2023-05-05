@@ -1,6 +1,4 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/controller/enterprise_controller.dart';
-import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';

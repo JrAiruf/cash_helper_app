@@ -41,7 +41,7 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Sua conta empresarial fori criada \n usando o email:",
+                    "Sua conta empresarial foi criada \n usando o email:",
                     style: Theme.of(context).textTheme.bodyMedium,
                     textAlign: TextAlign.center,
                   ),

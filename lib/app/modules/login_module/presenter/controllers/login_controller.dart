@@ -7,6 +7,11 @@ class LoginController {
   final emailField = TextEditingController();
   final passwordField = TextEditingController();
   final confirmationPasswordField = TextEditingController();
+  final newManagerEmailField = TextEditingController();
+  final newManagerPasswordField = TextEditingController();
+  final managerCpfField = TextEditingController();
+  final managerRgField = TextEditingController();
+  final managerPhoneField = TextEditingController();
   final newOperatorEmailField = TextEditingController();
   final newOperatorPasswordField = TextEditingController();
   final cashierNameField = TextEditingController();
@@ -21,6 +26,24 @@ class LoginController {
     return value!.isNotEmpty && value != '' && value.contains('@')
         ? null
         : 'E-mail Inválido! Insira o email do caixa.';
+  }
+
+  String? cpfValidate(String? value) {
+    return value!.isNotEmpty && value != '' && value.length == 11
+        ? null
+        : 'Insira seu CPF';
+  }
+
+  String? rgValidate(String? value) {
+    return value!.isNotEmpty && value != '' && value.length == 9
+        ? null
+        : 'Insira seu RG';
+  }
+
+  String? phoneValidate(String? value) {
+    return value!.isNotEmpty && value != ''
+        ? null
+        : 'Insira um número de Telefone/Celular';
   }
 
   String? passwordValidate(String? value) {
