@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 import 'errors/enterprise_database_errors.dart';
 
 class EnterpriseDatabase implements ApplicationEnterpriseDatabase {
-EnterpriseDatabase({
+  EnterpriseDatabase({
     required FirebaseFirestore database,
     required FirebaseAuth auth,
     required Uuid uuid,
@@ -18,7 +18,7 @@ EnterpriseDatabase({
   final FirebaseAuth _auth;
   final Uuid _uuid;
   Map<String, dynamic> enterpriseData = {};
- @override
+  @override
   Future<Map<String, dynamic>>? createEnterpriseAccount(
       Map<String, dynamic>? enterpriseMap) async {
     try {

@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/login.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
@@ -13,6 +14,7 @@ import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:uuid/uuid.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/check_operator_data_for_reset_password.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
 import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
@@ -73,6 +75,12 @@ class LoginModule extends Module {
     ),
     Bind<FirebaseAuth>(
       (i) => FirebaseAuth.instance,
+    ),
+    Bind.singleton<DataVerifier>(
+      (i) => DataVerifier(),
+    ),
+    Bind.singleton<Uuid>(
+      (i) => const Uuid(),
     ),
     Bind<ApplicationLoginDatabase>(
       (i) => FirebaseDatabase(

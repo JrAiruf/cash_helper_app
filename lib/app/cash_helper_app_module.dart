@@ -11,6 +11,7 @@ class CashHelperAppModule extends Module {
   List<Bind<Object>> get binds => [
         Bind.singleton<AppStore>((i) => AppStore()),
         ...AppLoginModule.module.bindList,
+        ...AppEnterpriseModule.module.bindList,
         ...AppUserModule.module.bindList,
         ...AppAnnotationModule.module.bindsList,
       ];

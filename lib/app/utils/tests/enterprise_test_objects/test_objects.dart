@@ -3,7 +3,6 @@ import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/enter
 
 class EnterpriseTestObjects {
   static Map<String, dynamic> enterpriseMap = {
-    'enterpriseId': "enterpriseId",
     'enterpriseCnpj': "00000000000122",
     'enterpriseName': "PrimeSoftware",
     'enterpriseEmail': "prime@email.com",
@@ -18,7 +17,6 @@ class EnterpriseTestObjects {
   };
   
   static final enterpriseModel = EnterpriseModel(
-      enterpriseId: "enterpriseId",
       enterpriseCnpj: "00000000000122",
       enterpriseName: "PrimeSoftware",
       enterpriseEmail: "prime@email.com",
@@ -32,7 +30,6 @@ class EnterpriseTestObjects {
       enterpriseAddressNumber: 381);
 
   static final enterpriseEntity = EnterpriseEntity(
-      enterpriseId: "enterpriseId",
       enterpriseCnpj: "00000000000122",
       enterpriseName: "PrimeSoftware",
       enterpriseEmail: "prime@email.com",

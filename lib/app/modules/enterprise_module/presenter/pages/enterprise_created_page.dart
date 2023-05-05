@@ -47,8 +47,7 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
                   ),
                   SizedBox(height: height * 0.1),
                   Text(
-                    widget.enterpriseEntity.enterpriseEmail ??
-                        "email@email.com",
+                    widget.enterpriseEntity.enterpriseEmail ?? "",
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                   SizedBox(height: height * 0.25),
