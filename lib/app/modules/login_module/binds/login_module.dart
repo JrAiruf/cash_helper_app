@@ -19,6 +19,8 @@ import '../domain/usecases/check_operator_data_for_reset_password/check_operator
 import '../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
 import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
 import '../domain/usecases/login/ilogin.dart';
+import '../domain/usecases/register_manager/iregister_manager.dart';
+import '../domain/usecases/register_manager/register_manager.dart';
 import '../domain/usecases/reset_operator_password/ireset_operator_password.dart';
 import '../domain/usecases/reset_operator_password/reset_operator_password.dart';
 import '../infra/data/login_repository.dart';
@@ -101,6 +103,11 @@ class LoginModule extends Module {
         repository: i(),
       ),
     ),
+    Bind<IRegisterManager>(
+      (i) => RegisterManager(
+        repository: i(),
+      ),
+    ),
     Bind<ILogin>(
       (i) => Login(
         repository: i(),
@@ -130,6 +137,7 @@ class LoginModule extends Module {
     Bind<LoginStore>(
       (i) => LoginStore(
         registerOperator: i(),
+        registerManager: i(),
         login: i(),
         getOperatorById: i(),
         checkOperatorDataForResetPassword: i(),

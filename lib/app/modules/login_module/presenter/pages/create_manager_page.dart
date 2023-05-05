@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../user_module/domain/entities/manager_entity.dart';
@@ -16,6 +17,7 @@ class CreateManagerPage extends StatefulWidget {
 
 final _createManagerFormKey = GlobalKey<FormState>();
 final _enterpriseController = Modular.get<LoginController>();
+final _loginStore = Modular.get<LoginStore>();
 final _managerEntity = ManagerEntity();
 String? _confirmartionPassword = "";
 
@@ -80,19 +82,20 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                   textColor: onSurface,
                                   primaryColor: onSurface,
                                   radius: 15,
-                                  validator: (value) =>
-                                      _enterpriseController.cashierNameValidate(value),
+                                  validator: (value) => _enterpriseController
+                                      .cashierNameValidate(value),
                                   onSaved: (value) =>
                                       _managerEntity.managerName = value,
-                                  controller: _enterpriseController.cashierNameField,
+                                  controller:
+                                      _enterpriseController.cashierNameField,
                                   label: 'Nome Completo',
                                 ),
                                 CashHelperTextFieldComponent(
                                   textColor: onSurface,
                                   primaryColor: onSurface,
                                   radius: 15,
-                                  validator: (value) => _enterpriseController
-                                      .cpfValidate(value),
+                                  validator: (value) =>
+                                      _enterpriseController.cpfValidate(value),
                                   onSaved: (value) =>
                                       _managerEntity.managerCpf = value,
                                   controller:
@@ -107,18 +110,20 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                       _managerEntity.managerRg = value,
                                   validator: (value) =>
                                       _enterpriseController.rgValidate(value),
-                                  controller: _enterpriseController.managerRgField,
+                                  controller:
+                                      _enterpriseController.managerRgField,
                                   label: 'RG',
                                 ),
                                 CashHelperTextFieldComponent(
                                   textColor: onSurface,
                                   primaryColor: onSurface,
                                   radius: 15,
-                                  validator: (value) =>
-                                      _enterpriseController.phoneValidate(value),
+                                  validator: (value) => _enterpriseController
+                                      .phoneValidate(value),
                                   onSaved: (value) =>
                                       _managerEntity.managerPhone = value,
-                                  controller: _enterpriseController.managerPhoneField,
+                                  controller:
+                                      _enterpriseController.managerPhoneField,
                                   label: 'Telefone',
                                 ),
                                 CashHelperTextFieldComponent(
@@ -145,8 +150,8 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                                 .passwordValidate(value),
                                         onSaved: (value) => _managerEntity
                                             .managerPassword = value,
-                                        controller:
-                                            _enterpriseController.newManagerPasswordField,
+                                        controller: _enterpriseController
+                                            .newManagerPasswordField,
                                         label: 'Senha',
                                       ),
                                     ),
@@ -159,8 +164,10 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                         radius: 15,
                                         validator: (value) =>
                                             _enterpriseController
-                                                .confirmationPasswordValidate(value),
-                                        onSaved: (value) => _confirmartionPassword = value,
+                                                .confirmationPasswordValidate(
+                                                    value),
+                                        onSaved: (value) =>
+                                            _confirmartionPassword = value,
                                         controller: _enterpriseController
                                             .confirmationPasswordField,
                                         label: 'Número',
@@ -181,7 +188,17 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                 child: CashHelperElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _createManagerFormKey.currentState?.validate();
+                    _createManagerFormKey.currentState?.save();
+                    _managerEntity.businessPosition = "";
+                    if (_createManagerFormKey.currentState!.validate()) {
+                      _loginStore.registerManager(
+                          _managerEntity,
+                          widget.enterpriseEntity.enterpriseId!,
+                          _managerEntity.businessPosition!);
+                    }
+                  },
                   width: width,
                   height: 65,
                   buttonName: 'Registrar',

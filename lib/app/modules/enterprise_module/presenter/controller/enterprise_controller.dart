@@ -76,7 +76,12 @@ class EnterpriseController {
   noMatchingPasswords(BuildContext context, {required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Colors.redAccent,
         elevation: 5,
         duration: const Duration(seconds: 5),

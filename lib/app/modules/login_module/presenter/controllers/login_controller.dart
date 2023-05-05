@@ -79,7 +79,12 @@ class LoginController {
   onFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+       shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Colors.redAccent,
         elevation: 5,
         duration: const Duration(seconds: 2),
@@ -108,7 +113,12 @@ class LoginController {
   registrationFail(BuildContext context, {required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Colors.redAccent,
         elevation: 5,
         duration: const Duration(seconds: 5),
@@ -136,7 +146,12 @@ class LoginController {
   noMatchingPasswords(BuildContext context, {required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Colors.redAccent,
         elevation: 5,
         duration: const Duration(seconds: 5),
@@ -165,7 +180,12 @@ class LoginController {
   recoveryTrialFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+       shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Colors.redAccent,
         elevation: 5,
         duration: const Duration(seconds: 2),
@@ -197,7 +217,12 @@ class LoginController {
   checkInformationTrialFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+       shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Colors.redAccent,
         elevation: 5,
         duration: const Duration(seconds: 2),
@@ -230,7 +255,12 @@ class LoginController {
     await Future.delayed(const Duration(seconds: 2));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+       shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Colors.greenAccent,
         elevation: 5,
         duration: const Duration(seconds: 2),
@@ -262,7 +292,12 @@ class LoginController {
   operatorCreatedSucessfully(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+       shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
         elevation: 5,
         duration: const Duration(seconds: 2),
