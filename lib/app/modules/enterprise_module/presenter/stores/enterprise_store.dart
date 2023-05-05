@@ -7,14 +7,14 @@ import '../../domain/usecases/get_enterprise_by_code/iget_enterprise_by_code.dar
 class EnterpriseStore extends ValueNotifier<EnterpriseStates> {
   EnterpriseStore({
     required ICreateEnterpriseAccount createEnterpriseAccount,
-    required IGetEnterpriseByCode iGetEnterpriseByCode,
+    required IGetEnterpriseByCode getEnterpriseByCode,
   })  : 
   _createEnterpriseAccount = createEnterpriseAccount,
-  _iGetEnterpriseByCode = iGetEnterpriseByCode,
+  _getEnterpriseByCode = getEnterpriseByCode,
         super(EnterpriseStoreInitialState());
 
   final ICreateEnterpriseAccount _createEnterpriseAccount;
-  final IGetEnterpriseByCode _iGetEnterpriseByCode;
+  final IGetEnterpriseByCode _getEnterpriseByCode;
 
   
 }

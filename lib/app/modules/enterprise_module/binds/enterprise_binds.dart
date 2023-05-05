@@ -1,8 +1,13 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/create_enterprise_account/icreate_enterprise_account.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/get_enterprise_by_code/iget_enterprise_by_code.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/create_enterprise_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/enterprise_formulary_page.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../domain/usecases/create_enterprise_account/create_enterprise_account.dart';
+import '../domain/usecases/get_enterprise_by_code/get_enterprise_by_code.dart';
 import '../external/data/application_enterprise_database.dart';
 import '../external/enterprise_database.dart';
 import '../infra/data/enterprise_repository.dart';
@@ -55,6 +60,22 @@ class EnterpriseModule extends Module {
       (i) => EnterpriseRepositoryImpl(
         database: i(),
         dataVerifier: i(),
+      ),
+    ),
+    Bind<ICreateEnterpriseAccount>(
+      (i) => CreateEnterpriseAccount(
+        repository: i(),
+      ),
+    ),
+    Bind<IGetEnterpriseByCode>(
+      (i) => GetEnterpriseByCode(
+        repository: i(),
+      ),
+    ),
+    Bind<EnterpriseStore>(
+      (i) => EnterpriseStore(
+        createEnterpriseAccount: i(),
+        getEnterpriseByCode: i(),
       ),
     ),
     Bind<EnterpriseController>(

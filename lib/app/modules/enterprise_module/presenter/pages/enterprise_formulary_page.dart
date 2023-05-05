@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/controller/enterprise_controller.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,6 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
       body: Visibility(
         visible: _enterpriseController.loadingData,
         replacement: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             height: height,
             width: width,
@@ -43,15 +43,14 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 15,
-                    vertical: height * 0.015,
                   ),
                   child: Text('Cash Helper',
                       style: Theme.of(context).textTheme.bodyLarge),
                 ),
                 SizedBox(
-                  height: height * 0.03,
+                  height: height * 0.02,
                 ),
                 Center(
                   child: Column(
@@ -67,7 +66,7 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                       ),
                       const SizedBox(height: 15),
                       SizedBox(
-                        height: height * 0.65,
+                        height: height * 0.7,
                         width: width * 0.95,
                         child: Card(
                           color: seccondaryColor,
@@ -111,6 +110,8 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                     radius: 15,
                                     onSaved: (value) => _enterpriseEntity
                                         .enterpriseCity = value,
+                                    validator: (value) => _enterpriseController
+                                        .cityValidate(value),
                                     controller: _enterpriseController.cityField,
                                     label: 'Cidade',
                                   ),
@@ -202,8 +203,12 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                       const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                   child: CashHelperElevatedButton(
                     onPressed: () {
-                      Modular.to.pushNamed(EnterpriseRoutes.createEnterprise,
-                          arguments: _enterpriseEntity);
+                      _enterpriseFormKey.currentState!.validate();
+                      if (_enterpriseFormKey.currentState!.validate()) {
+                        _enterpriseFormKey.currentState?.save();
+                        Modular.to.pushNamed(EnterpriseRoutes.createEnterprise,
+                            arguments: _enterpriseEntity);
+                      }
                     },
                     width: width,
                     height: 65,

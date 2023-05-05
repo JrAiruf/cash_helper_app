@@ -6,6 +6,7 @@ import '../../../../routes/app_routes.dart';
 import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
 import '../controller/enterprise_controller.dart';
+import '../stores/enterprise_store.dart';
 
 class CreateEnterprisePage extends StatefulWidget {
   const CreateEnterprisePage({required this.enterpriseEntity, super.key});
@@ -16,8 +17,9 @@ class CreateEnterprisePage extends StatefulWidget {
 }
 
 class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
-  final _enterpriseFormKey = GlobalKey<FormState>();
+  final _createEnterpriseFormKey = GlobalKey<FormState>();
   final _enterpriseController = Modular.get<EnterpriseController>();
+  final _enterpriseStore = Modular.get<EnterpriseStore>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,7 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
                           child: Form(
-                            key: _enterpriseFormKey,
+                            key: _createEnterpriseFormKey,
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
