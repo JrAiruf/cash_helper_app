@@ -266,7 +266,7 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
           } else if (state is ManagerLoginSuccessState) {
             final manager = state.managerEntity;
             final enterpriseId = widget.enterpriseEntity.enterpriseId;
-            Modular.to.navigate("${UserRoutes.managerHomePage}/$enterpriseId",
+            Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId",
                 arguments: manager);
             return Container();
           } else {

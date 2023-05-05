@@ -39,8 +39,8 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   Future<Map<String, dynamic>?>? register(Map<String, dynamic>? newOperator,
       String? enterpriseId, String? collection) async {
     late String newUserId;
-     final operatorCodeResource = _uuid.v1();
-      final operatorCode = _createUserCode(operatorCodeResource, 6);
+    final operatorCodeResource = _uuid.v1();
+    final operatorCode = _createUserCode(operatorCodeResource, 6);
     try {
       final userCredentials = await _auth.createUserWithEmailAndPassword(
           email: newOperator?['managerEmail'] ?? newOperator?['operatorEmail'],
@@ -48,13 +48,13 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
               newOperator?['managerPassword'] ?? newOperator?['operatorEmail']);
       if (userCredentials.user?.email == newOperator?['managerEmail']) {
         newOperator?["managerId"] = userCredentials.user!.uid;
-         newOperator?["managerCode"] = operatorCode;
         newUserId = userCredentials.user!.uid;
+        newOperator?["managerCode"] = operatorCode;
       } else if (userCredentials.user?.email == newOperator?['operatorEmail']) {
         newOperator?["operatorId"] = userCredentials.user?.uid;
         newUserId = userCredentials.user!.uid;
+        newOperator?["operatorCode"] = operatorCode;
       }
-      newOperator?["operatorCode"] = operatorCode;
       _authUser = userCredentials.user;
       !newOperator!.containsValue("") && newOperator.isNotEmpty
           ? await _database
@@ -264,7 +264,7 @@ void main() {
           LoginTestObjects.modifiedUser, "", "testCollection");
       final result = await firebaseMock.collection("enterprise").get();
       expect(result.docs.isEmpty, equals(true));
-     expect(createdManager?.isEmpty, equals(true));
+      expect(createdManager?.isEmpty, equals(true));
     });
   });
 
