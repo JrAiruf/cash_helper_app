@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/contract/login_usecases.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
@@ -22,6 +23,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         checkOperatorDataForResetPassword,
     required IResetOperatorPassword resetOperatorPassword,
     required ISignOut signOut,
+    required DataVerifier dataVerifier,
   })  : _registerOperator = registerOperator,
         _registerManager = registerManager,
         _login = login,
@@ -29,6 +31,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         _checkOperatorDataForResetPassword = checkOperatorDataForResetPassword,
         _resetOperatorPassword = resetOperatorPassword,
         _signOut = signOut,
+        _dataVerifier = dataVerifier,
         super(LoginInitialState());
 
   final IRegisterManager _registerManager;
@@ -38,6 +41,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   final ICheckOperatorDataForResetPassword _checkOperatorDataForResetPassword;
   final IResetOperatorPassword _resetOperatorPassword;
   final ISignOut _signOut;
+  final DataVerifier _dataVerifier;
   bool loadingData = false;
 
   Future<OperatorEntity?>? register(OperatorEntity newOperator,
@@ -61,15 +65,17 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         : value = LoginErrorState();
   }
 
-  Future<void>? login(String? email, String? password,
-      String enterpriseId, String? collection) async {
+  Future<void>? login(String? email, String? password, String enterpriseId,
+      String? collection) async {
     value = LoginLoadingState();
-    final operatorEntity =
-        await _login(email, password, enterpriseId, collection);
-    operatorEntity != null
-        ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState();
-    return operatorEntity;
+    final loginEntity = await _login(email, password, enterpriseId, collection);
+    if (_dataVerifier.operatorEntityVerifier(entity: loginEntity)) {
+      value = LoginSuccessState(operatorEntity: loginEntity);
+    } else if (_dataVerifier.managerEntityVerifier(entity: loginEntity)) {
+      value = ManagerLoginSuccessState(managerEntity: loginEntity);
+    } else {
+      value = LoginErrorState();
+    }
   }
 
   Future<void>? getOperatorById(

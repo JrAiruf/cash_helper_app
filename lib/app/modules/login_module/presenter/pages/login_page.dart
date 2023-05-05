@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_business_position.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
@@ -17,18 +18,27 @@ class LoginPage extends StatefulWidget {
 final _loginFormKey = GlobalKey<FormState>();
 final _loginStore = Modular.get<LoginStore>();
 final _loginController = Modular.get<LoginController>();
-final _userLogin = OperatorEntity();
 bool _passwordVisible = false;
+bool _managerUser = false;
+late EnterpriseBusinessPosition businessPosition;
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    businessPosition = EnterpriseBusinessPosition.manager;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final surfaceColor = Theme.of(context).colorScheme.onSurface;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
+    final userBusinessPosition = _managerUser ? "Gerente" : "Operador";
     return Scaffold(
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -48,10 +58,27 @@ class _LoginPageState extends State<LoginPage> {
                 Text('Cash Helper',
                     style: Theme.of(context).textTheme.bodyLarge),
                 SizedBox(height: height * 0.2),
+                Row(
+                  children: [
+                    Switch(
+                        activeColor: tertiaryColor,
+                        value: _managerUser,
+                        onChanged: (value) {
+                          _managerUser = value;
+                          setState(() {
+                            businessPosition = _managerUser
+                                ? EnterpriseBusinessPosition.manager
+                                : EnterpriseBusinessPosition.cashOperator;
+                          });
+                        }),
+                    const SizedBox(width: 25),
+                    Text(userBusinessPosition)
+                  ],
+                ),
                 Stack(
                   children: [
                     Card(
-                      color: seccondaryColor,
+                      color: secondaryColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                       child: SizedBox(
@@ -73,8 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                                     radius: 15,
                                     validator: (value) =>
                                         _loginController.emailValidate(value),
-                                    onSaved: (value) =>
-                                        _userLogin.operatorEmail = value,
+                                    onSaved: (value) => _loginController
+                                        .emailField.text = value ?? "",
                                     controller: _loginController.emailField,
                                     label: 'Email',
                                   ),
@@ -99,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                                         _passwordVisible == true ? false : true,
                                     validator: (value) => _loginController
                                         .passwordValidate(value),
-                                    onSaved: (value) =>
-                                        _userLogin.operatorPassword = value,
+                                    onSaved: (value) => _loginController
+                                        .passwordField.text = value ?? "",
                                     controller: _loginController.passwordField,
                                     label: 'Senha',
                                   ),
@@ -166,10 +193,10 @@ class _LoginPageState extends State<LoginPage> {
                           });
                           _loginStore
                               .login(
-                                  _userLogin.operatorEmail,
-                                  _userLogin.operatorPassword,
+                                  _loginController.emailField.text,
+                                  _loginController.passwordField.text,
                                   "",
-                                  _userLogin.businessPosition ?? "operator")
+                                  businessPosition.position)
                               ?.then((value) => value)
                               .catchError((e) {
                             _loginController.onFail(context);
@@ -185,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                       buttonName: 'Entrar',
                       fontSize: 20,
                       nameColor: surfaceColor,
-                      backgroundColor: seccondaryColor,
+                      backgroundColor: secondaryColor,
                     ),
                   ),
                 ),

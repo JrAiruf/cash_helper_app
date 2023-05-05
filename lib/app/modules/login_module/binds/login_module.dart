@@ -67,11 +67,11 @@ class LoginModule extends Module {
       child: (_, args) => RecoveryPasswordPage(operatorEntity: args.data),
     ),
     ChildRoute(
-      "/login",
+      LoginRoutes.initial,
       child: (_, args) => const LoginPage(),
     ),
     ChildRoute(
-      LoginRoutes.initial,
+      "/login",
       child: (_, args) => const EnterpriseAuthPage(),
     ),
   ];
@@ -148,6 +148,7 @@ class LoginModule extends Module {
         checkOperatorDataForResetPassword: i(),
         resetOperatorPassword: i(),
         signOut: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<LoginController>(
