@@ -1,30 +1,30 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class EnterpriseEntity {
-  final String enterpriseId;
-  final String enterpriseCnpj;
-  final String enterpriseName;
-  final String enterpriseEmail;
-  final String enterprisePassword;
-  final String enterprisePhoneNumber;
-  final String enterpriseCode;
-  final String enterpriseCity;
-  final String enterpriseCep;
-  final String enterpriseState;
-  final String enterpriseAddressStreet;
-  final int enterpriseAddressNumber;
+  String? enterpriseId;
+  String? enterpriseCnpj;
+  String? enterpriseName;
+  String? enterpriseEmail;
+  String? enterprisePassword;
+  String? enterprisePhoneNumber;
+  String? enterpriseCode;
+  String? enterpriseCity;
+  String? enterpriseCep;
+  String? enterpriseState;
+  String? enterpriseAddressStreet;
+  int? enterpriseAddressNumber;
   
   EnterpriseEntity({
-    required this.enterpriseId,
-    required this.enterpriseCnpj,
-    required this.enterpriseName,
-    required this.enterpriseEmail,
-    required this.enterprisePassword,
-    required this.enterprisePhoneNumber,
-    required this.enterpriseCode,
-    required this.enterpriseCity,
-    required this.enterpriseCep,
-    required this.enterpriseState,
-    required this.enterpriseAddressStreet,
-    required this.enterpriseAddressNumber,
+    this.enterpriseId,
+    this.enterpriseCnpj,
+    this.enterpriseName,
+    this.enterpriseEmail,
+    this.enterprisePassword,
+    this.enterprisePhoneNumber,
+    this.enterpriseCode,
+    this.enterpriseCity,
+    this.enterpriseCep,
+    this.enterpriseState,
+    this.enterpriseAddressStreet,
+    this.enterpriseAddressNumber,
   });
 }

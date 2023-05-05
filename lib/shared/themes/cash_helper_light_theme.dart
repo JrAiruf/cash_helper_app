@@ -25,6 +25,8 @@ final cashHelperLightTheme = ThemeData(
           color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
       displayMedium: TextStyle(
           color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
+     displayLarge: TextStyle(
+          color: Colors.white, fontSize: 30, fontWeight: FontWeight.w500),
       labelSmall: TextStyle(
           color: Colors.white, fontSize: 13, fontWeight: FontWeight.w400),
       titleMedium: TextStyle(

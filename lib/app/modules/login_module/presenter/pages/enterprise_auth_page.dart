@@ -133,7 +133,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                         CashHelperElevatedButton(
                           onPressed: () {
                             Modular.to
-                                .pushNamed(EnterpriseRoutes.createEnterprise);
+                                .pushNamed(EnterpriseRoutes.enterpriseFormulary);
                           },
                           radius: 12,
                           width: width,

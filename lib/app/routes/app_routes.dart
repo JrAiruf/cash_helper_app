@@ -9,5 +9,7 @@ class LoginRoutes {
 
 class EnterpriseRoutes {
   static const initial = "/";
-  static const createEnterprise = "/create-new-enterprise";
+  static const enterpriseFormulary = "/enterprise-formulary-page";
+  static const createEnterprise = "/create-enterprise-page";
+  static const enterpriseCreated = "/enterprise-created-page";
 }
