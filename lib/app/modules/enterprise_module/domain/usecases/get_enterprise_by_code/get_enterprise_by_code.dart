@@ -10,8 +10,8 @@ class GetEnterpriseByCode implements IGetEnterpriseByCode {
 
   final EnterpriseRepository _repository;
   @override
-  Future<EnterpriseEntity>? call(String enterpriseCode) async {
+  Future<EnterpriseEntity?>? call(String enterpriseCode) async {
     final enterprise = await _repository.getEnterpriseByCode(enterpriseCode);
-    return EnterpriseModel.toEntityData(enterprise);
+    return enterprise != null ? EnterpriseModel.toEntityData(enterprise) : null;
   }
 }

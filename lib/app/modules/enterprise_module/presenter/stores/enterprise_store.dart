@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_states.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -16,6 +18,10 @@ class EnterpriseStore extends ValueNotifier<EnterpriseStates> {
   final ICreateEnterpriseAccount _createEnterpriseAccount;
   final IGetEnterpriseByCode _getEnterpriseByCode;
 
+  void resetEnterpriseAuthPageState() {
+    value = EnterpriseStoreInitialState();
+  }
+
   Future<void> createEnterpriseAccount(
       EnterpriseEntity enterpriseEntity) async {
     value = LoadingState();
@@ -26,14 +32,9 @@ class EnterpriseStore extends ValueNotifier<EnterpriseStates> {
       value = CreationFailedState();
     }
   }
-  Future<void> getEnterpriseByCode(
-      String enterpriseCode) async {
-    value = LoadingState();
-    final enterprise = await _getEnterpriseByCode(enterpriseCode);
-    if (enterprise != null) {
-      value = EnterpriseObtainedState(enterprise: enterprise);
-    } else {
-      value = EnterpriseAccessFailedState();
-    }
+
+  Future<EnterpriseEntity?> getEnterpriseByCode(String enterpriseCode) async {
+    return await _getEnterpriseByCode(enterpriseCode);
+    
   }
 }
