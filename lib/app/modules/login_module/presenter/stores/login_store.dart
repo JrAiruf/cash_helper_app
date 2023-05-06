@@ -65,7 +65,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         : value = LoginErrorState();
   }
 
-  Future<void>? login(String? email, String? password, String enterpriseId,
+  Future<void>? login(String? email, String? password, String? enterpriseId,
       String? collection) async {
     value = LoginLoadingState();
     final loginEntity = await _login(email, password, enterpriseId, collection);

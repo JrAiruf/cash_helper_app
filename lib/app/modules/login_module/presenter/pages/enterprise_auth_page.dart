@@ -46,7 +46,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                 children: [
                   Positioned(
                     top: height * 0.1,
-                    left: 10,
+                    left: 15,
                     child: Text('Cash Helper',
                         style: Theme.of(context).textTheme.bodyLarge),
                   ),
@@ -198,7 +198,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                 children: [
                   Positioned(
                     top: height * 0.1,
-                    left: 10,
+                    left: 15,
                     child: Text('Cash Helper',
                         style: Theme.of(context).textTheme.bodyLarge),
                   ),

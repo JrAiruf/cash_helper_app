@@ -93,19 +93,18 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
             throw AuthenticationError(message: e.toString());
           },
         );
-        userData = await _database
+      return  userData = await _database
             .collection("enterprise")
             .doc(enterpriseId)
             .collection(collection!)
             .doc(_authUser!.uid)
             .get()
-            .then((value) => value.data() ?? {});
-        return userData;
+            .then((value) => value.data()!);
       } else {
         return null;
       }
-    } on FirebaseAuthException catch (e) {
-      throw AuthenticationError(message: e.toString());
+    } catch (e) {
+      throw OperatorNotFound(message: "Falha na autenticação");
     }
   }
 
@@ -240,7 +239,7 @@ void main() {
     },
   );
   group("Register function should", () {
-    test("Create an manager in database", () async {
+    test("Create a manager in database", () async {
       await enterpriseDatabase
           .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
       final enterprisesList = await firebaseMock.collection("enterprise").get();
@@ -310,6 +309,27 @@ void main() {
           expect(loginOperator, equals(null));
         },
       );
+      test(
+        "Fail to sign in with another enterprise business position",
+        () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          final createdManager = await database.register(
+              LoginTestObjects.newManager,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newManager["businessPosition"]);
+          expect(
+              () async => database.login(
+                  createdManager?["managerEmail"],
+                  createdManager?["managerPassword"],
+                  createdEnterprise["enterpriseId"],
+                  "otherposition"),
+              throwsA(isA<OperatorNotFound>()));
+        },
+      );
     },
   );
   group(
@@ -360,7 +380,7 @@ void main() {
               createdOperator?["businessPosition"]);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["operatorId"] != null, equals(true));
-          expect(database.userData != null, equals(true));
+          expect(database.userData.isNotEmpty, equals(true));
         },
       );
       test(

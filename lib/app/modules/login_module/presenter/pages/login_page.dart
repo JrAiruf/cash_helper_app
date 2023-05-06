@@ -28,6 +28,7 @@ late EnterpriseBusinessPosition businessPosition;
 class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
+    _managerUser = true;
     businessPosition = EnterpriseBusinessPosition.manager;
     super.initState();
   }
@@ -56,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is LoginInitialState) {
+          businessPosition = EnterpriseBusinessPosition.manager;
           return Scaffold(
             body: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -81,12 +83,13 @@ class _LoginPageState extends State<LoginPage> {
                               activeColor: tertiaryColor,
                               value: _managerUser,
                               onChanged: (value) {
-                                _managerUser = value;
+                                _managerUser = !_managerUser;
                                 setState(() {
                                   businessPosition = _managerUser
                                       ? EnterpriseBusinessPosition.manager
                                       : EnterpriseBusinessPosition.cashOperator;
                                 });
+                                print(businessPosition.position);
                               }),
                           const SizedBox(width: 25),
                           Text(
@@ -215,7 +218,12 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: CashHelperElevatedButton(
                             onPressed: () {
-                              _loginFormKey.currentState!.validate();
+                              setState(() {
+                                businessPosition = _managerUser
+                                    ? EnterpriseBusinessPosition.manager
+                                    : EnterpriseBusinessPosition.cashOperator;
+                              });
+                                 _loginFormKey.currentState!.validate();
                               _loginFormKey.currentState!.save();
 
                               if (_loginFormKey.currentState!.validate()) {
@@ -226,10 +234,9 @@ class _LoginPageState extends State<LoginPage> {
                                     .login(
                                         _loginController.emailField.text,
                                         _loginController.passwordField.text,
-                                        "",
+                                        widget.enterpriseEntity.enterpriseId,
                                         businessPosition.position)
-                                    ?.then((value) => value)
-                                    .catchError((e) {
+                                    ?.catchError((e) {
                                   _loginController.onFail(context);
                                 });
                               }

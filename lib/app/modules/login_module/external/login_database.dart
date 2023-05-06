@@ -86,19 +86,18 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
             throw AuthenticationError(message: e.toString());
           },
         );
-        userData = await _database
+      return  userData = await _database
             .collection("enterprise")
             .doc(enterpriseId)
             .collection(collection!)
             .doc(_authUser!.uid)
             .get()
-            .then((value) => value.data());
-        return userData;
+            .then((value) => value.data()!);
       } else {
         return null;
       }
-    } on FirebaseAuthException catch (e) {
-      throw AuthenticationError(message: e.toString());
+    } catch (e) {
+      throw OperatorNotFound(message: "Falha na autenticação");
     }
   }
 
