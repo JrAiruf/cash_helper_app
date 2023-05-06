@@ -67,11 +67,11 @@ class LoginModule extends Module {
       child: (_, args) => RecoveryPasswordPage(operatorEntity: args.data),
     ),
     ChildRoute(
-      LoginRoutes.initial,
-      child: (_, args) => const LoginPage(),
+      LoginRoutes.login,
+      child: (_, args) => LoginPage(enterpriseEntity: args.data),
     ),
     ChildRoute(
-      "/login",
+      LoginRoutes.initial,
       child: (_, args) => const EnterpriseAuthPage(),
     ),
   ];

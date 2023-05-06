@@ -10,5 +10,10 @@ class CreatedEnterpriseState implements EnterpriseStates {
   CreatedEnterpriseState({required this.enterprise});
   final EnterpriseEntity enterprise;
 }
+class EnterpriseObtainedState implements EnterpriseStates {
+  EnterpriseObtainedState({required this.enterprise});
+  final EnterpriseEntity enterprise;
+}
 
 class CreationFailedState implements EnterpriseStates {}
+class EnterpriseAccessFailedState implements EnterpriseStates {}

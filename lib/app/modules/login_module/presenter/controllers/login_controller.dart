@@ -70,6 +70,12 @@ class LoginController {
         : 'Código Inválido! Insira seu código Ops.';
   }
 
+  String? enterpriseCodeValidate(String? value) {
+    return value!.isNotEmpty && value != '' && value.length == 8
+        ? null
+        : 'Código Inválido! Insira o código da Empresa';
+  }
+
   String? cashierNumberValidate(String? value) {
     return value!.isNotEmpty && value != '' && value != ' '
         ? null
@@ -79,7 +85,7 @@ class LoginController {
   onFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-       shape: const RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
@@ -180,7 +186,7 @@ class LoginController {
   recoveryTrialFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-       shape: const RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
@@ -217,7 +223,7 @@ class LoginController {
   checkInformationTrialFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-       shape: const RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
@@ -255,7 +261,7 @@ class LoginController {
     await Future.delayed(const Duration(seconds: 2));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-       shape: const RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
@@ -292,7 +298,7 @@ class LoginController {
   operatorCreatedSucessfully(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-       shape: const RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),

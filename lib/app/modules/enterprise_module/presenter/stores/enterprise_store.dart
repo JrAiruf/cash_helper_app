@@ -26,4 +26,14 @@ class EnterpriseStore extends ValueNotifier<EnterpriseStates> {
       value = CreationFailedState();
     }
   }
+  Future<void> getEnterpriseByCode(
+      String enterpriseCode) async {
+    value = LoadingState();
+    final enterprise = await _getEnterpriseByCode(enterpriseCode);
+    if (enterprise != null) {
+      value = EnterpriseObtainedState(enterprise: enterprise);
+    } else {
+      value = EnterpriseAccessFailedState();
+    }
+  }
 }
