@@ -77,10 +77,10 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         await _login(email, password, enterpriseId, collection).catchError((e) {
       if (e.runtimeType == AuthenticationError) {
         value = LoginAuthErrorState();
-      } 
+      }
       if (e.runtimeType == UserNotFound) {
         value = LoginNoUserErrorState();
-      } 
+      }
       return;
     });
     if (_dataVerifier.operatorEntityVerifier(entity: loginEntity) &&
@@ -95,9 +95,8 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   Future<void>? getUserById(
       String enterpriseId, String operatorId, String collection) async {
     value = LoginLoadingState();
-    final userEntity =
-        await _getUserById(enterpriseId, operatorId, collection);
-  if (_dataVerifier.operatorEntityVerifier(entity: userEntity) &&
+    final userEntity = await _getUserById(enterpriseId, operatorId, collection);
+    if (_dataVerifier.operatorEntityVerifier(entity: userEntity) &&
         userEntity != null) {
       value = LoginSuccessState(operatorEntity: userEntity);
     } else if (_dataVerifier.managerEntityVerifier(entity: userEntity) &&

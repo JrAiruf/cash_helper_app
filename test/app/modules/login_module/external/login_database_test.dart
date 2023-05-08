@@ -107,6 +107,9 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       }).data();
       return userData;
     } catch (e) {
+      if (userData.isEmpty) {
+        throw AuthenticationError(message: e.toString());
+      }
       if (userBusinessPosition.isEmpty) {
         throw UserNotFound(message: e.toString());
       } else {
@@ -314,6 +317,13 @@ void main() {
               () async =>
                   database.login(createdOperator?["operatorEmail"], "", "", ""),
               throwsA(isA<UserNotFound>()));
+        },
+      );
+      test(
+        "Fail to sign in with non-existing user",
+        () async {
+          expect(() async => database.login("nonUserEmail", "", "", ""),
+              throwsA(isA<AuthenticationError>()));
         },
       );
       test(

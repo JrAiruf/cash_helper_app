@@ -23,7 +23,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   User? _authUser;
   Map<String, dynamic> userData = {};
 
-String userBusinessPosition = "";
+  String userBusinessPosition = "";
   String _createUserCode(String source, int hashSize) {
     final index = source.length ~/ source.length;
     return source.substring(index, index + hashSize);
@@ -72,8 +72,7 @@ String userBusinessPosition = "";
     }
   }
 
-
-   @override
+  @override
   Future<Map<String, dynamic>>? login(String? email, String? password,
       String? enterpriseId, String? collection) async {
     try {
@@ -97,12 +96,14 @@ String userBusinessPosition = "";
             element["${collection}Password"] == password;
       }).data();
       return userData;
-    } catch (e) {
-      if (userBusinessPosition.isEmpty) {
-        throw UserNotFound(message: e.toString());
-      } else {
-        throw AuthenticationError(message: e.toString());
+    } on FirebaseException catch (e) {
+      if (e.code == "wrong-password" || e.code == "user-not-found") {
+        throw AuthenticationError(message: e.message!);
+      }  else {
+        throw UserNotFound(message: e.message!);
       }
+    } catch (e) {
+      throw UserNotFound(message: e.toString());
     }
   }
 

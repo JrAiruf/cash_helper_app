@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/en
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/auth_error_view.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/user_not_found_view.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:flutter/material.dart';
@@ -269,6 +270,8 @@ class _LoginPageState extends State<LoginPage> {
           return Container();
         } else if (state is LoginAuthErrorState) {
           return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
+        } else if (state is LoginNoUserErrorState) {
+          return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
         }
         return Container();
       },
