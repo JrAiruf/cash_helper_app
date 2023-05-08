@@ -17,7 +17,7 @@ final enterpriseId = Modular.args.params["enterpriseId"];
 class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
-    _loginStore.getOperatorById(enterpriseId, widget.managerEntity.managerId!,
+    _loginStore.getUserById(enterpriseId, widget.managerEntity.managerId!,
         widget.managerEntity.businessPosition!);
     super.initState();
   }

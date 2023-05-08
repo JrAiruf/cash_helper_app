@@ -5,9 +5,8 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
 import '../../../../../mocks/mocks.dart';
-import '../get_operator_by_id/get_operator_by_id_test.dart';
+import '../get_user_by_id/get_user_by_id_test.dart';
 import '../register_operator/register_operator_test.dart';
 
 class ResetOperatorPasswordUsecaseMock implements IResetOperatorPassword {
@@ -27,7 +26,7 @@ class ResetOperatorPasswordUsecaseMock implements IResetOperatorPassword {
 void main() {
   final repository = LoginRepositoryMock();
   final register = RegisterOperatorUsecaseMock(repository: repository);
-  final getOperatorById = GetOperatorByIdMock(repository: repository);
+  final getOperatorById = GetUserByIdMock(repository: repository,dataVerifier: DataVerifier());
   final resetOperatorPassword =
       ResetOperatorPasswordUsecaseMock(repository: repository);
   final newOperator = OperatorEntity(

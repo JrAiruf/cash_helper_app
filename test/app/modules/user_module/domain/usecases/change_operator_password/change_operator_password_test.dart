@@ -1,12 +1,12 @@
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/change_operator_password/ichange_operator_password.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/data/operator_repository.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
 import '../../../../../mocks/mocks.dart';
-import '../../../../login_module/domain/usecases/get_operator_by_id/get_operator_by_id_test.dart';
+import '../../../../login_module/domain/usecases/get_user_by_id/get_user_by_id_test.dart';
 import '../../../../login_module/domain/usecases/register_operator/register_operator_test.dart';
 
 class OperatorRepositoryMock extends Mock implements OperatorRepository {}
@@ -33,7 +33,7 @@ ChangeOperatorPasswordUsecaseMock({required OperatorRepository repository})
 void main() {
  final loginRepository = LoginRepositoryMock();
   final register = RegisterOperatorUsecaseMock(repository: loginRepository);
-  final getOperatorById = GetOperatorByIdMock(repository: loginRepository);
+  final getOperatorById = GetUserByIdMock(repository: loginRepository,dataVerifier: DataVerifier());
   final operatorRepository = OperatorRepositoryMock();
   final changeOperatorPassword = ChangeOperatorPasswordUsecaseMock(repository: operatorRepository);
   final newOperator = OperatorEntity(

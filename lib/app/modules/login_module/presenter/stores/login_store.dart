@@ -1,6 +1,4 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/contract/login_usecases.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_manager/iregister_manager.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
@@ -14,13 +12,14 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 import 'package:flutter/cupertino.dart';
 
 import '../../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
+import '../../domain/usecases/get_user_by_id/iget_user_by_id.dart';
 
 class LoginStore extends ValueNotifier<LoginStates?> {
   LoginStore({
     required IRegisterManager registerManager,
     required IRegisterOperator registerOperator,
     required ILogin login,
-    required IGetOperatorById getOperatorById,
+    required IGetUserById getUserById,
     required ICheckOperatorDataForResetPassword
         checkOperatorDataForResetPassword,
     required IResetOperatorPassword resetOperatorPassword,
@@ -29,7 +28,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   })  : _registerOperator = registerOperator,
         _registerManager = registerManager,
         _login = login,
-        _getOperatorById = getOperatorById,
+        _getUserById = getUserById,
         _checkOperatorDataForResetPassword = checkOperatorDataForResetPassword,
         _resetOperatorPassword = resetOperatorPassword,
         _signOut = signOut,
@@ -39,7 +38,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   final IRegisterManager _registerManager;
   final IRegisterOperator _registerOperator;
   final ILogin _login;
-  final IGetOperatorById _getOperatorById;
+  final IGetUserById _getUserById;
   final ICheckOperatorDataForResetPassword _checkOperatorDataForResetPassword;
   final IResetOperatorPassword _resetOperatorPassword;
   final ISignOut _signOut;
@@ -93,11 +92,11 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     }
   }
 
-  Future<void>? getOperatorById(
+  Future<void>? getUserById(
       String enterpriseId, String operatorId, String collection) async {
     value = LoginLoadingState();
     final userEntity =
-        await _getOperatorById(enterpriseId, operatorId, collection);
+        await _getUserById(enterpriseId, operatorId, collection);
   if (_dataVerifier.operatorEntityVerifier(entity: userEntity) &&
         userEntity != null) {
       value = LoginSuccessState(operatorEntity: userEntity);

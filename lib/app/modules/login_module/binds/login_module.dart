@@ -1,5 +1,4 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/login.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/register_operator.dart';
@@ -18,7 +17,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/check_operator_data_for_reset_password.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
-import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
+import '../domain/usecases/get_user_by_id/get_user_by_id.dart';
+import '../domain/usecases/get_user_by_id/iget_user_by_id.dart';
 import '../domain/usecases/login/ilogin.dart';
 import '../domain/usecases/register_manager/iregister_manager.dart';
 import '../domain/usecases/register_manager/register_manager.dart';
@@ -118,9 +118,10 @@ class LoginModule extends Module {
         dataVerifier: i(),
       ),
     ),
-    Bind<IGetOperatorById>(
-      (i) => GetOperatorById(
+    Bind<IGetUserById>(
+      (i) => GetUserById(
         repository: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<ICheckOperatorDataForResetPassword>(
@@ -143,7 +144,7 @@ class LoginModule extends Module {
         registerOperator: i(),
         registerManager: i(),
         login: i(),
-        getOperatorById: i(),
+        getUserById: i(),
         checkOperatorDataForResetPassword: i(),
         resetOperatorPassword: i(),
         signOut: i(),
