@@ -1,6 +1,8 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/database_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/registration_error.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,33 +32,29 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   final DataVerifier _dataVerifier;
   User? _authUser;
   Map<String, dynamic> userData = {};
+
   String _createUserCode(String source, int hashSize) {
     final index = source.length ~/ source.length;
     return source.substring(index, index + hashSize);
   }
 
   @override
-  Future<Map<String, dynamic>?>? register(Map<String, dynamic> newUserMap,
+  Future<Map<String, dynamic>>? register(Map<String, dynamic> newUserMap,
       String enterpriseId, String collection) async {
     late String newUserId;
     final operatorCode = _createUserCode(_uuid.v1(), 6);
     try {
       _authUser = await _auth
           .createUserWithEmailAndPassword(
-              email: newUserMap['managerEmail'] ?? newUserMap['operatorEmail'],
-              password:
-                  newUserMap['managerPassword'] ?? newUserMap['operatorEmail'])
+              email: newUserMap['${collection}Email'],
+              password: newUserMap['${collection}Password'])
           .then((value) => value.user);
-      if (_authUser?.email == newUserMap['managerEmail']) {
-        newUserMap["managerId"] = _authUser!.uid;
-        newUserId = _authUser!.uid;
-        newUserMap["managerCode"] = operatorCode;
-      } else if (_authUser?.email == newUserMap['operatorEmail']) {
-        newUserMap["operatorId"] = _authUser?.uid;
-        newUserId = _authUser!.uid;
-        newUserMap["operatorCode"] = operatorCode;
-      }
-      newUserMap.isNotEmpty && enterpriseId.isNotEmpty
+      newUserId = _authUser!.uid;
+      newUserMap["${collection}Id"] = newUserId;
+      newUserMap["${collection}Code"] = operatorCode;
+      newUserMap.isNotEmpty &&
+              enterpriseId.isNotEmpty &&
+              _authUser!.uid.isNotEmpty
           ? await _database
               .collection("enterprise")
               .doc(enterpriseId)
@@ -64,18 +62,22 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
               .doc(newUserId)
               .set(newUserMap)
           : null;
-      _authUser!.uid.isNotEmpty
-          ? userData = await _database
-              .collection("enterprise")
-              .doc(enterpriseId)
-              .collection(newUserMap["businessPosition"])
-              .doc(newUserId)
-              .get()
-              .then((value) => value.data() ?? {})
-          : userData = {};
+      final registeredUsersList = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection(newUserMap["businessPosition"])
+          .get();
+      userData = registeredUsersList.docs
+          .firstWhere(
+              (element) => element.data()["${collection}Id"] == newUserId)
+          .data();
       return userData;
-    } on FirebaseException catch (e) {
-      throw Exception(e.toString());
+    } catch (e) {
+      if (userData.isEmpty) {
+        throw RegistrationError(message: e.toString());
+      } else {
+        throw DatabaseError(message: e.toString());
+      }
     }
   }
 
@@ -107,23 +109,18 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? getUserById(
+  Future<Map<String, dynamic>>? getUserById(
       String? enterpriseId, String? operatorId, String? collection) async {
     try {
-      if (_dataVerifier
-          .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
-        final databaseCollection = _database
-            .collection("enterprise")
-            .doc(enterpriseId)
-            .collection(collection!);
-        userData = await databaseCollection
-            .doc(operatorId)
-            .get()
-            .then((value) => value.data() ?? {});
-        return userData;
-      } else {
-        return null;
-      }
+      final databaseCollection = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection(collection!)
+          .get();
+      userData = databaseCollection.docs
+          .firstWhere((element) => element["${collection}Id"] == operatorId)
+          .data();
+      return userData;
     } catch (e) {
       throw OperatorNotFound(message: e.toString());
     }
@@ -228,11 +225,10 @@ void main() {
         expect(database.userData["operatorCode"] != null, equals(true));
       });
       test("Fail to create the operator document in firebase", () async {
-        final createdOperator = await database.register(
-            LoginTestObjects.modifiedUser, "", "testCollection");
-        final result = await firebaseMock.collection("enterprise").get();
-        expect(result.docs.isEmpty, equals(true));
-        expect(createdOperator?.isEmpty, equals(true));
+        expect(
+            () async =>
+                database.register(LoginTestObjects.newOperator, "", "operator"),
+            throwsA(isA<RegistrationError>()));
       });
     },
   );
@@ -256,12 +252,11 @@ void main() {
       expect(database.userData["managerId"] != null, equals(true));
       expect(database.userData["managerCode"] != null, equals(true));
     });
-    test("Fail to create the operator document in firebase", () async {
-      final createdManager = await database.register(
-          LoginTestObjects.modifiedUser, "", "testCollection");
-      final result = await firebaseMock.collection("enterprise").get();
-      expect(result.docs.isEmpty, equals(true));
-      expect(createdManager?.isEmpty, equals(true));
+    test("Fail to create the manager document in firebase", () async {
+      expect(
+          () async =>
+              database.register(LoginTestObjects.modifiedUser, "", "manager"),
+          throwsA(isA<RegistrationError>()));
     });
   });
 
@@ -387,9 +382,8 @@ void main() {
       test(
         "Fail returning operator data",
         () async {
-          final operatorData = await database.getUserById(
-              "", "", LoginTestObjects.newOperator["businessPosition"]);
-          expect(operatorData?.isEmpty, equals(true));
+          expect(() async => database.getUserById(
+              "", "", LoginTestObjects.newOperator["businessPosition"]), throwsA(isA<OperatorNotFound>()));
         },
       );
     },
