@@ -8,4 +8,6 @@ class OperatorNotFound implements Exception {
   void showErrorLog(String message) {
     FlutterError.presentError(FlutterErrorDetails(exception: message));
   }
+
+  String get errorMessage => message;
 }

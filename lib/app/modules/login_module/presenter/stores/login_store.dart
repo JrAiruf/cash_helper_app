@@ -6,6 +6,7 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/registe
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/reset_operator_password/ireset_operator_password.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
@@ -44,6 +45,10 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   final DataVerifier _dataVerifier;
   bool loadingData = false;
 
+  void restartLoginPageState() {
+    value = LoginInitialState();
+  }
+
   Future<OperatorEntity?>? register(OperatorEntity newOperator,
       String enterpriseId, String collection) async {
     value = LoginLoadingState();
@@ -68,13 +73,19 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   Future<void>? login(String? email, String? password, String? enterpriseId,
       String? collection) async {
     value = LoginLoadingState();
-    final loginEntity = await _login(email, password, enterpriseId, collection);
-    if (_dataVerifier.operatorEntityVerifier(entity: loginEntity)) {
+    final loginEntity =
+        await _login(email, password, enterpriseId, collection).catchError((e) {
+      if (e.runtimeType == AuthenticationError) {
+        value = LoginErrorState();
+      }
+      return;
+    });
+    if (_dataVerifier.operatorEntityVerifier(entity: loginEntity) &&
+        loginEntity != null) {
       value = LoginSuccessState(operatorEntity: loginEntity);
-    } else if (_dataVerifier.managerEntityVerifier(entity: loginEntity)) {
+    } else if (_dataVerifier.managerEntityVerifier(entity: loginEntity) &&
+        loginEntity != null) {
       value = ManagerLoginSuccessState(managerEntity: loginEntity);
-    } else {
-      value = LoginErrorState();
     }
   }
 

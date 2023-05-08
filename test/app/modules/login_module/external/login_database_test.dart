@@ -36,39 +36,39 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? register(Map<String, dynamic>? newOperator,
-      String? enterpriseId, String? collection) async {
+  Future<Map<String, dynamic>?>? register(Map<String, dynamic> newUserMap,
+      String enterpriseId, String collection) async {
     late String newUserId;
-    final operatorCodeResource = _uuid.v1();
-    final operatorCode = _createUserCode(operatorCodeResource, 6);
+    final operatorCode = _createUserCode(_uuid.v1(), 6);
     try {
-      final userCredentials = await _auth.createUserWithEmailAndPassword(
-          email: newOperator?['managerEmail'] ?? newOperator?['operatorEmail'],
-          password:
-              newOperator?['managerPassword'] ?? newOperator?['operatorEmail']);
-      if (userCredentials.user?.email == newOperator?['managerEmail']) {
-        newOperator?["managerId"] = userCredentials.user!.uid;
-        newUserId = userCredentials.user!.uid;
-        newOperator?["managerCode"] = operatorCode;
-      } else if (userCredentials.user?.email == newOperator?['operatorEmail']) {
-        newOperator?["operatorId"] = userCredentials.user?.uid;
-        newUserId = userCredentials.user!.uid;
-        newOperator?["operatorCode"] = operatorCode;
+      _authUser = await _auth
+          .createUserWithEmailAndPassword(
+              email: newUserMap['managerEmail'] ?? newUserMap['operatorEmail'],
+              password:
+                  newUserMap['managerPassword'] ?? newUserMap['operatorEmail'])
+          .then((value) => value.user);
+      if (_authUser?.email == newUserMap['managerEmail']) {
+        newUserMap["managerId"] = _authUser!.uid;
+        newUserId = _authUser!.uid;
+        newUserMap["managerCode"] = operatorCode;
+      } else if (_authUser?.email == newUserMap['operatorEmail']) {
+        newUserMap["operatorId"] = _authUser?.uid;
+        newUserId = _authUser!.uid;
+        newUserMap["operatorCode"] = operatorCode;
       }
-      _authUser = userCredentials.user;
-      !newOperator!.containsValue("") && newOperator.isNotEmpty
+      newUserMap.isNotEmpty && enterpriseId.isNotEmpty
           ? await _database
               .collection("enterprise")
               .doc(enterpriseId)
-              .collection(newOperator["businessPosition"])
+              .collection(newUserMap["businessPosition"])
               .doc(newUserId)
-              .set(newOperator)
+              .set(newUserMap)
           : null;
-      userCredentials.user!.uid.isNotEmpty
+      _authUser!.uid.isNotEmpty
           ? userData = await _database
               .collection("enterprise")
               .doc(enterpriseId)
-              .collection(newOperator["businessPosition"])
+              .collection(newUserMap["businessPosition"])
               .doc(newUserId)
               .get()
               .then((value) => value.data() ?? {})
@@ -80,31 +80,29 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? login(String? email, String? password,
-      String? enterpriseId, String? collection) async {
+  Future<Map<String, dynamic>>? login(String email, String password,
+      String enterpriseId, String collection) async {
     try {
-      if (_dataVerifier
-          .validateInputData(inputs: [email, password, collection])) {
-        _authUser = await _auth
-            .signInWithEmailAndPassword(email: email!, password: password!)
-            .then((value) => value.user)
-            .catchError(
-          (e) {
-            throw AuthenticationError(message: e.toString());
-          },
-        );
-      return  userData = await _database
-            .collection("enterprise")
-            .doc(enterpriseId)
-            .collection(collection!)
-            .doc(_authUser!.uid)
-            .get()
-            .then((value) => value.data()!);
-      } else {
-        return null;
-      }
+      _authUser = await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) => value.user);
+      final databaseUsersCollection = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection(collection)
+          .get();
+      userData = databaseUsersCollection.docs.firstWhere((element) {
+        return element["${collection}Email"] == email &&
+            element["${collection}Password"] == password &&
+            element["businessPosition"] == collection;
+      }).data();
+      return userData;
     } catch (e) {
-      throw OperatorNotFound(message: "Falha na autenticação");
+      if (userData.isEmpty) {
+        throw AuthenticationError(message: e.toString());
+      } else {
+        throw OperatorNotFound(message: e.toString());
+      }
     }
   }
 
@@ -288,6 +286,8 @@ void main() {
               createdEnterprise["enterpriseId"],
               createdOperator?["businessPosition"]);
           expect(loginOperator != null, equals(true));
+          expect(loginOperator?["operatorId"] == createdOperator?["operatorId"],
+              equals(true));
           expect(loginOperator?["operatorId"] != null, equals(true));
           expect(loginOperator?["businessPosition"], equals("operator"));
         },
@@ -304,9 +304,10 @@ void main() {
               LoginTestObjects.newOperator,
               createdEnterprise["enterpriseId"],
               LoginTestObjects.newOperator["businessPosition"]);
-          final loginOperator = await database.login(
-              createdOperator?["operatorEmail"], "", "", "");
-          expect(loginOperator, equals(null));
+          expect(
+              () async =>
+                  database.login(createdOperator?["operatorEmail"], "", "", ""),
+              throwsA(isA<OperatorNotFound>()));
         },
       );
       test(

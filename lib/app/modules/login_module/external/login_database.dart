@@ -80,24 +80,32 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
           .validateInputData(inputs: [email, password, collection])) {
         _authUser = await _auth
             .signInWithEmailAndPassword(email: email!, password: password!)
-            .then((value) => value.user)
-            .catchError(
-          (e) {
-            throw AuthenticationError(message: e.toString());
-          },
-        );
-      return  userData = await _database
-            .collection("enterprise")
-            .doc(enterpriseId)
-            .collection(collection!)
-            .doc(_authUser!.uid)
-            .get()
-            .then((value) => value.data()!);
+            .then((value) => value.user);
+        if (_authUser?.uid != null) {
+          return userData = await _database
+              .collection("enterprise")
+              .doc(enterpriseId)
+              .collection(collection!)
+              .doc(_authUser!.uid)
+              .get()
+              .then((value) => value.data()!);
+        } else {
+          return null;
+        }
       } else {
         return null;
       }
-    } catch (e) {
-      throw OperatorNotFound(message: "Falha na autenticação");
+    } on FirebaseException catch (e) {
+      print(e.code);
+      /*    if (e.toString().contains("null value")) {
+        throw AuthenticationError(
+            message: "Erro ao logar. Verifique seus dados");
+      } else if (e.toString().contains("password")) {
+        throw AuthenticationError(
+            message: "E-mail ou senha inválidos");
+      } else {
+        throw UnknowError(message: e.toString());
+      } */
     }
   }
 
@@ -125,8 +133,8 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(
-      String? email, String? operatorCode,String? enterpriseId, String? collection) async {
+  Future<bool>? checkOperatorDataForResetPassword(String? email,
+      String? operatorCode, String? enterpriseId, String? collection) async {
     if (email != null && operatorCode != null && collection != null) {
       final operatorsCollection = await _database.collection(collection).get();
       final checkedOperator = operatorsCollection.docs.firstWhere(
@@ -140,17 +148,17 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? resetOperatorPassword(
-      String? email, String? operatorCode,String? enterpriseId, String? newPassword) async {
+  Future<void>? resetOperatorPassword(String? email, String? operatorCode,
+      String? enterpriseId, String? newPassword) async {
     try {
       final operatorsList = await _database.collection("operator").get();
-      if (_dataVerifier.validateInputData(inputs:[email, operatorCode])) {
+      if (_dataVerifier.validateInputData(inputs: [email, operatorCode])) {
         final databaseOperator = operatorsList.docs
             .firstWhere((operator) =>
                 operator["operatorEmail"] == email &&
                 operator["operatorCode"] == operatorCode)
             .data();
-        await login(email, databaseOperator["operatorPassword"],"",
+        await login(email, databaseOperator["operatorPassword"], "",
             databaseOperator["operatorOcupation"]);
         await _auth.currentUser?.updatePassword(newPassword!);
         final operatorsCollection =
