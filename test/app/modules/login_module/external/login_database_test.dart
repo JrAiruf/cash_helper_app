@@ -1,7 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/database_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/operator_not_found_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/registration_error.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
@@ -32,6 +32,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   final DataVerifier _dataVerifier;
   User? _authUser;
   Map<String, dynamic> userData = {};
+  String userBusinessPosition = "";
 
   String _createUserCode(String source, int hashSize) {
     final index = source.length ~/ source.length;
@@ -39,21 +40,21 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>>? register(Map<String, dynamic> newUserMap,
-      String enterpriseId, String collection) async {
+  Future<Map<String, dynamic>>? register(Map<String, dynamic>? newUserMap,
+      String? enterpriseId, String? collection) async {
     late String newUserId;
     final operatorCode = _createUserCode(_uuid.v1(), 6);
     try {
       _authUser = await _auth
           .createUserWithEmailAndPassword(
-              email: newUserMap['${collection}Email'],
+              email: newUserMap!['${collection}Email'],
               password: newUserMap['${collection}Password'])
           .then((value) => value.user);
       newUserId = _authUser!.uid;
       newUserMap["${collection}Id"] = newUserId;
       newUserMap["${collection}Code"] = operatorCode;
       newUserMap.isNotEmpty &&
-              enterpriseId.isNotEmpty &&
+              enterpriseId!.isNotEmpty &&
               _authUser!.uid.isNotEmpty
           ? await _database
               .collection("enterprise")
@@ -82,35 +83,41 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>>? login(String email, String password,
-      String enterpriseId, String collection) async {
+  Future<Map<String, dynamic>>? login(String? email, String? password,
+      String? enterpriseId, String? collection) async {
     try {
       _authUser = await _auth
-          .signInWithEmailAndPassword(email: email, password: password)
+          .signInWithEmailAndPassword(
+              email: email ?? "", password: password ?? "")
           .then((value) => value.user);
+      final usersMapList = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection(collection!)
+          .get();
+      userBusinessPosition = usersMapList.docs.isNotEmpty ? collection : "";
       final databaseUsersCollection = await _database
           .collection("enterprise")
           .doc(enterpriseId)
-          .collection(collection)
+          .collection(userBusinessPosition)
           .get();
       userData = databaseUsersCollection.docs.firstWhere((element) {
         return element["${collection}Email"] == email &&
-            element["${collection}Password"] == password &&
-            element["businessPosition"] == collection;
+            element["${collection}Password"] == password;
       }).data();
       return userData;
     } catch (e) {
-      if (userData.isEmpty) {
-        throw AuthenticationError(message: e.toString());
+      if (userBusinessPosition.isEmpty) {
+        throw UserNotFound(message: e.toString());
       } else {
-        throw OperatorNotFound(message: e.toString());
+        throw AuthenticationError(message: e.toString());
       }
     }
   }
 
   @override
   Future<Map<String, dynamic>>? getUserById(
-      String? enterpriseId, String? operatorId, String? collection) async {
+      String? enterpriseId, String? userId, String? collection) async {
     try {
       final databaseCollection = await _database
           .collection("enterprise")
@@ -118,11 +125,15 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           .collection(collection!)
           .get();
       userData = databaseCollection.docs
-          .firstWhere((element) => element["${collection}Id"] == operatorId)
+          .firstWhere((element) => element["${collection}Id"] == userId)
           .data();
       return userData;
     } catch (e) {
-      throw OperatorNotFound(message: e.toString());
+      if (userData.isEmpty) {
+        throw UserNotFound(message: e.toString());
+      } else {
+        throw DatabaseError(message: e.toString());
+      }
     }
   }
 
@@ -302,7 +313,7 @@ void main() {
           expect(
               () async =>
                   database.login(createdOperator?["operatorEmail"], "", "", ""),
-              throwsA(isA<OperatorNotFound>()));
+              throwsA(isA<UserNotFound>()));
         },
       );
       test(
@@ -323,7 +334,28 @@ void main() {
                   createdManager?["managerPassword"],
                   createdEnterprise["enterpriseId"],
                   "otherposition"),
-              throwsA(isA<OperatorNotFound>()));
+              throwsA(isA<UserNotFound>()));
+        },
+      );
+      test(
+        "Fail to sign in with another user password",
+        () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          final createdManager = await database.register(
+              LoginTestObjects.newManager,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newManager["businessPosition"]);
+          expect(
+              () async => database.login(
+                  createdManager?["managerEmail"],
+                  "wrongPassword",
+                  createdEnterprise["enterpriseId"],
+                  createdManager?["businessPosition"]),
+              throwsA(isA<AuthenticationError>()));
         },
       );
     },
@@ -380,10 +412,33 @@ void main() {
         },
       );
       test(
+        "Return a Map from firebase containing all manager data",
+        () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          final createdManager = await database.register(
+              LoginTestObjects.newManager,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newManager["businessPosition"]);
+          final result = await database.getUserById(
+              createdEnterprise["enterpriseId"],
+              createdManager?["managerId"],
+              createdManager?["businessPosition"]);
+          expect(result, isA<Map<String, dynamic>>());
+          expect(result?["managerId"] != null, equals(true));
+          expect(database.userData.isNotEmpty, equals(true));
+        },
+      );
+      test(
         "Fail returning operator data",
         () async {
-          expect(() async => database.getUserById(
-              "", "", LoginTestObjects.newOperator["businessPosition"]), throwsA(isA<OperatorNotFound>()));
+          expect(
+              () async => database.getUserById(
+                  "", "", LoginTestObjects.newOperator["businessPosition"]),
+              throwsA(isA<UserNotFound>()));
         },
       );
     },

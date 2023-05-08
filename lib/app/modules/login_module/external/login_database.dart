@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 import '../../../helpers/data_verifier.dart';
 import 'errors/authentication_error.dart';
 import 'errors/database_error.dart';
-import 'errors/operator_not_found_error.dart';
+import 'errors/user_not_found_error.dart';
 import 'errors/registration_error.dart';
 
 class FirebaseDatabase implements ApplicationLoginDatabase {
@@ -23,27 +23,28 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   User? _authUser;
   Map<String, dynamic> userData = {};
 
+String userBusinessPosition = "";
   String _createUserCode(String source, int hashSize) {
     final index = source.length ~/ source.length;
     return source.substring(index, index + hashSize);
   }
 
   @override
-  Future<Map<String, dynamic>>? register(Map<String, dynamic> newUserMap,
-      String enterpriseId, String collection) async {
+  Future<Map<String, dynamic>>? register(Map<String, dynamic>? newUserMap,
+      String? enterpriseId, String? collection) async {
     late String newUserId;
     final operatorCode = _createUserCode(_uuid.v1(), 6);
     try {
       _authUser = await _auth
           .createUserWithEmailAndPassword(
-              email: newUserMap['${collection}Email'],
+              email: newUserMap!['${collection}Email'],
               password: newUserMap['${collection}Password'])
           .then((value) => value.user);
       newUserId = _authUser!.uid;
       newUserMap["${collection}Id"] = newUserId;
       newUserMap["${collection}Code"] = operatorCode;
       newUserMap.isNotEmpty &&
-              enterpriseId.isNotEmpty &&
+              enterpriseId!.isNotEmpty &&
               _authUser!.uid.isNotEmpty
           ? await _database
               .collection("enterprise")
@@ -71,29 +72,36 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
     }
   }
 
-  @override
-  Future<Map<String, dynamic>>? login(String email, String password,
-      String enterpriseId, String collection) async {
+
+   @override
+  Future<Map<String, dynamic>>? login(String? email, String? password,
+      String? enterpriseId, String? collection) async {
     try {
       _authUser = await _auth
-          .signInWithEmailAndPassword(email: email, password: password)
+          .signInWithEmailAndPassword(
+              email: email ?? "", password: password ?? "")
           .then((value) => value.user);
+      final usersMapList = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection(collection!)
+          .get();
+      userBusinessPosition = usersMapList.docs.isNotEmpty ? collection : "";
       final databaseUsersCollection = await _database
           .collection("enterprise")
           .doc(enterpriseId)
-          .collection(collection)
+          .collection(userBusinessPosition)
           .get();
       userData = databaseUsersCollection.docs.firstWhere((element) {
         return element["${collection}Email"] == email &&
-            element["${collection}Password"] == password &&
-            element["businessPosition"] == collection;
+            element["${collection}Password"] == password;
       }).data();
       return userData;
     } catch (e) {
-      if (userData.isEmpty) {
-        throw AuthenticationError(message: e.toString());
+      if (userBusinessPosition.isEmpty) {
+        throw UserNotFound(message: e.toString());
       } else {
-        throw OperatorNotFound(message: e.toString());
+        throw AuthenticationError(message: e.toString());
       }
     }
   }
@@ -112,7 +120,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
           .data();
       return userData;
     } catch (e) {
-      throw OperatorNotFound(message: e.toString());
+      throw UserNotFound(message: e.toString());
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/registe
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/reset_operator_password/ireset_operator_password.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
@@ -76,8 +77,11 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     final loginEntity =
         await _login(email, password, enterpriseId, collection).catchError((e) {
       if (e.runtimeType == AuthenticationError) {
-        value = LoginErrorState();
-      }
+        value = LoginAuthErrorState();
+      } 
+      if (e.runtimeType == UserNotFound) {
+        value = LoginNoUserErrorState();
+      } 
       return;
     });
     if (_dataVerifier.operatorEntityVerifier(entity: loginEntity) &&
@@ -92,11 +96,15 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   Future<void>? getOperatorById(
       String enterpriseId, String operatorId, String collection) async {
     value = LoginLoadingState();
-    final operatorEntity =
+    final userEntity =
         await _getOperatorById(enterpriseId, operatorId, collection);
-    operatorEntity != null
-        ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState();
+  if (_dataVerifier.operatorEntityVerifier(entity: userEntity) &&
+        userEntity != null) {
+      value = LoginSuccessState(operatorEntity: userEntity);
+    } else if (_dataVerifier.managerEntityVerifier(entity: userEntity) &&
+        userEntity != null) {
+      value = ManagerLoginSuccessState(managerEntity: userEntity);
+    }
   }
 
   Future<bool>? checkOperatorDataForResetPassword(

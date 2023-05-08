@@ -50,15 +50,16 @@ class LoginRepositoryImpl implements LoginRepository {
     }
   }
 
-  @override
+ @override
   Future<dynamic>? getUserById(
       String? enterpriseId, String? operatorId, String? collection) async {
     if (_dataVerifier
         .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
-       final databaseMap = await _datasource.getUserById(enterpriseId, operatorId, collection);
-       if (_dataVerifier.operatorMapVerifier(map: databaseMap ?? {})) {
-           return OperatorModel.fromMap(databaseMap);
-       } else if (_dataVerifier.managerMapVerifier(map: databaseMap ?? {})) {
+      final databaseMap =
+          await _datasource.getUserById(enterpriseId!, operatorId!, collection!);
+      if (_dataVerifier.operatorMapVerifier(map: databaseMap ?? {})) {
+        return OperatorModel.fromMap(databaseMap);
+      } else if (_dataVerifier.managerMapVerifier(map: databaseMap ?? {})) {
         return ManagerModel.fromMap(databaseMap);
       }
     } else {

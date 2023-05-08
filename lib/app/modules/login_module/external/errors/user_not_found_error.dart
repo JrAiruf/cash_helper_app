@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class OperatorNotFound implements Exception {
-  OperatorNotFound({required this.message}) {
+class UserNotFound implements Exception {
+  UserNotFound({required this.message}) {
     showErrorLog(message);
   }
   final String message;

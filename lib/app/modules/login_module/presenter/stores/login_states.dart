@@ -21,3 +21,5 @@ class ManagerLoginSuccessState extends LoginStates {
 }
 
 class LoginErrorState extends LoginStates {}
+class LoginAuthErrorState extends LoginStates {}
+class LoginNoUserErrorState extends LoginStates {}
