@@ -13,18 +13,15 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
     required FirebaseFirestore database,
     required FirebaseAuth auth,
     required Uuid uuid,
-    required DataVerifier dataVerifier,
   })  : _database = database,
         _auth = auth,
-        _uuid = uuid,
-        _dataVerifier = dataVerifier;
+        _uuid = uuid;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
   final Uuid _uuid;
-  final DataVerifier _dataVerifier;
   User? _authUser;
-    Map<String, dynamic> userData = {};
+  Map<String, dynamic> userData = {};
 
   String _createUserCode(String source, int hashSize) {
     final index = source.length ~/ source.length;
@@ -118,23 +115,24 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       throw OperatorNotFound(message: e.toString());
     }
   }
-  
+
   @override
-  Future<bool>? checkOperatorDataForResetPassword(String? email, String? operatorCode, String? enterpriseId, String? collection) {
+  Future<bool>? checkOperatorDataForResetPassword(String? email,
+      String? operatorCode, String? enterpriseId, String? collection) {
     // TODO: implement checkOperatorDataForResetPassword
     throw UnimplementedError();
   }
-  
+
   @override
-  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? enterpriseId, String? newPassword) {
+  Future<void>? resetOperatorPassword(String? email, String? operatorCode,
+      String? enterpriseId, String? newPassword) {
     // TODO: implement resetOperatorPassword
     throw UnimplementedError();
   }
-  
+
   @override
   Future<void>? signOut() {
     // TODO: implement signOut
     throw UnimplementedError();
   }
-
 }
