@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/external/data/application_enterprise_database.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/data/enterprise_repository.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/enterprise_model.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/payment_method_model.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -42,7 +43,7 @@ class EnterpriseRepositoryMock implements EnterpriseRepository {
   }
   
   @override
-  Future? createPaymenMethod(String? managerCode) {
+  Future? createPaymenMethod(PaymentMethodModel? paymentMethodModel, String? managerCode) {
     // TODO: implement createPaymenMethod
     throw UnimplementedError();
   }

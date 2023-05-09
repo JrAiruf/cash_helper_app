@@ -1,7 +1,9 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/create_payment_method/icreate_payment_method.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/data/enterprise_repository.dart';
+import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 import '../../../../../mocks/mocks.dart';
 
@@ -11,7 +13,8 @@ class CreatePaymentMethodMock implements ICreatePaymentMethod {
 
   final EnterpriseRepository _repository;
   @override
-  Future<PaymentMethodEntity>? call(PaymentMethodEntity? paymentMethodEntity, String? enterpriseId) async {
+  Future<PaymentMethodEntity>? call(
+      PaymentMethodEntity? paymentMethodEntity, String? enterpriseId) async {
     // TODO: implement call
     throw UnimplementedError();
   }
@@ -21,12 +24,18 @@ void main() {
   final repository = EnterpriseRepoMock();
   final usecase = CreatePaymentMethodMock(repository: repository);
   group('CreatePaymentMethod usecase Should', () {
-   test('Call repository to create a payment method and return a PaymentMethodEntity', () async {
-    // TODO: Implement test
+    test(
+        'Call repository to create a payment method and return a PaymentMethodEntity',
+        () async {
+      when(repository.createPaymenMethod(any, any))
+          .thenAnswer((_) async => EnterpriseTestObjects.paymentMethodModel);
+      final result = await usecase(
+          EnterpriseTestObjects.paymentMethodEntity, "operatorCode");
+      expect(result, isA<PaymentMethodEntity>());
+      expect(result?.paymentMethodUsingRate, equals(34.7));
+    });
+    test('Fail to return PaymentMethodEntity', () async {
+      // TODO: Implement test
+    });
   });
-  test('Fail to return PaymentMethodEntity', () async {
-    // TODO: Implement test
-  });
-  });
-  
 }
