@@ -5,7 +5,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/controller/man
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../components/widgets/manager_section_drawer.dart';
+import '../../components/widgets/manager_section_drawer.dart';
 
 class ManagerHomePage extends StatefulWidget {
   const ManagerHomePage({super.key, required this.managerEntity});
@@ -46,10 +46,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           );
         }
         if (state is ManagerLoginSuccessState) {
+          final manager = state.managerEntity;
           return Scaffold(
             appBar: AppBar(),
             drawer: ManagerSectionDrawer(
-              managerEntity: widget.managerEntity,
+              managerEntity: manager,
               enterpriseId: _enterpriseId,
               currentPage: ManagerDrawerPage.home,
               radius: 20,

@@ -25,6 +25,9 @@ class ManagerSectionDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.surfaceVariant;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
+    final height = MediaQuery.of(context).size.height;
+    final itemSpacingHeight = height * 0.02;
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(radius ?? 5),
@@ -39,34 +42,86 @@ class ManagerSectionDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 80),
+              const SizedBox(
+                height: 80,
+              ),
               Text("Opções", style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(height: 160),
+              const SizedBox(
+                height: 160,
+              ),
               DrawerTile(
-                  currentPage: ManagerDrawerPage.home,
-                  itemColor: currentPage == ManagerDrawerPage.home
-                      ? tertiaryColor
-                      : Colors.white,
-                  icon: Icons.home,
-                  title: "Início",
-                  width: width,
-                  onTap: () {
-                    Modular.to.pop();
-                    Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId",
-                        arguments: managerEntity);
-                  }),
+                currentPage: ManagerDrawerPage.home,
+                itemColor: currentPage == ManagerDrawerPage.home
+                    ? tertiaryColor
+                    : surfaceColor,
+                icon: Icons.home,
+                title: "Início",
+                width: width,
+                onTap: () {
+                  Modular.to.pop();
+                  Modular.to.navigate(
+                    "${UserRoutes.managerHomePage}$enterpriseId",
+                    arguments: managerEntity,
+                  );
+                },
+              ),
+              SizedBox(
+                height: itemSpacingHeight,
+              ),
               DrawerTile(
-                  currentPage: ManagerDrawerPage.management,
-                  itemColor: currentPage == ManagerDrawerPage.management
-                      ? tertiaryColor
-                      : Colors.white,
-                  icon: Icons.home,
-                  title: "Gerenciamento",
-                  width: width,
-                  onTap: () {
-                    Modular.to.pop();
-                    print("Hello World");
-                  }),
+                currentPage: ManagerDrawerPage.management,
+                itemColor: currentPage == ManagerDrawerPage.management
+                    ? tertiaryColor
+                    : surfaceColor,
+                icon: Icons.manage_accounts,
+                title: "Gerenciamento",
+                width: width,
+                onTap: () {
+                  Modular.to.pop();
+                  Modular.to.navigate(
+                    "${UserRoutes.managementPage}$enterpriseId",
+                    arguments: managerEntity,
+                  );
+                },
+              ),
+              SizedBox(
+                height: itemSpacingHeight,
+              ),
+              DrawerTile(
+                currentPage: ManagerDrawerPage.adminOptions,
+                itemColor: currentPage == ManagerDrawerPage.adminOptions
+                    ? tertiaryColor
+                    : surfaceColor,
+                icon: Icons.screen_search_desktop_outlined,
+                title: "Opções Administrativas",
+                width: width,
+                onTap: () {
+                  Modular.to.pop();
+                  Modular.to.navigate(
+                    "${UserRoutes.managementPage}$enterpriseId",
+                    arguments: managerEntity,
+                  );
+                },
+              ),
+              SizedBox(
+                height: itemSpacingHeight,
+              ),
+              DrawerTile(
+                currentPage: ManagerDrawerPage.settings,
+                itemColor: currentPage == ManagerDrawerPage.settings
+                    ? tertiaryColor
+                    : surfaceColor,
+                icon: Icons.settings,
+                title: "Configurações",
+                width: width,
+                onTap: () {
+                  Modular.to.pop();
+                  Modular.to.navigate(
+                    "${UserRoutes.managementPage}$enterpriseId",
+                    arguments: managerEntity,
+                  );
+                },
+              ),
             ],
           ),
         ),

@@ -13,7 +13,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/wid
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../components/widgets/empty_annotations_list_component.dart';
+import '../../components/widgets/empty_annotations_list_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
   OperartorHomePage({super.key, required this.operatorEntity});

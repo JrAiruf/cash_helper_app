@@ -1,3 +1,6 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
@@ -5,38 +8,42 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operato
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
-import '../../../../../../login_module/presenter/components/visibility_icon_component.dart';
+import '../../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../../../../../../login_module/presenter/components/visibility_icon_component.dart';
 
-class RemoveOperatorAccountPage extends StatefulWidget {
-  const RemoveOperatorAccountPage({super.key, required this.operatorEntity});
+class ChangeOperatorEmailPage extends StatefulWidget {
+  ChangeOperatorEmailPage({super.key, required this.operatorEntity});
 
-  final OperatorEntity operatorEntity;
+  OperatorEntity operatorEntity;
 
   @override
-  State<RemoveOperatorAccountPage> createState() =>
-      _RemoveOperatorAccountPageState();
+  State<ChangeOperatorEmailPage> createState() =>
+      _ChangeOperatorEmailPageState();
 }
 
-class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
-  final _deleteAccountFormKey = GlobalKey<FormState>();
-  final _operatorStore = Modular.get<OperatorStore>();
+class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
   final _controller = Modular.get<OperatorController>();
+  final _changeEmailFormKey = GlobalKey<FormState>();
+  final _operatorStore = Modular.get<OperatorStore>();
 
-  String? _operatorEmail;
-  String? _operatorCode;
+  String? _confirmationEmail;
   String? _operatorPassword;
+  String? _operatorCode;
+  bool _emailChanged = false;
+
   bool _operatorCodeVisible = false;
   bool _passwordVisible = false;
-  bool _accountDeleted = false;
+  @override
+  void initState() {
+    _operatorStore.restartOperatorSettingsPage();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
-    final redColor = Theme.of(context).colorScheme.error;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
-    final detailColor = Theme.of(context).colorScheme.background;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -44,6 +51,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
       body: Container(
         decoration: BoxDecoration(color: backgroundContainer),
         child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             height: height,
             decoration: BoxDecoration(color: primaryColor),
@@ -67,7 +75,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Text(
-                      "Excluir Conta",
+                      "Minha Conta",
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -83,7 +91,7 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                           valueListenable: _operatorStore,
                           builder: (_, operatorSettingsState, __) {
                             if (operatorSettingsState
-                                is DeleteOperatorAccountLoadingState) {
+                                is ChangeEmailLoadingState) {
                               return Center(
                                 child: CircularProgressIndicator(
                                   color: tertiaryColor,
@@ -98,16 +106,17 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                 children: [
                                   SizedBox(height: height * 0.02, width: width),
                                   Text(
-                                    "Confirme os dados para excluir a conta:",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
+                                    "Alterar E-mail:",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium,
                                   ),
                                   SizedBox(height: height * 0.04, width: width),
                                   SingleChildScrollView(
                                     child: Form(
-                                      key: _deleteAccountFormKey,
+                                      key: _changeEmailFormKey,
                                       child: SizedBox(
-                                        height: height * 0.29,
+                                        height: height * 0.38,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -116,16 +125,26 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                               radius: 15,
                                               validator: (value) => _controller
                                                   .emailValidate(value),
-                                              onSaved: (value) =>
-                                                  _operatorEmail = value,
+                                              onSaved: (value) => widget
+                                                  .operatorEntity
+                                                  .operatorEmail = value,
                                               controller:
                                                   _controller.emailField,
-                                              label: 'E-mail',
+                                              label: 'Novo E-mail',
+                                            ),
+                                            CashHelperTextFieldComponent(
+                                              radius: 15,
+                                              validator: (value) => _controller
+                                                  .emailValidate(value),
+                                              onSaved: (value) =>
+                                                  _confirmationEmail = value,
+                                              controller:
+                                                  _controller.emailField,
+                                              label: 'Confirmar E-mail',
                                             ),
                                             CashHelperTextFieldComponent(
                                               suffixIcon:
                                                   VisibilityIconComponent(
-                                                iconColor: detailColor,
                                                 onTap: () {
                                                   setState(() {
                                                     _operatorCodeVisible =
@@ -153,7 +172,6 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                             CashHelperTextFieldComponent(
                                               suffixIcon:
                                                   VisibilityIconComponent(
-                                                iconColor: detailColor,
                                                 onTap: () {
                                                   setState(() {
                                                     _passwordVisible =
@@ -186,8 +204,10 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                                 ],
                               );
                             }
-                            if (operatorSettingsState is AccountDeletedState) {
-                              Modular.to.navigate("/");
+                            if (operatorSettingsState
+                                is OperatorModifiedEmailState) {
+                              Modular.to.navigate("./",
+                                  arguments: widget.operatorEntity);
                               return Container();
                             } else {
                               return Container();
@@ -200,54 +220,53 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
                   top: height * 0.03,
                   left: width * 0.05,
                   child: const Icon(
-                    Icons.warning_rounded,
+                    Icons.settings,
                     size: 85,
                   ),
                 ),
                 Visibility(
-                  visible: !_accountDeleted,
+                  visible: !_emailChanged,
                   child: Positioned(
                     top: height * 0.7,
-                    left: width * 0.125,
+                    left: width * 0.025,
                     child: Center(
                       child: CashHelperElevatedButton(
-                        width: width * 0.75,
+                        width: width * 0.95,
                         height: 60,
                         radius: 12,
                         onPressed: () async {
-                          _deleteAccountFormKey.currentState?.validate();
-                          _deleteAccountFormKey.currentState?.save();
-                          if (_deleteAccountFormKey.currentState!.validate()) {
-                            if (_controller.validOperatorCredentials(
-                                widget.operatorEntity,
-                                _operatorCode!,
-                                _operatorPassword!,
-                                operatorEmail: _operatorEmail)) {
-                              _controller.askForAccountDeletion(
-                                  context, primaryColor, () async {
-                                setState(
-                                  () {
-                                    _accountDeleted = true;
-                                  },
-                                );
-                                await _operatorStore
-                                    .deleteOperatorAccount(
-                                        _operatorCode!,
-                                        _operatorEmail!,
-                                        _operatorPassword!,
-                                        widget
-                                            .operatorEntity.businessPosition!)
-                                    .catchError((e) {
-                                  _controller.deletionFailure(context);
-                                });
+                          _changeEmailFormKey.currentState?.validate();
+                          _changeEmailFormKey.currentState?.save();
+                          if (_changeEmailFormKey.currentState!.validate()) {
+                            if (_confirmationEmail ==
+                                    widget.operatorEntity.operatorEmail &&
+                                _controller.validOperatorCredentials(
+                                    widget.operatorEntity,
+                                    _operatorCode!,
+                                    _operatorPassword!)) {
+                              setState(
+                                () {
+                                  _emailChanged = true;
+                                },
+                              );
+                              await _operatorStore
+                                  .changeOperatorEmail(
+                                      widget.operatorEntity.operatorEmail!,
+                                      _operatorCode!,
+                                      _operatorPassword!,
+                                      widget.operatorEntity.businessPosition!)
+                                  .catchError((e) {
+                                _controller.modificationEmailFailure(context);
                               });
+                              widget.operatorEntity.operatorEmail =
+                                  _confirmationEmail;
                             } else {
-                              _controller.deletionFailure(context);
+                              _controller.modificationEmailFailure(context);
                             }
                           }
                         },
-                        buttonName: "Excluir Definitivamente",
-                        backgroundColor: redColor,
+                        buttonName: "Alterar",
+                        backgroundColor: tertiaryColor,
                         nameColor: Colors.white,
                         fontSize: 16,
                       ),

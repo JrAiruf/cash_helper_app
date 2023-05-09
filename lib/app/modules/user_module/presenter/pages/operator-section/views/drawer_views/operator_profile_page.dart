@@ -5,12 +5,12 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/car
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../../login_module/presenter/controllers/login_controller.dart';
-import '../../../../../login_module/presenter/stores/login_store.dart';
-import '../../../components/cards/operator_card_component.dart';
-import '../../../components/cards/profile_informations_card.dart';
-import '../../../components/tiles/drawer_tile.dart';
-import '../../../components/widgets/cash_helper_drawer.dart';
+import '../../../../../../login_module/presenter/controllers/login_controller.dart';
+import '../../../../../../login_module/presenter/stores/login_store.dart';
+import '../../../../components/cards/operator_card_component.dart';
+import '../../../../components/cards/profile_informations_card.dart';
+import '../../../../components/tiles/drawer_tile.dart';
+import '../../../../components/widgets/cash_helper_drawer.dart';
 
 class OperatorProfilePage extends StatefulWidget {
   OperatorProfilePage({

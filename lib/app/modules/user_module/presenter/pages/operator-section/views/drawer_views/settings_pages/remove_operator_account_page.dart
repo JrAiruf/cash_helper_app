@@ -1,56 +1,42 @@
-// ignore_for_file: must_be_immutable
-
-import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
-import '../../../../stores/operator_store_states.dart';
+import '../../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
+import '../../../../../../../login_module/presenter/components/visibility_icon_component.dart';
 
-class ChangeOperatorPasswordPage extends StatefulWidget {
-  ChangeOperatorPasswordPage({super.key, required this.operatorEntity});
+class RemoveOperatorAccountPage extends StatefulWidget {
+  const RemoveOperatorAccountPage({super.key, required this.operatorEntity});
 
-  OperatorEntity operatorEntity;
+  final OperatorEntity operatorEntity;
 
   @override
-  State<ChangeOperatorPasswordPage> createState() =>
-      _ChangeOperatorPasswordPageState();
+  State<RemoveOperatorAccountPage> createState() =>
+      _RemoveOperatorAccountPageState();
 }
 
-class _ChangeOperatorPasswordPageState
-    extends State<ChangeOperatorPasswordPage> {
+class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
+  final _deleteAccountFormKey = GlobalKey<FormState>();
+  final _operatorStore = Modular.get<OperatorStore>();
   final _controller = Modular.get<OperatorController>();
 
-  final _changePasswordFormKey = GlobalKey<FormState>();
-
-  final _operatorStore = Modular.get<OperatorStore>();
-
-  String? _newPassword = "";
-  String? _confirmationPassword = "";
-  String? _operatorCode = "";
-  String? _operatorPassword = "";
-
-  bool _passwordChanged = false;
-
-  bool _newPasswordVisible = false;
-  bool _confirmationPasswordVisible = false;
+  String? _operatorEmail;
+  String? _operatorCode;
+  String? _operatorPassword;
   bool _operatorCodeVisible = false;
   bool _passwordVisible = false;
-  @override
-  void initState() {
-    _operatorStore.restartOperatorSettingsPage();
-    super.initState();
-  }
-
+  bool _accountDeleted = false;
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final redColor = Theme.of(context).colorScheme.error;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
+    final detailColor = Theme.of(context).colorScheme.background;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -58,7 +44,6 @@ class _ChangeOperatorPasswordPageState
       body: Container(
         decoration: BoxDecoration(color: backgroundContainer),
         child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             height: height,
             decoration: BoxDecoration(color: primaryColor),
@@ -82,7 +67,7 @@ class _ChangeOperatorPasswordPageState
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Text(
-                      "Minha Conta",
+                      "Excluir Conta",
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -96,95 +81,51 @@ class _ChangeOperatorPasswordPageState
                       width: width * 0.9,
                       child: ValueListenableBuilder(
                           valueListenable: _operatorStore,
-                          builder: (_, state, __) {
-                            if (state is ChangePasswordLoadingState) {
+                          builder: (_, operatorSettingsState, __) {
+                            if (operatorSettingsState
+                                is DeleteOperatorAccountLoadingState) {
                               return Center(
                                 child: CircularProgressIndicator(
                                   color: tertiaryColor,
                                 ),
                               );
                             }
-                            if (state is OperatorSettingsInitialState) {
+                            if (operatorSettingsState
+                                is OperatorSettingsInitialState) {
                               return Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: height * 0.02, width: width),
                                   Text(
-                                    "Alterar Senha:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium,
+                                    "Confirme os dados para excluir a conta:",
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   SizedBox(height: height * 0.04, width: width),
                                   SingleChildScrollView(
                                     child: Form(
-                                      key: _changePasswordFormKey,
+                                      key: _deleteAccountFormKey,
                                       child: SizedBox(
-                                        height: height * 0.38,
+                                        height: height * 0.29,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             CashHelperTextFieldComponent(
-                                              suffixIcon:
-                                                  VisibilityIconComponent(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _newPasswordVisible =
-                                                        !_newPasswordVisible;
-                                                  });
-                                                },
-                                                condition: _newPasswordVisible,
-                                                forVisibility: Icons.visibility,
-                                                forHideContent:
-                                                    Icons.visibility_off,
-                                              ),
-                                              obscureText:
-                                                  _newPasswordVisible == true
-                                                      ? false
-                                                      : true,
                                               radius: 15,
                                               validator: (value) => _controller
-                                                  .passwordValidate(value),
+                                                  .emailValidate(value),
                                               onSaved: (value) =>
-                                                  _newPassword = value,
+                                                  _operatorEmail = value,
                                               controller:
-                                                  _controller.passwordField,
-                                              label: 'Nova Senha',
+                                                  _controller.emailField,
+                                              label: 'E-mail',
                                             ),
                                             CashHelperTextFieldComponent(
                                               suffixIcon:
                                                   VisibilityIconComponent(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _confirmationPasswordVisible =
-                                                        !_confirmationPasswordVisible;
-                                                  });
-                                                },
-                                                condition:
-                                                    _confirmationPasswordVisible,
-                                                forVisibility: Icons.visibility,
-                                                forHideContent:
-                                                    Icons.visibility_off,
-                                              ),
-                                              obscureText:
-                                                  _confirmationPasswordVisible ==
-                                                          true
-                                                      ? false
-                                                      : true,
-                                              radius: 15,
-                                              validator: (value) => _controller
-                                                  .passwordValidate(value),
-                                              onSaved: (value) =>
-                                                  _confirmationPassword = value,
-                                              controller:
-                                                  _controller.passwordField,
-                                              label: 'Confirmar nova senha',
-                                            ),
-                                            CashHelperTextFieldComponent(
-                                              suffixIcon:
-                                                  VisibilityIconComponent(
+                                                iconColor: detailColor,
                                                 onTap: () {
                                                   setState(() {
                                                     _operatorCodeVisible =
@@ -212,6 +153,7 @@ class _ChangeOperatorPasswordPageState
                                             CashHelperTextFieldComponent(
                                               suffixIcon:
                                                   VisibilityIconComponent(
+                                                iconColor: detailColor,
                                                 onTap: () {
                                                   setState(() {
                                                     _passwordVisible =
@@ -244,9 +186,8 @@ class _ChangeOperatorPasswordPageState
                                 ],
                               );
                             }
-                            if (state is OperatorModifiedPasswordState) {
-                              Modular.to.navigate("./",
-                                  arguments: widget.operatorEntity);
+                            if (operatorSettingsState is AccountDeletedState) {
+                              Modular.to.navigate("/");
                               return Container();
                             } else {
                               return Container();
@@ -259,55 +200,54 @@ class _ChangeOperatorPasswordPageState
                   top: height * 0.03,
                   left: width * 0.05,
                   child: const Icon(
-                    Icons.settings,
+                    Icons.warning_rounded,
                     size: 85,
                   ),
                 ),
                 Visibility(
-                  visible: !_passwordChanged,
+                  visible: !_accountDeleted,
                   child: Positioned(
                     top: height * 0.7,
-                    left: width * 0.025,
+                    left: width * 0.125,
                     child: Center(
                       child: CashHelperElevatedButton(
-                        width: width * 0.95,
+                        width: width * 0.75,
                         height: 60,
                         radius: 12,
-                        onPressed: () {
-                          _changePasswordFormKey.currentState!.validate();
-                          _changePasswordFormKey.currentState!.save();
-                          if (_changePasswordFormKey.currentState!.validate()) {
+                        onPressed: () async {
+                          _deleteAccountFormKey.currentState?.validate();
+                          _deleteAccountFormKey.currentState?.save();
+                          if (_deleteAccountFormKey.currentState!.validate()) {
                             if (_controller.validOperatorCredentials(
-                                    widget.operatorEntity,
-                                    _operatorCode!,
-                                    _operatorPassword!) &&
-                                _newPassword == _confirmationPassword) {
-                              setState(
-                                () {
-                                  _passwordChanged = true;
-                                },
-                              );
-                              _operatorStore
-                                  .changeOperatorPassword(
-                                      _newPassword!,
-                                      _operatorCode!,
-                                      _operatorPassword!,
-                                      widget.operatorEntity.businessPosition!)
-                                  .catchError(
-                                (e) {
-                                  _controller.modificationEmailFailure(context);
-                                  _operatorStore.restartOperatorSettingsPage();
-                                },
-                              );
-                              widget.operatorEntity.operatorPassword =
-                                  _newPassword;
+                                widget.operatorEntity,
+                                _operatorCode!,
+                                _operatorPassword!,
+                                operatorEmail: _operatorEmail)) {
+                              _controller.askForAccountDeletion(
+                                  context, primaryColor, () async {
+                                setState(
+                                  () {
+                                    _accountDeleted = true;
+                                  },
+                                );
+                                await _operatorStore
+                                    .deleteOperatorAccount(
+                                        _operatorCode!,
+                                        _operatorEmail!,
+                                        _operatorPassword!,
+                                        widget
+                                            .operatorEntity.businessPosition!)
+                                    .catchError((e) {
+                                  _controller.deletionFailure(context);
+                                });
+                              });
                             } else {
-                              _controller.modificationPasswordFailure(context);
+                              _controller.deletionFailure(context);
                             }
                           }
                         },
-                        buttonName: "Alterar",
-                        backgroundColor: tertiaryColor,
+                        buttonName: "Excluir Definitivamente",
+                        backgroundColor: redColor,
                         nameColor: Colors.white,
                         fontSize: 16,
                       ),

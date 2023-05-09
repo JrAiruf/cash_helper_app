@@ -2,14 +2,14 @@
 
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/pages/views/operator_area_views/operator_initial_page.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/pages/views/operator_area_views/operator_oppening_page.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/pages/views/operator_area_views/operator_options_page.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_initial_page.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_oppening_page.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../login_module/presenter/stores/login_states.dart';
-import '../../../login_module/presenter/stores/login_store.dart';
-import '../components/cash_helper_bottom_navigation_item.dart';
+import '../../../../login_module/presenter/stores/login_states.dart';
+import '../../../../login_module/presenter/stores/login_store.dart';
+import '../../components/cash_helper_bottom_navigation_item.dart';
 
 class OperatorArea extends StatefulWidget {
   OperatorArea(

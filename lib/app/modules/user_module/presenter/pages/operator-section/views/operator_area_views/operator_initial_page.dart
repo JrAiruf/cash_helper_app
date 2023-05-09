@@ -1,10 +1,10 @@
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/operator_widgets/cash_number_component.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../annotations_module/domain/entities/annotation_entity.dart';
-import '../../../../domain/entities/operator_entity.dart';
-import '../../../components/cash_helper_bottom_navigation_bar.dart';
-import '../../../components/widgets/annotations_list_view_component.dart';
+import '../../../../../../annotations_module/domain/entities/annotation_entity.dart';
+import '../../../../../domain/entities/operator_entity.dart';
+import '../../../../components/cash_helper_bottom_navigation_bar.dart';
+import '../../../../components/widgets/annotations_list_view_component.dart';
 
 class OperatorInitialPage extends StatefulWidget {
   const OperatorInitialPage(

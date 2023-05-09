@@ -3,7 +3,7 @@
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../../../../../shared/stores/app_store.dart';
+import '../../../../../../../../../shared/stores/app_store.dart';
 
 class AppAppearencePage extends StatefulWidget {
   AppAppearencePage({super.key, this.position, this.controller});

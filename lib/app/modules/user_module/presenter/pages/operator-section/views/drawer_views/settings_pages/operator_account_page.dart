@@ -5,7 +5,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/controller/ope
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../components/cash_helper_bottom_navigation_bar.dart';
+import '../../../../../components/cash_helper_bottom_navigation_bar.dart';
 
 class OperatorAccountPage extends StatelessWidget {
   OperatorAccountPage(
