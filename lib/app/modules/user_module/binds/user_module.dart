@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/operator_database_impl.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/admin_options_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../routes/app_routes.dart';
@@ -13,6 +14,7 @@ import '../domain/usecases/delete_operator_account/idelete_operator_account.dart
 import '../infra/data/operator_repository.dart';
 import '../infra/repository/operator_repository_impl.dart';
 import '../presenter/pages/manager_section/manager_home_page.dart';
+import '../presenter/pages/manager_section/manager_settings_page.dart';
 import '../presenter/pages/operator-section/operator_area.dart';
 import '../presenter/pages/operator-section/operator_home_page.dart';
 import '../presenter/pages/operator-section/views/drawer_views/operator_profile_page.dart';
@@ -50,6 +52,18 @@ class UserModule extends Module {
     ChildRoute(
       "/management-page/:enterpriseId",
       child: (_, args) => ManagementPage(
+        managerEntity: args.data,
+      ),
+    ),
+    ChildRoute(
+      "/admin-options-page/:enterpriseId",
+      child: (_, args) => AdminOptionsPage(
+        managerEntity: args.data,
+      ),
+    ),
+    ChildRoute(
+      "/manager-settings-page/:enterpriseId",
+      child: (_, args) => ManagerSettingsPage(
         managerEntity: args.data,
       ),
     ),

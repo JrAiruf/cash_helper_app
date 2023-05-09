@@ -98,7 +98,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 onTap: () {
                   Modular.to.pop();
                   Modular.to.navigate(
-                    "${UserRoutes.managementPage}$enterpriseId",
+                    "${UserRoutes.adminOptionsPage}$enterpriseId",
                     arguments: managerEntity,
                   );
                 },
@@ -117,7 +117,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 onTap: () {
                   Modular.to.pop();
                   Modular.to.navigate(
-                    "${UserRoutes.managementPage}$enterpriseId",
+                    "${UserRoutes.managerSettingsPage}$enterpriseId",
                     arguments: managerEntity,
                   );
                 },
