@@ -3,6 +3,8 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../components/widgets/manager_section_drawer.dart';
+
 class ManagerHomePage extends StatefulWidget {
   const ManagerHomePage({super.key, required this.managerEntity});
 
@@ -24,7 +26,14 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(),
+      drawer: ManagerSectionDrawer(
+        radius: 20,
+        width: width * 0.75,
+      ),
       body: Container(
         child: Center(child: Text(enterpriseId)),
       ),

@@ -17,9 +17,13 @@ class DrawerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: GestureDetector(
-        onTap: onTap,
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(border: Border.all(color: primaryColor)),
+        width: width,
+        height: 70,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -28,9 +32,7 @@ class DrawerTile extends StatelessWidget {
               size: 40,
               color: itemColor,
             ),
-            SizedBox(
-              width: width! * 0.05,
-            ),
+            const SizedBox(width: 35),
             Text(
               title ?? "",
               style: TextStyle(
