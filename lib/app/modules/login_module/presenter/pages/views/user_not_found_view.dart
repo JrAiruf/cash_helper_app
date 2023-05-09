@@ -57,7 +57,10 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                 SizedBox(height: height * 0.2),
                 Text(
                   "Selecione sua área de ocupação",
-                  style: Theme.of(context).textTheme.displaySmall,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displaySmall
+                      ?.copyWith(color: surface),
                 ),
                 const SizedBox(height: 25),
                 Row(

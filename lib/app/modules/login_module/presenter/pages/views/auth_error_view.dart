@@ -222,7 +222,10 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                 Center(
                   child: Text(
                     "E-mail ou senha inválidos. Login não realizado!",
-                    style: Theme.of(context).textTheme.displaySmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(color: surface),
                   ),
                 ),
               ],

@@ -1,12 +1,26 @@
 // ignore_for_file: must_be_immutable
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/tiles/drawer_tile.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
+import '../../controller/manager_controller.dart';
 
 class ManagerSectionDrawer extends StatelessWidget {
-  ManagerSectionDrawer({super.key, this.radius, this.width});
+  ManagerSectionDrawer(
+      {super.key,
+      this.radius,
+      this.width,
+      this.enterpriseId,
+      required this.currentPage,
+      required this.managerEntity});
 
   double? radius;
   double? width;
+  ManagerDrawerPage currentPage;
+  ManagerEntity managerEntity;
+  String? enterpriseId;
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -29,19 +43,28 @@ class ManagerSectionDrawer extends StatelessWidget {
               Text("Opções", style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 160),
               DrawerTile(
-                  itemColor: tertiaryColor,
+                  currentPage: ManagerDrawerPage.home,
+                  itemColor: currentPage == ManagerDrawerPage.home
+                      ? tertiaryColor
+                      : Colors.white,
                   icon: Icons.home,
                   title: "Início",
                   width: width,
                   onTap: () {
-                    print("Hello World");
+                    Modular.to.pop();
+                    Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId",
+                        arguments: managerEntity);
                   }),
               DrawerTile(
-                  itemColor: tertiaryColor,
+                  currentPage: ManagerDrawerPage.management,
+                  itemColor: currentPage == ManagerDrawerPage.management
+                      ? tertiaryColor
+                      : Colors.white,
                   icon: Icons.home,
-                  title: "Início",
+                  title: "Gerenciamento",
                   width: width,
                   onTap: () {
+                    Modular.to.pop();
                     print("Hello World");
                   }),
             ],

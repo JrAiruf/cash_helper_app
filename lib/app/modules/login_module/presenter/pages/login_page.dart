@@ -91,7 +91,6 @@ class _LoginPageState extends State<LoginPage> {
                                       ? EnterpriseBusinessPosition.manager
                                       : EnterpriseBusinessPosition.cashOperator;
                                 });
-                                print(businessPosition.position);
                               }),
                           const SizedBox(width: 25),
                           Text(
@@ -229,15 +228,11 @@ class _LoginPageState extends State<LoginPage> {
                               _loginFormKey.currentState!.save();
 
                               if (_loginFormKey.currentState!.validate()) {
-                                _loginStore
-                                    .login(
-                                        _loginController.emailField.text,
-                                        _loginController.passwordField.text,
-                                        widget.enterpriseEntity.enterpriseId,
-                                        businessPosition.position)
-                                    ?.catchError((e) {
-                                  _loginController.onFail(context);
-                                });
+                                _loginStore.login(
+                                    _loginController.emailField.text,
+                                    _loginController.passwordField.text,
+                                    widget.enterpriseEntity.enterpriseId,
+                                    businessPosition.position);
                               }
                             },
                             radius: 12,
@@ -261,19 +256,25 @@ class _LoginPageState extends State<LoginPage> {
           final operatorEntity = state.operatorEntity;
           Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
               arguments: operatorEntity);
-          return Container();
+          return Container(
+            decoration: BoxDecoration(color: primaryColor),
+          );
         } else if (state is ManagerLoginSuccessState) {
           final enterpriseId = widget.enterpriseEntity.enterpriseId;
           final managerEntity = state.managerEntity;
           Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId",
               arguments: managerEntity);
-          return Container();
+          return Container(
+            decoration: BoxDecoration(color: primaryColor),
+          );
         } else if (state is LoginAuthErrorState) {
           return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
         } else if (state is LoginNoUserErrorState) {
           return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
         }
-        return Container();
+        return Container(
+          decoration: BoxDecoration(color: primaryColor),
+        );
       },
     );
   }

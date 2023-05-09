@@ -1,4 +1,3 @@
-
 enum ManagerDrawerPage {
   home,
   management,

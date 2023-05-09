@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:flutter/material.dart';
 
 class DrawerTile extends StatelessWidget {
@@ -7,12 +8,14 @@ class DrawerTile extends StatelessWidget {
     this.icon,
     this.title,
     this.itemColor,
+    this.currentPage,
     this.onTap,
   });
   final double? width;
   final IconData? icon;
   final String? title;
   final Color? itemColor;
+  final ManagerDrawerPage? currentPage;
   final void Function()? onTap;
 
   @override

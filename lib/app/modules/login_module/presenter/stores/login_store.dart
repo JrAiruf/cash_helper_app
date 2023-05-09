@@ -102,6 +102,8 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     } else if (_dataVerifier.managerEntityVerifier(entity: userEntity) &&
         userEntity != null) {
       value = ManagerLoginSuccessState(managerEntity: userEntity);
+    } else {
+      value = LoginErrorState();
     }
   }
 
