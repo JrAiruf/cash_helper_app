@@ -10,6 +10,7 @@ class ManagerSectionDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final tertiaryColor = Theme.of(context).colorScheme.surfaceVariant;
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(radius ?? 5),
@@ -28,10 +29,21 @@ class ManagerSectionDrawer extends StatelessWidget {
               Text("Opções", style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 160),
               DrawerTile(
+                  itemColor: tertiaryColor,
                   icon: Icons.home,
                   title: "Início",
                   width: width,
-                  onTap: () => print("object")),
+                  onTap: () {
+                    print("Hello World");
+                  }),
+              DrawerTile(
+                  itemColor: tertiaryColor,
+                  icon: Icons.home,
+                  title: "Início",
+                  width: width,
+                  onTap: () {
+                    print("Hello World");
+                  }),
             ],
           ),
         ),
