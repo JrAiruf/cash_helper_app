@@ -66,4 +66,22 @@ class EnterpriseTestObjects {
     "paymentMethodName": "Dinheiro",
     "paymentMethodUsingRate": 34.7,
   };
+  static final newPaymentMethodModel = PaymentMethodModel(
+    paymentMethodDescription:
+        "Pagamentos a vista. Inclui Percentual de desconto",
+    paymentMethodName: "Dinheiro",
+    paymentMethodUsingRate: 34.7,
+  );
+  static final newPaymentMethodEntity = PaymentMethodEntity(
+    paymentMethodDescription:
+        "Pagamentos a vista. Inclui Percentual de desconto",
+    paymentMethodName: "Dinheiro",
+    paymentMethodUsingRate: 34.7,
+  );
+  static final Map<String, dynamic> newPaymentMethodMap = {
+    "paymentMethodDescription":
+        "Pagamentos a vista. Inclui Percentual de desconto",
+    "paymentMethodName": "Dinheiro",
+    "paymentMethodUsingRate": 34.7,
+  };
 }

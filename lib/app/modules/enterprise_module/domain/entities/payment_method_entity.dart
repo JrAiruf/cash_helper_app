@@ -6,9 +6,9 @@ class PaymentMethodEntity {
   double? paymentMethodUsingRate;
 
   PaymentMethodEntity({
-   required this.paymentMethodId,
-   required this.paymentMethodName,
-   required this.paymentMethodDescription,
-   required this.paymentMethodUsingRate,
+    this.paymentMethodId,
+    required this.paymentMethodName,
+    required this.paymentMethodDescription,
+    required this.paymentMethodUsingRate,
   });
 }

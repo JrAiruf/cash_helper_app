@@ -15,13 +15,11 @@ class CreatePaymentMethodMock implements ICreatePaymentMethod {
   @override
   Future<PaymentMethodEntity?>? call(
       PaymentMethodEntity? paymentMethodEntity, String? managerCode) async {
-    final paymentMethodModel = await _repository.createPaymenMethod(
-        PaymentMethodModel.fromEntityData(paymentMethodEntity!), managerCode);
-    if (paymentMethodModel != null) {
-      return PaymentMethodModel.toEntityData(paymentMethodModel);
-    } else {
-      return null;
-    }
+    final paymentMethodModel = PaymentMethodModel.fromEntityData(paymentMethodEntity!);
+    final repositoryModel = await _repository.createPaymenMethod(paymentMethodModel, managerCode);
+      return repositoryModel != null 
+      ? PaymentMethodModel.toEntityData(repositoryModel)
+      : null;    
   }
 }
 
@@ -35,7 +33,7 @@ void main() {
       when(repository.createPaymenMethod(any, any))
           .thenAnswer((_) async => EnterpriseTestObjects.paymentMethodModel);
       final result = await usecase(
-          EnterpriseTestObjects.paymentMethodEntity, "operatorCode");
+          EnterpriseTestObjects.newPaymentMethodEntity, "operatorCode");
       expect(result, isA<PaymentMethodEntity>());
       expect(result?.paymentMethodUsingRate, equals(34.7));
     });
