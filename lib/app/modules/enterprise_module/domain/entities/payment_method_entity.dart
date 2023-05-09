@@ -3,7 +3,7 @@ class PaymentMethodEntity {
   String? paymentMethodId;
   String? paymentMethodName;
   String? paymentMethodDescription;
-  String? paymentMethodUsingRate;
+  double? paymentMethodUsingRate;
 
   PaymentMethodEntity({
    required this.paymentMethodId,

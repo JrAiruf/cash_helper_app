@@ -6,7 +6,7 @@ class PaymentMethodModel {
   String? paymentMethodId;
   String? paymentMethodName;
   String? paymentMethodDescription;
-  String? paymentMethodUsingRate;
+  double? paymentMethodUsingRate;
 
   PaymentMethodModel({
     this.paymentMethodId,

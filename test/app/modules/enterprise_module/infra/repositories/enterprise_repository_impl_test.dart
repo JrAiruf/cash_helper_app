@@ -40,6 +40,12 @@ class EnterpriseRepositoryMock implements EnterpriseRepository {
       return null;
     }
   }
+  
+  @override
+  Future? createPaymenMethod(String? managerCode) {
+    // TODO: implement createPaymenMethod
+    throw UnimplementedError();
+  }
 }
 
 void main() {
