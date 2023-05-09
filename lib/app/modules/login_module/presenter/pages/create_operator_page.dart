@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_string_interpolations
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../enterprise_module/domain/entities/enterprise_business_position.dart';
+import '../../../enterprise_module/domain/entities/enterprise_entity.dart';
 import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/cash_helper_text_field.dart';
 import '../components/visibility_icon_component.dart';
@@ -10,8 +12,9 @@ import '../controllers/login_controller.dart';
 import '../stores/login_store.dart';
 
 class CreateOperatorPage extends StatefulWidget {
-  const CreateOperatorPage({super.key});
+  const CreateOperatorPage({super.key, required this.enterpriseEntity});
 
+  final EnterpriseEntity enterpriseEntity;
   @override
   State<CreateOperatorPage> createState() => _CreateOperatorPageState();
 }
@@ -141,7 +144,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                         },
                                         forVisibility: Icons.visibility,
                                         forHideContent: Icons.visibility_off,
-                                        condition: _passwordVisible),
+                                        condition:
+                                            _confirmationPasswordVisible),
                                     radius: 15,
                                     obscureText:
                                         _confirmationPasswordVisible == true
@@ -215,7 +219,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       _createOperatorFormKey.currentState!.validate();
                       _createOperatorFormKey.currentState!.save();
                       _cashierOperator.operatorClosing = 'Pendente';
-                      _cashierOperator.businessPosition = EnterpriseBusinessPosition.cashOperator.position;
+                      _cashierOperator.businessPosition =
+                          EnterpriseBusinessPosition.cashOperator.position;
                       _cashierOperator.operatorEnabled =
                           startWithEnabledOperator ?? false ? true : false;
                       _cashierOperator.operatorOppening =
@@ -229,8 +234,11 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                             _createOperatorController.loadingData = true;
                           });
                           final newOperator = await _loginStore
-                              .register(_cashierOperator,"",
-                                  _cashierOperator.businessPosition!)
+                              .register(
+                                _cashierOperator,
+                                widget.enterpriseEntity.enterpriseId ?? "",
+                                _cashierOperator.businessPosition!,
+                              )
                               ?.then((value) => value)
                               .catchError((e) {
                             if (e.toString().contains("already-in-use")) {
@@ -244,9 +252,12 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                             }
                           });
                           if (newOperator != null) {
+                            final enterpriseId =
+                                widget.enterpriseEntity.enterpriseId;
                             _createOperatorController
                                 .operatorCreatedSucessfully(context);
-                            Modular.to.navigate("/user-module/",
+                            Modular.to.navigate(
+                                "${UserRoutes.operatorHomePage}$enterpriseId",
                                 arguments: newOperator);
                           } else {
                             _createOperatorController.onFail(context);

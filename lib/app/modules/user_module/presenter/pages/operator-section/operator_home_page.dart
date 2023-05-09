@@ -28,10 +28,11 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   final _annotationListStore = Modular.get<AnnotationsListStore>();
   final _loginController = Modular.get<LoginController>();
   DrawerPagePosition? drawerPosition;
+  final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
   void initState() {
     super.initState();
-    _loginStore.getUserById("",widget.operatorEntity.operatorId!,
+    _loginStore.getUserById(_enterpriseId, widget.operatorEntity.operatorId!,
         widget.operatorEntity.businessPosition!);
     _annotationListStore.getAllAnnotations(widget.operatorEntity.operatorId!);
   }
@@ -175,8 +176,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                       horizontal: 40),
                                   child: Text(
                                     "Últimas anotações:",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(color: surfaceColor),
                                   ),
                                 ),
                                 Padding(
@@ -280,8 +283,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           height: 60,
                           radius: 12,
                           onPressed: () => Modular.to.pushNamed(
-                            "./operator-area", arguments: currentOperator
-                          ),
+                              "./operator-area",
+                              arguments: currentOperator),
                           buttonName: "Área do operador",
                           backgroundColor: tertiaryColor,
                           fontSize: 16,

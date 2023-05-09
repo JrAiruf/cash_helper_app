@@ -56,7 +56,7 @@ class LoginModule extends Module {
     ),
     ChildRoute(
       LoginRoutes.createOperator,
-      child: (_, args) => const CreateOperatorPage(),
+      child: (_, args) => CreateOperatorPage(enterpriseEntity: args.data),
     ),
     ChildRoute(
       "/forgot-password-page",

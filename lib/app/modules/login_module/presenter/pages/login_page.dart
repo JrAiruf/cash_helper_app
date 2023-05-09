@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: TextButton(
                                 style: TextButton.styleFrom(),
                                 onPressed: () {
-                                  Modular.to.pushNamed("./create-new-operator");
+                                  Modular.to.pushNamed("./create-new-operator",arguments: widget.enterpriseEntity);
                                 },
                                 child: Text(
                                   'Criar conta',
