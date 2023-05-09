@@ -1,10 +1,10 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/create_payment_method/icreate_payment_method.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/data/enterprise_repository.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/payment_method_model.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
 import '../../../../../mocks/mocks.dart';
 
 class CreatePaymentMethodMock implements ICreatePaymentMethod {
@@ -13,10 +13,15 @@ class CreatePaymentMethodMock implements ICreatePaymentMethod {
 
   final EnterpriseRepository _repository;
   @override
-  Future<PaymentMethodEntity>? call(
-      PaymentMethodEntity? paymentMethodEntity, String? enterpriseId) async {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<PaymentMethodEntity?>? call(
+      PaymentMethodEntity? paymentMethodEntity, String? managerCode) async {
+    final paymentMethodModel = await _repository.createPaymenMethod(
+        PaymentMethodModel.fromEntityData(paymentMethodEntity!), managerCode);
+    if (paymentMethodModel != null) {
+      return PaymentMethodModel.toEntityData(paymentMethodModel);
+    } else {
+      return null;
+    }
   }
 }
 
