@@ -35,4 +35,10 @@ class EnterpriseRepositoryImpl implements EnterpriseRepository {
       return null;
     }
   }
+  
+  @override
+  Future? createPaymenMethod(String? enterpriseCode) {
+    // TODO: implement createPaymenMethod
+    throw UnimplementedError();
+  }
 }
