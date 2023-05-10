@@ -23,7 +23,7 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
     final operatorsModelList = <OperatorModel>[];
     if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
       final databaseOperatorsMapsList =
-          await _database.getOperatorInformations(enterpriseId);
+          await _database.getOperatorInformations(enterpriseId) ?? [];
       for (var operatorMap in databaseOperatorsMapsList) {
         final operatorModel = OperatorModel.fromMap(operatorMap);
         operatorsModelList.add(operatorModel);

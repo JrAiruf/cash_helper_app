@@ -1,11 +1,34 @@
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'errors/users_unavailable_error.dart';
 
 class ManagementDatabase implements ApplicationManagementDatabase {
-  
+  ManagementDatabase({required FirebaseFirestore database})
+      : _database = database;
+
+  final FirebaseFirestore _database;
+  final databaseOperatorsMapList = <Map<String, dynamic>>[];
   @override
-  Future? getOperatorInformations(String? enterpriseId) {
-    // TODO: implement getOperatorsInformation
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>>? getOperatorInformations(
+      String? enterpriseId) async {
+    try {
+      if (enterpriseId != null && enterpriseId.isNotEmpty) {
+        final operatorsCollection = await _database
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection("operator")
+            .get();
+        final databaseMaps =
+            operatorsCollection.docs.map((e) => e.data()).toList();
+        databaseOperatorsMapList.addAll(databaseMaps);
+        return databaseOperatorsMapList;
+      } else {
+        throw UsersUnavailableError(
+            errorMessage: "Lista de usuários indisponível");
+      }
+    } catch (e) {
+      throw UsersUnavailableError(errorMessage: e.toString());
+    }
   }
-  
 }
