@@ -22,3 +22,7 @@ class UserRoutes {
   static const managerSettingsPage = "/user-module/manager-settings-page/";
   static const operatorHomePage = "/user-module/operator-home-page/";
 }
+
+class ManagementRoutes {
+  static const controllPanelPage = "/management-module/controll-panel-page/";
+}
