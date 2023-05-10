@@ -17,7 +17,7 @@ class GetOperatorsInformationsMock implements IGetOperatorsInformations {
     final operatorsList = <OperatorEntity>[];
     if (enterpriseId != null) {
       final repositoryOperatorsModelList =
-          await _repository.getOperatorsInformation(enterpriseId) as List;
+          await _repository.getOperatorsInformations(enterpriseId) as List;
       for (var operatorModel in repositoryOperatorsModelList) {
         final retriviedOperator = OperatorModel.toEntityData(operatorModel);
         operatorsList.add(retriviedOperator);
@@ -29,7 +29,7 @@ class GetOperatorsInformationsMock implements IGetOperatorsInformations {
 
 void main() {
   final repository = ManagementRepoMock();
-  final getOperatorInformations =
+  final getOperatorsInformations =
       GetOperatorsInformationsMock(repository: repository);
   group(
     'GetOperatorsInformation Usecase should',
@@ -37,12 +37,12 @@ void main() {
       test(
         "Get a list of OperatorModel from repository and convert it into OperatorEntityList",
         () async {
-          when(repository.getOperatorsInformation(any))
+          when(repository.getOperatorsInformations(any))
               .thenAnswer((_) async => <OperatorModel>[
                     LoginTestObjects.newOperatorModel,
                     LoginTestObjects.newOperatorModel,
                   ]);
-          final result = await getOperatorInformations("enterpriseId");
+          final result = await getOperatorsInformations("enterpriseId");
           expect(result, isA<List<OperatorEntity>>());
           expect(result?.first.operatorId, equals("q34u6hu1qeuyoio"));
         },
@@ -50,12 +50,12 @@ void main() {
       test(
         "Fail to get OperatorModel List",
         () async {
-          when(repository.getOperatorsInformation(any))
+          when(repository.getOperatorsInformations(any))
               .thenAnswer((_) async => <OperatorModel>[
                     LoginTestObjects.newOperatorModel,
                     LoginTestObjects.newOperatorModel,
                   ]);
-          final result = await getOperatorInformations(null);
+          final result = await getOperatorsInformations(null);
           expect(result, isA<List<OperatorEntity>>());
           expect(result?.isEmpty, equals(true));
         },
