@@ -13,8 +13,17 @@ class GetOperatorsInformationsMock implements IGetOperatorsInformations {
       : _repository = repository;
   final ManagementRepository _repository;
   @override
-  Future<List<OperatorEntity>>? call(String? enterpriseId) {
-    throw UnimplementedError();
+  Future<List<OperatorEntity>>? call(String? enterpriseId) async {
+    final operatorsList = <OperatorEntity>[];
+    if (enterpriseId != null) {
+      final repositoryOperatorsModelList =
+          await _repository.getOperatorsInformation(enterpriseId) as List;
+      for (var operatorModel in repositoryOperatorsModelList) {
+        final retriviedOperator = OperatorModel.toEntityData(operatorModel);
+        operatorsList.add(retriviedOperator);
+      }
+    }
+    return operatorsList;
   }
 }
 
@@ -33,9 +42,22 @@ void main() {
                     LoginTestObjects.newOperatorModel,
                     LoginTestObjects.newOperatorModel,
                   ]);
-                  final result = await getOperatorInformations("enterpriseId");
-                  expect(result, isA<List<OperatorEntity>>());
-                  expect(result?.first.operatorId, equals("q34u6hu1qeuyoio"));
+          final result = await getOperatorInformations("enterpriseId");
+          expect(result, isA<List<OperatorEntity>>());
+          expect(result?.first.operatorId, equals("q34u6hu1qeuyoio"));
+        },
+      );
+      test(
+        "Fail to get OperatorModel List",
+        () async {
+          when(repository.getOperatorsInformation(any))
+              .thenAnswer((_) async => <OperatorModel>[
+                    LoginTestObjects.newOperatorModel,
+                    LoginTestObjects.newOperatorModel,
+                  ]);
+          final result = await getOperatorInformations(null);
+          expect(result, isA<List<OperatorEntity>>());
+          expect(result?.isEmpty, equals(true));
         },
       );
     },
