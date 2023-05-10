@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -110,38 +111,43 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                       "Usuário Tal",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium,
+                                          .bodyMedium
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "23 Anotações",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "Sem pendências",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "Fechamento:",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "20:13",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                   ],
                                 ),
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 25),
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
@@ -151,38 +157,43 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                       "Usuário Tal",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium,
+                                          .bodyMedium
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "23 Anotações",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "Sem pendências",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "Fechamento:",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "20:13",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                   ],
                                 ),
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 25),
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
@@ -192,31 +203,36 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                       "Usuário Tal",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium,
+                                          .bodyMedium
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "23 Anotações",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "Sem pendências",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "Fechamento:",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                     Text(
                                       "20:13",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .displaySmall,
+                                          .displaySmall
+                                          ?.copyWith(color: surfaceColor),
                                     ),
                                   ],
                                 ),
@@ -304,7 +320,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                           width: width,
                           height: 60,
                           radius: 12,
-                          onPressed: () {},
+                          onPressed: () {
+                            Modular.to.navigate(
+                              "${UserRoutes.controllPanelPage}$_enterpriseId",
+                              arguments: manager,
+                            );
+                          },
                           buttonName: "Painel de controle",
                           backgroundColor: variantColor,
                           fontSize: 16,

@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/modules/user_module/external/data/operator_d
 import 'package:cash_helper_app/app/modules/user_module/external/operator_database_impl.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/admin_options_page.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/controll_panel_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../routes/app_routes.dart';
@@ -74,9 +75,9 @@ class UserModule extends Module {
       ),
     ),
     ChildRoute(
-      "/operator-home-page/:enterpriseId",
-      child: (_, args) => OperartorHomePage(
-        operatorEntity: args.data,
+      "/controll-panel-page/:enterpriseId",
+      child: (_, args) => ControllPanelPage(
+        managerEntity: args.data,
       ),
     ),
     ChildRoute(
