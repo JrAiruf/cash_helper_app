@@ -4,7 +4,6 @@ import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/cr
 class CreatePaymentMethod implements ICreatePaymentMethod {
   @override
   Future? call(PaymentMethodEntity paymentMethodEntity, String managerCode) {
-    // TODO: implement call
     throw UnimplementedError();
   }
 }

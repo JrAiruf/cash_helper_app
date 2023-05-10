@@ -74,20 +74,17 @@ class LoginRepositoryMock implements LoginRepository {
   @override
   Future<bool>? checkOperatorDataForResetPassword(
       String? email, String? operatorCode, String? collection) {
-    // TODO: implement checkOperatorDataForResetPassword
     throw UnimplementedError();
   }
 
   @override
   Future<void>? resetOperatorPassword(
       String? email, String? operatorCode, String? newPassword) {
-    // TODO: implement resetOperatorPassword
     throw UnimplementedError();
   }
 
   @override
   Future<void>? signOut() {
-    // TODO: implement signOut
     throw UnimplementedError();
   }
 }

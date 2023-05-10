@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/repository/annotation_repository_impl.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/data/enterprise_repository.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';

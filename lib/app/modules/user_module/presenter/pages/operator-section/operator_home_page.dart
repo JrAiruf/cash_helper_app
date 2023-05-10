@@ -163,11 +163,11 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                             );
                           } else if (annotationListState
                               is RetrievedAnnotationsListState) {
-                            final annotationsList =
+                           /*  final annotationsList =
                                 annotationListState.annotationsList;
                             final pendingAnnotations = annotationsList.where(
                                 (annotation) =>
-                                    annotation.annotationConcluied == false);
+                                    annotation.annotationConcluied == false); */
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

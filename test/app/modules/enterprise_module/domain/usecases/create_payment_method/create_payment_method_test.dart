@@ -38,7 +38,6 @@ void main() {
       expect(result?.paymentMethodUsingRate, equals(34.7));
     });
     test('Fail to return PaymentMethodEntity', () async {
-      // TODO: Implement test
     });
   });
 }

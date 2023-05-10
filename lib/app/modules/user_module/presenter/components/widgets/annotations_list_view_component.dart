@@ -87,7 +87,6 @@ class AnnoationsListViewComponent extends StatelessWidget {
             ),
           ),
         );
-        ;
       }),
     );
   }

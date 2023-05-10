@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_states.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';

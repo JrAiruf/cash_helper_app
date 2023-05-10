@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
@@ -23,7 +25,7 @@ final _createManagerFormKey = GlobalKey<FormState>();
 final _enterpriseController = Modular.get<LoginController>();
 final _loginStore = Modular.get<LoginStore>();
 final _managerEntity = ManagerEntity();
-String? _confirmartionPassword = "";
+String? _confirmartionPassword;
 
 bool _passwordVisible = false;
 bool _confirmPasswordVisible = false;

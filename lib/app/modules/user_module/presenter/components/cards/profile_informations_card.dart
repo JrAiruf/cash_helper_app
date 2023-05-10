@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/operator_entity.dart';
-
 class ProfileInformationCard extends StatelessWidget {
   const ProfileInformationCard({
     super.key,

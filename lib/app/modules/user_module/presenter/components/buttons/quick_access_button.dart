@@ -23,6 +23,7 @@ class QuickAccessButton extends StatelessWidget {
   final List<Widget>? items;
   @override
   Widget build(BuildContext context) {
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return Container(
       decoration: BoxDecoration(
           color: backgroundColor,
@@ -32,7 +33,7 @@ class QuickAccessButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               side: BorderSide(
                   color:
-                      border ? itemsColor ?? Colors.white : Colors.transparent,
+                      border ? itemsColor ?? surfaceColor : Colors.transparent,
                   width: 0.9),
               borderRadius: BorderRadius.circular(radius ?? 5),
             ),

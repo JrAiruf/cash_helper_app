@@ -14,11 +14,9 @@ class ManagementeModule extends Module {
   static final instance = ManagementeModule._();
 
   @override
-  // TODO: implement binds
   List<Bind<Object>> get binds => bindsList;
 
   @override
-  // TODO: implement routes
   List<ModularRoute> get routes => routesList;
 
   final routesList = <ModularRoute>[];

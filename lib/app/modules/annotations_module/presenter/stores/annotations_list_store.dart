@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_all_annotations/iget_all_annotations.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/search_annotations_by_client_address/isearch_annotations_by_client_address.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotation_states.dart';

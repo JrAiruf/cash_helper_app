@@ -7,8 +7,6 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../login_module/presenter/stores/login_states.dart';
-import '../../../../login_module/presenter/stores/login_store.dart';
 import '../../components/cash_helper_bottom_navigation_item.dart';
 
 class OperatorArea extends StatefulWidget {

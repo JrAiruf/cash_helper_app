@@ -44,7 +44,6 @@ class EnterpriseRepositoryMock implements EnterpriseRepository {
   
   @override
   Future? createPaymenMethod(PaymentMethodModel? paymentMethodModel, String? managerCode) {
-    // TODO: implement createPaymenMethod
     throw UnimplementedError();
   }
 }

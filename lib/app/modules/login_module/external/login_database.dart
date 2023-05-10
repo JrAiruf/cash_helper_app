@@ -2,7 +2,6 @@ import 'package:cash_helper_app/app/modules/login_module/external/data/applicati
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
-import '../../../helpers/data_verifier.dart';
 import 'errors/authentication_error.dart';
 import 'errors/database_error.dart';
 import 'errors/user_not_found_error.dart';
@@ -99,7 +98,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
     } on FirebaseException catch (e) {
       if (e.code == "wrong-password" || e.code == "user-not-found") {
         throw AuthenticationError(message: e.message!);
-      }  else {
+      } else {
         throw UserNotFound(message: e.message!);
       }
     } catch (e) {
@@ -128,20 +127,17 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   @override
   Future<bool>? checkOperatorDataForResetPassword(String? email,
       String? operatorCode, String? enterpriseId, String? collection) {
-    // TODO: implement checkOperatorDataForResetPassword
     throw UnimplementedError();
   }
 
   @override
   Future<void>? resetOperatorPassword(String? email, String? operatorCode,
       String? enterpriseId, String? newPassword) {
-    // TODO: implement resetOperatorPassword
     throw UnimplementedError();
   }
 
   @override
   Future<void>? signOut() {
-    // TODO: implement signOut
     throw UnimplementedError();
   }
 }

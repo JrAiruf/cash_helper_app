@@ -4,7 +4,6 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 class GetOperatorsInformations implements IGetOperatorsInformations {
   @override
   Future<List<OperatorEntity>>? call(String? enterpriseId) {
-    // TODO: implement call
     throw UnimplementedError();
   }
 }

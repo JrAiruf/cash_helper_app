@@ -45,16 +45,15 @@ class OperatorRepositoryImpl implements OperatorRepository {
       newEmail!.isNotEmpty &&
       operatorCode!.isNotEmpty &&
       operatorPassword!.isNotEmpty;
-      
-        @override
-        Future? closeOperatorCash(String? operatorId, String? collection) {
-          // TODO: implement closeOperatorCash
-          throw UnimplementedError();
-        }
-        @override
-        Future? openOperatorCash(String? operatorId, String? collection, String? oppeningTime) {
-          // TODO: implement openOperatorCash
-          throw UnimplementedError();
-        }
-      
+
+  @override
+  Future? closeOperatorCash(String? operatorId, String? collection) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future? openOperatorCash(
+      String? operatorId, String? collection, String? oppeningTime) {
+    throw UnimplementedError();
+  }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/change_operator_email/ichange_operator_email.dart';

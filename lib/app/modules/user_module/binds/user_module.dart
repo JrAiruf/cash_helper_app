@@ -5,7 +5,6 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/controll_panel_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../routes/app_routes.dart';
 import '../domain/usecases/change_operator_email/change_operator_email.dart';
 import '../domain/usecases/change_operator_email/ichange_operator_email.dart';
 import '../domain/usecases/change_operator_password/change_operator_password.dart';

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:flutter/material.dart';
 
