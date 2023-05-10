@@ -21,19 +21,19 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   Future<List<Map<String, dynamic>>>? getOperatorInformations(
       String? enterpriseId) async {
     try {
-      if (enterpriseId != null && enterpriseId.isNotEmpty) {
-        final operatorsCollection = await _database
-            .collection("enterprise")
-            .doc(enterpriseId)
-            .collection("operator")
-            .get();
+      final operatorsCollection = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection("operator")
+          .get();
+      if (operatorsCollection.docs.isNotEmpty) {
         final databaseMaps =
             operatorsCollection.docs.map((e) => e.data()).toList();
         databaseOperatorsMapList.addAll(databaseMaps);
         return databaseOperatorsMapList;
       } else {
         throw UsersUnavailableError(
-            errorMessage: "Lista de usuários indisponível");
+            errorMessage: "Lista de usuários indisponível.");
       }
     } catch (e) {
       throw UsersUnavailableError(errorMessage: e.toString());

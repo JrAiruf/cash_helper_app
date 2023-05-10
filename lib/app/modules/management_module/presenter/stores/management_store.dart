@@ -12,9 +12,12 @@ class ManagementStore extends ValueNotifier<ManagementStates> {
 
   Future<void> getOperatorsInformations(String enterpriseId) async {
     value = ManagementLoadingState();
-    final operatorsList = await _getOperatorsInformations(enterpriseId) as List<OperatorEntity>;
+    final operatorsList =
+        await _getOperatorsInformations(enterpriseId) as List<OperatorEntity>;
     if (operatorsList.isNotEmpty) {
       value = GetUsersListState(operators: operatorsList);
+    } else {
+      value = GetUsersListFailureState();
     }
   }
 }
