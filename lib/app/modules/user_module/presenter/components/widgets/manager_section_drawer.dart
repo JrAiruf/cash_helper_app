@@ -24,7 +24,7 @@ class ManagerSectionDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final tertiaryColor = Theme.of(context).colorScheme.surfaceVariant;
+    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final height = MediaQuery.of(context).size.height;
     final itemSpacingHeight = height * 0.02;
@@ -52,7 +52,7 @@ class ManagerSectionDrawer extends StatelessWidget {
               DrawerTile(
                 currentPage: ManagerDrawerPage.home,
                 itemColor: currentPage == ManagerDrawerPage.home
-                    ? tertiaryColor
+                    ? variantColor
                     : surfaceColor,
                 icon: Icons.home,
                 title: "Início",
@@ -71,7 +71,7 @@ class ManagerSectionDrawer extends StatelessWidget {
               DrawerTile(
                 currentPage: ManagerDrawerPage.management,
                 itemColor: currentPage == ManagerDrawerPage.management
-                    ? tertiaryColor
+                    ? variantColor
                     : surfaceColor,
                 icon: Icons.manage_accounts,
                 title: "Gerenciamento",
@@ -90,7 +90,7 @@ class ManagerSectionDrawer extends StatelessWidget {
               DrawerTile(
                 currentPage: ManagerDrawerPage.adminOptions,
                 itemColor: currentPage == ManagerDrawerPage.adminOptions
-                    ? tertiaryColor
+                    ? variantColor
                     : surfaceColor,
                 icon: Icons.screen_search_desktop_outlined,
                 title: "Opções Administrativas",
@@ -109,7 +109,7 @@ class ManagerSectionDrawer extends StatelessWidget {
               DrawerTile(
                 currentPage: ManagerDrawerPage.settings,
                 itemColor: currentPage == ManagerDrawerPage.settings
-                    ? tertiaryColor
+                    ? variantColor
                     : surfaceColor,
                 icon: Icons.settings,
                 title: "Configurações",

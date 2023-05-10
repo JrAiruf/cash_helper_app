@@ -1,10 +1,13 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../components/buttons/quick_access_button.dart';
 import '../../components/widgets/manager_section_drawer.dart';
 
 class ManagerHomePage extends StatefulWidget {
@@ -31,7 +34,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
+    final backgroundColor = Theme.of(context).colorScheme.onBackground;
+    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     return ValueListenableBuilder(
       valueListenable: _loginStore,
       builder: (_, state, __) {
@@ -56,8 +62,288 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               radius: 20,
               width: width * 0.75,
             ),
-            body: Container(
-              child: Center(child: Text(_enterpriseId)),
+            body: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(color: backgroundColor),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HomePageComponent(
+                        manager: manager,
+                        height: height * 0.19,
+                        width: width,
+                        color: primaryColor,
+                      ),
+                      SizedBox(
+                        height: height * 0.09,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Text(
+                          "Atividades recentes:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+                      SizedBox(
+                        height: height * 0.18,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Usuário Tal",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Text(
+                                      "23 Anotações",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "Sem pendências",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "Fechamento:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "20:13",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 25),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Usuário Tal",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Text(
+                                      "23 Anotações",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "Sem pendências",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "Fechamento:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "20:13",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 25),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Usuário Tal",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Text(
+                                      "23 Anotações",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "Sem pendências",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "Fechamento:",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                    Text(
+                                      "20:13",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                        ),
+                        child: Text(
+                          "Acesso rápido:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(
+                                color: surfaceColor,
+                              ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 35,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            QuickAccessButton(
+                              backgroundColor: primaryColor,
+                              border: true,
+                              height: height * 0.1,
+                              width: width * 0.38,
+                              radius: 15,
+                              items: [
+                                Icon(
+                                  Icons.person,
+                                  color: surfaceColor,
+                                ),
+                                Text(
+                                  "Operadores",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(color: surfaceColor),
+                                ),
+                              ],
+                            ),
+                            QuickAccessButton(
+                              backgroundColor: primaryColor,
+                              border: true,
+                              height: height * 0.1,
+                              width: width * 0.38,
+                              radius: 15,
+                              items: [
+                                Icon(
+                                  Icons.list_alt_rounded,
+                                  color: surfaceColor,
+                                ),
+                                Text(
+                                  "Anotações",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(color: surfaceColor),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: CashHelperElevatedButton(
+                          width: width,
+                          height: 60,
+                          radius: 12,
+                          onPressed: () {},
+                          buttonName: "Painel de controle",
+                          backgroundColor: variantColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 137,
+                  left: 30,
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        maxRadius: 30,
+                        child: CircleAvatar(
+                          backgroundColor: variantColor,
+                          maxRadius: 29,
+                          child: const Icon(
+                            color: Colors.white,
+                            Icons.person,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 25),
+                      Text(
+                        "Gerente",
+                        style:
+                            Theme.of(context).textTheme.displayMedium?.copyWith(
+                                  color: surfaceColor,
+                                ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           );
         } else {

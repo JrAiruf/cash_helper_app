@@ -74,6 +74,12 @@ class UserModule extends Module {
       ),
     ),
     ChildRoute(
+      "/operator-home-page/:enterpriseId",
+      child: (_, args) => OperartorHomePage(
+        operatorEntity: args.data,
+      ),
+    ),
+    ChildRoute(
       "/operator-profile",
       child: (_, args) => OperatorProfilePage(
         operatorEntity: args.data,
