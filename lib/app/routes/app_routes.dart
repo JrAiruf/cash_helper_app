@@ -24,6 +24,16 @@ class UserRoutes {
   static const operatorProfilePage = "/user-module/operator-profile-page/";
   static const operatorSettingsPage = "/user-module/operator-settings-page/";
 }
+class AnnotationRoutes {
+  static const createAnnotationPage = "/annotations-module/";
+  static const controllPanelPage = "/user-module/controll-panel-page/";
+  static const managementPage = "/user-module/management-page/";
+  static const adminOptionsPage = "/user-module/admin-options-page/";
+  static const managerSettingsPage = "/user-module/manager-settings-page/";
+  static const operatorHomePage = "/user-module/operator-home-page/";
+  static const operatorProfilePage = "/user-module/operator-profile-page/";
+  static const operatorSettingsPage = "/user-module/operator-settings-page/";
+}
 
 class ManagementRoutes {
   static const controllPanelPage = "/management-module/controll-panel-page/";

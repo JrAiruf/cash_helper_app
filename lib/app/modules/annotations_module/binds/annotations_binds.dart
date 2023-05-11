@@ -113,12 +113,12 @@ class AnnotationModule extends Module {
 
   final routesList = <ModularRoute>[
     ChildRoute(
-      "/:operatorId",
+      "/:enterpriseId",
       child: (_, args) =>
-          CreateAnnotationsPage(operatorId: args.params["operatorId"]),
+          CreateAnnotationsPage(operatorEntity: args.data),
     ),
     ChildRoute(
-      "/name",
+      "/new-annotation-page",
       child: (_, args) => Container(),
     ),
   ];

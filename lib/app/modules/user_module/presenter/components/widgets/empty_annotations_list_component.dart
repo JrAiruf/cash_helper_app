@@ -39,65 +39,6 @@ class EmptyAnnotationsListComponent extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Text("Acesso rápido:",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: surfaceColor)),
-              ),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  QuickAccessButton(
-                    backgroundColor: primaryColor,
-                    border: true,
-                    height: height * 0.1,
-                    width: width * 0.38,
-                    radius: 15,
-                    items: [
-                      Icon(
-                        Icons.list_alt_outlined,
-                        color: surfaceColor,
-                      ),
-                      Text("Anotações",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(color: surfaceColor))
-                    ],
-                  ),
-                  QuickAccessButton(
-                    backgroundColor: primaryColor,
-                    border: true,
-                    height: height * 0.1,
-                    width: width * 0.38,
-                    radius: 15,
-                    items: [
-                      Icon(
-                        Icons.add,
-                        color: surfaceColor,
-                      ),
-                      Text("Nova Anotação",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(color: surfaceColor))
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }

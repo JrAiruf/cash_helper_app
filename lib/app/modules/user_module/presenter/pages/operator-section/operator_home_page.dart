@@ -12,6 +12,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/wid
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../../../routes/app_routes.dart';
 import '../../components/widgets/empty_annotations_list_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
@@ -135,73 +136,6 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 15),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 40),
-                                        child: Text("Acesso rápido:",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall
-                                                ?.copyWith(
-                                                    color: surfaceColor)),
-                                      ),
-                                      const SizedBox(height: 30),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          QuickAccessButton(
-                                            backgroundColor: primaryColor,
-                                            border: true,
-                                            height: height * 0.1,
-                                            width: width * 0.38,
-                                            radius: 15,
-                                            items: [
-                                              Icon(
-                                                Icons.list_alt_outlined,
-                                                color: surfaceColor,
-                                              ),
-                                              Text("Anotações",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall
-                                                      ?.copyWith(
-                                                          color: surfaceColor))
-                                            ],
-                                          ),
-                                          QuickAccessButton(
-                                            backgroundColor: primaryColor,
-                                            border: true,
-                                            height: height * 0.1,
-                                            width: width * 0.38,
-                                            radius: 15,
-                                            items: [
-                                              Icon(
-                                                Icons.add,
-                                                color: surfaceColor,
-                                              ),
-                                              Text("Nova Anotação",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall
-                                                      ?.copyWith(
-                                                          color: surfaceColor))
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
                               ],
                             );
                           } else if (annotationListState
@@ -211,6 +145,83 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                             return Container();
                           }
                         }),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: Text("Acesso rápido:",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(color: surfaceColor)),
+                            ),
+                            const SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                QuickAccessButton(
+                                  backgroundColor: primaryColor,
+                                  border: true,
+                                  height: height * 0.1,
+                                  width: width * 0.38,
+                                  radius: 15,
+                                  items: [
+                                    Icon(
+                                      Icons.list_alt_outlined,
+                                      color: surfaceColor,
+                                    ),
+                                    Text(
+                                      "Anotações",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: surfaceColor,
+                                          ),
+                                    ),
+                                  ],
+                                  onPressed: () {
+                                    print("Botão 1");
+                                  },
+                                ),
+                                QuickAccessButton(
+                                  backgroundColor: primaryColor,
+                                  border: true,
+                                  height: height * 0.1,
+                                  width: width * 0.38,
+                                  radius: 15,
+                                  items: [
+                                    Icon(
+                                      Icons.add,
+                                      color: surfaceColor,
+                                    ),
+                                    Text(
+                                      "Nova Anotação",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: surfaceColor,
+                                          ),
+                                    )
+                                  ],
+                                  onPressed: () {
+                                    Modular.to.navigate(
+                                        "${AnnotationRoutes.createAnnotationPage}$_enterpriseId",
+                                        arguments: currentOperator);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
