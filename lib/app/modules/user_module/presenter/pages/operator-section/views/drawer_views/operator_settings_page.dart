@@ -28,6 +28,7 @@ final _loginController = Modular.get<LoginController>();
 final _loginStore = Modular.get<LoginStore>();
 DrawerPagePosition? drawerPosition;
 final _settingsPageController = PageController();
+final _enterpriseId = Modular.args.params["enterpriseId"];
 
 class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
   @override
@@ -38,13 +39,13 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    _loginController.drawerPosition = DrawerPagePosition.settings;
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(
         backgroundColor: primaryColor,
         operator: widget.operatorEntity,
         pagePosition: DrawerPagePosition.settings,
+        enterpriseId: _enterpriseId,
       ),
       body: PageView(
         controller: _settingsPageController,

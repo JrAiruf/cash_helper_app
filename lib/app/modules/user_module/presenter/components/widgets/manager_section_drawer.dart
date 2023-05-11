@@ -50,7 +50,6 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: 160,
               ),
               DrawerTile(
-                currentPage: ManagerDrawerPage.home,
                 itemColor: currentPage == ManagerDrawerPage.home
                     ? variantColor
                     : surfaceColor,
@@ -69,7 +68,6 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                currentPage: ManagerDrawerPage.management,
                 itemColor: currentPage == ManagerDrawerPage.management
                     ? variantColor
                     : surfaceColor,
@@ -88,7 +86,6 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                currentPage: ManagerDrawerPage.adminOptions,
                 itemColor: currentPage == ManagerDrawerPage.adminOptions
                     ? variantColor
                     : surfaceColor,
@@ -107,7 +104,6 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                currentPage: ManagerDrawerPage.settings,
                 itemColor: currentPage == ManagerDrawerPage.settings
                     ? variantColor
                     : surfaceColor,

@@ -45,7 +45,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   final DataVerifier _dataVerifier;
   bool loadingData = false;
 
-  void restartLoginPageState() {
+  void restartLoginStoreState() {
     value = LoginInitialState();
   }
 

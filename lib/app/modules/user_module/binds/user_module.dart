@@ -81,13 +81,13 @@ class UserModule extends Module {
       ),
     ),
     ChildRoute(
-      UserRoutes.operatorProfilePage,
+      "/operator-profile-page/:enterpriseId",
       child: (_, args) => OperatorProfilePage(
         operatorEntity: args.data,
       ),
     ),
     ChildRoute(
-      UserRoutes.operatorSettingsPage,
+      "/operator-settings-page/:enterpriseId",
       child: (_, args) => OperatorSettingsPage(
         operatorEntity: args.data,
       ),

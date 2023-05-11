@@ -25,6 +25,7 @@ class OperatorProfilePage extends StatefulWidget {
 
 final _loginController = Modular.get<LoginController>();
 final _loginStore = Modular.get<LoginStore>();
+final _enterpriseId = Modular.args.params["enterpriseId"];
 DrawerPagePosition? drawerPosition;
 bool showOperatorCode = false;
 
@@ -43,11 +44,13 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(
-          backgroundColor: primaryColor,
-          radius: 20,
-          width: width,
-          pagePosition: DrawerPagePosition.profile,
-          operator: widget.operatorEntity),
+        backgroundColor: primaryColor,
+        radius: 20,
+        width: width,
+        pagePosition: DrawerPagePosition.profile,
+        operator: widget.operatorEntity,
+        enterpriseId: _enterpriseId,
+      ),
       body: Container(
         decoration: BoxDecoration(color: primaryColor),
         child: Stack(

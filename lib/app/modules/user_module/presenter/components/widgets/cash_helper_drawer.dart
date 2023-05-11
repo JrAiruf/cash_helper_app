@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -12,6 +13,7 @@ class CashHelperDrawer extends StatelessWidget {
     this.height,
     this.radius,
     this.width,
+    this.enterpriseId,
     required this.pagePosition,
     required this.operator,
   });
@@ -19,6 +21,7 @@ class CashHelperDrawer extends StatelessWidget {
   final double? height;
   final double? radius;
   final double? width;
+  final String? enterpriseId;
   final DrawerPagePosition? pagePosition;
   final OperatorEntity? operator;
   @override
@@ -61,10 +64,11 @@ class CashHelperDrawer extends StatelessWidget {
                         : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.navigate("./", arguments: operator);
+                      Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
+                          arguments: operator);
                     },
                   ),
-                  SizedBox(height: height * 0.06),
+                  SizedBox(height: itemSpacingHeight),
                   DrawerTile(
                     width: width,
                     title: "Meu Perfil",
@@ -74,11 +78,11 @@ class CashHelperDrawer extends StatelessWidget {
                         : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.pushReplacementNamed("./operator-settings",
+                      Modular.to.navigate("${UserRoutes.operatorProfilePage}$enterpriseId",
                           arguments: operator);
                     },
                   ),
-                  SizedBox(height: height * 0.06),
+                  SizedBox(height: itemSpacingHeight),
                   DrawerTile(
                     width: width,
                     title: "Configurações",
@@ -88,7 +92,7 @@ class CashHelperDrawer extends StatelessWidget {
                         : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.pushReplacementNamed("./operator-settings",
+                      Modular.to.navigate("${UserRoutes.operatorSettingsPage}$enterpriseId",
                           arguments: operator);
                     },
                   ),

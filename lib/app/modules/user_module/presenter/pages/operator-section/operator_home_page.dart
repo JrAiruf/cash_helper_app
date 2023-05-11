@@ -8,7 +8,6 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/components/tiles/drawer_tile.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -31,10 +30,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
   void initState() {
-    super.initState();
     _loginStore.getUserById(_enterpriseId, widget.operatorEntity.operatorId!,
         widget.operatorEntity.businessPosition!);
     _annotationListStore.getAllAnnotations(widget.operatorEntity.operatorId!);
+    super.initState();
   }
 
   @override
@@ -65,11 +64,13 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
           return Scaffold(
             appBar: AppBar(),
             drawer: CashHelperDrawer(
-                backgroundColor: primaryColor,
-                radius: 20,
-                width: width,
-                pagePosition: DrawerPagePosition.home,
-                operator: currentOperator),
+              backgroundColor: primaryColor,
+              radius: 20,
+              width: width,
+              pagePosition: DrawerPagePosition.home,
+              operator: currentOperator,
+              enterpriseId: _enterpriseId,
+            ),
             body: Stack(
               children: [
                 Container(

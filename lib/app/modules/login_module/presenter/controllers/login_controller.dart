@@ -22,7 +22,6 @@ class LoginController {
   bool loadingLoginData = false;
   bool loadingAuthData = false;
   bool loadingEnterpriseAuth = false;
-  DrawerPagePosition? drawerPosition;
   String? emailValidate(String? value) {
     return value!.isNotEmpty && value != '' && value.contains('@')
         ? null
