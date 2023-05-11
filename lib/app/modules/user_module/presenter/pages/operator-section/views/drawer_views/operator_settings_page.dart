@@ -42,72 +42,9 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(
-        height: height,
-        width: width,
-        drawerTitle: "Opções",
         backgroundColor: primaryColor,
-        drawerItems: [
-          DrawerTile(
-            width: width,
-            title: "Início",
-            icon: Icons.home,
-            itemColor:
-                _loginController.drawerPosition == DrawerPagePosition.home
-                    ? tertiaryColor
-                    : surfaceColor,
-            onTap: () {
-              Modular.to.pop();
-              Modular.to.navigate("./", arguments: widget.operatorEntity);
-            },
-          ),
-          SizedBox(height: height * 0.06),
-          DrawerTile(
-            width: width,
-            title: "Meu Perfil",
-            icon: Icons.person,
-            itemColor:
-                _loginController.drawerPosition == DrawerPagePosition.profile
-                    ? tertiaryColor
-                    : surfaceColor,
-            onTap: () {
-              Modular.to.pop();
-              Modular.to.pushReplacementNamed("./operator-profile",
-                  arguments: widget.operatorEntity);
-            },
-          ),
-          SizedBox(height: height * 0.06),
-          DrawerTile(
-            width: width,
-            title: "Configurações",
-            icon: Icons.settings,
-            itemColor:
-                _loginController.drawerPosition == DrawerPagePosition.settings
-                    ? tertiaryColor
-                    : surfaceColor,
-            onTap: () {
-              Modular.to.pop();
-            },
-          ),
-          SizedBox(height: height * 0.3),
-          GestureDetector(
-            onTap: () {
-              _loginController.showSignOutDialog(
-                context,
-                primaryColor,
-                () {
-                  _loginStore.signOut();
-                  Modular.to.pop();
-                  Modular.to.navigate("/");
-                },
-              );
-            },
-            child: Text("Sair",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(color: surfaceColor)),
-          ),
-        ],
+        operator: widget.operatorEntity,
+        pagePosition: DrawerPagePosition.settings,
       ),
       body: PageView(
         controller: _settingsPageController,

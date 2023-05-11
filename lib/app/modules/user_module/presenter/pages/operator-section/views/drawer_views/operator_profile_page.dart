@@ -40,77 +40,14 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final fontSize = Theme.of(context).textTheme.bodySmall;
-    _loginController.drawerPosition = DrawerPagePosition.profile;
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(
-        height: height,
-        width: width,
-        drawerTitle: "Opções",
-        backgroundColor: primaryColor,
-        drawerItems: [
-          DrawerTile(
-            width: width,
-            title: "Início",
-            icon: Icons.home,
-            itemColor:
-                _loginController.drawerPosition == DrawerPagePosition.home
-                    ? tertiaryColor
-                    : surfaceColor,
-            onTap: () {
-              Modular.to.pop();
-              Modular.to.navigate("./", arguments: widget.operatorEntity);
-            },
-          ),
-          SizedBox(height: height * 0.06),
-          DrawerTile(
-            width: width,
-            title: "Meu Perfil",
-            icon: Icons.person,
-            itemColor:
-                _loginController.drawerPosition == DrawerPagePosition.profile
-                    ? tertiaryColor
-                    : surfaceColor,
-            onTap: () {
-              Modular.to.pop();
-            },
-          ),
-          SizedBox(height: height * 0.06),
-          DrawerTile(
-            width: width,
-            title: "Configurações",
-            icon: Icons.settings,
-            itemColor:
-                _loginController.drawerPosition == DrawerPagePosition.settings
-                    ? tertiaryColor
-                    : surfaceColor,
-            onTap: () {
-              Modular.to.pop();
-              Modular.to.pushReplacementNamed("./operator-settings",
-                  arguments: widget.operatorEntity);
-            },
-          ),
-          SizedBox(height: height * 0.3),
-          GestureDetector(
-            onTap: () {
-              _loginController.showSignOutDialog(
-                context,
-                primaryColor,
-                () {
-                  _loginStore.signOut();
-                  Modular.to.pop();
-                  Modular.to.navigate("/");
-                },
-              );
-            },
-            child: Text("Sair",
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(color: surfaceColor)),
-          ),
-        ],
-      ),
+          backgroundColor: primaryColor,
+          radius: 20,
+          width: width,
+          pagePosition: DrawerPagePosition.profile,
+          operator: widget.operatorEntity),
       body: Container(
         decoration: BoxDecoration(color: primaryColor),
         child: Stack(
