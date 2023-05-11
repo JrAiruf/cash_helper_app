@@ -8,30 +8,31 @@ import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/u
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotation_states.dart';
 import 'package:flutter/cupertino.dart';
 import '../../domain/entities/annotation_entity.dart';
+import '../../domain/usecases/create_annotation/icreate_new_annotation.dart';
 
 class AnnotationStore extends ValueNotifier<AnnotationStates> {
   AnnotationStore({
-    required ICreateAnnotation createAnnotation,
+    required ICreateNewAnnotation createNewAnnotation,
     required IGetAnnotationById getAnnotationById,
     required IUpdateAnnotation updateAnnotation,
     required IFinishAnnotation finishAnnotation,
     required IDeleteAnnotation deleteAnnotation,
-  })  : _createAnnotation = createAnnotation,
+  })  : _createNewAnnotation = createNewAnnotation,
         _getAnnotationById = getAnnotationById,
         _updateAnnotation = updateAnnotation,
         _finishAnnotation = finishAnnotation,
         _deleteAnnotation = deleteAnnotation,
         super(InitialAnnotationState());
 
-  final ICreateAnnotation _createAnnotation;
+  final ICreateNewAnnotation _createNewAnnotation;
   final IGetAnnotationById _getAnnotationById;
   final IUpdateAnnotation _updateAnnotation;
   final IFinishAnnotation _finishAnnotation;
   final IDeleteAnnotation _deleteAnnotation;
 //CRIAR
-  Future<AnnotationEntity?>? createAnnotation(
-      String? operatorId, AnnotationEntity annotation) async {
-    final newAnnotation = await _createAnnotation(operatorId, annotation);
+  Future<void>? createNewAnnotation(String enterpriseId,
+      String operatorId, AnnotationEntity annotation) async {
+    final newAnnotation = await _createNewAnnotation(enterpriseId, operatorId, annotation);
     return newAnnotation;
   }
 //BUSCAR PELO ID

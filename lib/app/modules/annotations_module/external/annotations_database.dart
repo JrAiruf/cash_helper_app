@@ -12,7 +12,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   Map<String, dynamic>? annotationData = {};
 
   @override
-  Future<Map<String, dynamic>?>? createAnnotation(
+  Future<Map<String, dynamic>?>? createAnnotation(String? entepriseId, 
       String? operatorId, Map<String, dynamic>? annotation) async {
     if (operatorId != null && annotation != null && annotation.isNotEmpty) {
       final annotationsCollection = _getCollection(operatorId);

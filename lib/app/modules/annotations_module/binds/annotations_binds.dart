@@ -10,7 +10,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 
 import '../domain/usecases/create_annotation/create_annotation.dart';
+import '../domain/usecases/create_annotation/create_new_annotation.dart';
 import '../domain/usecases/create_annotation/icreate_annotation.dart';
+import '../domain/usecases/create_annotation/icreate_new_annotation.dart';
 import '../domain/usecases/delete_annotation/delete_annotation.dart';
 import '../domain/usecases/delete_annotation/idelete_annotation.dart';
 import '../domain/usecases/finish_annotation/finish_annotation.dart';
@@ -56,8 +58,8 @@ class AnnotationModule extends Module {
         datasource: i(),
       ),
     ),
-    Bind<ICreateAnnotation>(
-      (i) => CreateAnnotation(
+    Bind<ICreateNewAnnotation>(
+      (i) => CreateNewAnnotation(
         repository: i(),
       ),
     ),
@@ -99,7 +101,7 @@ class AnnotationModule extends Module {
     ),
     Bind<AnnotationStore>(
       (i) => AnnotationStore(
-        createAnnotation: i(),
+        createNewAnnotation: i(),
         getAnnotationById: i(),
         updateAnnotation: i(),
         finishAnnotation: i(),
