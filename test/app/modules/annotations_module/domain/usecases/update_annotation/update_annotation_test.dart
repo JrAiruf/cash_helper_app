@@ -56,7 +56,7 @@ void main() {
       test(
         "Update the respective property passed in object",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
@@ -76,7 +76,7 @@ void main() {
       test(
         "Fail update properties",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);

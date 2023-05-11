@@ -49,7 +49,7 @@ void main() {
       test(
         "Return an annotation object from repository, in wich annotationClientAddress property matches with the given text",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
@@ -66,7 +66,7 @@ void main() {
       test(
         "Fail returning an annotation from result search",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);

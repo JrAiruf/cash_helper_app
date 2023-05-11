@@ -8,7 +8,7 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
       : _datasource = datasource;
   final ApplicationAnnotationDatabase _datasource;
   @override
-  Future<AnnotationModel?>? createAnnotation(
+  Future<AnnotationModel?>? createAnnotation(String? enterpriseId,
       String? operatorId, AnnotationModel? annotation) async {
     final datasourceAnnotation =
         await _datasource.createAnnotation(operatorId, annotation?.toMap());
@@ -73,8 +73,9 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
-  Future<void>? finishAnnotation(String? operatorId, String? annotationId) async {
-    if(operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
+  Future<void>? finishAnnotation(
+      String? operatorId, String? annotationId) async {
+    if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
       await _datasource.finishAnnotation(operatorId, annotationId);
     } else {
       return;
@@ -82,10 +83,12 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
-  Future<void>? deleteAnnotation(String? operatorId, String? annotationId) async {
-     if(operatorId!.isNotEmpty && annotationId!.isNotEmpty){
+  Future<void>? deleteAnnotation(
+      String? operatorId, String? annotationId) async {
+    if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
       await _datasource.deleteAnnotation(operatorId, annotationId);
-     } else {
+    } else {
       return;
-     }
-  }}
+    }
+  }
+}

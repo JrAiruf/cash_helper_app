@@ -44,7 +44,7 @@ void main() {
       test(
         "Remove annotation",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           when(repository.getAllAnnotations(any))
               .thenAnswer((_) async => [repositoryAnnotation]);
@@ -64,7 +64,7 @@ void main() {
       test(
         "Fail removing annotation",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           when(repository.getAllAnnotations(any))
               .thenAnswer((_) async => [repositoryAnnotation]);

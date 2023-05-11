@@ -19,7 +19,7 @@ CreateAnnotation({required AnnotationRepository repository})
         _dataVerifier.validateInputData(inputs: [operatorId])) {
       final annotationModel = AnnotationModel.fromEntityData(annotation);
       final usecaseAnnotation =
-          await _repository.createAnnotation(operatorId, annotationModel);
+          await _repository.createAnnotation("",operatorId, annotationModel);
       return AnnotationModel.toEntityData(usecaseAnnotation!);
     } else {
       return null;

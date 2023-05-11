@@ -45,7 +45,7 @@ void main() {
       test(
         "Return an AnnotationEntity by his id from repository",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any,any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
@@ -63,7 +63,7 @@ void main() {
       test(
         "Fail returning AnnotationEntity object from repository",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any,any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
