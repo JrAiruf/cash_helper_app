@@ -12,10 +12,15 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   Map<String, dynamic>? annotationData = {};
 
   @override
-  Future<Map<String, dynamic>?>? createAnnotation(String? entepriseId, 
+  Future<Map<String, dynamic>?>? createAnnotation(String? enterpriseId,
       String? operatorId, Map<String, dynamic>? annotation) async {
+    final annotationsCollection = _database
+        .collection("enterprise")
+        .doc(enterpriseId)
+        .collection("operator")
+        .doc(operatorId)
+        .collection("annotations");
     if (operatorId != null && annotation != null && annotation.isNotEmpty) {
-      final annotationsCollection = _getCollection(operatorId);
       annotation["annotationId"] = uuidGenertor.v1();
       await annotationsCollection
           .doc(annotation["annotationId"])
@@ -35,7 +40,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   Future<List<Map<String, dynamic>>?>? getAllAnnotations(
       String? operatorId) async {
     if (operatorId != null) {
-    final annotationsCollection = _getCollection(operatorId);
+      final annotationsCollection = _getCollection(operatorId);
       final annotationsList = await annotationsCollection.get();
       return annotationsList.docs
           .map((annotation) => annotation.data())
@@ -49,7 +54,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   Future<Map<String, dynamic>?>? getAnnotationById(
       String? operatorId, String? annotationId) async {
     if (operatorId != null && annotationId != null) {
-    final annotationsCollection = _getCollection(operatorId);
+      final annotationsCollection = _getCollection(operatorId);
       final databaseDocumentsList =
           await annotationsCollection.get().then((value) => value.docs);
       final annotationsMapsList =

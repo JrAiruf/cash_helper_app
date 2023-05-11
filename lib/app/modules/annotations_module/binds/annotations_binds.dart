@@ -56,6 +56,7 @@ class AnnotationModule extends Module {
     Bind<AnnotationRepository>(
       (i) => AnnotationRepositoryImpl(
         datasource: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<ICreateNewAnnotation>(

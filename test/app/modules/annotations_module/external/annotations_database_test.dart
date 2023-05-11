@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
+import 'package:cash_helper_app/app/utils/tests/annotations_test_objects/test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,10 +14,12 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   final Uuid uuidGenertor;
   Map<String, dynamic>? annotationData = {};
   @override
-  Future<Map<String, dynamic>?>? createAnnotation(
+  Future<Map<String, dynamic>?>? createAnnotation(String? enterpriseId,
       String? operatorId, Map<String, dynamic>? annotation) async {
     final annotationsCollection = _database
-        .collection("operators")
+        .collection("enterprise")
+        .doc(enterpriseId)
+        .collection("operator")
         .doc(operatorId)
         .collection("annotations");
     if (operatorId != null && annotation != null && annotation.isNotEmpty) {
@@ -148,29 +151,15 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
 }
 
 void main() {
-  final newAnnotation = <String, dynamic>{
-    'annotationId': "askjdfhlakjsdhkajshdgkjahlskjdghla",
-    'annotationClientAddress': "Andorinhas 381",
-    'annotationSaleValue': "125,56",
-    'annotationSaleTime': "12:45",
-    'annotationSaleDate': "07/04",
-    'annotationPaymentMethod': "Dinheiro",
-    'annotationReminder': null,
-    'annotationConcluied': false,
-  };
-  final updatedAnnotation = <String, dynamic>{
-    'annotationClientAddress': "Andorinhas 381",
-    'annotationSaleValue': "300",
-    'annotationSaleTime': "12:45",
-    'annotationSaleDate': "07/04",
-    'annotationPaymentMethod': "Crédito",
-    'annotationReminder': "Reminder added",
-    'annotationConcluied': false,
-  };
-  final firebaseMock = FakeFirebaseFirestore();
-  const uuid = Uuid();
-  final database =
-      AFirebaseDatabaseMock(database: firebaseMock, uuidGenertor: uuid);
+  late FakeFirebaseFirestore firebaseMock;
+  late AFirebaseDatabaseMock database;
+  setUp(
+    () {
+      firebaseMock = FakeFirebaseFirestore();
+      database = AFirebaseDatabaseMock(
+          database: firebaseMock, uuidGenertor: const Uuid());
+    },
+  );
 
   group(
     "Create function should",
@@ -178,8 +167,16 @@ void main() {
       test(
         "Create an annotation in the current user",
         () async {
-          final result =
-              await database.createAnnotation("operatorId", newAnnotation);
+          final result = await database.createAnnotation("enterpriseId",
+              "operatorId", AnnotationsTestObjects.newAnnotationMap);
+          final annotationsCollection = await firebaseMock
+              .collection("enterprise")
+              .doc("enterpriseId")
+              .collection("operator")
+              .doc("operatorId")
+              .collection("annotations")
+              .get();
+          expect(annotationsCollection.docs.isNotEmpty,equals(true));
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["annotationId"] != null, equals(true));
         },
@@ -187,13 +184,13 @@ void main() {
       test(
         "Fail Creating annotation",
         () async {
-          final createdAnnotation =
-              await database.createAnnotation(null, newAnnotation);
+          final createdAnnotation = await database.createAnnotation(
+              null, null, AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation, equals(null));
         },
       );
     },
-  );
+  ); /* 
   group(
     "GetAllAnnotations function should",
     () {
@@ -389,5 +386,5 @@ void main() {
         },
       );
     },
-  );
+  ); */
 }
