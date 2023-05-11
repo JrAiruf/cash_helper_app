@@ -10,7 +10,7 @@ class CashHelperTextFieldComponent extends StatelessWidget {
       this.onPressed,
       this.onChanged,
       this.obscureText,
-      this.readOnly,
+      this.readOnly = false,
       this.controller,
       this.input,
       this.enable,
@@ -22,6 +22,7 @@ class CashHelperTextFieldComponent extends StatelessWidget {
       this.height,
       this.width,
       this.hint,
+      this.initialValue,
       this.label,
       this.validator,
       this.onValidate});
@@ -43,20 +44,23 @@ class CashHelperTextFieldComponent extends StatelessWidget {
   final void Function(String?)? onSaved;
   final bool? obscureText;
   final bool? enable;
-  final bool? readOnly;
+  final bool readOnly;
   final TextEditingController? controller;
   final TextInputType? input;
   final String? hint;
+  final String? initialValue;
   final String? label;
 
   @override
   Widget build(BuildContext context) {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return TextFormField(
+      cursorColor: surfaceColor,
+      initialValue: initialValue?.padLeft(4),
       textInputAction: TextInputAction.go,
       enabled: enable ?? true,
       onTap: onTap,
-      readOnly: readOnly ?? false,
+      readOnly: readOnly,
       obscureText: obscureText ?? false,
       onSaved: onSaved,
       onChanged: onChanged,
