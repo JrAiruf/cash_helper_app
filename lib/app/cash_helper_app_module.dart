@@ -5,6 +5,7 @@ import 'package:cash_helper_app/shared/stores/app_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'modules/annotations_module/binds/annotations_binds.dart';
+import 'modules/management_module/binds/management_module.dart';
 
 class CashHelperAppModule extends Module {
   @override
@@ -14,6 +15,7 @@ class CashHelperAppModule extends Module {
         ...AppEnterpriseModule.module.bindList,
         ...AppUserModule.module.bindList,
         ...AppAnnotationModule.module.bindsList,
+        ...AppManagementModule.module.bindsList,
       ];
   @override
   List<ModularRoute> get routes => [
@@ -21,5 +23,6 @@ class CashHelperAppModule extends Module {
         AppLoginModule.routes(),
         AppUserModule.routes(),
         AppAnnotationModule.routes(),
+        AppManagementModule.routes(),
       ];
 }

@@ -14,6 +14,7 @@ abstract class AppManagementModule {
         module: ManagementeModule.instance,
         transition: TransitionType.fadeIn,
       );
+  static final module = ManagementeModule.instance;
 }
 
 class ManagementeModule extends Module {

@@ -1,13 +1,16 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/operator_info_list_view_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../../../management_module/presenter/stores/management_store.dart';
 import '../../components/buttons/quick_access_button.dart';
 import '../../components/widgets/manager_section_drawer.dart';
 
@@ -20,6 +23,7 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 final _loginStore = Modular.get<LoginStore>();
+final _managementStore = Modular.get<ManagementStore>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
@@ -27,6 +31,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   void initState() {
     _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!,
         widget.managerEntity.businessPosition!);
+    _managementStore.getOperatorsInformations(_enterpriseId);
     super.initState();
   }
 
@@ -94,151 +99,41 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       SizedBox(
                         height: height * 0.18,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Usuário Tal",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "23 Anotações",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "Sem pendências",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "Fechamento:",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "20:13",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                  ],
+                        child: ValueListenableBuilder(
+                          valueListenable: _managementStore,
+                          builder: (_, state, __) {
+                            if (state is ManagementLoadingState) {
+                              return Container(
+                                decoration: BoxDecoration(color: primaryColor),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: indicatorColor,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Usuário Tal",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "23 Anotações",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "Sem pendências",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "Fechamento:",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "20:13",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                  ],
+                              );
+                            }
+                            if (state is ManagementInitialState) {
+                              return Container(
+                                decoration: BoxDecoration(color: primaryColor),
+                                child: Center(
+                                  child: Text(
+                                    "Aguarde ...",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall
+                                        ?.copyWith(color: surfaceColor),
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Usuário Tal",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "23 Anotações",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "Sem pendências",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "Fechamento:",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                    Text(
-                                      "20:13",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(color: surfaceColor),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                              );
+                            }
+                            if (state is GetUsersListState) {
+                              final operatorsList = state.operators;
+                              return OperatorInfoListViewComponent(
+                                  operators: operatorsList);
+                            } else {
+                              return Container();
+                            }
+                          },
                         ),
                       ),
                       SizedBox(
