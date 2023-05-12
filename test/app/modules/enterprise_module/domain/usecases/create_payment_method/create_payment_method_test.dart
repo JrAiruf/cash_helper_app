@@ -31,9 +31,9 @@ void main() {
         'Call repository to create a payment method and return a PaymentMethodEntity',
         () async {
       when(repository.createPaymenMethod(any, any))
-          .thenAnswer((_) async => EnterpriseTestObjects.paymentMethodModel);
+          .thenAnswer((_) async => PaymentMethodTestObjects.paymentMethodModel);
       final result = await usecase(
-          EnterpriseTestObjects.newPaymentMethodEntity, "operatorCode");
+          PaymentMethodTestObjects.newPaymentMethodEntity, "operatorCode");
       expect(result, isA<PaymentMethodEntity>());
       expect(result?.paymentMethodUsingRate, equals(34.7));
     });

@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
+import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/users_unavailable_error.dart';
 import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
@@ -43,9 +44,21 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   }
 
   @override
-  Future? createNewPaymentMethod(String enterpriseId) {
-    // TODO: implement createNewPaymentMethod
-    throw UnimplementedError();
+  Future? createNewPaymentMethod(
+      String? enterpriseId, Map<String, dynamic>? paymentMethod) async {
+    try {
+      if (enterpriseId!.isNotEmpty && paymentMethod!.isNotEmpty) {
+        final paymentMethodsCollection =
+            _database.collection("enterprise").doc(enterpriseId).collection("paymentMethods");
+        final newPaymentMethod = await paymentMethodsCollection.add(paymentMethod).then((value) => value.get());
+         return newPaymentMethod.data();
+      } else {
+        throw PaymentMethodNotCreated(
+            errorMessage: "Erro ao criar método de pagamento");
+      }
+    } catch (e) {
+      throw PaymentMethodNotCreated(errorMessage: e.toString());
+    }
   }
 }
 
@@ -121,29 +134,28 @@ void main() {
       test(
         "Create and save a payment method in database",
         () async {
-          final createdEnterprise = await enterpriseDb
-              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final newOperator = await loginDb.register(
-              LoginTestObjects.newOperator,
-              createdEnterprise?["enterpriseId"],
-              LoginTestObjects.newOperator["businessPosition"]);
-          expect(createdEnterprise?.isNotEmpty, equals(true));
-          expect(newOperator?.isNotEmpty, equals(true));
-          final result = await database
-              .getOperatorInformations(createdEnterprise!["enterpriseId"]);
-          expect(result, isA<List<Map<String, dynamic>>>());
-          expect(
-              result?.first["operatorId"], equals(newOperator?["operatorId"]));
+          final result = await database.createNewPaymentMethod(
+            "enterpriseId",
+            PaymentMethodTestObjects.newPaymentMethodMap,
+          );
+          expect(result, isA<Map<String, dynamic>>());
+          expect(result["paymentMethodUsingRate"], equals(34.7));
         },
       );
 
       test(
         "Fail to create a payment method",
         () async {
-          expect(database.getOperatorInformations(""),
-              throwsA(isA<UsersUnavailableError>()));
-          expect(database.getOperatorInformations(null),
-              throwsA(isA<UsersUnavailableError>()));
+          expect(
+            () async => database.createNewPaymentMethod(
+                "", PaymentMethodTestObjects.newPaymentMethodMap),
+            throwsA(isA<PaymentMethodNotCreated>()),
+          );
+          expect(
+            () async => database.createNewPaymentMethod(
+                null, PaymentMethodTestObjects.newPaymentMethodMap),
+            throwsA(isA<PaymentMethodNotCreated>()),
+          );
         },
       );
     },

@@ -45,6 +45,10 @@ class EnterpriseTestObjects {
       enterpriseAddressStreet: "Andorinhas",
       enterpriseAddressNumber: 381);
 
+}
+
+class PaymentMethodTestObjects {
+
   static final paymentMethodModel = PaymentMethodModel(
     paymentMethodId: "aldql34hlaky5qi24nlnalnaljq4nal4",
     paymentMethodDescription:
