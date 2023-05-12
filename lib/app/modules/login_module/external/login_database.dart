@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/modules/login_module/external/data/applicati
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
+import '../../../services/crypt_serivce.dart';
 import 'errors/authentication_error.dart';
 import 'errors/database_error.dart';
 import 'errors/user_not_found_error.dart';
@@ -11,13 +12,16 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   FirebaseDatabase({
     required FirebaseFirestore database,
     required FirebaseAuth auth,
+    required ICryptService encryptService,
     required Uuid uuid,
   })  : _database = database,
         _auth = auth,
+        _encryptService = encryptService,
         _uuid = uuid;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
+  final ICryptService _encryptService;
   final Uuid _uuid;
   User? _authUser;
   Map<String, dynamic> userData = {};
@@ -42,6 +46,8 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       newUserId = _authUser!.uid;
       newUserMap["${collection}Id"] = newUserId;
       newUserMap["${collection}Code"] = operatorCode;
+      newUserMap['${collection}Password'] =
+          _encryptService.generateHash(newUserMap['${collection}Password']);
       newUserMap.isNotEmpty &&
               enterpriseId!.isNotEmpty &&
               _authUser!.uid.isNotEmpty
@@ -91,8 +97,9 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
           .collection(userBusinessPosition)
           .get();
       userData = databaseUsersCollection.docs.firstWhere((element) {
-        return element["${collection}Email"] == email &&
-            element["${collection}Password"] == password;
+        final verifiedHashCode = _encryptService.checkHashCode(
+            password!, element["${collection}Password"]);
+        return  element["${collection}Email"] == email && verifiedHashCode;
       }).data();
       return userData;
     } on FirebaseException catch (e) {

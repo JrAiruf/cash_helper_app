@@ -93,6 +93,7 @@ class LoginModule extends Module {
       (i) => FirebaseDatabase(
         database: i(),
         auth: i(),
+        encryptService: i(),
         uuid: i(),
       ),
     ),

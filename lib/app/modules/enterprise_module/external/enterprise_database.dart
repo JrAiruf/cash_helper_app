@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/external/data/application_enterprise_database.dart';
+import 'package:cash_helper_app/app/services/crypt_serivce.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
@@ -9,13 +10,16 @@ class EnterpriseDatabase implements ApplicationEnterpriseDatabase {
   EnterpriseDatabase({
     required FirebaseFirestore database,
     required FirebaseAuth auth,
+    required ICryptService encryptService,
     required Uuid uuid,
   })  : _database = database,
         _auth = auth,
+        _encryptService = encryptService,
         _uuid = uuid;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
+  final ICryptService _encryptService;
   final Uuid _uuid;
   Map<String, dynamic> enterpriseData = {};
   @override
@@ -33,6 +37,8 @@ class EnterpriseDatabase implements ApplicationEnterpriseDatabase {
       final operatorCodeResource = _uuid.v1();
       final enterpriseCode = _createEnterpriseCode(operatorCodeResource, 8);
       enterpriseMap["enterpriseCode"] = enterpriseCode;
+      enterpriseMap['enterprisePassword'] =
+          _encryptService.generateHash(enterpriseMap['enterprisePassword']);
       await _database
           .collection("enterprise")
           .doc(enterpriseMap["enterpriseId"])

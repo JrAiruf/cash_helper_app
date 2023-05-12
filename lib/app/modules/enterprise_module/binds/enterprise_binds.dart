@@ -53,6 +53,7 @@ class EnterpriseModule extends Module {
       (i) => EnterpriseDatabase(
         database: i(),
         auth: i(),
+        encryptService: i(),
         uuid: i(),
       ),
     ),

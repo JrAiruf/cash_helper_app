@@ -1,17 +1,15 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:cash_helper_app/app/services/crypt_serivce.dart';
 
 class EncryptService implements ICryptService {
-  
   @override
   bool checkHashCode(String source, String hashCode) {
-    // TODO: implement checkHashCode
-    throw UnimplementedError();
+    return BCrypt.checkpw(source, hashCode);
   }
 
   @override
   String generateHash(String source) {
-    // TODO: implement generateHash
-    throw UnimplementedError();
+    final hashedSource = BCrypt.hashpw(source, BCrypt.gensalt());
+    return hashedSource;
   }
-  
 }
