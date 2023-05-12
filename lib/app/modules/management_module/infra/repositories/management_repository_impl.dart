@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/payment_method_model.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
 
@@ -26,5 +27,11 @@ class ManagementRepositoryImpl implements ManagementRepository {
       }
     }
     return operatorsModelList;
+  }
+
+  @override
+  Future? createNewPaymentMethod(String enterpriseId, PaymentMethodModel paymentMethod) {
+    // TODO: implement createNewPaymentMethod
+    throw UnimplementedError();
   }
 }

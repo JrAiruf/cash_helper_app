@@ -35,14 +35,14 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
   
  @override
-  Future? createNewPaymentMethod(
+  Future<Map<String,dynamic>>? createNewPaymentMethod(
       String? enterpriseId, Map<String, dynamic>? paymentMethod) async {
     try {
       if (enterpriseId!.isNotEmpty && paymentMethod!.isNotEmpty) {
         final paymentMethodsCollection =
             _database.collection("enterprise").doc(enterpriseId).collection("paymentMethods");
         final newPaymentMethod = await paymentMethodsCollection.add(paymentMethod).then((value) => value.get());
-         return newPaymentMethod.data();
+         return newPaymentMethod.data() ?? {};
       } else {
         throw PaymentMethodNotCreated(
             errorMessage: "Erro ao criar método de pagamento");
@@ -51,6 +51,4 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       throw PaymentMethodNotCreated(errorMessage: e.toString());
     }
   }
-  
-
 }
