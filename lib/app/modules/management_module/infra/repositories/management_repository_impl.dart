@@ -30,8 +30,14 @@ class ManagementRepositoryImpl implements ManagementRepository {
   }
 
   @override
-  Future? createNewPaymentMethod(String enterpriseId, PaymentMethodModel paymentMethod) {
-    // TODO: implement createNewPaymentMethod
-    throw UnimplementedError();
+  Future<PaymentMethodModel>? createNewPaymentMethod(
+      String? enterpriseId, PaymentMethodModel paymentMethod) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
+      final newPaymentMethod = await _database.createNewPaymentMethod(
+          enterpriseId, paymentMethod.toMap());
+      return PaymentMethodModel.fromMap(newPaymentMethod ?? {});
+    } else {
+      return PaymentMethodModel();
+    }
   }
 }

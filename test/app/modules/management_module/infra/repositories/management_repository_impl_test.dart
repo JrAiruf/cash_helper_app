@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/payme
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
+import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -34,9 +35,15 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
   }
 
   @override
-  Future? createNewPaymentMethod(String enterpriseId, PaymentMethodModel paymentMethod) {
-    // TODO: implement createNewPaymentMethod
-    throw UnimplementedError();
+  Future<PaymentMethodModel>? createNewPaymentMethod(
+      String? enterpriseId, PaymentMethodModel paymentMethod) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
+      final newPaymentMethod = await _database.createNewPaymentMethod(
+          enterpriseId, paymentMethod.toMap());
+      return PaymentMethodModel.fromMap(newPaymentMethod ?? {});
+    } else {
+      return PaymentMethodModel();
+    }
   }
 }
 
@@ -89,6 +96,42 @@ void main() {
           final result = await repository.getOperatorsInformations(null);
           expect(result, isA<List<OperatorModel>>());
           expect(result?.isEmpty, equals(true));
+        },
+      );
+    },
+  );
+  group(
+    'CreateNewPaymentMethod Function should',
+    () {
+      test(
+        "Call database to create a  new payment method and convert it to an OperatorModel object",
+        () async {
+          when(database.createNewPaymentMethod(any, any)).thenAnswer(
+              (_) async => PaymentMethodTestObjects.paymentMethodMap);
+          final result = await repository.createNewPaymentMethod(
+              "enterpriseId", PaymentMethodTestObjects.newPaymentMethodModel);
+          expect(result, isA<PaymentMethodModel>());
+        },
+      );
+      test(
+        "Fail to create payment method, passing empty string as parameter",
+        () async {
+          when(database.createNewPaymentMethod(any, any)).thenAnswer(
+              (_) async => PaymentMethodTestObjects.paymentMethodMap);
+          final result = await repository.createNewPaymentMethod(
+              "", PaymentMethodTestObjects.newPaymentMethodModel);
+          expect(result, isA<PaymentMethodModel>());
+          expect(result?.paymentMethodId, equals(null));
+        },
+      );
+      test(
+        "Fail to create payment method, passing null as parameter",
+        () async {
+          when(database.createNewPaymentMethod(any, any)).thenAnswer(
+              (_) async => PaymentMethodTestObjects.paymentMethodMap);
+          final result = await repository.createNewPaymentMethod(
+              null, PaymentMethodTestObjects.newPaymentMethodModel);
+          expect(result, isA<PaymentMethodModel>());
         },
       );
     },
