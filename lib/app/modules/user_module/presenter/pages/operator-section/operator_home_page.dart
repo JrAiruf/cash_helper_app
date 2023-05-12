@@ -67,7 +67,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
             drawer: CashHelperDrawer(
               backgroundColor: primaryColor,
               radius: 20,
-              width: width,
+              width: width * 0.75,
               pagePosition: DrawerPagePosition.home,
               operator: currentOperator,
               enterpriseId: _enterpriseId,

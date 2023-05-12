@@ -165,6 +165,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                           children: [
                             QuickAccessButton(
                               backgroundColor: primaryColor,
+                              onPressed: () {},
                               border: true,
                               height: height * 0.1,
                               width: width * 0.38,
@@ -185,6 +186,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             ),
                             QuickAccessButton(
                               backgroundColor: primaryColor,
+                              onPressed: () {},
                               border: true,
                               height: height * 0.1,
                               width: width * 0.38,

@@ -8,7 +8,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       : _database = database;
 
   final FirebaseFirestore _database;
-  final databaseOperatorsMapList = <Map<String, dynamic>>[];
+  var databaseOperatorsMapList = <Map<String, dynamic>>[];
   @override
   Future<List<Map<String, dynamic>>>? getOperatorInformations(
       String? enterpriseId) async {
@@ -21,7 +21,8 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       if (operatorsCollection.docs.isNotEmpty) {
         final databaseMaps =
             operatorsCollection.docs.map((e) => e.data()).toList();
-        databaseOperatorsMapList.addAll(databaseMaps);
+        databaseOperatorsMapList =
+            databaseMaps.map((operatorMap) => operatorMap).toList();
         return databaseOperatorsMapList;
       } else {
         throw UsersUnavailableError(
