@@ -32,4 +32,10 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       throw UsersUnavailableError(errorMessage: e.toString());
     }
   }
+  
+  @override
+  Future? createNewPaymentMethod(String enterpriseId) {
+    // TODO: implement createNewPaymentMethod
+    throw UnimplementedError();
+  }
 }

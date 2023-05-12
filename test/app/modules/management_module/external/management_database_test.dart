@@ -41,6 +41,12 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       throw UsersUnavailableError(errorMessage: e.toString());
     }
   }
+
+  @override
+  Future? createNewPaymentMethod(String enterpriseId) {
+    // TODO: implement createNewPaymentMethod
+    throw UnimplementedError();
+  }
 }
 
 void main() {
@@ -62,7 +68,10 @@ void main() {
       authMock = MockFirebaseAuth(mockUser: user);
       firebaseMock = FakeFirebaseFirestore();
       enterpriseDb = EnterpriseDatabaseMock(
-          database: firebaseMock, auth: authMock, uuid: const Uuid());
+        database: firebaseMock,
+        auth: authMock,
+        uuid: const Uuid(),
+      );
       loginDb = FirebaseDatabaseMock(
         auth: authMock,
         database: firebaseMock,
@@ -97,6 +106,39 @@ void main() {
 
       test(
         "Fail to get Operator Map List, passing null/empty string as parameter",
+        () async {
+          expect(database.getOperatorInformations(""),
+              throwsA(isA<UsersUnavailableError>()));
+          expect(database.getOperatorInformations(null),
+              throwsA(isA<UsersUnavailableError>()));
+        },
+      );
+    },
+  );
+  group(
+    'CreateNewPaymentMethod Function should',
+    () {
+      test(
+        "Create and save a payment method in database",
+        () async {
+          final createdEnterprise = await enterpriseDb
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final newOperator = await loginDb.register(
+              LoginTestObjects.newOperator,
+              createdEnterprise?["enterpriseId"],
+              LoginTestObjects.newOperator["businessPosition"]);
+          expect(createdEnterprise?.isNotEmpty, equals(true));
+          expect(newOperator?.isNotEmpty, equals(true));
+          final result = await database
+              .getOperatorInformations(createdEnterprise!["enterpriseId"]);
+          expect(result, isA<List<Map<String, dynamic>>>());
+          expect(
+              result?.first["operatorId"], equals(newOperator?["operatorId"]));
+        },
+      );
+
+      test(
+        "Fail to create a payment method",
         () async {
           expect(database.getOperatorInformations(""),
               throwsA(isA<UsersUnavailableError>()));
