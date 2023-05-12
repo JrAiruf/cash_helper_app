@@ -111,7 +111,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 40),
+                                      horizontal: 15),
                                   child: Text(
                                     "Últimas anotações:",
                                     style: Theme.of(context)
@@ -148,20 +148,16 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
+                            horizontal: 15, vertical: 15),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 40),
-                              child: Text("Acesso rápido:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(color: surfaceColor)),
-                            ),
+                            Text("Acesso rápido:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: surfaceColor)),
                             const SizedBox(height: 30),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

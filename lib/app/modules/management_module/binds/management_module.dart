@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/create_new_payment_method/icreate_new_payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/get_operator_informations/iget_operators_informations.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
@@ -6,6 +7,7 @@ import 'package:cash_helper_app/app/modules/management_module/infra/repositories
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../domain/usecases/create_new_payment_method/create_new_payment_method.dart';
 import '../domain/usecases/get_operator_informations/get_operators_informations.dart';
 
 abstract class AppManagementModule {
@@ -44,6 +46,11 @@ class ManagementeModule extends Module {
     ),
     Bind<IGetOperatorsInformations>(
       (i) => GetOperatorsInformations(
+        repository: i(),
+      ),
+    ),
+    Bind<ICreateNewpaymentMethod>(
+      (i) => CreateNewpaymentMethod(
         repository: i(),
       ),
     ),

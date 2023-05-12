@@ -15,7 +15,7 @@ class EmptyAnnotationsListComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Text(
             "Últimas anotações:",
             style: Theme.of(context)

@@ -44,6 +44,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final variantColor = Theme.of(context).colorScheme.surfaceVariant;
+
     return ValueListenableBuilder(
       valueListenable: _loginStore,
       builder: (_, state, __) {
@@ -82,7 +83,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         color: primaryColor,
                       ),
                       SizedBox(
-                        height: height * 0.09,
+                        height: height * 0.07,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
