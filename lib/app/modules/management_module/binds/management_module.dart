@@ -50,6 +50,7 @@ class ManagementeModule extends Module {
     Bind<ManagementStore>(
       (i) => ManagementStore(
         getOperatorsInformations: i(),
+        createNewPaymentMethod: i(),
       ),
     ),
   ];
