@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/users_unavailable_error.dart';
+import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,6 +65,7 @@ void main() {
       loginDb = FirebaseDatabaseMock(
         auth: authMock,
         database: firebaseMock,
+        encryptService: EncryptService(),
         dataVerifier: DataVerifier(),
         uuid: const Uuid(),
       );

@@ -3,6 +3,8 @@ import 'package:cash_helper_app/app/modules/login_module/external/errors/authent
 import 'package:cash_helper_app/app/modules/login_module/external/errors/database_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/registration_error.dart';
+import 'package:cash_helper_app/app/services/crypt_serivce.dart';
+import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,15 +21,18 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   FirebaseDatabaseMock({
     required FirebaseFirestore database,
     required FirebaseAuth auth,
+     required ICryptService encryptService,
     required Uuid uuid,
     required DataVerifier dataVerifier,
   })  : _database = database,
         _auth = auth,
+         _encryptService = encryptService,
         _uuid = uuid,
         _dataVerifier = dataVerifier;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
+   final ICryptService _encryptService;
   final Uuid _uuid;
   final DataVerifier _dataVerifier;
   User? _authUser;
@@ -53,6 +58,8 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       newUserId = _authUser!.uid;
       newUserMap["${collection}Id"] = newUserId;
       newUserMap["${collection}Code"] = operatorCode;
+      newUserMap['${collection}Password'] =
+          _encryptService.generateHash(newUserMap['${collection}Password']);
       newUserMap.isNotEmpty &&
               enterpriseId!.isNotEmpty &&
               _authUser!.uid.isNotEmpty
@@ -102,25 +109,25 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           .collection(userBusinessPosition)
           .get();
       userData = databaseUsersCollection.docs.firstWhere((element) {
-        return element["${collection}Email"] == email &&
-            element["${collection}Password"] == password;
+        final verifiedHashCode = _encryptService.checkHashCode(
+            password!, element["${collection}Password"]);
+        return  element["${collection}Email"] == email && verifiedHashCode;
       }).data();
       return userData;
-    } catch (e) {
-      if (userData.isEmpty) {
-        throw AuthenticationError(message: e.toString());
-      }
-      if (userBusinessPosition.isEmpty) {
-        throw UserNotFound(message: e.toString());
+    } on FirebaseException catch (e) {
+      if (e.code == "wrong-password" || e.code == "user-not-found") {
+        throw AuthenticationError(message: e.message!);
       } else {
-        throw AuthenticationError(message: e.toString());
+        throw UserNotFound(message: e.message!);
       }
+    } catch (e) {
+      throw UserNotFound(message: e.toString());
     }
   }
 
   @override
   Future<Map<String, dynamic>>? getUserById(
-      String? enterpriseId, String? userId, String? collection) async {
+      String? enterpriseId, String? operatorId, String? collection) async {
     try {
       final databaseCollection = await _database
           .collection("enterprise")
@@ -128,15 +135,11 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           .collection(collection!)
           .get();
       userData = databaseCollection.docs
-          .firstWhere((element) => element["${collection}Id"] == userId)
+          .firstWhere((element) => element["${collection}Id"] == operatorId)
           .data();
       return userData;
     } catch (e) {
-      if (userData.isEmpty) {
-        throw UserNotFound(message: e.toString());
-      } else {
-        throw DatabaseError(message: e.toString());
-      }
+      throw UserNotFound(message: e.toString());
     }
   }
 
@@ -212,6 +215,7 @@ void main() {
     database = FirebaseDatabaseMock(
         database: firebaseMock,
         auth: authMock,
+        encryptService: EncryptService(),
         uuid: uuid,
         dataVerifier: dataVerifier);
   });
