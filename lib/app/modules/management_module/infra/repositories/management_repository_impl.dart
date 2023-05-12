@@ -31,10 +31,10 @@ class ManagementRepositoryImpl implements ManagementRepository {
 
   @override
   Future<PaymentMethodModel>? createNewPaymentMethod(
-      String? enterpriseId, PaymentMethodModel paymentMethod) async {
+      String? enterpriseId, PaymentMethodModel? paymentMethod) async {
     if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
       final newPaymentMethod = await _database.createNewPaymentMethod(
-          enterpriseId, paymentMethod.toMap());
+          enterpriseId, paymentMethod?.toMap());
       return PaymentMethodModel.fromMap(newPaymentMethod ?? {});
     } else {
       return PaymentMethodModel();

@@ -132,6 +132,7 @@ void main() {
           final result = await repository.createNewPaymentMethod(
               null, PaymentMethodTestObjects.newPaymentMethodModel);
           expect(result, isA<PaymentMethodModel>());
+          expect(result?.paymentMethodId, equals(null));
         },
       );
     },

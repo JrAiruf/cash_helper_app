@@ -77,8 +77,7 @@ class PaymentMethodTestObjects {
     paymentMethodUsingRate: 34.7,
   );
   static final newPaymentMethodEntity = PaymentMethodEntity(
-    paymentMethodDescription:
-        "Pagamentos a vista. Inclui Percentual de desconto",
+    paymentMethodDescription:"Pagamentos a vista. Inclui Percentual de desconto",
     paymentMethodName: "Dinheiro",
     paymentMethodUsingRate: 34.7,
   );
