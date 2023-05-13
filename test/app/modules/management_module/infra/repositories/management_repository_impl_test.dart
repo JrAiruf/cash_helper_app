@@ -45,11 +45,21 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
       return PaymentMethodModel();
     }
   }
-  
+
   @override
-  Future? getAllPaymentMethods(String enterpriseId) {
-    // TODO: implement getPaymentMethods
-    throw UnimplementedError();
+  Future<List<PaymentMethodModel>>? getAllPaymentMethods(
+      String enterpriseId) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
+      final paymentMethodMapList =
+          await _database.getAllPaymentMethods(enterpriseId) as List;
+      final paymentMethods = paymentMethodMapList
+          .map((paymentMethodMap) =>
+              PaymentMethodModel.fromMap(paymentMethodMap))
+          .toList();
+      return paymentMethods;
+    } else {
+      return [];
+    }
   }
 }
 
@@ -139,6 +149,42 @@ void main() {
               null, PaymentMethodTestObjects.newPaymentMethodModel);
           expect(result, isA<PaymentMethodModel>());
           expect(result?.paymentMethodId, equals(null));
+        },
+      );
+    },
+  );
+  group(
+    'GetAllPaymentMethods Function should',
+    () {
+      test(
+        "Call database to retrieve a List of payment method and convert it to PaymentMethodModel objects list",
+        () async {
+          when(database.getAllPaymentMethods(any)).thenAnswer(
+            (realInvocation) async => [
+              PaymentMethodTestObjects.paymentMethodMap,
+              PaymentMethodTestObjects.paymentMethodMap
+            ],
+          );
+
+          final result = await repository.getAllPaymentMethods("enterpriseId");
+          expect(result, isA<List<PaymentMethodModel>>());
+          expect(result?.first.paymentMethodId,
+              equals("aldql34hlaky5qi24nlnalnaljq4nal4"));
+        },
+      );
+      test(
+        "Fail to get and  convert list of payment methods",
+        () async {
+          when(database.getAllPaymentMethods(any)).thenAnswer(
+            (realInvocation) async => [
+              PaymentMethodTestObjects.paymentMethodMap,
+              PaymentMethodTestObjects.paymentMethodMap
+            ],
+          );
+
+          final result = await repository.getAllPaymentMethods("");
+          expect(result, isA<List<PaymentMethodModel>>());
+          expect(result?.isEmpty, equals(true));
         },
       );
     },

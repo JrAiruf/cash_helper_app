@@ -40,10 +40,20 @@ class ManagementRepositoryImpl implements ManagementRepository {
       return PaymentMethodModel();
     }
   }
-  
+
   @override
-  Future? getAllPaymentMethods(String? enterpriseId) {
-    // TODO: implement getPaymentMethods
-    throw UnimplementedError();
+  Future<List<PaymentMethodModel>>? getAllPaymentMethods(
+      String enterpriseId) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
+      final paymentMethodMapList =
+          await _database.getAllPaymentMethods(enterpriseId) as List;
+      final paymentMethods = paymentMethodMapList
+          .map((paymentMethodMap) =>
+              PaymentMethodModel.fromMap(paymentMethodMap))
+          .toList();
+      return paymentMethods;
+    } else {
+      return [];
+    }
   }
 }

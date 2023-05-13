@@ -60,6 +60,12 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       throw PaymentMethodNotCreated(errorMessage: e.toString());
     }
   }
+  
+  @override
+  Future? getAllPaymentMethods(String enterpriseId) {
+    // TODO: implement getAllPaymentMethods
+    throw UnimplementedError();
+  }
 }
 
 void main() {
