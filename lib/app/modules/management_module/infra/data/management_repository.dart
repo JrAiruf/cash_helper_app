@@ -3,4 +3,5 @@ import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/payme
 abstract class ManagementRepository {
   Future<dynamic>? getOperatorsInformations(String enterpriseId);
   Future<dynamic>? createNewPaymentMethod(String enterpriseId, PaymentMethodModel paymentMethod);
+  Future<dynamic>? getAllPaymentMethods(String enterpriseId);
 }

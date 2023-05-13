@@ -49,6 +49,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          height: height,
           decoration: BoxDecoration(
             color: backgroundColor,
           ),

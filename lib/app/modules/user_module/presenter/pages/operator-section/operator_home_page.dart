@@ -153,11 +153,15 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Acesso rápido:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(color: surfaceColor)),
+                            Text(
+                              "Acesso rápido:",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: surfaceColor,
+                                  ),
+                            ),
                             const SizedBox(height: 30),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

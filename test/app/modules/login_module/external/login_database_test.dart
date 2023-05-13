@@ -21,18 +21,18 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   FirebaseDatabaseMock({
     required FirebaseFirestore database,
     required FirebaseAuth auth,
-     required ICryptService encryptService,
+    required ICryptService encryptService,
     required Uuid uuid,
     required DataVerifier dataVerifier,
   })  : _database = database,
         _auth = auth,
-         _encryptService = encryptService,
+        _encryptService = encryptService,
         _uuid = uuid,
         _dataVerifier = dataVerifier;
 
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
-   final ICryptService _encryptService;
+  final ICryptService _encryptService;
   final Uuid _uuid;
   final DataVerifier _dataVerifier;
   User? _authUser;
@@ -111,7 +111,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
       userData = databaseUsersCollection.docs.firstWhere((element) {
         final verifiedHashCode = _encryptService.checkHashCode(
             password!, element["${collection}Password"]);
-        return  element["${collection}Email"] == email && verifiedHashCode;
+        return element["${collection}Email"] == email && verifiedHashCode;
       }).data();
       return userData;
     } on FirebaseException catch (e) {
@@ -219,6 +219,26 @@ void main() {
         uuid: uuid,
         dataVerifier: dataVerifier);
   });
+  tearDown(() {
+    final user = MockUser(
+      isAnonymous: false,
+      uid: 'someuid',
+      email: 'email@email.com',
+      displayName: 'Junior',
+    );
+    authMock = MockFirebaseAuth(mockUser: user);
+    firebaseMock = FakeFirebaseFirestore();
+    uuid = const Uuid();
+    dataVerifier = DataVerifier();
+    enterpriseDatabase = EnterpriseDatabaseMock(
+        database: firebaseMock, auth: authMock, uuid: uuid);
+    database = FirebaseDatabaseMock(
+        database: firebaseMock,
+        auth: authMock,
+        encryptService: EncryptService(),
+        uuid: uuid,
+        dataVerifier: dataVerifier);
+  });
   group(
     "Register function should",
     () {
@@ -295,7 +315,7 @@ void main() {
               LoginTestObjects.newOperator["businessPosition"]);
           final loginOperator = await database.login(
               createdOperator?["operatorEmail"],
-              createdOperator?["operatorPassword"],
+              "12345678",
               createdEnterprise["enterpriseId"],
               createdOperator?["businessPosition"]);
           expect(loginOperator != null, equals(true));
@@ -327,7 +347,7 @@ void main() {
         "Fail to sign in with non-existing user",
         () async {
           expect(() async => database.login("nonUserEmail", "", "", ""),
-              throwsA(isA<AuthenticationError>()));
+              throwsA(isA<UserNotFound>()));
         },
       );
       test(
@@ -369,36 +389,30 @@ void main() {
                   "wrongPassword",
                   createdEnterprise["enterpriseId"],
                   createdManager?["businessPosition"]),
-              throwsA(isA<AuthenticationError>()));
+              throwsA(isA<UserNotFound>()));
         },
       );
     },
   );
-  group(
-    "Login function should",
-    () {
-      test(
-        "Authenticate a manager and sign in the application",
-        () async {
-          await enterpriseDatabase
-              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final enterprisesList =
-              await firebaseMock.collection("enterprise").get();
-          final createdEnterprise = enterprisesList.docs.first.data();
-          final createdManager = await database.register(
-              LoginTestObjects.newManager,
-              createdEnterprise["enterpriseId"],
-              LoginTestObjects.newManager["businessPosition"]);
-          final loginOperator = await database.login(
-              createdManager?["managerEmail"],
-              createdManager?["managerPassword"],
-              createdEnterprise["enterpriseId"],
-              createdManager?["businessPosition"]);
-          expect(loginOperator != null, equals(true));
-          expect(loginOperator?["managerId"] != null, equals(true));
-          expect(loginOperator?["businessPosition"], equals("manager"));
-        },
-      );
+  test(
+    "Authenticate a manager and sign in the application",
+    () async {
+      await enterpriseDatabase
+          .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+      final enterprisesList = await firebaseMock.collection("enterprise").get();
+      final createdEnterprise = enterprisesList.docs.first.data();
+      final createdManager = await database.register(
+          LoginTestObjects.newManager,
+          createdEnterprise["enterpriseId"],
+          LoginTestObjects.newManager["businessPosition"]);
+      final loginOperator = await database.login(
+          createdManager?["managerEmail"],
+          "123junior456",
+          createdEnterprise["enterpriseId"],
+          createdManager?["businessPosition"]);
+      expect(loginOperator != null, equals(true));
+      expect(loginOperator?["managerId"] != null, equals(true));
+      expect(loginOperator?["businessPosition"], equals("manager"));
     },
   );
   group(

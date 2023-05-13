@@ -40,4 +40,10 @@ class ManagementRepositoryImpl implements ManagementRepository {
       return PaymentMethodModel();
     }
   }
+  
+  @override
+  Future? getAllPaymentMethods(String? enterpriseId) {
+    // TODO: implement getPaymentMethods
+    throw UnimplementedError();
+  }
 }
