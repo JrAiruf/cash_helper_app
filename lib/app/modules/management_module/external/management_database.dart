@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/modules/management_module/external/data/appl
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'errors/payment_method_not_created.dart';
+import 'errors/payment_methods_list_unnavailable.dart';
 import 'errors/users_unavailable_error.dart';
 
 class ManagementDatabase implements ApplicationManagementDatabase {
@@ -53,8 +54,25 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
   
   @override
-  Future? getAllPaymentMethods(String? enterpriseId) {
-    // TODO: implement getAllPaymentMethods
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>>? getAllPaymentMethods(
+      String? enterpriseId) async {
+    try {
+      final paymentMethodsCollection = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection("paymentMethods")
+          .get();
+      if (paymentMethodsCollection.docs.isNotEmpty) {
+        final paymentMethodsMapList = paymentMethodsCollection.docs
+            .map((paymentMethodDocument) => paymentMethodDocument.data())
+            .toList();
+        return paymentMethodsMapList;
+      } else {
+        throw PaymentMethodsListUnnavailable(
+            errorMessage: "Métodos de pagamento indisponíveis");
+      }
+    } catch (e) {
+      throw PaymentMethodsListUnnavailable(errorMessage: e.toString());
+    }
   }
 }

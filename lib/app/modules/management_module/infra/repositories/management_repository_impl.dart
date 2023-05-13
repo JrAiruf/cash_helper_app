@@ -43,7 +43,7 @@ class ManagementRepositoryImpl implements ManagementRepository {
 
   @override
   Future<List<PaymentMethodModel>>? getAllPaymentMethods(
-      String enterpriseId) async {
+      String? enterpriseId) async {
     if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
       final paymentMethodMapList =
           await _database.getAllPaymentMethods(enterpriseId) as List;

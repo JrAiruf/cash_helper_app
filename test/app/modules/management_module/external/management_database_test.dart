@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
+import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_methods_list_unnavailable.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/users_unavailable_error.dart';
 import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
@@ -44,14 +45,18 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   }
 
   @override
-  Future<Map<String,dynamic>>? createNewPaymentMethod(
+  Future<Map<String, dynamic>>? createNewPaymentMethod(
       String? enterpriseId, Map<String, dynamic>? paymentMethod) async {
     try {
       if (enterpriseId!.isNotEmpty && paymentMethod!.isNotEmpty) {
-        final paymentMethodsCollection =
-            _database.collection("enterprise").doc(enterpriseId).collection("paymentMethods");
-        final newPaymentMethod = await paymentMethodsCollection.add(paymentMethod).then((value) => value.get());
-         return newPaymentMethod.data() ?? {};
+        final paymentMethodsCollection = _database
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection("paymentMethods");
+        final newPaymentMethod = await paymentMethodsCollection
+            .add(paymentMethod)
+            .then((value) => value.get());
+        return newPaymentMethod.data() ?? {};
       } else {
         throw PaymentMethodNotCreated(
             errorMessage: "Erro ao criar método de pagamento");
@@ -60,11 +65,28 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       throw PaymentMethodNotCreated(errorMessage: e.toString());
     }
   }
-  
+
   @override
-  Future? getAllPaymentMethods(String enterpriseId) {
-    // TODO: implement getAllPaymentMethods
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>>? getAllPaymentMethods(
+      String enterpriseId) async {
+    try {
+      final paymentMethodsCollection = await _database
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection("paymentMethods")
+          .get();
+      if (paymentMethodsCollection.docs.isNotEmpty) {
+        final paymentMethodsMapList = paymentMethodsCollection.docs
+            .map((paymentMethodDocument) => paymentMethodDocument.data())
+            .toList();
+        return paymentMethodsMapList;
+      } else {
+        throw PaymentMethodsListUnnavailable(
+            errorMessage: "Métodos de pagamento indisponíveis");
+      }
+    } catch (e) {
+      throw PaymentMethodsListUnnavailable(errorMessage: e.toString());
+    }
   }
 }
 
@@ -162,6 +184,31 @@ void main() {
                 null, PaymentMethodTestObjects.newPaymentMethodMap),
             throwsA(isA<PaymentMethodNotCreated>()),
           );
+        },
+      );
+    },
+  );
+  group(
+    'GetAllPaymentMethods Function should',
+    () {
+      test(
+        "Get a List of payment methods from database(returns A List<Map<String,dynamic>>)",
+        () async {
+          await database.createNewPaymentMethod(
+            "enterpriseId",
+            PaymentMethodTestObjects.newPaymentMethodMap,
+          );
+          final result = await database.getAllPaymentMethods("enterpriseId");
+          expect(result, isA<List<Map<String, dynamic>>>());
+          expect(result?.isNotEmpty, equals(true));
+        },
+      );
+
+      test(
+        "Fail to retrive the database list",
+        () async {
+          expect(() async => database.getAllPaymentMethods(""),
+              throwsA(isA<PaymentMethodsListUnnavailable>()));
         },
       );
     },
