@@ -6,6 +6,7 @@ import 'package:cash_helper_app/app/modules/management_module/external/managemen
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/repositories/management_repository_impl.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
@@ -44,6 +45,10 @@ class ManagementModule extends Module {
     ChildRoute(
       "/create-payment-method-page/:enterpriseId",
       child: (_, args) => CreatePaymentMethodPage(managerEntity: args.data),
+    ),
+    ChildRoute(
+      "/payment-method/:enterpriseId",
+      child: (_, args) => PaymentMethod(paymentMethod: args.data["paymentMethodEntity"]),
     ),
   ];
   final bindsList = <Bind>[

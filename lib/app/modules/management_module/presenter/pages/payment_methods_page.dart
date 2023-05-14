@@ -122,56 +122,72 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                           padding: const EdgeInsets.symmetric(
                                             vertical: 5,
                                           ),
-                                          child: Container(
-                                            height: height * 0.11,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              color: primaryColor,
-                                              border: Border.all(
-                                                color: detailColor,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              final argObjects = {
+                                                "paymentMethodEntity":
+                                                    paymentMethod,
+                                                "managerEntity":
+                                                    widget.managerEntity,
+                                              };
+                                              Modular.to.pushNamed(
+                                                  "${ManagementRoutes.paymentMethod}$_enterpriseId",
+                                                  arguments: argObjects);
+                                            },
+                                            child: Container(
+                                              height: height * 0.11,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                color: primaryColor,
+                                                border: Border.all(
+                                                  color: detailColor,
+                                                ),
                                               ),
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 15,
-                                              vertical: 15,
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "${paymentMethod.paymentMethodName}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          color: surfaceColor),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.analytics_outlined,
-                                                      color: surfaceColor,
-                                                    ),
-                                                    SizedBox(
-                                                      width: width * 0.07,
-                                                    ),
-                                                    Text(
-                                                      "${paymentMethod.paymentMethodUsingRate} - hora",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .displaySmall
-                                                          ?.copyWith(
-                                                              color:
-                                                                  surfaceColor),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 15,
+                                                vertical: 15,
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${paymentMethod.paymentMethodName}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                            color:
+                                                                surfaceColor),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .analytics_outlined,
+                                                        color: surfaceColor,
+                                                      ),
+                                                      SizedBox(
+                                                        width: width * 0.07,
+                                                      ),
+                                                      Text(
+                                                        "${paymentMethod.paymentMethodUsingRate} - hora",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .displaySmall
+                                                            ?.copyWith(
+                                                                color:
+                                                                    surfaceColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         );
