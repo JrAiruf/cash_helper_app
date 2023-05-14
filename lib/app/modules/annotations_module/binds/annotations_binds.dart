@@ -9,10 +9,7 @@ import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
-
-import '../domain/usecases/create_annotation/create_annotation.dart';
 import '../domain/usecases/create_annotation/create_new_annotation.dart';
-import '../domain/usecases/create_annotation/icreate_annotation.dart';
 import '../domain/usecases/create_annotation/icreate_new_annotation.dart';
 import '../domain/usecases/delete_annotation/delete_annotation.dart';
 import '../domain/usecases/delete_annotation/idelete_annotation.dart';

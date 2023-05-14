@@ -7,8 +7,8 @@ class PaymentMethodEntity {
 
   PaymentMethodEntity({
     this.paymentMethodId,
-    required this.paymentMethodName,
-    required this.paymentMethodDescription,
-    required this.paymentMethodUsingRate,
+    this.paymentMethodName,
+    this.paymentMethodDescription,
+    this.paymentMethodUsingRate,
   });
 }

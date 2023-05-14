@@ -5,9 +5,7 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
-import '../../../login_module/presenter/stores/login_states.dart';
 
 class CreateAnnotationsPage extends StatefulWidget {
   CreateAnnotationsPage({super.key, required this.operatorEntity});
