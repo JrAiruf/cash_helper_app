@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ManagementController {
+class ManagementController{
+  ManagementController();
   final paymentMethodNameField = TextEditingController();
   final paymentMethodDescriptionField = TextEditingController();
   final managerCodeField = TextEditingController();
 
   String? paymentMethodNameValidate(String? value) {
-    return value!.isNotEmpty
-        ? null
-        : 'Insira o nome do método de pagamento';
+    return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
   }
 
   String? managerCodeValidate(String? value) {

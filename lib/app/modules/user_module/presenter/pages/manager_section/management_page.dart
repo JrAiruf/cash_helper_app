@@ -1,9 +1,12 @@
+import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/manager_section_drawer.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/controller/payment_methods_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../routes/app_routes.dart';
+import '../../../../management_module/presenter/stores/management_store.dart';
 import '../../../domain/entities/manager_entity.dart';
 
 class ManagementPage extends StatefulWidget {
@@ -14,9 +17,17 @@ class ManagementPage extends StatefulWidget {
   State<ManagementPage> createState() => _ManagementPageState();
 }
 
+final _managementStore = Modular.get<ManagementStore>();
+final _paymentMethodController = Modular.get<PaymentMethodsController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
 
 class _ManagementPageState extends State<ManagementPage> {
+  @override
+  void initState() {
+    _paymentMethodController.getPaymentMethodsInformations(_enterpriseId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -109,13 +120,17 @@ class _ManagementPageState extends State<ManagementPage> {
                                         .displaySmall
                                         ?.copyWith(color: surfaceColor),
                                   ),
-                                  Text(
-                                    "4",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
+                                  AnimatedBuilder(
+                                      animation: _paymentMethodController,
+                                      builder: (context, _) {
+                                        return Text(
+                                          "${_paymentMethodController.paymentMethods.length}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(color: surfaceColor),
+                                        );
+                                      }),
                                 ],
                               ),
                               Row(

@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/operator_database_impl.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/controller/payment_methods_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/admin_options_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/controll_panel_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
@@ -150,6 +151,11 @@ class UserModule extends Module {
         changeOperatorEmail: i(),
         changeOperatorPassword: i(),
         deleteOperatorAccount: i(),
+      ),
+    ),
+    Bind.singleton<PaymentMethodsController>(
+      (i) => PaymentMethodsController(
+        getAllPaymentMethods: i(),
       ),
     ),
     Bind.singleton<OperatorController>(

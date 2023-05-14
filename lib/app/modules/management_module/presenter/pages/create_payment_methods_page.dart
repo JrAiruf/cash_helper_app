@@ -160,6 +160,22 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                             width: width,
                             buttonName: "Salvar",
                           ),
+                          SizedBox(
+                            height: height * 0.02,
+                          ),
+                          CashHelperElevatedButton(
+                            radius: 10,
+                            onPressed: () {
+                              Modular.to.navigate(
+                                  "${UserRoutes.managementPage}$_enterpriseId",
+                                  arguments: widget.managerEntity);
+                            },
+                            border: true,
+                            backgroundColor: backgroundColor,
+                            height: 65,
+                            width: width,
+                            buttonName: "Voltar",
+                          ),
                         ],
                       ),
                     ),

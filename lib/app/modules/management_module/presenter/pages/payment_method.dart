@@ -22,19 +22,148 @@ class PaymentMethod extends StatelessWidget {
         decoration: BoxDecoration(
           color: primaryColor,
         ),
-        child: Column(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  height: height * 0.6,
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
+            Container(
+              height: height * 0.75,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                color: backgroundColor,
+              ),
+            ),
+            Positioned(
+              top: height * 0.1,
+              left: 20,
+              child: Icon(
+                Icons.payments_outlined,
+                size: 80,
+                color: surfaceColor,
+              ),
+            ),
+            Positioned(
+              top: height * 0.3,
+              child: Container(
+                height: height * 0.25,
+                width: width * 0.95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: primaryColor,
+                  border: Border.all(
+                    color: detailColor,
                   ),
                 ),
-              ],
-            )
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 15,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Nome:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                        Text(
+                          "${paymentMethod.paymentMethodName}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "ID:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                        Text(
+                          "${paymentMethod.paymentMethodId}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Taxa de uso:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                        Text(
+                          "${paymentMethod.paymentMethodUsingRate} - hora",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: height * 0.62,
+              child: Container(
+                height: height * 0.12,
+                width: width * 0.95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: primaryColor,
+                  border: Border.all(
+                    color: detailColor,
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 15,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Descrição:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall
+                              ?.copyWith(color: surfaceColor),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text("${paymentMethod.paymentMethodDescription}"),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
