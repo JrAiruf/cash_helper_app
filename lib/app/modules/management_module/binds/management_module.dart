@@ -8,6 +8,7 @@ import 'package:cash_helper_app/app/modules/management_module/infra/repositories
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods_page.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/pages/remove_payment_method_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -45,6 +46,10 @@ class ManagementModule extends Module {
     ChildRoute(
       "/create-payment-method-page/:enterpriseId",
       child: (_, args) => CreatePaymentMethodPage(managerEntity: args.data),
+    ),
+    ChildRoute(
+      "/remove-payment-method-page/:enterpriseId",
+      child: (_, args) => RemovePaymentMethodPage(managerEntity: args.data),
     ),
     ChildRoute(
       "/payment-method/:enterpriseId",
