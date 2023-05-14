@@ -132,50 +132,61 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                           SizedBox(
                             height: height * 0.05,
                           ),
-                          CashHelperElevatedButton(
-                            radius: 10,
-                            onPressed: () {
-                              _paymentMethodFormKey.currentState?.validate();
-                              _paymentMethodFormKey.currentState?.save();
-                              if (_paymentMethodFormKey.currentState!
-                                  .validate()) {
-                                if (_managerCode ==
-                                    widget.managerEntity.managerCode) {
-                                  _newPaymentMethod.paymentMethodUsingRate = 0;
-                                  _managementStore.createNewPaymentMethod(
-                                      _enterpriseId, _newPaymentMethod);
-                                  Modular.to.navigate(
-                                      "${UserRoutes.managementPage}$_enterpriseId",
-                                      arguments: widget.managerEntity);
-                                } else {
-                                  _managementController.noMatchingCodes(context,
-                                      message:
-                                          "Código Administrativo Inválido!");
-                                }
-                              }
-                            },
-                            border: true,
-                            backgroundColor: tertiaryColor,
-                            height: 65,
-                            width: width,
-                            buttonName: "Salvar",
-                          ),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          CashHelperElevatedButton(
-                            radius: 10,
-                            onPressed: () {
-                              Modular.to.navigate(
-                                  "${UserRoutes.managementPage}$_enterpriseId",
-                                  arguments: widget.managerEntity);
-                            },
-                            border: true,
-                            backgroundColor: backgroundColor,
-                            height: 65,
-                            width: width,
-                            buttonName: "Voltar",
-                          ),
+                          Center(
+                            child: Column(
+                              children: [
+                                CashHelperElevatedButton(
+                                  radius: 10,
+                                  onPressed: () {
+                                    _paymentMethodFormKey.currentState
+                                        ?.validate();
+                                    _paymentMethodFormKey.currentState?.save();
+                                    if (_paymentMethodFormKey.currentState!
+                                        .validate()) {
+                                      if (_managerCode ==
+                                          widget.managerEntity.managerCode) {
+                                        _newPaymentMethod
+                                            .paymentMethodUsingRate = 0;
+                                        _managementStore.createNewPaymentMethod(
+                                            _enterpriseId, _newPaymentMethod);
+                                        Modular.to.navigate(
+                                            "${UserRoutes.managementPage}$_enterpriseId",
+                                            arguments: widget.managerEntity);
+                                      } else {
+                                        _managementController.noMatchingCodes(
+                                            context,
+                                            message:
+                                                "Código Administrativo Inválido!");
+                                      }
+                                    }
+                                  },
+                                  border: true,
+                                  backgroundColor: tertiaryColor,
+                                  height: 50,
+                                  width: width * 0.7,
+                                  buttonName: "Salvar",
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                CashHelperElevatedButton(
+                                  radius: 10,
+                                  onPressed: () {
+                                    Modular.to.navigate(
+                                        "${UserRoutes.managementPage}$_enterpriseId",
+                                        arguments: widget.managerEntity);
+                                  },
+                                  border: true,
+                                  backgroundColor: primaryColor,
+                                  nameColor: surfaceColor,
+                                  height: 50,
+                                  width: width * 0.7,
+                                  buttonName: "Voltar",
+                                  fontSize: 15,
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),

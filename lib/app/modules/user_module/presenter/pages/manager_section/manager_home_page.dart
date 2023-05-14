@@ -212,11 +212,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       SizedBox(
                         height: height * 0.05,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                      Center(
                         child: CashHelperElevatedButton(
-                          width: width,
-                          height: 60,
+                          border: true,
+                          height: 50,
+                          width: width * 0.7,
                           radius: 12,
                           onPressed: () {
                             Modular.to.navigate(

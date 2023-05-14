@@ -97,86 +97,88 @@ class _ManagementPageState extends State<ManagementPage> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-                      Container(
-                        height: height * 0.15,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: surfaceColor, width: 0.9),
-                            color: primaryColor,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Todos:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
-                                  AnimatedBuilder(
-                                      animation: _paymentMethodController,
-                                      builder: (context, _) {
-                                        return Text(
+                      AnimatedBuilder(
+                          animation: _paymentMethodController,
+                          builder: (context, _) {
+                            return Container(
+                              height: height * 0.15,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: surfaceColor, width: 0.9),
+                                  color: primaryColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Todos:",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(color: surfaceColor),
+                                        ),
+                                        Text(
                                           "${_paymentMethodController.paymentMethods.length}",
                                           style: Theme.of(context)
                                               .textTheme
                                               .displaySmall
                                               ?.copyWith(color: surfaceColor),
-                                        );
-                                      }),
-                                ],
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Mais Frequente:",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(color: surfaceColor),
+                                        ),
+                                        Text(
+                                          "Crédito",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(color: surfaceColor),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Frequência:",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(color: surfaceColor),
+                                        ),
+                                        Text(
+                                          "35/hora",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(color: surfaceColor),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Mais Frequente:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
-                                  Text(
-                                    "Crédito",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Frequência:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
-                                  Text(
-                                    "35/hora",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            );
+                          }),
                       const SizedBox(
                         height: 15,
                       ),
