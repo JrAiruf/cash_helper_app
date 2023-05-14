@@ -21,10 +21,11 @@ class NewPaymentMethodState implements ManagementStates {
   final PaymentMethodEntity paymentMethod;
 }
 class GetPaymentMethodsState implements ManagementStates {
-  GetPaymentMethodsState({required this.paymentMethod});
-  final List<PaymentMethodEntity> paymentMethod;
+  GetPaymentMethodsState({required this.paymentMethods});
+  final List<PaymentMethodEntity> paymentMethods;
 }
 
+class NoPaymentMethodsState implements ManagementStates {}
 class PaymentMethodFailureState implements ManagementStates {}
 
 class GetUsersListFailureState implements ManagementStates {}

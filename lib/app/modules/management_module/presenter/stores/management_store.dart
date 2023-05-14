@@ -20,6 +20,10 @@ class ManagementStore extends ValueNotifier<ManagementStates> {
   final ICreateNewpaymentMethod _createNewPaymentMethod;
   final IGetAllPaymentMethods _getAllPaymentMethods;
 
+  void resetManagementModuleState() {
+    value = ManagementInitialState();
+  }
+
   Future<void> getOperatorsInformations(String enterpriseId) async {
     value = ManagementLoadingState();
     final operatorsList =
@@ -37,18 +41,20 @@ class ManagementStore extends ValueNotifier<ManagementStates> {
     final newPaymentMethod =
         await _createNewPaymentMethod(enterpriseId, paymentMethod);
     if (newPaymentMethod != null) {
-      value = NewPaymentMethodState(paymentMethod: newPaymentMethod);
+      value = ManagementInitialState();
     } else {
       value = PaymentMethodFailureState();
     }
   }
 
   Future<void> getAllPaymentMethods(String enterpriseId) async {
-     value = ManagementLoadingState();
+    value = ManagementLoadingState();
     final paymentMethods =
-        await _getAllPaymentMethods(enterpriseId);
-    if (paymentMethods != null) {
-      value = GetPaymentMethodsState(paymentMethod: paymentMethods);
+        await _getAllPaymentMethods(enterpriseId) as List<PaymentMethodEntity>;
+    if (paymentMethods.isNotEmpty) {
+      value = GetPaymentMethodsState(paymentMethods: paymentMethods);
+    } else if (paymentMethods.isEmpty) {
+      value = NoPaymentMethodsState();
     } else {
       value = PaymentMethodFailureState();
     }

@@ -36,7 +36,6 @@ class AnnotationRoutes {
 }
 
 class ManagementRoutes {
-  static const managementPage = "/management-module/management-page/";
   static const paymentMethodsPage = "/management-module/payment-methods-page/";
   static const createPaymentMethodPage = "/management-module/create-payment-method-page/";
   static const controllPanelPage = "/management-module/controll-panel-page/";

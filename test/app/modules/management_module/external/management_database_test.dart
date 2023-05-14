@@ -15,8 +15,9 @@ import '../../enterprise_module/external/enterprise_database_test.dart';
 import '../../login_module/external/login_database_test.dart';
 
 class ManagementDBMock implements ApplicationManagementDatabase {
-  ManagementDBMock({required FirebaseFirestore database})
-      : _database = database;
+  ManagementDBMock({
+    required FirebaseFirestore database,
+  }) : _database = database;
 
   final FirebaseFirestore _database;
   var databaseOperatorsMapList = <Map<String, dynamic>>[];
@@ -55,7 +56,11 @@ class ManagementDBMock implements ApplicationManagementDatabase {
             .collection("paymentMethods");
         final newPaymentMethod = await paymentMethodsCollection
             .add(paymentMethod)
-            .then((value) => value.get());
+            .then((value) async {
+          final paymentMethodId = value.id;
+          await value.update({"paymentMethodId": paymentMethodId});
+          return value.get();
+        });
         return newPaymentMethod.data() ?? {};
       } else {
         throw PaymentMethodNotCreated(
@@ -75,7 +80,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
           .doc(enterpriseId)
           .collection("paymentMethods")
           .get();
-      if (paymentMethodsCollection.docs.isNotEmpty) {
+      if (enterpriseId.isNotEmpty) {
         final paymentMethodsMapList = paymentMethodsCollection.docs
             .map((paymentMethodDocument) => paymentMethodDocument.data())
             .toList();
