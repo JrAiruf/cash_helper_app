@@ -162,14 +162,22 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                                         0;
                                     _managementStore.createNewPaymentMethod(
                                         _enterpriseId, _newPaymentMethod);
+                                    _managementController
+                                        .paymentMethodAddedSnackBar(
+                                      context,
+                                      message:
+                                          "Novo método de pagamento adicionado!",
+                                    );
                                     Modular.to.navigate(
-                                        "${UserRoutes.managementPage}$_enterpriseId",
-                                        arguments: widget.managerEntity);
+                                      "${UserRoutes.managerHomePage}$_enterpriseId",
+                                      arguments: widget.managerEntity,
+                                    );
                                   } else {
                                     _managementController.noMatchingCodes(
-                                        context,
-                                        message:
-                                            "Código Administrativo Inválido!");
+                                      context,
+                                      message:
+                                          "Código Administrativo Inválido!",
+                                    );
                                   }
                                 }
                               },

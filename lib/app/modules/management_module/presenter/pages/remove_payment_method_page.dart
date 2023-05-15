@@ -9,6 +9,7 @@ import '../../../login_module/presenter/components/cash_helper_text_field.dart';
 import '../../../user_module/domain/entities/manager_entity.dart';
 import '../../../user_module/presenter/controller/payment_methods_controller.dart';
 import '../controller/management_controller.dart';
+import '../stores/management_store.dart';
 
 class RemovePaymentMethodPage extends StatefulWidget {
   const RemovePaymentMethodPage({super.key, required this.managerEntity});
@@ -21,6 +22,7 @@ class RemovePaymentMethodPage extends StatefulWidget {
 
 final _enterpriseId = Modular.args.params["enterpriseId"];
 final _managementController = Modular.get<ManagementController>();
+final _managementStore = Modular.get<ManagementStore>();
 final _paymentMethodController = Modular.get<PaymentMethodsController>();
 final _removePaymentMethodFormKey = GlobalKey<FormState>();
 String? _managerCode;
@@ -109,7 +111,9 @@ class _RemovePaymentMethodPageState extends State<RemovePaymentMethodPage> {
                                 builder: (_, __) {
                                   return DropdownButtonFormField<
                                           PaymentMethodEntity>(
-                                            onSaved: (value) => _paymentMethodId =
+                                      validator: _managementController
+                                          .paymentMethodValidate,
+                                      onSaved: (value) => _paymentMethodId =
                                           value?.paymentMethodId ?? "",
                                       onChanged: (value) => _paymentMethodId =
                                           value?.paymentMethodId ?? "",
@@ -120,13 +124,13 @@ class _RemovePaymentMethodPageState extends State<RemovePaymentMethodPage> {
                                             .displaySmall
                                             ?.copyWith(color: surfaceColor),
                                       ),
-                                      items: _paymentMethodController
-                                          .paymentMethods
+                                      items: _paymentMethodController.value
                                           .map(
                                             (paymentMethod) => DropdownMenuItem(
                                               value: paymentMethod,
                                               child: Text(
-                                                paymentMethod.paymentMethodName ??
+                                                paymentMethod
+                                                        .paymentMethodName ??
                                                     "Parangaricutirimicuaro",
                                                 style: Theme.of(context)
                                                     .textTheme
@@ -157,8 +161,8 @@ class _RemovePaymentMethodPageState extends State<RemovePaymentMethodPage> {
                                 obscureText:
                                     _managementCodeVisible ? false : true,
                                 label: "Código Administrativo",
-                                controller:
-                                    _managementController.paymentMethodNameField,
+                                controller: _managementController
+                                    .paymentMethodNameField,
                                 validator: _managementController
                                     .paymentMethodNameValidate,
                                 onSaved: (value) => _managerCode = value,
@@ -179,7 +183,28 @@ class _RemovePaymentMethodPageState extends State<RemovePaymentMethodPage> {
                     ),
                     CashHelperElevatedButton(
                       radius: 10,
-                      onPressed: () {},
+                      onPressed: () {
+                        _removePaymentMethodFormKey.currentState?.validate();
+                        _removePaymentMethodFormKey.currentState?.save();
+                        if (_removePaymentMethodFormKey.currentState!
+                            .validate()) {
+                          if (_managerCode ==
+                              widget.managerEntity.managerCode) {
+                            _managementStore.removePaymentMethod(
+                                _enterpriseId, _paymentMethodId);
+                            _managementController.paymentMethodRemovedSnackBar(
+                                context,
+                                message: "Método removido com sucesso");
+                            Modular.to.navigate(
+                                "${UserRoutes.managerHomePage}$_enterpriseId",
+                                arguments: widget.managerEntity);
+                          } else {
+                            _managementController.noMatchingCodes(context,
+                                message:
+                                    "Opss... Código Administrativo Inválido!");
+                          }
+                        }
+                      },
                       border: true,
                       backgroundColor: errorColor,
                       height: 50,

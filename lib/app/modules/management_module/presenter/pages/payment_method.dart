@@ -71,14 +71,14 @@ class PaymentMethod extends StatelessWidget {
                           "Nome:",
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall
+                              .bodyMedium
                               ?.copyWith(color: surfaceColor),
                         ),
                         Text(
                           "${paymentMethod.paymentMethodName}",
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall
+                              .bodyMedium
                               ?.copyWith(color: surfaceColor),
                         ),
                       ],
@@ -90,14 +90,14 @@ class PaymentMethod extends StatelessWidget {
                           "ID:",
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall
+                              .bodyMedium
                               ?.copyWith(color: surfaceColor),
                         ),
                         Text(
                           "${paymentMethod.paymentMethodId}",
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall
+                              .bodyMedium
                               ?.copyWith(color: surfaceColor),
                         ),
                       ],
@@ -109,14 +109,14 @@ class PaymentMethod extends StatelessWidget {
                           "Taxa de uso:",
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall
+                              .bodyMedium
                               ?.copyWith(color: surfaceColor),
                         ),
                         Text(
                           "${paymentMethod.paymentMethodUsingRate} - hora",
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall
+                              .bodyMedium
                               ?.copyWith(color: surfaceColor),
                         ),
                       ],
@@ -151,7 +151,7 @@ class PaymentMethod extends StatelessWidget {
                           "Descrição:",
                           style: Theme.of(context)
                               .textTheme
-                              .displaySmall
+                              .bodyMedium
                               ?.copyWith(color: surfaceColor),
                         ),
                       ],
@@ -159,7 +159,13 @@ class PaymentMethod extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
-                    Text("${paymentMethod.paymentMethodDescription}"),
+                    Text(
+                      "${paymentMethod.paymentMethodDescription}",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: surfaceColor),
+                    ),
                   ],
                 ),
               ),

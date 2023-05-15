@@ -11,11 +11,12 @@ class PaymentMethodsController
         super([]);
 
   final IGetAllPaymentMethods _getAllPaymentMethods;
-  List<PaymentMethodEntity> get paymentMethods => value;
+  List<PaymentMethodEntity> paymentMethodsList = [];
 
-  void getPaymentMethodsInformations(String enterpriseId) async {
-    final enterprisePayamentMethodsList =
-        await _getAllPaymentMethods(enterpriseId) as List<PaymentMethodEntity>;
-    value = enterprisePayamentMethodsList;
+  Future<List<PaymentMethodEntity>> getPaymentMethodsInformations(
+      String enterpriseId) async {
+    paymentMethodsList = await _getAllPaymentMethods(enterpriseId);
+    value = paymentMethodsList;
+    return value;
   }
 }

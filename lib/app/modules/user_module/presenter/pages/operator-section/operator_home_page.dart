@@ -223,12 +223,14 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 45, horizontal: 10),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Center(
                         child: CashHelperElevatedButton(
-                          width: width,
-                          height: 60,
+                          border: true,
+                          height: 50,
+                          width: width * 0.7,
                           radius: 12,
                           onPressed: () => Modular.to.pushNamed(
                               "./operator-area",

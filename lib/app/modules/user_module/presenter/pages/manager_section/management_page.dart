@@ -60,7 +60,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     height: height * 0.15,
                     decoration: BoxDecoration(
                       color: primaryColor,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20),
                       ),
@@ -100,6 +100,8 @@ class _ManagementPageState extends State<ManagementPage> {
                       AnimatedBuilder(
                           animation: _paymentMethodController,
                           builder: (context, _) {
+                            final paymentMethodsTotal =
+                                _paymentMethodController.value.length;
                             return Container(
                               height: height * 0.15,
                               decoration: BoxDecoration(
@@ -126,7 +128,7 @@ class _ManagementPageState extends State<ManagementPage> {
                                               ?.copyWith(color: surfaceColor),
                                         ),
                                         Text(
-                                          "${_paymentMethodController.paymentMethods.length}",
+                                          "$paymentMethodsTotal",
                                           style: Theme.of(context)
                                               .textTheme
                                               .displaySmall

@@ -1,6 +1,7 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:flutter/material.dart';
 
-class ManagementController{
+class ManagementController {
   ManagementController();
   final paymentMethodNameField = TextEditingController();
   final paymentMethodDescriptionField = TextEditingController();
@@ -14,6 +15,10 @@ class ManagementController{
     return value!.isNotEmpty && value != '' && value.length == 6
         ? null
         : 'Código Inválido! Insira o código administrativo.';
+  }
+
+  String? paymentMethodValidate(PaymentMethodEntity? value) {
+    return value != null ? null : 'Campo obrigatório.';
   }
 
   noMatchingCodes(BuildContext context, {required String message}) {
@@ -43,6 +48,67 @@ class ManagementController{
                 size: 35,
                 color: Colors.white,
               )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  paymentMethodRemovedSnackBar(BuildContext context,
+      {required String message}) {
+    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: variantColor.withOpacity(0.5),
+        elevation: 5,
+        duration: const Duration(seconds: 3),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.04,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  paymentMethodAddedSnackBar(BuildContext context,
+      {required String message}) {
+    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: variantColor.withOpacity(0.5),
+        elevation: 5,
+        duration: const Duration(seconds: 3),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.04,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ],
           ),
         ),
