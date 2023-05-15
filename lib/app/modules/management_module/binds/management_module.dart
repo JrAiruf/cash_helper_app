@@ -16,6 +16,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../domain/usecases/create_new_payment_method/create_new_payment_method.dart';
 import '../domain/usecases/get_all_payment_methods/get_all_payment_methods.dart';
 import '../domain/usecases/get_operator_informations/get_operators_informations.dart';
+import '../domain/usecases/remove_payment_method/iremove_payment_method.dart';
+import '../domain/usecases/remove_payment_method/remove_payment_method.dart';
 import '../presenter/pages/create_payment_methods_page.dart';
 
 abstract class AppManagementModule {
@@ -83,11 +85,17 @@ class ManagementModule extends Module {
         repository: i(),
       ),
     ),
+    Bind<IRemovePaymentMethod>(
+      (i) => RemovePaymentMethod(
+        repository: i(),
+      ),
+    ),
     Bind<ManagementStore>(
       (i) => ManagementStore(
         getOperatorsInformations: i(),
         createNewPaymentMethod: i(),
         getAllPaymentMethods: i(),
+        removePaymentMethod: i(),
       ),
     ),
     Bind<ManagementController>(
