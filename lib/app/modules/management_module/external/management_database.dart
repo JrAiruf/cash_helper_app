@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 
 import 'errors/payment_method_not_created.dart';
 import 'errors/payment_methods_list_unnavailable.dart';
+import 'errors/remove_payment_method_error.dart';
 import 'errors/users_unavailable_error.dart';
 
 class ManagementDatabase implements ApplicationManagementDatabase {
@@ -87,8 +88,22 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
   
   @override
-  Future? removePaymentMethod(String? enterpriseId, String? paymentMethodId) {
-    // TODO: implement removePaymentMethod
-    throw UnimplementedError();
+  Future<void>? removePaymentMethod(
+      String? enterpriseId, String? paymentMethodId) async {
+    try {
+      if (paymentMethodId != null) {
+        final paymentMethodsCollection = _database
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection("paymentMethods");
+        await paymentMethodsCollection.doc(paymentMethodId).delete();
+      } else {
+        throw RemovePaymentMethodError(errorMessage: "Método não deletado");
+      }
+    } catch (e) {
+      throw RemovePaymentMethodError(
+        errorMessage: e.toString(),
+      );
+    }
   }
 }

@@ -57,9 +57,16 @@ class ManagementRepositoryImpl implements ManagementRepository {
     }
   }
   
-  @override
-  Future? removePaymentMethod(String? enterpriseId, String? paymentMethodId) {
-    // TODO: implement removePaymentMethod
-    throw UnimplementedError();
+ @override
+  Future<void>? removePaymentMethod(
+      String? enterpriseId, String? paymentMethodId) async {
+    if (_dataVerifier.validateInputData(inputs: [
+      enterpriseId,
+      paymentMethodId,
+    ])) {
+      await _database.removePaymentMethod(enterpriseId, paymentMethodId);
+    } else {
+      return;
+    }
   }
 }

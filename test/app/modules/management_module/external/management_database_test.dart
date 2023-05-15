@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_methods_list_unnavailable.dart';
+import 'package:cash_helper_app/app/modules/management_module/external/errors/remove_payment_method_error.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/users_unavailable_error.dart';
 import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
@@ -93,11 +94,25 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       throw PaymentMethodsListUnnavailable(errorMessage: e.toString());
     }
   }
-  
+
   @override
-  Future? removePaymentMethod(String enterpriseId, String paymentMethodId) {
-    // TODO: implement removePaymentMethod
-    throw UnimplementedError();
+  Future<void>? removePaymentMethod(
+      String? enterpriseId, String? paymentMethodId) async {
+    try {
+      if (paymentMethodId != null) {
+        final paymentMethodsCollection = _database
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection("paymentMethods");
+        await paymentMethodsCollection.doc(paymentMethodId).delete();
+      } else {
+        throw RemovePaymentMethodError(errorMessage: "Método não deletado");
+      }
+    } catch (e) {
+      throw RemovePaymentMethodError(
+        errorMessage: e.toString(),
+      );
+    }
   }
 }
 
@@ -228,23 +243,25 @@ void main() {
     'RemovePaymentMethods Function should',
     () {
       test(
-        "Get a List of payment methods from database(returns A List<Map<String,dynamic>>)",
+        "Remove payment methods from database using it's id",
         () async {
-          await database.createNewPaymentMethod(
+          final createdPaymentMethod = await database.createNewPaymentMethod(
             "enterpriseId",
             PaymentMethodTestObjects.newPaymentMethodMap,
           );
-          final result = await database.getAllPaymentMethods("enterpriseId");
-          expect(result, isA<List<Map<String, dynamic>>>());
-          expect(result?.isNotEmpty, equals(true));
+          await database.removePaymentMethod(
+              "enterpriseId", createdPaymentMethod?["paymentMethodId"]);
+          final paymentMethodsList =
+              await database.getAllPaymentMethods("enterpriseId");
+          expect(paymentMethodsList?.isEmpty, equals(true));
         },
       );
 
       test(
         "Fail to retrive the database list",
         () async {
-          expect(() async => database.getAllPaymentMethods(""),
-              throwsA(isA<PaymentMethodsListUnnavailable>()));
+          expect(() async => database.removePaymentMethod("", null),
+              throwsA(isA<RemovePaymentMethodError>()));
         },
       );
     },
