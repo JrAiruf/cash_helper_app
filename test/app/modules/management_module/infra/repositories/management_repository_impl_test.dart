@@ -61,6 +61,12 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
       return [];
     }
   }
+  
+  @override
+  Future? removePaymentMethod(String enterpriseId, String paymentMethodId) {
+    // TODO: implement removePaymentMethod
+    throw UnimplementedError();
+  }
 }
 
 void main() {

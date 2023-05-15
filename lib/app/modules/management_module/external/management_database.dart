@@ -85,4 +85,10 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       throw PaymentMethodsListUnnavailable(errorMessage: e.toString());
     }
   }
+  
+  @override
+  Future? removePaymentMethod(String enterpriseId, String paymentMethodId) {
+    // TODO: implement removePaymentMethod
+    throw UnimplementedError();
+  }
 }

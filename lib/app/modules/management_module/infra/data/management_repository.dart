@@ -4,4 +4,5 @@ abstract class ManagementRepository {
   Future<dynamic>? getOperatorsInformations(String enterpriseId);
   Future<dynamic>? createNewPaymentMethod(String enterpriseId, PaymentMethodModel paymentMethod);
   Future<dynamic>? getAllPaymentMethods(String enterpriseId);
+  Future<dynamic>? removePaymentMethod(String enterpriseId, String paymentMethodId);
 }
