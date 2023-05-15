@@ -1,9 +1,14 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../routes/app_routes.dart';
 import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../../login_module/presenter/components/cash_helper_text_field.dart';
 import '../../../user_module/domain/entities/manager_entity.dart';
+import '../../../user_module/presenter/controller/payment_methods_controller.dart';
+import '../controller/management_controller.dart';
 
 class RemovePaymentMethodPage extends StatefulWidget {
   const RemovePaymentMethodPage({super.key, required this.managerEntity});
@@ -15,8 +20,20 @@ class RemovePaymentMethodPage extends StatefulWidget {
 }
 
 final _enterpriseId = Modular.args.params["enterpriseId"];
+final _managementController = Modular.get<ManagementController>();
+final _paymentMethodController = Modular.get<PaymentMethodsController>();
+final _removePaymentMethodFormKey = GlobalKey<FormState>();
+String? _managerCode;
+bool _managementCodeVisible = true;
+String _paymentMethodId = "";
 
 class _RemovePaymentMethodPageState extends State<RemovePaymentMethodPage> {
+  @override
+  void initState() {
+    _paymentMethodController.getPaymentMethodsInformations(_enterpriseId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -29,97 +46,169 @@ class _RemovePaymentMethodPageState extends State<RemovePaymentMethodPage> {
     final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        height: height,
-        decoration: BoxDecoration(color: backgroundColor),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Container(
-                  height: height * 0.15,
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+      body: SingleChildScrollView(
+        child: Container(
+          height: height,
+          decoration: BoxDecoration(color: backgroundColor),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  Container(
+                    height: height * 0.15,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
                     ),
                   ),
+                  Positioned(
+                    top: 90,
+                    child: Text(
+                      "Métodos de Pagamento",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
                 ),
-                Positioned(
-                  top: 90,
-                  child: Text(
-                    "Métodos de Pagamento",
-                    style: Theme.of(context).textTheme.bodyLarge,
+                child: SizedBox(
+                  width: width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: height * 0.08,
+                      ),
+                      Text(
+                        "Remover método:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: surfaceColor),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                      ),
+                      SizedBox(
+                        height: height * 0.2,
+                        child: Form(
+                          key: _removePaymentMethodFormKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AnimatedBuilder(
+                                animation: _paymentMethodController,
+                                builder: (_, __) {
+                                  return DropdownButtonFormField<
+                                          PaymentMethodEntity>(
+                                            onSaved: (value) => _paymentMethodId =
+                                          value?.paymentMethodId ?? "",
+                                      onChanged: (value) => _paymentMethodId =
+                                          value?.paymentMethodId ?? "",
+                                      hint: Text(
+                                        "Selecione o método a ser removido",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(color: surfaceColor),
+                                      ),
+                                      items: _paymentMethodController
+                                          .paymentMethods
+                                          .map(
+                                            (paymentMethod) => DropdownMenuItem(
+                                              value: paymentMethod,
+                                              child: Text(
+                                                paymentMethod.paymentMethodName ??
+                                                    "Parangaricutirimicuaro",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displaySmall
+                                                    ?.copyWith(
+                                                        color: surfaceColor),
+                                              ),
+                                            ),
+                                          )
+                                          .toList());
+                                },
+                              ),
+                              CashHelperTextFieldComponent(
+                                suffixIcon: VisibilityIconComponent(
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        _managementCodeVisible =
+                                            !_managementCodeVisible;
+                                      },
+                                    );
+                                  },
+                                  iconColor: surfaceColor,
+                                  forVisibility: Icons.visibility,
+                                  forHideContent: Icons.visibility_off,
+                                  condition: _managementCodeVisible,
+                                ),
+                                obscureText:
+                                    _managementCodeVisible ? false : true,
+                                label: "Código Administrativo",
+                                controller:
+                                    _managementController.paymentMethodNameField,
+                                validator: _managementController
+                                    .paymentMethodNameValidate,
+                                onSaved: (value) => _managerCode = value,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
               ),
-              child: SizedBox(
-                width: width,
+              Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: height * 0.08,
+                      height: height * 0.1,
                     ),
-                    Text(
-                      "Criar novo método:",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: surfaceColor),
+                    CashHelperElevatedButton(
+                      radius: 10,
+                      onPressed: () {},
+                      border: true,
+                      backgroundColor: errorColor,
+                      height: 50,
+                      width: width * 0.7,
+                      buttonName: "Remover",
                     ),
                     SizedBox(
-                      height: height * 0.05,
+                      height: height * 0.02,
                     ),
-                    SizedBox(
-                      height: height * 0.05,
+                    CashHelperElevatedButton(
+                      radius: 10,
+                      onPressed: () {
+                        Modular.to.navigate(
+                            "${UserRoutes.managementPage}$_enterpriseId",
+                            arguments: widget.managerEntity);
+                      },
+                      border: true,
+                      backgroundColor: primaryColor,
+                      nameColor: surfaceColor,
+                      height: 50,
+                      width: width * 0.7,
+                      buttonName: "Voltar",
+                      fontSize: 15,
                     ),
-                    Center(
-                      child: Column(
-                        children: [
-                          CashHelperElevatedButton(
-                            radius: 10,
-                            onPressed: () {},
-                            border: true,
-                            backgroundColor: tertiaryColor,
-                            height: 50,
-                            width: width * 0.7,
-                            buttonName: "Salvar",
-                          ),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          CashHelperElevatedButton(
-                            radius: 10,
-                            onPressed: () {
-                              Modular.to.navigate(
-                                  "${UserRoutes.managementPage}$_enterpriseId",
-                                  arguments: widget.managerEntity);
-                            },
-                            border: true,
-                            backgroundColor: primaryColor,
-                            nameColor: surfaceColor,
-                            height: 50,
-                            width: width * 0.7,
-                            buttonName: "Voltar",
-                            fontSize: 15,
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -261,7 +261,12 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                             ),
                                             backgroundColor: errorColor,
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Modular.to.pushNamed(
+                                              "${ManagementRoutes.removePaymentMethodPage}$_enterpriseId",
+                                              arguments: widget.managerEntity,
+                                            );
+                                          },
                                           child: Text(
                                             "Remover",
                                             style: Theme.of(context)

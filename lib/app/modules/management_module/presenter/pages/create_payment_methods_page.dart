@@ -7,6 +7,7 @@ import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../login_module/presenter/components/visibility_icon_component.dart';
 import '../controller/management_controller.dart';
 import '../stores/management_store.dart';
 
@@ -25,6 +26,7 @@ final _managementController = Modular.get<ManagementController>();
 final _paymentMethodFormKey = GlobalKey<FormState>();
 final _newPaymentMethod = PaymentMethodEntity();
 String? _managerCode;
+bool _managementCodeVisible = true;
 
 class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
   @override
@@ -114,6 +116,22 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                                     .paymentMethodDescription = value,
                               ),
                               CashHelperTextFieldComponent(
+                                suffixIcon: VisibilityIconComponent(
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        _managementCodeVisible =
+                                            !_managementCodeVisible;
+                                      },
+                                    );
+                                  },
+                                  iconColor: surfaceColor,
+                                  forVisibility: Icons.visibility,
+                                  forHideContent: Icons.visibility_off,
+                                  condition: _managementCodeVisible,
+                                ),
+                                obscureText:
+                                    _managementCodeVisible ? false : true,
                                 label: "Código Administrativo",
                                 controller: _managementController
                                     .paymentMethodNameField,
