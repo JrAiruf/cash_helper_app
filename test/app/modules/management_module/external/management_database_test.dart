@@ -224,4 +224,29 @@ void main() {
       );
     },
   );
+  group(
+    'RemovePaymentMethods Function should',
+    () {
+      test(
+        "Get a List of payment methods from database(returns A List<Map<String,dynamic>>)",
+        () async {
+          await database.createNewPaymentMethod(
+            "enterpriseId",
+            PaymentMethodTestObjects.newPaymentMethodMap,
+          );
+          final result = await database.getAllPaymentMethods("enterpriseId");
+          expect(result, isA<List<Map<String, dynamic>>>());
+          expect(result?.isNotEmpty, equals(true));
+        },
+      );
+
+      test(
+        "Fail to retrive the database list",
+        () async {
+          expect(() async => database.getAllPaymentMethods(""),
+              throwsA(isA<PaymentMethodsListUnnavailable>()));
+        },
+      );
+    },
+  );
 }

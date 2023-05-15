@@ -7,9 +7,8 @@ RemovePaymentMethod({required ManagementRepository repository})
   final ManagementRepository _repository;
 
   @override
-  Future? call(String enterpriseId, String paymentMethodId) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<void>? call(String enterpriseId, String paymentMethodId) async {
+    await _repository.removePaymentMethod(enterpriseId, paymentMethodId);
   }
   
 }

@@ -87,7 +87,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
   
   @override
-  Future? removePaymentMethod(String enterpriseId, String paymentMethodId) {
+  Future? removePaymentMethod(String? enterpriseId, String? paymentMethodId) {
     // TODO: implement removePaymentMethod
     throw UnimplementedError();
   }

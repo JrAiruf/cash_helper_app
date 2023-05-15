@@ -61,11 +61,18 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
       return [];
     }
   }
-  
+
   @override
-  Future? removePaymentMethod(String enterpriseId, String paymentMethodId) {
-    // TODO: implement removePaymentMethod
-    throw UnimplementedError();
+  Future<void>? removePaymentMethod(
+      String? enterpriseId, String? paymentMethodId) async {
+    if (_dataVerifier.validateInputData(inputs: [
+      enterpriseId,
+      paymentMethodId,
+    ])) {
+      await _database.removePaymentMethod(enterpriseId, paymentMethodId);
+    } else {
+      return;
+    }
   }
 }
 
@@ -191,6 +198,55 @@ void main() {
           final result = await repository.getAllPaymentMethods("");
           expect(result, isA<List<PaymentMethodModel>>());
           expect(result?.isEmpty, equals(true));
+        },
+      );
+    },
+  );
+  group(
+    'RemovePaymentMethod Function should',
+    () {
+      test(
+        "Call database to remove a payment method permanently",
+        () async {
+          when(database.getAllPaymentMethods(any)).thenAnswer(
+            (realInvocation) async => [
+              PaymentMethodTestObjects.paymentMethodMap,
+              PaymentMethodTestObjects.paymentMethodMap,
+              PaymentMethodTestObjects.paymentMethodMap
+            ],
+          );
+          final result = await repository.getAllPaymentMethods("enterpriseId");
+          expect(result?.first.paymentMethodId,
+              equals("aldql34hlaky5qi24nlnalnaljq4nal4"));
+          when(database.removePaymentMethod(any, any)).thenReturn(null);
+          when(database.getAllPaymentMethods(any)).thenAnswer(
+            (realInvocation) async => [
+              PaymentMethodTestObjects.paymentMethodMap,
+              PaymentMethodTestObjects.paymentMethodMap
+            ],
+          );
+          await repository.removePaymentMethod(
+              "enterpriseId", "paymentMethodId");
+          final paymentMethodsList =
+              await repository.getAllPaymentMethods("enterpriseId");
+          expect(paymentMethodsList?.length, equals(2));
+        },
+      );
+      test(
+        "Fail to to remove a payment method",
+        () async {
+          when(database.getAllPaymentMethods(any)).thenAnswer(
+            (realInvocation) async => [
+              PaymentMethodTestObjects.paymentMethodMap,
+              PaymentMethodTestObjects.paymentMethodMap,
+              PaymentMethodTestObjects.paymentMethodMap,
+            ],
+          );
+          when(database.removePaymentMethod(any, any)).thenReturn(null);
+          await repository.removePaymentMethod("", null);
+          final result = await repository.getAllPaymentMethods("enterpriseId");
+          expect(result, isA<List<PaymentMethodModel>>());
+          expect(result?.length, equals(3));
         },
       );
     },
