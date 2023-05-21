@@ -79,7 +79,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
                         child: SizedBox(
-                          height: height * 0.2,
+                          height: height * 0.22,
                           width: width,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -116,7 +116,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: height * 0.15),
+                        padding: EdgeInsets.only(top: height * 0.16),
                         child: Center(
                           child: TextButton(
                             style: TextButton.styleFrom(),
@@ -159,7 +159,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: height * 0.22),
+                    padding: EdgeInsets.only(top: height * 0.18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

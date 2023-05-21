@@ -7,6 +7,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../routes/app_routes.dart';
 import '../../../../management_module/presenter/stores/management_store.dart';
+import '../../../../management_module/presenter/stores/payment_methods_list_store.dart';
 import '../../../domain/entities/manager_entity.dart';
 
 class ManagementPage extends StatefulWidget {
@@ -18,14 +19,15 @@ class ManagementPage extends StatefulWidget {
 }
 
 final _managementStore = Modular.get<ManagementStore>();
+final _paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
 final _paymentMethodController = Modular.get<PaymentMethodsController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
 
 class _ManagementPageState extends State<ManagementPage> {
   @override
   void initState() {
-    _paymentMethodController.getPaymentMethodsInformations(_enterpriseId);
     super.initState();
+    _paymentMethodsListStore.getAllPaymentMethods(_enterpriseId);
   }
 
   @override
@@ -98,10 +100,10 @@ class _ManagementPageState extends State<ManagementPage> {
                         height: height * 0.02,
                       ),
                       AnimatedBuilder(
-                          animation: _paymentMethodController,
+                          animation: _paymentMethodsListStore,
                           builder: (context, _) {
                             final paymentMethodsTotal =
-                                _paymentMethodController.value.length;
+                                _paymentMethodsListStore.value?.length;
                             return Container(
                               height: height * 0.15,
                               decoration: BoxDecoration(

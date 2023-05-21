@@ -19,6 +19,7 @@ import '../domain/usecases/get_operator_informations/get_operators_informations.
 import '../domain/usecases/remove_payment_method/iremove_payment_method.dart';
 import '../domain/usecases/remove_payment_method/remove_payment_method.dart';
 import '../presenter/pages/create_payment_methods_page.dart';
+import '../presenter/stores/payment_methods_list_store.dart';
 
 abstract class AppManagementModule {
   static routes() => ModuleRoute(
@@ -55,7 +56,8 @@ class ManagementModule extends Module {
     ),
     ChildRoute(
       "/payment-method/:enterpriseId",
-      child: (_, args) => PaymentMethod(paymentMethod: args.data["paymentMethodEntity"]),
+      child: (_, args) =>
+          PaymentMethod(paymentMethod: args.data["paymentMethodEntity"]),
     ),
   ];
   final bindsList = <Bind>[
@@ -88,6 +90,11 @@ class ManagementModule extends Module {
     Bind<IRemovePaymentMethod>(
       (i) => RemovePaymentMethod(
         repository: i(),
+      ),
+    ),
+    Bind.factory<PaymentMethodsListStore>(
+      (i) => PaymentMethodsListStore(
+        getAllPaymentMethods: i(),
       ),
     ),
     Bind<ManagementStore>(
