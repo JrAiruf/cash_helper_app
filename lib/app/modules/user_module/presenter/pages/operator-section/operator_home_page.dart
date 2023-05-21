@@ -244,7 +244,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                   ),
                 ),
                 Positioned(
-                  top: 140,
+                  top: height * 0.145,
                   right: 25,
                   child: Row(
                     children: [

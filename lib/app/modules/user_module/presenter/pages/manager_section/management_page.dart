@@ -69,7 +69,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     ),
                   ),
                   Positioned(
-                    top: 90,
+                    top: height * 0.09,
                     child: Text(
                       "Gerenciamento",
                       style: Theme.of(context).textTheme.bodyLarge,

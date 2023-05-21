@@ -54,7 +54,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                 SizedBox(height: height * 0.1),
                 Text('Cash Helper',
                     style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: height * 0.2),
+                SizedBox(height: height * 0.16),
                 Row(
                   children: [
                     Switch(

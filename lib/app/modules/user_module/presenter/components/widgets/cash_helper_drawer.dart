@@ -45,12 +45,12 @@ class CashHelperDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 80,
+              SizedBox(
+                height: height * 0.08,
               ),
               Text("Opções", style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(
-                height: 160,
+              SizedBox(
+                height: height * 0.17,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +64,8 @@ class CashHelperDrawer extends StatelessWidget {
                         : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
+                      Modular.to.navigate(
+                          "${UserRoutes.operatorHomePage}$enterpriseId",
                           arguments: operator);
                     },
                   ),
@@ -78,7 +79,8 @@ class CashHelperDrawer extends StatelessWidget {
                         : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.navigate("${UserRoutes.operatorProfilePage}$enterpriseId",
+                      Modular.to.navigate(
+                          "${UserRoutes.operatorProfilePage}$enterpriseId",
                           arguments: operator);
                     },
                   ),
@@ -92,7 +94,8 @@ class CashHelperDrawer extends StatelessWidget {
                         : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.navigate("${UserRoutes.operatorSettingsPage}$enterpriseId",
+                      Modular.to.navigate(
+                          "${UserRoutes.operatorSettingsPage}$enterpriseId",
                           arguments: operator);
                     },
                   ),
