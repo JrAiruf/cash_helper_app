@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                                           label: 'Email',
                                         ),
                                         const SizedBox(
-                                          height: 30,
+                                          height: 20,
                                         ),
                                         CashHelperTextFieldComponent(
                                           primaryColor: surfaceColor,
@@ -176,7 +176,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: TextButton(
                                 style: TextButton.styleFrom(),
                                 onPressed: () {
-                                  Modular.to.pushNamed("./create-new-operator",arguments: widget.enterpriseEntity);
+                                  Modular.to.pushNamed("./create-new-operator",
+                                      arguments: widget.enterpriseEntity);
                                 },
                                 child: Text(
                                   'Criar conta',
@@ -188,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Positioned(
                             right: 5,
-                            bottom: height * 0.1,
+                            bottom: height * 0.09,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
