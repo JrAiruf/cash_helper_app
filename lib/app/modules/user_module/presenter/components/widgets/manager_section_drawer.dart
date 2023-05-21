@@ -42,12 +42,12 @@ class ManagerSectionDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 80,
+              SizedBox(
+                height: height * 0.08,
               ),
               Text("Opções", style: Theme.of(context).textTheme.bodyLarge),
-              const SizedBox(
-                height: 160,
+              SizedBox(
+                height: height * 0.12,
               ),
               DrawerTile(
                 itemColor: currentPage == ManagerDrawerPage.home

@@ -233,8 +233,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   ),
                 ),
                 Positioned(
-                  top: 137,
-                  left: 30,
+                  top: height * 0.145,
+                  left: width * 0.07,
                   child: Row(
                     children: [
                       CircleAvatar(
