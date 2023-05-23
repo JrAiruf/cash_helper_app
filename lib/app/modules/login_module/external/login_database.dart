@@ -36,7 +36,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   Future<Map<String, dynamic>>? register(Map<String, dynamic>? newUserMap,
       String? enterpriseId, String? collection) async {
     late String newUserId;
-    final operatorCode = _createUserCode(_uuid.v1(), 6);
+    final userCode = _createUserCode(_uuid.v1(), 6);
     try {
       _authUser = await _auth
           .createUserWithEmailAndPassword(
@@ -45,7 +45,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
           .then((value) => value.user);
       newUserId = _authUser!.uid;
       newUserMap["${collection}Id"] = newUserId;
-      newUserMap["${collection}Code"] = operatorCode;
+      newUserMap["${collection}Code"] = userCode;
       newUserMap['${collection}Password'] =
           _encryptService.generateHash(newUserMap['${collection}Password']);
       newUserMap.isNotEmpty &&
@@ -99,7 +99,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
       userData = databaseUsersCollection.docs.firstWhere((element) {
         final verifiedHashCode = _encryptService.checkHashCode(
             password!, element["${collection}Password"]);
-        return  element["${collection}Email"] == email && verifiedHashCode;
+        return element["${collection}Email"] == email && verifiedHashCode;
       }).data();
       return userData;
     } on FirebaseException catch (e) {
@@ -144,7 +144,8 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? signOut() {
-    throw UnimplementedError();
+  Future<void>? signOut() async {
+    await _auth.signOut();
+    userData.clear();
   }
 }

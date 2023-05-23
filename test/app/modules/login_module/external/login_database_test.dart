@@ -48,7 +48,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   Future<Map<String, dynamic>>? register(Map<String, dynamic>? newUserMap,
       String? enterpriseId, String? collection) async {
     late String newUserId;
-    final operatorCode = _createUserCode(_uuid.v1(), 6);
+    final userCode = _createUserCode(_uuid.v1(), 6);
     try {
       _authUser = await _auth
           .createUserWithEmailAndPassword(
@@ -57,7 +57,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
           .then((value) => value.user);
       newUserId = _authUser!.uid;
       newUserMap["${collection}Id"] = newUserId;
-      newUserMap["${collection}Code"] = operatorCode;
+      newUserMap["${collection}Code"] = userCode;
       newUserMap['${collection}Password'] =
           _encryptService.generateHash(newUserMap['${collection}Password']);
       newUserMap.isNotEmpty &&
@@ -471,10 +471,7 @@ void main() {
       );
     },
   );
-}
-  /* 
-  
-  group(
+/*   group(
     "CheckOperatorDataForResetPassword function should",
     () {
       test(
@@ -553,21 +550,25 @@ void main() {
         },
       );
     },
-  );
+  ); */
   test(
     "Should clear all operatorData from operator's map and sign out",
     () async {
+      final createdEnterprise = await enterpriseDatabase
+          .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
       final createdOperator = await database.register(
-          deletionOperator, deletionOperator["operatorOcupation"]);
-      final result = await firebaseMock
-          .collection(createdOperator!["operatorOcupation"])
-          .get();
-      expect(result.docs.isNotEmpty == true, equals(true));
-      await database.login(deletionOperator["operatorEmail"],
-          newOperator["operatorPassword"], newOperator["operatorOcupation"]);
-      expect(database.operatorData?["operatorEmail"], equals("josy@email.com"));
+          LoginTestObjects.newOperator,
+          createdEnterprise?["enterpriseId"],
+          LoginTestObjects.newOperator["businessPosition"]);
+
+      await database.login(
+          createdOperator?["operatorEmail"],
+          "12345678",
+          createdEnterprise?["enterpriseId"],
+          createdOperator?["businessPosition"]);
+      expect(database.userData["operatorEmail"], equals("josy@email.com"));
       await database.signOut();
-      expect(database.operatorData?["operatorEmail"], equals(null));
+      expect(database.userData["operatorEmail"], equals(null));
     },
-  ); 
-} */
+  );
+}
