@@ -5,6 +5,7 @@ import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../../login_module/presenter/stores/login_store.dart';
 import '../../controller/manager_controller.dart';
 
 class ManagerSectionDrawer extends StatelessWidget {
@@ -21,6 +22,7 @@ class ManagerSectionDrawer extends StatelessWidget {
   ManagerDrawerPage currentPage;
   ManagerEntity managerEntity;
   String? enterpriseId;
+  final loginStore = Modular.get<LoginStore>();
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -117,6 +119,27 @@ class ManagerSectionDrawer extends StatelessWidget {
                     arguments: managerEntity,
                   );
                 },
+              ),
+              SizedBox(height: itemSpacingHeight * 10),
+              TextButton(
+                onPressed: () {
+                  loginStore.signOut();
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      "Sair",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: surfaceColor,
+                    )
+                  ],
+                ),
               ),
             ],
           ),

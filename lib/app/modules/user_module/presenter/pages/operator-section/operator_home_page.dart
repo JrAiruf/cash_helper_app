@@ -278,6 +278,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
               ],
             ),
           );
+        }
+        if (operatorState is LoginSignOutState) {
+          Modular.to.navigate(EnterpriseRoutes.initial);
+          return Container();
         } else {
           return Container(
             decoration: BoxDecoration(color: primaryColor),

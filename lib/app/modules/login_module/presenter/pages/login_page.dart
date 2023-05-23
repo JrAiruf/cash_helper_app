@@ -30,9 +30,8 @@ late EnterpriseBusinessPosition businessPosition;
 class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
-    _managerUser = true;
-    businessPosition = EnterpriseBusinessPosition.manager;
     super.initState();
+    _loginStore.restartLoginStoreState();
   }
 
   @override
@@ -59,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is LoginInitialState) {
-          businessPosition = EnterpriseBusinessPosition.manager;
+          businessPosition = EnterpriseBusinessPosition.cashOperator;
           return Scaffold(
             body: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),

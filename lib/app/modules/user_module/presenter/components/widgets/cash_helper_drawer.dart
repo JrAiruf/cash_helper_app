@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import '../../../../login_module/presenter/controllers/login_controller.dart';
 import '../tiles/drawer_tile.dart';
 
 class CashHelperDrawer extends StatelessWidget {
-  const CashHelperDrawer({
+  CashHelperDrawer({
     super.key,
     this.backgroundColor,
     this.height,
@@ -24,6 +25,7 @@ class CashHelperDrawer extends StatelessWidget {
   final String? enterpriseId;
   final DrawerPagePosition? pagePosition;
   final OperatorEntity? operator;
+  final loginStore = Modular.get<LoginStore>();
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -98,6 +100,27 @@ class CashHelperDrawer extends StatelessWidget {
                           "${UserRoutes.operatorSettingsPage}$enterpriseId",
                           arguments: operator);
                     },
+                  ),
+                  SizedBox(height: itemSpacingHeight * 10),
+                  TextButton(
+                    onPressed: () {
+                      loginStore.signOut();
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          "Sair",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right_rounded,
+                          color: surfaceColor,
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),

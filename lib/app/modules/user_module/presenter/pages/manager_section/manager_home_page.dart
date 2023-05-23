@@ -265,6 +265,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               ],
             ),
           );
+        }
+        if (state is LoginSignOutState) {
+          Modular.to.navigate(EnterpriseRoutes.initial);
+          return Container(
+            decoration: BoxDecoration(color: primaryColor),
+          );
         } else {
           return Container(
             decoration: BoxDecoration(color: primaryColor),

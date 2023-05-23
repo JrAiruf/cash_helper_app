@@ -119,7 +119,8 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   }
 
   Future<void> signOut() async {
+    value = LoginLoadingState();
     await _signOut();
-    value = null;
+    value = LoginSignOutState();
   }
 }

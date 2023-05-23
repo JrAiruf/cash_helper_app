@@ -15,11 +15,16 @@ class LoginSuccessState extends LoginStates {
   LoginSuccessState({required this.operatorEntity});
   final OperatorEntity operatorEntity;
 }
+
 class ManagerLoginSuccessState extends LoginStates {
   ManagerLoginSuccessState({required this.managerEntity});
   final ManagerEntity managerEntity;
 }
 
 class LoginErrorState extends LoginStates {}
+
+class LoginSignOutState extends LoginStates {}
+
 class LoginAuthErrorState extends LoginStates {}
+
 class LoginNoUserErrorState extends LoginStates {}
