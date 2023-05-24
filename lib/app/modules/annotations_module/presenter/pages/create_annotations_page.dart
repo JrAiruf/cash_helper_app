@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
@@ -44,11 +45,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final minutesDateTime = DateTime.now().minute;
-    final hoursDateTime = DateTime.now().hour;
-    final annotationHour =
-        '${hoursDateTime >= 10 ? hoursDateTime : '0$hoursDateTime'}:${minutesDateTime >= 10 ? minutesDateTime : '0$minutesDateTime'}';
-    final _currentTimeInHours = annotationHour.padLeft(9, "   ");
+    final dateValue = DateValues();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -173,8 +170,9 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                           ),
                                           validator: _managementController
                                               .paymentMethodValidate,
-                                          onSaved: (value) => _paymentMethod =
-                                              value?.paymentMethodId ?? "",
+                                          onSaved: (value) => _newAnnotation
+                                                  .annotationPaymentMethod =
+                                              value?.paymentMethodName ?? "",
                                           onChanged: (value) => _paymentMethod =
                                               value?.paymentMethodId ?? "",
                                           hint: Text(
@@ -233,7 +231,8 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                           radius: 15,
                                           onSaved: (value) => _newAnnotation
                                               .annotationSaleTime = value,
-                                          initialValue: _currentTimeInHours,
+                                          initialValue:
+                                              dateValue.annotationHourDateTime,
                                         ),
                                       ),
                                     ],
@@ -256,15 +255,12 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                           onPressed: () async {
                             _newAnnotationFormKey.currentState?.validate();
                             _newAnnotationFormKey.currentState?.save();
-                            _newAnnotation.annotationPaymentMethod =
-                                _paymentMethod;
+                            _newAnnotation.annotationSaleDate =
+                                dateValue.annotationDayDateTime;
                             await _annotationsStore.createNewAnnotation(
                                 _enterpriseId,
                                 widget.operatorEntity.operatorId!,
                                 _newAnnotation);
-                            final model =
-                                AnnotationModel.fromEntityData(_newAnnotation);
-                            print(model.toMap());
                           },
                         ),
                       ),
