@@ -5,7 +5,10 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../enterprise_module/domain/entities/payment_method_entity.dart';
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
+import '../../../management_module/presenter/controller/management_controller.dart';
+import '../../../management_module/presenter/stores/payment_methods_list_store.dart';
 
 class CreateAnnotationsPage extends StatefulWidget {
   CreateAnnotationsPage({super.key, required this.operatorEntity});
@@ -14,13 +17,21 @@ class CreateAnnotationsPage extends StatefulWidget {
   State<CreateAnnotationsPage> createState() => _CreateAnnotationsPageState();
 }
 
-final _loginStore = Modular.get<LoginStore>();
 final _newAnnotationFormKey = GlobalKey<FormState>();
 final _annotationsController = Modular.get<AnnotationsController>();
+final _managementController = Modular.get<ManagementController>();
+final _paymentMethodListStore = Modular.get<PaymentMethodsListStore>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
+String _paymentMethodId = "";
 final _newAnnotation = AnnotationEntity();
 
 class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
+  @override
+  void initState() {
+    super.initState();
+    _paymentMethodListStore.getAllPaymentMethods(_enterpriseId);
+  }
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
@@ -136,6 +147,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                         _annotationsController.annotationValue,
                                     label: 'Valor',
                                   ),
+                                  /* 
                                   CashHelperTextFieldComponent(
                                     textColor: surfaceColor,
                                     primaryColor: surfaceColor,
@@ -147,6 +159,60 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                     controller:
                                         _annotationsController.annotationValue,
                                     label: 'Valor',
+                                  ), */
+                                  AnimatedBuilder(
+                                    animation: _paymentMethodListStore,
+                                    builder: (_, __) {
+                                      return DropdownButtonFormField<
+                                              PaymentMethodEntity>(
+                                          decoration: InputDecoration(
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                  color: surfaceColor),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                  color: surfaceColor),
+                                            ),
+                                          ),
+                                          validator: _managementController
+                                              .paymentMethodValidate,
+                                          onSaved: (value) => _paymentMethodId =
+                                              value?.paymentMethodId ?? "",
+                                          onChanged: (value) =>
+                                              _paymentMethodId =
+                                                  value?.paymentMethodId ?? "",
+                                          hint: Text(
+                                            "Selecione o método a ser removido",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall
+                                                ?.copyWith(color: surfaceColor),
+                                          ),
+                                          items: _paymentMethodListStore.value
+                                              ?.map(
+                                                (paymentMethod) =>
+                                                    DropdownMenuItem(
+                                                  value: paymentMethod,
+                                                  child: Text(
+                                                    paymentMethod
+                                                            .paymentMethodName ??
+                                                        "Parangaricutirimicuaro",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displaySmall
+                                                        ?.copyWith(
+                                                            color:
+                                                                surfaceColor),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList());
+                                    },
                                   ),
                                   Row(
                                     children: [
