@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import '../../domain/entities/annotation_entity.dart';
 import '../../domain/usecases/create_annotation/icreate_new_annotation.dart';
 
-class AnnotationStore extends ValueNotifier<AnnotationStates> {
+class AnnotationStore extends ValueNotifier<AnnotationEntity?> {
   AnnotationStore({
     required ICreateNewAnnotation createNewAnnotation,
     required IGetAnnotationById getAnnotationById,
@@ -22,7 +22,7 @@ class AnnotationStore extends ValueNotifier<AnnotationStates> {
         _updateAnnotation = updateAnnotation,
         _finishAnnotation = finishAnnotation,
         _deleteAnnotation = deleteAnnotation,
-        super(InitialAnnotationState());
+        super(null);
 
   final ICreateNewAnnotation _createNewAnnotation;
   final IGetAnnotationById _getAnnotationById;
@@ -30,10 +30,11 @@ class AnnotationStore extends ValueNotifier<AnnotationStates> {
   final IFinishAnnotation _finishAnnotation;
   final IDeleteAnnotation _deleteAnnotation;
 //CRIAR
-  Future<void>? createNewAnnotation(String enterpriseId,
-      String operatorId, AnnotationEntity annotation) async {
-    final newAnnotation = await _createNewAnnotation(enterpriseId, operatorId, annotation);
-    return newAnnotation;
+  Future<void>? createNewAnnotation(String enterpriseId, String operatorId,
+      AnnotationEntity annotation) async {
+    final newAnnotation =
+        await _createNewAnnotation(enterpriseId, operatorId, annotation);
+    newAnnotation != null ? value = newAnnotation : null;
   }
 //BUSCAR PELO ID
 //ATUALIZAR

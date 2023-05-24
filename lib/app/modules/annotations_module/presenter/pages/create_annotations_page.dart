@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
@@ -6,9 +7,11 @@ import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../enterprise_module/domain/entities/payment_method_entity.dart';
+import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
 import '../../../management_module/presenter/controller/management_controller.dart';
 import '../../../management_module/presenter/stores/payment_methods_list_store.dart';
+import '../stores/annotations_store.dart';
 
 class CreateAnnotationsPage extends StatefulWidget {
   CreateAnnotationsPage({super.key, required this.operatorEntity});
@@ -19,10 +22,11 @@ class CreateAnnotationsPage extends StatefulWidget {
 
 final _newAnnotationFormKey = GlobalKey<FormState>();
 final _annotationsController = Modular.get<AnnotationsController>();
+final _annotationsStore = Modular.get<AnnotationStore>();
 final _managementController = Modular.get<ManagementController>();
 final _paymentMethodListStore = Modular.get<PaymentMethodsListStore>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
-String _paymentMethodId = "";
+String _paymentMethod = "";
 final _newAnnotation = AnnotationEntity();
 
 class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
@@ -36,6 +40,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
   Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final primaryColor = Theme.of(context).colorScheme.primary;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
@@ -147,19 +152,6 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                         _annotationsController.annotationValue,
                                     label: 'Valor',
                                   ),
-                                  /* 
-                                  CashHelperTextFieldComponent(
-                                    textColor: surfaceColor,
-                                    primaryColor: surfaceColor,
-                                    radius: 15,
-                                    validator: (value) => _annotationsController
-                                        .annotationValueValidate(value),
-                                    onSaved: (value) => _newAnnotation
-                                        .annotationSaleValue = value,
-                                    controller:
-                                        _annotationsController.annotationValue,
-                                    label: 'Valor',
-                                  ), */
                                   AnimatedBuilder(
                                     animation: _paymentMethodListStore,
                                     builder: (_, __) {
@@ -181,13 +173,12 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                           ),
                                           validator: _managementController
                                               .paymentMethodValidate,
-                                          onSaved: (value) => _paymentMethodId =
+                                          onSaved: (value) => _paymentMethod =
                                               value?.paymentMethodId ?? "",
-                                          onChanged: (value) =>
-                                              _paymentMethodId =
-                                                  value?.paymentMethodId ?? "",
+                                          onChanged: (value) => _paymentMethod =
+                                              value?.paymentMethodId ?? "",
                                           hint: Text(
-                                            "Selecione o método a ser removido",
+                                            "Selecione o método de pagamento",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displaySmall
@@ -201,7 +192,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                                   child: Text(
                                                     paymentMethod
                                                             .paymentMethodName ??
-                                                        "Parangaricutirimicuaro",
+                                                        "",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .displaySmall
@@ -224,14 +215,6 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                           textColor: surfaceColor,
                                           primaryColor: surfaceColor,
                                           radius: 15,
-                                          validator: (value) =>
-                                              _annotationsController
-                                                  .annotationValueValidate(
-                                                      value),
-                                          onSaved: (value) => _newAnnotation
-                                              .annotationSaleValue = value,
-                                          controller: _annotationsController
-                                              .annotationValue,
                                           label: 'Hora da Compra:',
                                         ),
                                       ),
@@ -259,6 +242,30 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                               ),
                             ),
                           ),
+                        ),
+                      ),
+                      SizedBox(height: height * 0.11),
+                      Center(
+                        child: CashHelperElevatedButton(
+                          buttonName: "Criar Anotação",
+                          backgroundColor: tertiaryColor,
+                          border: true,
+                          height: 50,
+                          width: width * 0.7,
+                          radius: 12,
+                          onPressed: () async {
+                            _newAnnotationFormKey.currentState?.validate();
+                            _newAnnotationFormKey.currentState?.save();
+                            _newAnnotation.annotationPaymentMethod =
+                                _paymentMethod;
+                            await _annotationsStore.createNewAnnotation(
+                                _enterpriseId,
+                                widget.operatorEntity.operatorId!,
+                                _newAnnotation);
+                            final model =
+                                AnnotationModel.fromEntityData(_newAnnotation);
+                            print(model.toMap());
+                          },
                         ),
                       ),
                     ],
