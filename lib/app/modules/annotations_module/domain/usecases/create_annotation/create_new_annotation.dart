@@ -15,6 +15,6 @@ class CreateNewAnnotation implements ICreateNewAnnotation {
     final annotationModel = AnnotationModel.fromEntityData(annotation!);
     final repositoryAnnotation = await _repository.createAnnotation(
         enterpriseId, operatorId, annotationModel);
-    return AnnotationModel.toEntityData(repositoryAnnotation!);
+    return AnnotationModel.toEntityData(repositoryAnnotation ?? AnnotationModel());
   }
 }

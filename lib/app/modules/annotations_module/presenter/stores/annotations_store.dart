@@ -1,11 +1,9 @@
 // ignore_for_file: unused_field
 
-import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/create_annotation/icreate_annotation.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/delete_annotation/idelete_annotation.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/finish_annotation/ifinish_annotation.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_annotation_by_id/iget_annotation_by_id.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/update_annotation/iupdate_annotation.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotation_states.dart';
 import 'package:flutter/cupertino.dart';
 import '../../domain/entities/annotation_entity.dart';
 import '../../domain/usecases/create_annotation/icreate_new_annotation.dart';

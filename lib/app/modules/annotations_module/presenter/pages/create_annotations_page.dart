@@ -23,18 +23,19 @@ class CreateAnnotationsPage extends StatefulWidget {
 
 final _newAnnotationFormKey = GlobalKey<FormState>();
 final _annotationsController = Modular.get<AnnotationsController>();
-final _annotationsStore = Modular.get<AnnotationStore>();
+
 final _managementController = Modular.get<ManagementController>();
 final _paymentMethodListStore = Modular.get<PaymentMethodsListStore>();
-final _enterpriseId = Modular.args.params["enterpriseId"];
 String _paymentMethod = "";
-final _newAnnotation = AnnotationEntity();
 
 class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
   @override
   void initState() {
+    _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
+    _annotationsController.operatorId = widget.operatorEntity.operatorId!;
     super.initState();
-    _paymentMethodListStore.getAllPaymentMethods(_enterpriseId);
+    _paymentMethodListStore
+        .getAllPaymentMethods(_annotationsController.enterpriseId);
   }
 
   @override
@@ -50,7 +51,8 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Modular.to.navigate("${UserRoutes.operatorHomePage}$_enterpriseId",
+            Modular.to.navigate(
+                "${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}",
                 arguments: widget.operatorEntity);
           },
           icon: const Icon(
@@ -131,8 +133,8 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                     radius: 15,
                                     validator: (value) => _annotationsController
                                         .annotationAddressValidate(value),
-                                    onSaved: (value) => _newAnnotation
-                                        .annotationClientAddress = value,
+                                    onSaved: (value) => _annotationsController
+                                        .annotationAddressField.text = value!,
                                     controller: _annotationsController
                                         .annotationAddressField,
                                     label: 'Endereço',
@@ -143,10 +145,10 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                     radius: 15,
                                     validator: (value) => _annotationsController
                                         .annotationValueValidate(value),
-                                    onSaved: (value) => _newAnnotation
-                                        .annotationSaleValue = value,
-                                    controller:
-                                        _annotationsController.annotationValue,
+                                    onSaved: (value) => _annotationsController
+                                        .annotationValueField.text = value!,
+                                    controller: _annotationsController
+                                        .annotationValueField,
                                     label: 'Valor',
                                   ),
                                   AnimatedBuilder(
@@ -170,9 +172,11 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                           ),
                                           validator: _managementController
                                               .paymentMethodValidate,
-                                          onSaved: (value) => _newAnnotation
-                                                  .annotationPaymentMethod =
-                                              value?.paymentMethodName ?? "",
+                                          onSaved: (value) =>
+                                              _annotationsController
+                                                      .annotationPaymentMethodField
+                                                      .text =
+                                                  value!.paymentMethodName!,
                                           onChanged: (value) => _paymentMethod =
                                               value?.paymentMethodId ?? "",
                                           hint: Text(
@@ -223,14 +227,16 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                         flex: 1,
                                         child: CashHelperTextFieldComponent(
                                           controller: _annotationsController
-                                              .annotationSaleTime,
+                                              .annotationSaleTimeField,
                                           enable: false,
                                           readOnly: true,
                                           textColor: surfaceColor,
                                           primaryColor: surfaceColor,
                                           radius: 15,
-                                          onSaved: (value) => _newAnnotation
-                                              .annotationSaleTime = value,
+                                          onSaved: (value) =>
+                                              _annotationsController
+                                                  .annotationSaleTimeField
+                                                  .text = value!,
                                           initialValue:
                                               dateValue.annotationHourDateTime,
                                         ),
@@ -252,15 +258,15 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                           height: 50,
                           width: width * 0.7,
                           radius: 12,
-                          onPressed: () async {
+                          onPressed: () {
                             _newAnnotationFormKey.currentState?.validate();
-                            _newAnnotationFormKey.currentState?.save();
-                            _newAnnotation.annotationSaleDate =
-                                dateValue.annotationDayDateTime;
-                            await _annotationsStore.createNewAnnotation(
-                                _enterpriseId,
-                                widget.operatorEntity.operatorId!,
-                                _newAnnotation);
+                            if (_newAnnotationFormKey.currentState!
+                                .validate()) {
+                              _newAnnotationFormKey.currentState?.save();
+                              _annotationsController.createAnnotation();
+                            } else {
+                              return;
+                            }
                           },
                         ),
                       ),
