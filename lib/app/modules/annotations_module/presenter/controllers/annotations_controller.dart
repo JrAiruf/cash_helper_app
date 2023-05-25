@@ -17,6 +17,8 @@ class AnnotationsController {
   String get annotationPaymentMethod => annotationPaymentMethodField.text;
   String get annotationValue => annotationValueField.text;
 
+  final newAnnotationFormKey = GlobalKey<FormState>();
+
   String enterpriseId = "";
   String operatorId = "";
   String? annotationAddressValidate(String? value) {
@@ -43,5 +45,15 @@ class AnnotationsController {
         annotationSaleValue: annotationValue);
     await _annotationsStore.createNewAnnotation(
         enterpriseId, operatorId, newAnnotation);
+  }
+
+  void createNewAnnotation() {
+    newAnnotationFormKey.currentState?.validate();
+    if (newAnnotationFormKey.currentState!.validate()) {
+      newAnnotationFormKey.currentState?.save();
+      createAnnotation();
+    } else {
+      return;
+    }
   }
 }

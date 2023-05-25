@@ -21,12 +21,9 @@ class CreateAnnotationsPage extends StatefulWidget {
   State<CreateAnnotationsPage> createState() => _CreateAnnotationsPageState();
 }
 
-final _newAnnotationFormKey = GlobalKey<FormState>();
 final _annotationsController = Modular.get<AnnotationsController>();
-
 final _managementController = Modular.get<ManagementController>();
 final _paymentMethodListStore = Modular.get<PaymentMethodsListStore>();
-String _paymentMethod = "";
 
 class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
   @override
@@ -119,7 +116,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
                           child: Form(
-                            key: _newAnnotationFormKey,
+                            key: _annotationsController.newAnnotationFormKey,
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
@@ -177,8 +174,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                                       .annotationPaymentMethodField
                                                       .text =
                                                   value!.paymentMethodName!,
-                                          onChanged: (value) => _paymentMethod =
-                                              value?.paymentMethodId ?? "",
+                                          onChanged: (value) => value,
                                           hint: Text(
                                             "Selecione o método de pagamento",
                                             style: Theme.of(context)
@@ -258,16 +254,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                           height: 50,
                           width: width * 0.7,
                           radius: 12,
-                          onPressed: () {
-                            _newAnnotationFormKey.currentState?.validate();
-                            if (_newAnnotationFormKey.currentState!
-                                .validate()) {
-                              _newAnnotationFormKey.currentState?.save();
-                              _annotationsController.createAnnotation();
-                            } else {
-                              return;
-                            }
-                          },
+                          onPressed: _annotationsController.createNewAnnotation,
                         ),
                       ),
                     ],
