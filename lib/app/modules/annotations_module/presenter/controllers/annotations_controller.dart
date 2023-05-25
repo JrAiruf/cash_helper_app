@@ -12,6 +12,7 @@ class AnnotationsController {
   final annotationSaleTimeField = TextEditingController();
   final dateValue = DateValues();
   final _annotationsStore = Modular.get<AnnotationStore>();
+
   String get annotationClientAddress => annotationAddressField.text;
   String get annotationSaleTime => annotationSaleTimeField.text;
   String get annotationPaymentMethod => annotationPaymentMethodField.text;

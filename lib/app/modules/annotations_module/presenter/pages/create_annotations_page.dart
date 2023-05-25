@@ -128,8 +128,8 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                     textColor: surfaceColor,
                                     primaryColor: surfaceColor,
                                     radius: 15,
-                                    validator: (value) => _annotationsController
-                                        .annotationAddressValidate(value),
+                                    validator: _annotationsController
+                                        .annotationAddressValidate,
                                     onSaved: (value) => _annotationsController
                                         .annotationAddressField.text = value!,
                                     controller: _annotationsController
@@ -140,8 +140,8 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                     textColor: surfaceColor,
                                     primaryColor: surfaceColor,
                                     radius: 15,
-                                    validator: (value) => _annotationsController
-                                        .annotationValueValidate(value),
+                                    validator: _annotationsController
+                                        .annotationValueValidate,
                                     onSaved: (value) => _annotationsController
                                         .annotationValueField.text = value!,
                                     controller: _annotationsController
@@ -158,13 +158,15 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                               borderRadius:
                                                   BorderRadius.circular(15),
                                               borderSide: BorderSide(
-                                                  color: surfaceColor),
+                                                color: surfaceColor,
+                                              ),
                                             ),
                                             focusedBorder: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(15),
                                               borderSide: BorderSide(
-                                                  color: surfaceColor),
+                                                color: surfaceColor,
+                                              ),
                                             ),
                                           ),
                                           validator: _managementController
@@ -180,7 +182,9 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .displaySmall
-                                                ?.copyWith(color: surfaceColor),
+                                                ?.copyWith(
+                                                  color: surfaceColor,
+                                                ),
                                           ),
                                           items: _paymentMethodListStore.value
                                               ?.map(
@@ -189,14 +193,13 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                                   value: paymentMethod,
                                                   child: Text(
                                                     paymentMethod
-                                                            .paymentMethodName ??
-                                                        "",
+                                                        .paymentMethodName!,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .displaySmall
                                                         ?.copyWith(
-                                                            color:
-                                                                surfaceColor),
+                                                          color: surfaceColor,
+                                                        ),
                                                   ),
                                                 ),
                                               )
