@@ -1,8 +1,6 @@
-import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
+// ignore_for_file: must_be_immutable
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,6 @@ import '../../../login_module/presenter/components/buttons/cash_helper_login_but
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
 import '../../../management_module/presenter/controller/management_controller.dart';
 import '../../../management_module/presenter/stores/payment_methods_list_store.dart';
-import '../stores/annotations_store.dart';
 
 class CreateAnnotationsPage extends StatefulWidget {
   CreateAnnotationsPage({super.key, required this.operatorEntity});

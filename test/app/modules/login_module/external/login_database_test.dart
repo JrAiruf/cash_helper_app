@@ -29,7 +29,6 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         _encryptService = encryptService,
         _uuid = uuid,
         _dataVerifier = dataVerifier;
-
   final FirebaseFirestore _database;
   final FirebaseAuth _auth;
   final ICryptService _encryptService;
@@ -200,26 +199,6 @@ void main() {
   late FirebaseDatabaseMock database;
   late DataVerifier dataVerifier;
   setUp(() {
-    final user = MockUser(
-      isAnonymous: false,
-      uid: 'someuid',
-      email: 'email@email.com',
-      displayName: 'Junior',
-    );
-    authMock = MockFirebaseAuth(mockUser: user);
-    firebaseMock = FakeFirebaseFirestore();
-    uuid = const Uuid();
-    dataVerifier = DataVerifier();
-    enterpriseDatabase = EnterpriseDatabaseMock(
-        database: firebaseMock, auth: authMock, uuid: uuid);
-    database = FirebaseDatabaseMock(
-        database: firebaseMock,
-        auth: authMock,
-        encryptService: EncryptService(),
-        uuid: uuid,
-        dataVerifier: dataVerifier);
-  });
-  tearDown(() {
     final user = MockUser(
       isAnonymous: false,
       uid: 'someuid',

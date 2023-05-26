@@ -21,7 +21,7 @@ class LoginController {
   bool loadingData = false;
   bool loadingLoginData = false;
   bool loadingAuthData = false;
-  bool loadingEnterpriseAuth = false;
+  
   String? emailValidate(String? value) {
     return value!.isNotEmpty && value != '' && value.contains('@')
         ? null
@@ -148,38 +148,7 @@ class LoginController {
       ),
     );
   }
-  enterpriseNotFound(BuildContext context, {required String message}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-        ),
-        backgroundColor: Colors.redAccent,
-        elevation: 5,
-        duration: const Duration(seconds: 5),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.07,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            children: [
-              Text(
-                message,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+
 
   noMatchingPasswords(BuildContext context, {required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(
