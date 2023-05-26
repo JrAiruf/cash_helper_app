@@ -17,9 +17,6 @@ class EnterpriseAuthPage extends StatefulWidget {
 final _loginController = Modular.get<LoginController>();
 final _enterpriseController = Modular.get<EnterpriseController>();
 
-var _codeVisible = ValueNotifier(false);
-String? _enterpriseCode = "";
-
 class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
   @override
   Widget build(BuildContext context) {
@@ -94,24 +91,30 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 5),
                                       child: AnimatedBuilder(
-                                          animation: _codeVisible,
+                                          animation:
+                                              _enterpriseController.codeVisible,
                                           builder: (_, __) {
                                             return CashHelperTextFieldComponent(
                                               primaryColor: surfaceColor,
-                                              suffixIcon:
-                                                  VisibilityIconComponent(
-                                                      iconColor: surfaceColor,
-                                                      onTap: () => _codeVisible
+                                              suffixIcon: VisibilityIconComponent(
+                                                  iconColor: surfaceColor,
+                                                  onTap: () =>
+                                                      _enterpriseController
+                                                              .codeVisible
                                                               .value =
-                                                          !_codeVisible.value,
-                                                      forVisibility:
-                                                          Icons.visibility,
-                                                      forHideContent:
-                                                          Icons.visibility_off,
-                                                      condition:
-                                                          _codeVisible.value),
+                                                          !_enterpriseController
+                                                              .codeVisible
+                                                              .value,
+                                                  forVisibility:
+                                                      Icons.visibility,
+                                                  forHideContent:
+                                                      Icons.visibility_off,
+                                                  condition:
+                                                      _enterpriseController
+                                                          .codeVisible.value),
                                               radius: 15,
-                                              obscureText: _codeVisible.value
+                                              obscureText: _enterpriseController
+                                                      .codeVisible.value
                                                   ? false
                                                   : true,
                                               validator: _loginController

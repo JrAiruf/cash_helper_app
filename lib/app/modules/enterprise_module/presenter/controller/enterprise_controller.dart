@@ -21,7 +21,8 @@ class EnterpriseController {
   final enterpriseStore = Modular.get<EnterpriseStore>();
 
   bool loadingData = false;
-  var loadingEnterpriseAuth = ValueNotifier(false);
+  final loadingEnterpriseAuth = ValueNotifier(false);
+  final codeVisible = ValueNotifier(false);
   final enterpriseAuthFormkey = GlobalKey<FormState>();
 
   String? passwordValidate(String? value) {
