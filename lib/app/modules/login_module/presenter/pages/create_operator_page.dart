@@ -249,9 +249,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 15),
                         child: CashHelperElevatedButton(
-                          onPressed: () {
-                            _loginController.registerOperator(context);
-                          },
+                          onPressed: () =>
+                              _loginController.registerOperator(context),
                           width: width,
                           height: 65,
                           buttonName: 'Registrar',

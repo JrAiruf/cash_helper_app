@@ -234,28 +234,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 25),
-                        child: AnimatedBuilder(
-                            animation: _loginController.loadingData,
-                            builder: (_, __) {
-                              return Visibility(
-                                visible: !_loginController.loadingData.value,
-                                replacement: Center(
-                                  child: CircularProgressIndicator(
-                                    color: indicatorColor,
-                                  ),
-                                ),
-                                child: CashHelperElevatedButton(
-                                  onPressed: _loginController.login,
-                                  radius: 12,
-                                  width: width,
-                                  height: 65,
-                                  buttonName: 'Entrar',
-                                  fontSize: 20,
-                                  nameColor: surfaceColor,
-                                  backgroundColor: secondaryColor,
-                                ),
-                              );
-                            }),
+                        child: CashHelperElevatedButton(
+                          onPressed: _loginController.login,
+                          radius: 12,
+                          width: width,
+                          height: 65,
+                          buttonName: 'Entrar',
+                          fontSize: 20,
+                          nameColor: surfaceColor,
+                          backgroundColor: secondaryColor,
+                        ),
                       ),
                     ],
                   ),

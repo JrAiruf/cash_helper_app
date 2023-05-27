@@ -165,10 +165,8 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                               ),
                               SizedBox(height: height * 0.02),
                               CashHelperElevatedButton(
-                                onPressed: () {
-                                  Modular.to.pushNamed(
-                                      EnterpriseRoutes.enterpriseFormulary);
-                                },
+                                onPressed: () => Modular.to.pushNamed(
+                                    EnterpriseRoutes.enterpriseFormulary),
                                 radius: 12,
                                 width: width,
                                 height: 65,
