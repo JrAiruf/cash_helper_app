@@ -1,10 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../../routes/app_routes.dart';
 import '../../../enterprise_module/domain/entities/enterprise_business_position.dart';
+import '../../../user_module/domain/entities/operator_entity.dart';
 import '../stores/login_store.dart';
 
 class LoginController {
@@ -23,15 +26,26 @@ class LoginController {
   final cashierNumberField = TextEditingController();
 
   final loginStore = Modular.get<LoginStore>();
+  final dateValue = DateValues();
   bool loadingLoginData = false;
   bool loadingAuthData = false;
+  bool startWithEnabledOperator = false;
+  bool get enabledOperator => startWithEnabledOperator;
+  set enabledOperator(bool status) => startWithEnabledOperator = status;
   late EnterpriseBusinessPosition userEnterpriseBusinessPosition;
   final loginFormKey = GlobalKey<FormState>();
   final createManagerFormKey = GlobalKey<FormState>();
+  final createOperatorFormKey = GlobalKey<FormState>();
 
   final managerEntity = ManagerEntity(
       businessPosition: EnterpriseBusinessPosition.manager.position);
+  final operatorEntity = OperatorEntity(
+    operatorClosing: 'Pendente',
+    businessPosition: EnterpriseBusinessPosition.cashOperator.position,
+  );
   final loadingData = ValueNotifier(false);
+  final operatorPasswordVisible = ValueNotifier(false);
+  final operatorConfirmationPasswordVisible = ValueNotifier(false);
   final managerPasswordVisible = ValueNotifier(false);
   final managerConfirmationPasswordVisible = ValueNotifier(false);
   final passwordVisible = ValueNotifier(false);
@@ -39,6 +53,7 @@ class LoginController {
   final businessPosition = ValueNotifier("Operador");
   String enterpriseId = "";
   String? confirmartionPassword;
+  String? operatorConfirmationPassword;
 
   bool get userStatus => managerUser.value;
   set userStatus(bool manager) => managerUser.value = manager;
@@ -113,6 +128,47 @@ class LoginController {
       await loginStore.registerManager(
           managerEntity, enterpriseId, managerEntity.businessPosition!);
     }
+  }
+
+  registerOperator(BuildContext context) async {
+    loadingData.value = true;
+    createOperatorFormKey.currentState!.validate();
+    operatorEntity.operatorEnabled = enabledOperator ? true : false;
+    operatorEntity.operatorOppening =
+        enabledOperator ? dateValue.operatorOppening : 'Pendente';
+    if (createOperatorFormKey.currentState!.validate()) {
+      createOperatorFormKey.currentState!.save();
+      if (operatorEntity.operatorPassword == operatorConfirmationPassword) {
+        final newOperator = await loginStore
+            .register(
+              operatorEntity,
+              enterpriseId,
+              operatorEntity.businessPosition!,
+            )
+            ?.then((value) => value)
+            .catchError((e) {
+          if (e.toString().contains("already-in-use")) {
+            registrationFail(context, message: "Email já utilizado");
+          } else {
+            const String message = "Erro desconhecido";
+            registrationFail(context, message: message);
+          }
+        });
+        if (newOperator != null) {
+          operatorCreatedSucessfully(context);
+          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
+              arguments: newOperator);
+          loadingData.value = false;
+        } else {
+          onFail(context);
+          loadingData.value = false;
+        }
+      } else {
+        noMatchingPasswords(context, message: "As senhas não correspondem");
+        loadingData.value = false;
+      }
+    }
+    loadingData.value = false;
   }
 
   void login() async {

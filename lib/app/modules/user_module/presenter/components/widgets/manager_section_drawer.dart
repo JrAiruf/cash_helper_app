@@ -129,7 +129,10 @@ class ManagerSectionDrawer extends StatelessWidget {
                   children: [
                     Text(
                       "Sair",
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: surfaceColor),
                     ),
                     const SizedBox(
                       width: 20,
