@@ -27,7 +27,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
     final surface = Theme.of(context).colorScheme.surface;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final formKey = _enterpriseController.enterpriseAuthFormkey;
+    final formKey = _enterpriseController.enterpriseFormKey;
     return Scaffold(
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),

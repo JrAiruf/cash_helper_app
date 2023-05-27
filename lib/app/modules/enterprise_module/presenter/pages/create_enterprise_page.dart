@@ -19,12 +19,8 @@ class CreateEnterprisePage extends StatefulWidget {
 }
 
 class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
-  final _createEnterpriseFormKey = GlobalKey<FormState>();
   final _enterpriseController = Modular.get<EnterpriseController>();
   final _enterpriseStore = Modular.get<EnterpriseStore>();
-  String? _confirmationPassword = "";
-  bool _passwordVisible = false;
-  bool _confirmPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -92,7 +88,8 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15)),
                               child: Form(
-                                key: _createEnterpriseFormKey,
+                                key: _enterpriseController
+                                    .createEnterpriseFormKey,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
@@ -121,61 +118,85 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                               .textTheme
                                               .bodySmall),
                                       const SizedBox(height: 15),
-                                      CashHelperTextFieldComponent(
-                                        textColor: surfaceColor,
-                                        primaryColor: surfaceColor,
-                                        suffixIcon: VisibilityIconComponent(
-                                            iconColor: surfaceColor,
-                                            onTap: () {
-                                              setState(() {
-                                                _passwordVisible =
-                                                    !_passwordVisible;
-                                              });
-                                            },
-                                            forVisibility: Icons.visibility,
-                                            forHideContent:
-                                                Icons.visibility_off,
-                                            condition: _passwordVisible),
-                                        radius: 15,
-                                        validator: (value) =>
-                                            _enterpriseController
-                                                .passwordValidate(value),
-                                        onSaved: (value) => widget
-                                            .enterpriseEntity
-                                            .enterprisePassword = value,
-                                        controller: _enterpriseController
-                                            .newEnterprisePasswordField,
-                                        obscureText:
-                                            _passwordVisible ? false : true,
-                                        label: 'Senha',
-                                      ),
-                                      CashHelperTextFieldComponent(
-                                        textColor: surfaceColor,
-                                        primaryColor: surfaceColor,
-                                        suffixIcon: VisibilityIconComponent(
-                                            iconColor: surfaceColor,
-                                            onTap: () {
-                                              setState(() {
-                                                _confirmPasswordVisible =
-                                                    !_confirmPasswordVisible;
-                                              });
-                                            },
-                                            forVisibility: Icons.visibility,
-                                            forHideContent:
-                                                Icons.visibility_off,
-                                            condition: _confirmPasswordVisible),
-                                        radius: 15,
-                                        validator: (value) =>
-                                            _enterpriseController
-                                                .passwordValidate(value),
-                                        onSaved: (value) =>
-                                            _confirmationPassword = value,
-                                        controller:
-                                            _enterpriseController.cityField,
-                                        obscureText: _confirmPasswordVisible
-                                            ? false
-                                            : true,
-                                        label: 'Confirmar Senha',
+                                      AnimatedBuilder(
+                                          animation: _enterpriseController
+                                              .passwordVisible,
+                                          builder: (_, __) {
+                                            return CashHelperTextFieldComponent(
+                                              textColor: surfaceColor,
+                                              primaryColor: surfaceColor,
+                                              suffixIcon: VisibilityIconComponent(
+                                                  iconColor: surfaceColor,
+                                                  onTap: () =>
+                                                      _enterpriseController
+                                                              .passwordVisible
+                                                              .value =
+                                                          !_enterpriseController
+                                                              .passwordVisible
+                                                              .value,
+                                                  forVisibility:
+                                                      Icons.visibility,
+                                                  forHideContent:
+                                                      Icons.visibility_off,
+                                                  condition:
+                                                      _enterpriseController
+                                                          .passwordVisible
+                                                          .value),
+                                              radius: 15,
+                                              validator: (value) =>
+                                                  _enterpriseController
+                                                      .passwordValidate(value),
+                                              onSaved: (value) => widget
+                                                  .enterpriseEntity
+                                                  .enterprisePassword = value,
+                                              controller: _enterpriseController
+                                                  .newEnterprisePasswordField,
+                                              obscureText: _enterpriseController
+                                                      .passwordVisible.value
+                                                  ? false
+                                                  : true,
+                                              label: 'Senha',
+                                            );
+                                          }),
+                                      AnimatedBuilder(
+                                        animation: _enterpriseController
+                                            .confirmPasswordVisible,
+                                        builder: (_, __) {
+                                          return CashHelperTextFieldComponent(
+                                            textColor: surfaceColor,
+                                            primaryColor: surfaceColor,
+                                            suffixIcon: VisibilityIconComponent(
+                                                iconColor: surfaceColor,
+                                                onTap: () => _enterpriseController
+                                                        .confirmPasswordVisible
+                                                        .value =
+                                                    !_enterpriseController
+                                                        .confirmPasswordVisible
+                                                        .value,
+                                                forVisibility: Icons.visibility,
+                                                forHideContent:
+                                                    Icons.visibility_off,
+                                                condition: _enterpriseController
+                                                    .confirmPasswordVisible
+                                                    .value),
+                                            radius: 15,
+                                            validator: (value) =>
+                                                _enterpriseController
+                                                    .passwordValidate(value),
+                                            onSaved: (value) =>
+                                                _enterpriseController
+                                                        .confirmationPassword =
+                                                    value!,
+                                            controller:
+                                                _enterpriseController.cityField,
+                                            obscureText: _enterpriseController
+                                                    .confirmPasswordVisible
+                                                    .value
+                                                ? false
+                                                : true,
+                                            label: 'Confirmar Senha',
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
@@ -191,20 +212,9 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 15),
                       child: CashHelperElevatedButton(
-                        onPressed: () async {
-                          _createEnterpriseFormKey.currentState?.validate();
-                          _createEnterpriseFormKey.currentState?.save();
-                          if (_createEnterpriseFormKey.currentState!
-                              .validate()) {
-                            if (_confirmationPassword ==
-                                widget.enterpriseEntity.enterprisePassword) {
-                              _enterpriseStore.createEnterpriseAccount(
-                                  widget.enterpriseEntity);
-                            } else {
-                              _enterpriseController.noMatchingPasswords(context,
-                                  message: "As senhas não correspondem");
-                            }
-                          }
+                        onPressed: () {
+                          _enterpriseController
+                              .finishEnterpriseRegistration(context);
                         },
                         width: width,
                         height: 65,

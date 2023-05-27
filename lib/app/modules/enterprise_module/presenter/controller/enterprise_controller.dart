@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../routes/app_routes.dart';
+import '../../domain/entities/enterprise_entity.dart';
 import '../stores/enterprise_store.dart';
 
 class EnterpriseController {
@@ -18,12 +19,18 @@ class EnterpriseController {
   final newEnterprisePasswordField = TextEditingController();
   final confirmationPasswordField = TextEditingController();
 
-  final enterpriseStore = Modular.get<EnterpriseStore>();
+  final enterpriseEntity = EnterpriseEntity();
+  String confirmationPassword = "";
 
+  final enterpriseStore = Modular.get<EnterpriseStore>();
+  final enterpriseFormKey = GlobalKey<FormState>();
+  final createEnterpriseFormKey = GlobalKey<FormState>();
   bool loadingData = false;
+
+  final passwordVisible = ValueNotifier(false);
+  final confirmPasswordVisible = ValueNotifier(false);
   final loadingEnterpriseAuth = ValueNotifier(false);
   final codeVisible = ValueNotifier(false);
-  final enterpriseAuthFormkey = GlobalKey<FormState>();
 
   String? passwordValidate(String? value) {
     return value!.isNotEmpty && value != '' && value.length >= 8
@@ -81,11 +88,32 @@ class EnterpriseController {
         : 'Informe o número de telefone da empresa.';
   }
 
+  void nextRegistrationStep() {
+    enterpriseFormKey.currentState!.validate();
+    if (enterpriseFormKey.currentState!.validate()) {
+      enterpriseFormKey.currentState?.save();
+      Modular.to.pushNamed(EnterpriseRoutes.createEnterprise,
+          arguments: enterpriseEntity);
+    }
+  }
+
+  finishEnterpriseRegistration(BuildContext context) {
+    createEnterpriseFormKey.currentState?.validate();
+    createEnterpriseFormKey.currentState?.save();
+    if (createEnterpriseFormKey.currentState!.validate()) {
+      if (confirmationPassword == enterpriseEntity.enterprisePassword) {
+        enterpriseStore.createEnterpriseAccount(enterpriseEntity);
+      } else {
+        noMatchingPasswords(context, message: "As senhas não correspondem");
+      }
+    }
+  }
+
   void authenticateEnterprise(BuildContext context) async {
-    enterpriseAuthFormkey.currentState?.validate();
-    if (enterpriseAuthFormkey.currentState!.validate()) {
+    enterpriseFormKey.currentState?.validate();
+    if (enterpriseFormKey.currentState!.validate()) {
       loadingEnterpriseAuth.value = true;
-      enterpriseAuthFormkey.currentState?.save();
+      enterpriseFormKey.currentState?.save();
       final enterprise = await enterpriseStore
           .getEnterpriseByCode(enterpriseCodeField.text)
           .catchError((e) {

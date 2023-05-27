@@ -1,10 +1,8 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/controller/enterprise_controller.dart';
-import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
-import '../../domain/entities/enterprise_entity.dart';
 
 class EnterpriseFormularyPage extends StatefulWidget {
   const EnterpriseFormularyPage({super.key});
@@ -15,9 +13,7 @@ class EnterpriseFormularyPage extends StatefulWidget {
 }
 
 class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
-  final _enterpriseFormKey = GlobalKey<FormState>();
   final _enterpriseController = Modular.get<EnterpriseController>();
-  final _enterpriseEntity = EnterpriseEntity();
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +71,7 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             child: Form(
-                              key: _enterpriseFormKey,
+                              key: _enterpriseController.enterpriseFormKey,
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),
@@ -87,10 +83,10 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                       textColor: onSurface,
                                       primaryColor: onSurface,
                                       radius: 15,
-                                      validator: (value) =>
-                                          _enterpriseController
-                                              .cnpjValidate(value),
-                                      onSaved: (value) => _enterpriseEntity
+                                      validator:
+                                          _enterpriseController.cnpjValidate,
+                                      onSaved: (value) => _enterpriseController
+                                          .enterpriseEntity
                                           .enterpriseCnpj = value,
                                       controller:
                                           _enterpriseController.cnpjField,
@@ -100,10 +96,10 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                       textColor: onSurface,
                                       primaryColor: onSurface,
                                       radius: 15,
-                                      validator: (value) =>
-                                          _enterpriseController
-                                              .enterpriseNameValidate(value),
-                                      onSaved: (value) => _enterpriseEntity
+                                      validator: _enterpriseController
+                                          .enterpriseNameValidate,
+                                      onSaved: (value) => _enterpriseController
+                                          .enterpriseEntity
                                           .enterpriseName = value,
                                       controller: _enterpriseController
                                           .enterpriseNameField,
@@ -113,11 +109,11 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                       textColor: onSurface,
                                       primaryColor: onSurface,
                                       radius: 15,
-                                      onSaved: (value) => _enterpriseEntity
+                                      validator:
+                                          _enterpriseController.cityValidate,
+                                      onSaved: (value) => _enterpriseController
+                                          .enterpriseEntity
                                           .enterpriseCity = value,
-                                      validator: (value) =>
-                                          _enterpriseController
-                                              .cityValidate(value),
                                       controller:
                                           _enterpriseController.cityField,
                                       label: 'Cidade',
@@ -126,10 +122,10 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                       textColor: onSurface,
                                       primaryColor: onSurface,
                                       radius: 15,
-                                      validator: (value) =>
-                                          _enterpriseController
-                                              .cepValidate(value),
-                                      onSaved: (value) => _enterpriseEntity
+                                      validator:
+                                          _enterpriseController.cepValidate,
+                                      onSaved: (value) => _enterpriseController
+                                          .enterpriseEntity
                                           .enterpriseCep = value,
                                       controller:
                                           _enterpriseController.cepField,
@@ -139,10 +135,10 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                       textColor: onSurface,
                                       primaryColor: onSurface,
                                       radius: 15,
-                                      validator: (value) =>
-                                          _enterpriseController
-                                              .stateValidate(value),
-                                      onSaved: (value) => _enterpriseEntity
+                                      validator:
+                                          _enterpriseController.stateValidate,
+                                      onSaved: (value) => _enterpriseController
+                                          .enterpriseEntity
                                           .enterpriseState = value,
                                       controller:
                                           _enterpriseController.stateField,
@@ -156,12 +152,13 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                             textColor: onSurface,
                                             primaryColor: onSurface,
                                             radius: 15,
-                                            validator: (value) =>
+                                            validator: _enterpriseController
+                                                .streetValidate,
+                                            onSaved: (value) =>
                                                 _enterpriseController
-                                                    .streetValidate(value),
-                                            onSaved: (value) => _enterpriseEntity
-                                                    .enterpriseAddressStreet =
-                                                value,
+                                                        .enterpriseEntity
+                                                        .enterpriseAddressStreet =
+                                                    value,
                                             controller: _enterpriseController
                                                 .streetField,
                                             label: 'Rua',
@@ -174,13 +171,13 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                             textColor: onSurface,
                                             primaryColor: onSurface,
                                             radius: 15,
-                                            validator: (value) =>
+                                            validator: _enterpriseController
+                                                .addressNumberValidate,
+                                            onSaved: (value) =>
                                                 _enterpriseController
-                                                    .addressNumberValidate(
-                                                        value),
-                                            onSaved: (value) => _enterpriseEntity
-                                                    .enterpriseAddressNumber =
-                                                int.tryParse(value ?? "0"),
+                                                        .enterpriseEntity
+                                                        .enterpriseAddressNumber =
+                                                    int.tryParse(value ?? "0"),
                                             controller: _enterpriseController
                                                 .addressNumberField,
                                             label: 'Número',
@@ -192,10 +189,10 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                                       textColor: onSurface,
                                       primaryColor: onSurface,
                                       radius: 15,
-                                      validator: (value) =>
-                                          _enterpriseController
-                                              .phoneNumberValidate(value),
-                                      onSaved: (value) => _enterpriseEntity
+                                      validator: _enterpriseController
+                                          .phoneNumberValidate,
+                                      onSaved: (value) => _enterpriseController
+                                          .enterpriseEntity
                                           .enterprisePhoneNumber = value,
                                       label: 'Telefone',
                                       controller: _enterpriseController
@@ -216,15 +213,7 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                         horizontal: 15, vertical: 40),
                     child: CashHelperElevatedButton(
                       radius: 15,
-                      onPressed: () {
-                        _enterpriseFormKey.currentState!.validate();
-                        if (_enterpriseFormKey.currentState!.validate()) {
-                          _enterpriseFormKey.currentState?.save();
-                          Modular.to.pushNamed(
-                              EnterpriseRoutes.createEnterprise,
-                              arguments: _enterpriseEntity);
-                        }
-                      },
+                      onPressed: _enterpriseController.nextRegistrationStep,
                       width: width,
                       height: 65,
                       buttonName: 'Próximo',
