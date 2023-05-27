@@ -8,15 +8,19 @@ class GetOperatorsInformations implements IGetOperatorsInformations {
   GetOperatorsInformations({required ManagementRepository repository})
       : _repository = repository;
   final ManagementRepository _repository;
-   @override
+  @override
   Future<List<OperatorEntity>>? call(String? enterpriseId) async {
     final operatorsList = <OperatorEntity>[];
     if (enterpriseId != null) {
       final repositoryOperatorsModelList =
           await _repository.getOperatorsInformations(enterpriseId) as List;
-      for (var operatorModel in repositoryOperatorsModelList) {
-        final retriviedOperator = OperatorModel.toEntityData(operatorModel);
-        operatorsList.add(retriviedOperator);
+      if (repositoryOperatorsModelList.isNotEmpty) {
+        for (var operatorModel in repositoryOperatorsModelList) {
+          final retriviedOperator = OperatorModel.toEntityData(operatorModel);
+          operatorsList.add(retriviedOperator);
+        }
+      } else {
+        return operatorsList;
       }
     }
     return operatorsList;

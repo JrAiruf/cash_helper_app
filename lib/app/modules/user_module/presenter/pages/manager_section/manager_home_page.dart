@@ -8,7 +8,6 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/controller/man
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../../management_module/presenter/stores/management_store.dart';
 import '../../components/buttons/quick_access_button.dart';
@@ -29,10 +28,10 @@ final _enterpriseId = Modular.args.params["enterpriseId"];
 class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
+    super.initState();
     _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!,
         widget.managerEntity.businessPosition!);
     _managementStore.getOperatorsInformations(_enterpriseId);
-    super.initState();
   }
 
   @override
@@ -113,17 +112,16 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 ),
                               );
                             }
-                            if (state is ManagementInitialState) {
-                              return Container(
-                                decoration: BoxDecoration(color: primaryColor),
-                                child: Center(
-                                  child: Text(
-                                    "Aguarde ...",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(color: surfaceColor),
-                                  ),
+                            if (state is GetUsersListFailureState) {
+                              return Center(
+                                child: Text(
+                                  "Nenhum Operador Encontrado",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: surfaceColor,
+                                      ),
                                 ),
                               );
                             }

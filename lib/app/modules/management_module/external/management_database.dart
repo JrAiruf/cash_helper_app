@@ -35,7 +35,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       throw UsersUnavailableError(errorMessage: e.toString());
     }
   }
-  
+
   @override
   Future<Map<String, dynamic>>? createNewPaymentMethod(
       String? enterpriseId, Map<String, dynamic>? paymentMethod) async {
@@ -61,7 +61,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       throw PaymentMethodNotCreated(errorMessage: e.toString());
     }
   }
-  
+
   @override
   Future<List<Map<String, dynamic>>>? getAllPaymentMethods(
       String? enterpriseId) async {
@@ -84,7 +84,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       throw PaymentMethodsListUnnavailable(errorMessage: e.toString());
     }
   }
-  
+
   @override
   Future<void>? removePaymentMethod(
       String? enterpriseId, String? paymentMethodId) async {

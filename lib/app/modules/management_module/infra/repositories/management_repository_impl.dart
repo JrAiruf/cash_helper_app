@@ -18,13 +18,17 @@ class ManagementRepositoryImpl implements ManagementRepository {
   Future<List<OperatorModel>>? getOperatorsInformations(
       String? enterpriseId) async {
     final operatorsModelList = <OperatorModel>[];
-    if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
-      final databaseOperatorsMapsList =
-          await _database.getOperatorInformations(enterpriseId) ?? [];
-      for (var operatorMap in databaseOperatorsMapsList) {
-        final operatorModel = OperatorModel.fromMap(operatorMap);
-        operatorsModelList.add(operatorModel);
+    try {
+      if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
+        final databaseOperatorsMapsList =
+            await _database.getOperatorInformations(enterpriseId) ?? [];
+        for (var operatorMap in databaseOperatorsMapsList) {
+          final operatorModel = OperatorModel.fromMap(operatorMap);
+          operatorsModelList.add(operatorModel);
+        }
       }
+    } catch (e) {
+      return operatorsModelList;
     }
     return operatorsModelList;
   }
@@ -56,8 +60,8 @@ class ManagementRepositoryImpl implements ManagementRepository {
       return [];
     }
   }
-  
- @override
+
+  @override
   Future<void>? removePaymentMethod(
       String? enterpriseId, String? paymentMethodId) async {
     if (_dataVerifier.validateInputData(inputs: [
