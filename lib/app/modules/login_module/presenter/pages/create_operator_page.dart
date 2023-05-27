@@ -22,7 +22,7 @@ class CreateOperatorPage extends StatefulWidget {
 class _CreateOperatorPageState extends State<CreateOperatorPage> {
   final _createOperatorFormKey = GlobalKey<FormState>();
   final _loginStore = Modular.get<LoginStore>();
-  final _createOperatorController = Modular.get<LoginController>();
+  final _loginController = Modular.get<LoginController>();
   bool? startWithEnabledOperator;
   final _cashierOperator = OperatorEntity();
   String? _confirmationPassword;
@@ -44,7 +44,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Visibility(
-        visible: _createOperatorController.loadingData,
+        visible: _loginController.loadingData.value,
         replacement: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: Container(
@@ -86,11 +86,11 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
-                                        _createOperatorController
+                                        _loginController
                                             .cashierNameValidate(value),
                                     onSaved: (value) =>
                                         _cashierOperator.operatorName = value,
-                                    controller: _createOperatorController
+                                    controller: _loginController
                                         .cashierNameField,
                                     label: 'Nome',
                                   ),
@@ -99,11 +99,11 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
-                                        _createOperatorController
+                                        _loginController
                                             .emailValidate(value),
                                     onSaved: (value) =>
                                         _cashierOperator.operatorEmail = value,
-                                    controller: _createOperatorController
+                                    controller: _loginController
                                         .newOperatorEmailField,
                                     label: 'Email',
                                   ),
@@ -124,11 +124,11 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     obscureText:
                                         _passwordVisible == true ? false : true,
                                     validator: (value) =>
-                                        _createOperatorController
+                                        _loginController
                                             .passwordValidate(value),
                                     onSaved: (value) => _cashierOperator
                                         .operatorPassword = value,
-                                    controller: _createOperatorController
+                                    controller: _loginController
                                         .newOperatorPasswordField,
                                     label: 'Senha',
                                   ),
@@ -152,11 +152,11 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                             ? false
                                             : true,
                                     validator: (value) =>
-                                        _createOperatorController
+                                        _loginController
                                             .passwordValidate(value),
                                     onSaved: (value) =>
                                         _confirmationPassword = value,
-                                    controller: _createOperatorController
+                                    controller: _loginController
                                         .newOperatorPasswordField,
                                     label: 'Confirmar senha',
                                   ),
@@ -165,12 +165,12 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                                     primaryColor: onSurface,
                                     radius: 15,
                                     validator: (value) =>
-                                        _createOperatorController
+                                        _loginController
                                             .cashierNumberValidate(value),
                                     onSaved: (value) => _cashierOperator
                                         .operatorNumber = int.tryParse(value!),
                                     label: 'Número do caixa',
-                                    controller: _createOperatorController
+                                    controller: _loginController
                                         .cashierNumberField,
                                     input: TextInputType.phone,
                                   ),
@@ -231,7 +231,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                         if (_cashierOperator.operatorPassword ==
                             _confirmationPassword) {
                           setState(() {
-                            _createOperatorController.loadingData = true;
+                            _loginController.loadingData.value = true;
                           });
                           final newOperator = await _loginStore
                               .register(
@@ -242,33 +242,33 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                               ?.then((value) => value)
                               .catchError((e) {
                             if (e.toString().contains("already-in-use")) {
-                              _createOperatorController.registrationFail(
+                              _loginController.registrationFail(
                                   context,
                                   message: "Email já utilizado");
                             } else {
                               const String message = "Erro desconhecido";
-                              _createOperatorController
+                              _loginController
                                   .registrationFail(context, message: message);
                             }
                           });
                           if (newOperator != null) {
                             final enterpriseId =
                                 widget.enterpriseEntity.enterpriseId;
-                            _createOperatorController
+                            _loginController
                                 .operatorCreatedSucessfully(context);
                             Modular.to.navigate(
                                 "${UserRoutes.operatorHomePage}$enterpriseId",
                                 arguments: newOperator);
                           } else {
-                            _createOperatorController.onFail(context);
+                            _loginController.onFail(context);
                           }
                         } else {
-                          _createOperatorController.noMatchingPasswords(context,
+                          _loginController.noMatchingPasswords(context,
                               message: "As senhas não correspondem");
                         }
                       }
                       setState(() {
-                        _createOperatorController.loadingData = false;
+                        _loginController.loadingData.value = false;
                       });
                     },
                     width: width,

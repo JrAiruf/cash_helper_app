@@ -10,9 +10,7 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/pages/pa
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/remove_payment_method_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../domain/usecases/create_new_payment_method/create_new_payment_method.dart';
 import '../domain/usecases/get_all_payment_methods/get_all_payment_methods.dart';
 import '../domain/usecases/get_operator_informations/get_operators_informations.dart';

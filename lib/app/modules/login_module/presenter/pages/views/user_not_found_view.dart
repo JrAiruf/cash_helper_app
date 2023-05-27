@@ -188,7 +188,7 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                 Padding(
                   padding: const EdgeInsets.only(top: 25),
                   child: Visibility(
-                    visible: !_loginController.loadingData,
+                    visible: !_loginController.loadingData.value,
                     replacement: Center(
                       child: CircularProgressIndicator(
                         color: indicatorColor,

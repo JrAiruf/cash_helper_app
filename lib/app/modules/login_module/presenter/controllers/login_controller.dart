@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../enterprise_module/domain/entities/enterprise_business_position.dart';
+import '../stores/login_store.dart';
+
 class LoginController {
   final emailField = TextEditingController();
   final passwordField = TextEditingController();
@@ -18,10 +21,24 @@ class LoginController {
   final cashierCodeField = TextEditingController();
   final cashierNumberField = TextEditingController();
 
-  bool loadingData = false;
   bool loadingLoginData = false;
   bool loadingAuthData = false;
-  
+  final loginStore = Modular.get<LoginStore>();
+  late EnterpriseBusinessPosition userEnterpriseBusinessPosition;
+  final loginFormKey = GlobalKey<FormState>();
+
+  final loadingData = ValueNotifier(false);
+  final passwordVisible = ValueNotifier(false);
+  final managerUser = ValueNotifier(false);
+  final businessPosition = ValueNotifier("Operador");
+  String enterpriseId = "";
+
+  bool get userStatus => managerUser.value;
+  set userStatus(bool manager) => managerUser.value = manager;
+  String get userBusinessPosition => businessPosition.value;
+  set userBusinessPosition(String position) =>
+      businessPosition.value = managerUser.value ? "Gerente" : "Operador";
+
   String? emailValidate(String? value) {
     return value!.isNotEmpty && value != '' && value.contains('@')
         ? null
@@ -80,6 +97,22 @@ class LoginController {
     return value!.isNotEmpty && value != '' && value != ' '
         ? null
         : 'Informe o número do caixa.';
+  }
+
+  void login() async {
+    loadingData.value = true;
+    managerUser.value
+        ? userEnterpriseBusinessPosition = EnterpriseBusinessPosition.manager
+        : userEnterpriseBusinessPosition =
+            EnterpriseBusinessPosition.cashOperator;
+    loginFormKey.currentState!.validate();
+    if (loginFormKey.currentState!.validate()) {
+      loginFormKey.currentState!.save();
+      await loginStore.login(emailField.text, passwordField.text, enterpriseId,
+          userEnterpriseBusinessPosition.position);
+      loadingData.value = false;
+    }
+    loadingData.value = false;
   }
 
   onFail(BuildContext context) {
@@ -148,7 +181,6 @@ class LoginController {
       ),
     );
   }
-
 
   noMatchingPasswords(BuildContext context, {required String message}) {
     ScaffoldMessenger.of(context).showSnackBar(

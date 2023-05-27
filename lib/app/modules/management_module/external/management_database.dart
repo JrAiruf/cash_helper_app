@@ -1,7 +1,5 @@
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
-
 import 'errors/payment_method_not_created.dart';
 import 'errors/payment_methods_list_unnavailable.dart';
 import 'errors/remove_payment_method_error.dart';
