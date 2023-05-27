@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -21,17 +22,23 @@ class LoginController {
   final cashierCodeField = TextEditingController();
   final cashierNumberField = TextEditingController();
 
+  final loginStore = Modular.get<LoginStore>();
   bool loadingLoginData = false;
   bool loadingAuthData = false;
-  final loginStore = Modular.get<LoginStore>();
   late EnterpriseBusinessPosition userEnterpriseBusinessPosition;
   final loginFormKey = GlobalKey<FormState>();
+  final createManagerFormKey = GlobalKey<FormState>();
 
+  final managerEntity = ManagerEntity(
+      businessPosition: EnterpriseBusinessPosition.manager.position);
   final loadingData = ValueNotifier(false);
+  final managerPasswordVisible = ValueNotifier(false);
+  final managerConfirmationPasswordVisible = ValueNotifier(false);
   final passwordVisible = ValueNotifier(false);
   final managerUser = ValueNotifier(false);
   final businessPosition = ValueNotifier("Operador");
   String enterpriseId = "";
+  String? confirmartionPassword;
 
   bool get userStatus => managerUser.value;
   set userStatus(bool manager) => managerUser.value = manager;
@@ -97,6 +104,15 @@ class LoginController {
     return value!.isNotEmpty && value != '' && value != ' '
         ? null
         : 'Informe o número do caixa.';
+  }
+
+  registerManager() async {
+    createManagerFormKey.currentState?.validate();
+    if (createManagerFormKey.currentState!.validate()) {
+      createManagerFormKey.currentState?.save();
+      await loginStore.registerManager(
+          managerEntity, enterpriseId, managerEntity.businessPosition!);
+    }
   }
 
   void login() async {

@@ -7,8 +7,6 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
-import '../../../enterprise_module/domain/entities/enterprise_business_position.dart';
-import '../../../user_module/domain/entities/manager_entity.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
 import '../components/visibility_icon_component.dart';
@@ -21,16 +19,15 @@ class CreateManagerPage extends StatefulWidget {
   State<CreateManagerPage> createState() => _CreateManagerPageState();
 }
 
-final _createManagerFormKey = GlobalKey<FormState>();
-final _enterpriseController = Modular.get<LoginController>();
+final _loginController = Modular.get<LoginController>();
 final _loginStore = Modular.get<LoginStore>();
-final _managerEntity = ManagerEntity();
-String? _confirmartionPassword;
-
-bool _passwordVisible = false;
-bool _confirmPasswordVisible = false;
 
 class _CreateManagerPageState extends State<CreateManagerPage> {
+  @override
+  void initState() {
+    super.initState();
+    _loginController.enterpriseId = widget.enterpriseEntity.enterpriseId!;
+  } 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -96,7 +93,7 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15)),
                                 child: Form(
-                                  key: _createManagerFormKey,
+                                  key: _loginController.createManagerFormKey,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10),
@@ -108,51 +105,49 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                           textColor: onSurface,
                                           primaryColor: onSurface,
                                           radius: 15,
-                                          validator: (value) =>
-                                              _enterpriseController
-                                                  .cashierNameValidate(value),
-                                          onSaved: (value) => _managerEntity
+                                          validator: _loginController
+                                              .cashierNameValidate,
+                                          onSaved: (value) => _loginController
+                                              .managerEntity
                                               .managerName = value,
-                                          controller: _enterpriseController
-                                              .cashierNameField,
+                                          controller:
+                                              _loginController.cashierNameField,
                                           label: 'Nome Completo',
                                         ),
                                         CashHelperTextFieldComponent(
                                           textColor: onSurface,
                                           primaryColor: onSurface,
                                           radius: 15,
-                                          validator: (value) =>
-                                              _enterpriseController
-                                                  .cpfValidate(value),
-                                          onSaved: (value) =>
-                                              _managerEntity.managerCpf = value,
-                                          controller: _enterpriseController
-                                              .managerCpfField,
+                                          validator:
+                                              _loginController.cpfValidate,
+                                          onSaved: (value) => _loginController
+                                              .managerEntity.managerCpf = value,
+                                          controller:
+                                              _loginController.managerCpfField,
                                           label: 'CPF',
                                         ),
                                         CashHelperTextFieldComponent(
                                           textColor: onSurface,
                                           primaryColor: onSurface,
                                           radius: 15,
-                                          onSaved: (value) =>
-                                              _managerEntity.managerRg = value,
-                                          validator: (value) =>
-                                              _enterpriseController
-                                                  .rgValidate(value),
-                                          controller: _enterpriseController
-                                              .managerRgField,
+                                          validator:
+                                              _loginController.rgValidate,
+                                          onSaved: (value) => _loginController
+                                              .managerEntity.managerRg = value,
+                                          controller:
+                                              _loginController.managerRgField,
                                           label: 'RG',
                                         ),
                                         CashHelperTextFieldComponent(
                                           textColor: onSurface,
                                           primaryColor: onSurface,
                                           radius: 15,
-                                          validator: (value) =>
-                                              _enterpriseController
-                                                  .phoneValidate(value),
-                                          onSaved: (value) => _managerEntity
+                                          validator:
+                                              _loginController.phoneValidate,
+                                          onSaved: (value) => _loginController
+                                              .managerEntity
                                               .managerPhone = value,
-                                          controller: _enterpriseController
+                                          controller: _loginController
                                               .managerPhoneField,
                                           label: 'Telefone',
                                         ),
@@ -160,71 +155,93 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                           textColor: onSurface,
                                           primaryColor: onSurface,
                                           radius: 15,
-                                          validator: (value) =>
-                                              _enterpriseController
-                                                  .emailValidate(value),
-                                          onSaved: (value) => _managerEntity
+                                          validator:
+                                              _loginController.emailValidate,
+                                          onSaved: (value) => _loginController
+                                              .managerEntity
                                               .managerEmail = value,
                                           controller:
-                                              _enterpriseController.emailField,
+                                              _loginController.emailField,
                                           label: 'E-mail',
                                         ),
-                                        CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
-                                          radius: 15,
-                                          suffixIcon: VisibilityIconComponent(
-                                              iconColor: onSurface,
-                                              onTap: () {
-                                                setState(() {
-                                                  _passwordVisible =
-                                                      !_passwordVisible;
-                                                });
-                                              },
-                                              forVisibility: Icons.visibility,
-                                              forHideContent:
-                                                  Icons.visibility_off,
-                                              condition: _passwordVisible),
-                                          validator: (value) =>
-                                              _enterpriseController
-                                                  .passwordValidate(value),
-                                          onSaved: (value) => _managerEntity
-                                              .managerPassword = value,
-                                          controller: _enterpriseController
-                                              .newManagerPasswordField,
-                                          label: 'Senha',
-                                          obscureText:
-                                              _passwordVisible ? false : true,
-                                        ),
-                                        CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
-                                          radius: 15,
-                                          suffixIcon: VisibilityIconComponent(
-                                              iconColor: onSurface,
-                                              onTap: () {
-                                                setState(() {
-                                                  _confirmPasswordVisible =
-                                                      !_confirmPasswordVisible;
-                                                });
-                                              },
-                                              forVisibility: Icons.visibility,
-                                              forHideContent:
-                                                  Icons.visibility_off,
-                                              condition:
-                                                  _confirmPasswordVisible),
-                                          validator: (value) =>
-                                              _enterpriseController
-                                                  .confirmationPasswordValidate(
-                                                      value),
-                                          onSaved: (value) =>
-                                              _confirmartionPassword = value,
-                                          controller: _enterpriseController
-                                              .confirmationPasswordField,
-                                          label: 'Confirmar Senha',
-                                          obscureText: _confirmPasswordVisible
-                                              ? false
-                                              : true,
+                                        AnimatedBuilder(
+                                            animation: _loginController
+                                                .managerPasswordVisible,
+                                            builder: (_, __) {
+                                              return CashHelperTextFieldComponent(
+                                                textColor: onSurface,
+                                                primaryColor: onSurface,
+                                                radius: 15,
+                                                suffixIcon: VisibilityIconComponent(
+                                                    iconColor: onSurface,
+                                                    onTap: () => _loginController
+                                                            .managerPasswordVisible
+                                                            .value =
+                                                        !_loginController
+                                                            .managerPasswordVisible
+                                                            .value,
+                                                    forVisibility:
+                                                        Icons.visibility,
+                                                    forHideContent:
+                                                        Icons.visibility_off,
+                                                    condition: _loginController
+                                                        .managerPasswordVisible
+                                                        .value),
+                                                validator: _loginController
+                                                    .passwordValidate,
+                                                onSaved: (value) =>
+                                                    _loginController
+                                                            .managerEntity
+                                                            .managerPassword =
+                                                        value,
+                                                controller: _loginController
+                                                    .newManagerPasswordField,
+                                                label: 'Senha',
+                                                obscureText: _loginController
+                                                        .managerPasswordVisible
+                                                        .value
+                                                    ? false
+                                                    : true,
+                                              );
+                                            }),
+                                        AnimatedBuilder(
+                                          animation: _loginController
+                                              .managerConfirmationPasswordVisible,
+                                          builder: (_, __) {
+                                            return CashHelperTextFieldComponent(
+                                              textColor: onSurface,
+                                              primaryColor: onSurface,
+                                              radius: 15,
+                                              suffixIcon: VisibilityIconComponent(
+                                                  iconColor: onSurface,
+                                                  onTap: () => _loginController
+                                                          .managerConfirmationPasswordVisible
+                                                          .value =
+                                                      !_loginController
+                                                          .managerConfirmationPasswordVisible
+                                                          .value,
+                                                  forVisibility:
+                                                      Icons.visibility,
+                                                  forHideContent:
+                                                      Icons.visibility_off,
+                                                  condition: _loginController
+                                                      .managerConfirmationPasswordVisible
+                                                      .value),
+                                              validator: _loginController
+                                                  .confirmationPasswordValidate,
+                                              onSaved: (value) => _loginController
+                                                      .confirmartionPassword =
+                                                  value,
+                                              controller: _loginController
+                                                  .confirmationPasswordField,
+                                              label: 'Confirmar Senha',
+                                              obscureText: _loginController
+                                                      .managerConfirmationPasswordVisible
+                                                      .value
+                                                  ? false
+                                                  : true,
+                                            );
+                                          },
                                         ),
                                       ],
                                     ),
@@ -239,19 +256,7 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 15),
                         child: CashHelperElevatedButton(
-                          onPressed: () {
-                            _createManagerFormKey.currentState?.validate();
-                            _createManagerFormKey.currentState?.save();
-                            _managerEntity.businessPosition =
-                                EnterpriseBusinessPosition.manager.position;
-                            if (_createManagerFormKey.currentState!
-                                .validate()) {
-                              _loginStore.registerManager(
-                                  _managerEntity,
-                                  widget.enterpriseEntity.enterpriseId!,
-                                  _managerEntity.businessPosition!);
-                            }
-                          },
+                          onPressed: _loginController.registerManager,
                           width: width,
                           height: 65,
                           buttonName: 'Registrar',
