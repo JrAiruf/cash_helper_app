@@ -16,12 +16,7 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   @override
   Future<Map<String, dynamic>?>? createAnnotation(String? enterpriseId,
       String? operatorId, Map<String, dynamic>? annotation) async {
-    final annotationsCollection = _database
-        .collection("enterprise")
-        .doc(enterpriseId)
-        .collection("operator")
-        .doc(operatorId)
-        .collection("annotations");
+    final annotationsCollection = _getCollection(enterpriseId, operatorId);
     if (operatorId != null && annotation != null && annotation.isNotEmpty) {
       annotation["annotationId"] = uuidGenertor.v1();
       await annotationsCollection
@@ -55,10 +50,7 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   @override
   Future<Map<String, dynamic>?>? getAnnotationById(
       String? operatorId, String? annotationId) async {
-    final annotationsCollection = _database
-        .collection("operators")
-        .doc(operatorId)
-        .collection("annotations");
+    final annotationsCollection = _getCollection("enterpriseId", operatorId);
     if (operatorId != null && annotationId != null) {
       final databaseDocumentsList =
           await annotationsCollection.get().then((value) => value.docs);
@@ -118,7 +110,7 @@ void main() {
   );
 
   group(
-    "Create function should",
+    "CreateAnnotation function should",
     () {
       test(
         "Create an annotation in the current user",
