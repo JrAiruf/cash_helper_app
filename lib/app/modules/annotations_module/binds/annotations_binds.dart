@@ -7,7 +7,6 @@ import 'package:cash_helper_app/app/modules/annotations_module/presenter/control
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_store.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 import '../domain/usecases/create_annotation/create_new_annotation.dart';
@@ -105,7 +104,7 @@ class AnnotationModule extends Module {
     Bind<AnnotationsController>(
       (i) => AnnotationsController(),
     ),
-    Bind.factory<AnnotationStore>(
+    Bind<AnnotationStore>(
       (i) => AnnotationStore(
         createNewAnnotation: i(),
         getAnnotationById: i(),
@@ -123,7 +122,7 @@ class AnnotationModule extends Module {
     ),
     ChildRoute(
       "/annotation-page/:enterpriseId",
-      child: (_, args) => AnnotationPage(annotationEntity: args.data),
+      child: (_, args) => const AnnotationPage(),
     ),
   ];
 }

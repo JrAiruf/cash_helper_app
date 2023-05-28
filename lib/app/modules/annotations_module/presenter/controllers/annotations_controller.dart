@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -40,7 +41,7 @@ class AnnotationsController {
         : 'Valor Inválido! Insira o valor da compra feita.';
   }
 
-  Future<void> createAnnotation() async {
+  Future<void> createAnnotation(OperatorEntity operatorEntity) async {
     newAnnotationFormKey.currentState!.validate();
     if (newAnnotationFormKey.currentState!.validate()) {
       annotationLoadingState.value = true;
@@ -56,8 +57,12 @@ class AnnotationsController {
           annotationSaleValue: annotationValue);
       await _annotationsStore.createNewAnnotation(
           enterpriseId, operatorId, newAnnotation);
+      final operatorAndAnnotationObjects = {
+        "operatorEntity": operatorEntity,
+        "annotationEntity": newAnnotation,
+      };
       Modular.to.pushNamed("${AnnotationRoutes.annotationPage}$enterpriseId",
-          arguments: newAnnotation);
+          arguments: operatorAndAnnotationObjects);
       annotationLoadingState.value = false;
     } else {
       return;
