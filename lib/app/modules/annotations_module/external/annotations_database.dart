@@ -38,7 +38,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
 
   @override
   Future<List<Map<String, dynamic>>?>? getAllAnnotations(
-      String? operatorId) async {
+      String entepriseId, String operatorId) async {
     if (operatorId != null) {
       final annotationsCollection = _getCollection(operatorId);
       final annotationsList = await annotationsCollection.get();
@@ -137,7 +137,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   CollectionReference<Map<String, dynamic>> _getCollection(
           String? operatorId) =>
       _database
-          .collection("operators")
+          .collection("operator")
           .doc(operatorId)
           .collection("annotations");
 }

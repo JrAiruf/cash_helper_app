@@ -21,6 +21,11 @@ class CreateOperatorPage extends StatefulWidget {
 
 class _CreateOperatorPageState extends State<CreateOperatorPage> {
   final _loginController = Modular.get<LoginController>();
+  @override
+  void initState() {
+    super.initState();
+    _loginController.enterpriseId = widget.enterpriseEntity.enterpriseId!;
+  }
 
   @override
   Widget build(BuildContext context) {

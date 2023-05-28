@@ -11,7 +11,6 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/hom
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../routes/app_routes.dart';
 import '../../components/widgets/empty_annotations_list_component.dart';
 
@@ -26,7 +25,6 @@ class OperartorHomePage extends StatefulWidget {
 class _OperartorHomePageState extends State<OperartorHomePage> {
   final _loginStore = Modular.get<LoginStore>();
   final _annotationListStore = Modular.get<AnnotationsListStore>();
-  final _loginController = Modular.get<LoginController>();
   DrawerPagePosition? drawerPosition;
   final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
@@ -89,8 +87,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                       ValueListenableBuilder(
                         valueListenable: _annotationListStore,
                         builder: ((context, annotationListState, child) {
-                          if (annotationListState
-                              is LoadingAnnotationsListState) {
+                          if (annotationListState.isEmpty) {
                             return Container(
                               decoration: BoxDecoration(color: primaryColor),
                               child: Center(
@@ -99,13 +96,11 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                 ),
                               ),
                             );
-                          } else if (annotationListState
-                              is RetrievedAnnotationsListState) {
-                            /*  final annotationsList =
-                                annotationListState.annotationsList;
+                          } else if (annotationListState.isNotEmpty) {
+                            final annotationsList = annotationListState;
                             final pendingAnnotations = annotationsList.where(
                                 (annotation) =>
-                                    annotation.annotationConcluied == false); */
+                                    annotation.annotationConcluied == false);
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -138,9 +133,6 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                 ),
                               ],
                             );
-                          } else if (annotationListState
-                              is EmptyAnnotationsListState) {
-                            return const EmptyAnnotationsListComponent();
                           } else {
                             return Container();
                           }
@@ -244,7 +236,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                   ),
                 ),
                 Positioned(
-                  top: height * 0.145,
+                  top: height * 0.155,
                   right: 25,
                   child: Row(
                     children: [

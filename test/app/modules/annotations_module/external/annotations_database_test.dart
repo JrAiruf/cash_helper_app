@@ -40,12 +40,9 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
 
   @override
   Future<List<Map<String, dynamic>>?>? getAllAnnotations(
-      String? operatorId) async {
-    final annotationsCollection = _database
-        .collection("operators")
-        .doc(operatorId)
-        .collection("annotations");
-    if (operatorId != null) {
+      String? enterpriseId, String? operatorId) async {
+    final annotationsCollection = _getCollection(enterpriseId, operatorId);
+    if (enterpriseId != null && operatorId != null) {
       final annotationsList = await annotationsCollection.get();
       return annotationsList.docs
           .map((annotation) => annotation.data())
@@ -78,74 +75,33 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   @override
   Future<List<Map<String, dynamic>>?>? searchAnnotationsByClientAddress(
       String? operatorId, String? clientAddress) async {
-    if (operatorId != null && clientAddress != null) {
-      final databaseSuggestedAnnotationsList = await _filterSearchClientAddress(
-          operatorId: operatorId, clientAddress: clientAddress);
-      final suggestedAnnotationsList = databaseSuggestedAnnotationsList
-          .map((annotation) => annotation.data())
-          .toList();
-      return suggestedAnnotationsList.isNotEmpty
-          ? suggestedAnnotationsList
-          : null;
-    } else {
-      return null;
-    }
+    throw UnimplementedError();
   }
 
   @override
   Future<void>? finishAnnotation(
       String? operatorId, String? annotationId) async {
-    if (operatorId != null && annotationId != null) {
-      final annotationsCollection = _getCollection(operatorId);
-      await annotationsCollection
-          .doc(annotationId)
-          .update({"annotationConcluied": true});
-    } else {
-      return;
-    }
+    throw UnimplementedError();
   }
 
   @override
   Future<void>? updateAnnotation(String? operatorId, String? annotationId,
       Map<String, dynamic>? annotation) async {
-    if (operatorId != null && annotationId != null && annotation != null) {
-      final annotationsCollection = _getCollection(operatorId);
-      await annotationsCollection.doc(annotationId).update(annotation);
-    }
+    throw UnimplementedError();
   }
 
   @override
   Future<void>? deleteAnnotation(
       String? operatorId, String? annotationId) async {
-    if (operatorId != null && annotationId != null) {
-      final annotationsCollection = _getCollection(operatorId);
-      await annotationsCollection.doc(annotationId).delete();
-    } else {
-      return;
-    }
-  }
-
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-      _filterSearchClientAddress(
-          {required String operatorId, required String clientAddress}) async {
-    final dividedSearchText = clientAddress.split(' ');
-    final simpleSearchText = dividedSearchText[0];
-    final databaseAnnotationsCollection =
-        await _getCollection(operatorId).get();
-    final databaseSearchList =
-        databaseAnnotationsCollection.docs.where((annotation) {
-      final clientAddress =
-          annotation.data()["annotationClientAddress"] as String;
-      final splitedClientAddress = clientAddress.contains(simpleSearchText);
-      return splitedClientAddress;
-    }).toList();
-    return databaseSearchList;
+    throw UnimplementedError();
   }
 
   CollectionReference<Map<String, dynamic>> _getCollection(
-          String? operatorId) =>
+          String? enterpriseId, String? operatorId) =>
       _database
-          .collection("operators")
+          .collection("enterprise")
+          .doc(enterpriseId)
+          .collection("operator")
           .doc(operatorId)
           .collection("annotations");
 }
@@ -176,7 +132,7 @@ void main() {
               .doc("operatorId")
               .collection("annotations")
               .get();
-          expect(annotationsCollection.docs.isNotEmpty,equals(true));
+          expect(annotationsCollection.docs.isNotEmpty, equals(true));
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["annotationId"] != null, equals(true));
         },
@@ -190,18 +146,21 @@ void main() {
         },
       );
     },
-  ); /* 
+  );
   group(
     "GetAllAnnotations function should",
     () {
       test(
         "Return all annotations created (List<Map<String,dynamic>>)",
         () async {
-          final createdAnnotation =
-              await database.createAnnotation("operatorId", newAnnotation);
+          final createdAnnotation = await database.createAnnotation(
+              "enterpriseId",
+              "operatorId",
+              AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
-          final result = await database.getAllAnnotations("operatorId");
+          final result =
+              await database.getAllAnnotations("enterpriseId", "operatorId");
           expect(result, isA<List<Map<String, dynamic>>>());
           expect(result?.first != null, equals(true));
         },
@@ -209,16 +168,17 @@ void main() {
       test(
         "Fail Returning annotations",
         () async {
-          final result =
-              await database.createAnnotation("operatorId", newAnnotation);
+          final result = await database.createAnnotation(
+              "", "operatorId", AnnotationsTestObjects.newAnnotationMap);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["annotationId"] != null, equals(true));
-          final createdAnnotation = await database.getAllAnnotations(null);
+          final createdAnnotation = await database.getAllAnnotations("", null);
           expect(createdAnnotation, equals(null));
         },
       );
     },
   );
+  /*
   group(
     "GetAnnotationById function should",
     () {

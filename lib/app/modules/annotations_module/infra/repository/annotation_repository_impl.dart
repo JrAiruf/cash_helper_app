@@ -40,8 +40,8 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   @override
   Future<List<AnnotationModel>?>? getAllAnnotations(String? operatorId) async {
     final datasoourceAnnotationsList =
-        await _datasource.getAllAnnotations(operatorId);
-    if (operatorId!.isNotEmpty) {
+        await _datasource.getAllAnnotations("",operatorId!);
+    if (operatorId.isNotEmpty) {
       final annotationsModelList = datasoourceAnnotationsList
           ?.map((annotationMap) => AnnotationModel.fromMap(annotationMap))
           .toList();
