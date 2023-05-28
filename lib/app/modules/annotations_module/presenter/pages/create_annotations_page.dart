@@ -254,7 +254,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                           height: 50,
                           width: width * 0.7,
                           radius: 12,
-                          onPressed: _annotationsController.createNewAnnotation,
+                          onPressed: _annotationsController.createAnnotation,
                         ),
                       ),
                     ],

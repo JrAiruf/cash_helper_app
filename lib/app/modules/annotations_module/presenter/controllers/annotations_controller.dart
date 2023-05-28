@@ -35,24 +35,19 @@ class AnnotationsController {
   }
 
   void createAnnotation() async {
-    final newAnnotation = AnnotationEntity(
-        annotationClientAddress: annotationClientAddress,
-        annotationConcluied: false,
-        annotationReminder: "AnnotationReminder",
-        annotationSaleDate: dateValue.annotationDayDateTime,
-        annotationSaleTime: annotationSaleTime,
-        annotationPaymentMethod: annotationPaymentMethod,
-        annotationId: "AnnotationId",
-        annotationSaleValue: annotationValue);
-    await _annotationsStore.createNewAnnotation(
-        enterpriseId, operatorId, newAnnotation);
-  }
-
-  void createNewAnnotation() {
     newAnnotationFormKey.currentState?.validate();
     if (newAnnotationFormKey.currentState!.validate()) {
-      newAnnotationFormKey.currentState?.save();
-      createAnnotation();
+      final newAnnotation = AnnotationEntity(
+          annotationClientAddress: annotationClientAddress,
+          annotationConcluied: false,
+          annotationReminder: "AnnotationReminder",
+          annotationSaleDate: dateValue.annotationDayDateTime,
+          annotationSaleTime: annotationSaleTime,
+          annotationPaymentMethod: annotationPaymentMethod,
+          annotationId: "AnnotationId",
+          annotationSaleValue: annotationValue);
+      await _annotationsStore.createNewAnnotation(
+          enterpriseId, operatorId, newAnnotation);
     } else {
       return;
     }
