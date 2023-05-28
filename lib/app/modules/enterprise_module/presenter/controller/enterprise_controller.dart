@@ -144,19 +144,9 @@ class EnterpriseController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                message,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            message,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),
@@ -178,18 +168,9 @@ class EnterpriseController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            children: [
-              Text(
-                message,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            message,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),

@@ -236,18 +236,9 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            children: [
-              Text(
-                'Erro: $message',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            message,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),
@@ -269,19 +260,9 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                message,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            message,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),
@@ -303,22 +284,9 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'As senhas não correspondem.',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
-              ),
-              Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            'As senhas não correspondem.',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),
@@ -340,22 +308,9 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'Dados não localizados. Tente novamente.',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
-              ),
-              Icon(
-                Icons.warning_rounded,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            'Dados não localizados. Tente novamente.',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),
@@ -378,22 +333,9 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'Boas Vindas',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
-              ),
-              Icon(
-                Icons.verified_outlined,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            'Olá!',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),
@@ -415,22 +357,9 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'Usuário criado com sucesso!',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
-              ),
-              Icon(
-                Icons.done,
-                size: 35,
-                color: Colors.white,
-              )
-            ],
+          child: Text(
+            'Usuário criado com sucesso!',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),

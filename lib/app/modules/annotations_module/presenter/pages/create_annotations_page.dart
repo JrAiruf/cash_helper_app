@@ -25,9 +25,9 @@ final _paymentMethodListStore = Modular.get<PaymentMethodsListStore>();
 class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
   @override
   void initState() {
+    super.initState();
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
     _annotationsController.operatorId = widget.operatorEntity.operatorId!;
-    super.initState();
     _paymentMethodListStore
         .getAllPaymentMethods(_annotationsController.enterpriseId);
   }
