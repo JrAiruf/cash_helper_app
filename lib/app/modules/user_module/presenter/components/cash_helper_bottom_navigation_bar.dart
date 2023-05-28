@@ -67,7 +67,9 @@ enum BottomNavigationBarPosition {
   operatorOptions(position: 1),
   operatorOppening(position: 2),
   appAppearance(position: 0),
-  operatorAccount(position: 1);
+  operatorAccount(position: 1),
+  annotationHome(position: 0),
+  annotationSettings(position: 1);
 
   final int position;
   const BottomNavigationBarPosition({required this.position});

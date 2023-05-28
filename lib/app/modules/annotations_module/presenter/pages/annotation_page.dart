@@ -1,78 +1,84 @@
+// ignore_for_file: must_be_immutable
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/components/cash_helper_information_card.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_home.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../user_module/domain/entities/operator_entity.dart';
 
 class AnnotationPage extends StatefulWidget {
-  const AnnotationPage({Key? key}) : super(key: key);
+  AnnotationPage({Key? key}) : super(key: key);
+
+  BottomNavigationBarPosition? position;
   @override
   State<AnnotationPage> createState() => _AnnotationPageState();
 }
 
 final AnnotationEntity annotationEntity = Modular.args.data["annotationEntity"];
 final OperatorEntity operatorEntity = Modular.args.data["operatorEntity"];
+final _annotationsController = Modular.get<AnnotationsController>();
 
 class _AnnotationPageState extends State<AnnotationPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiary;
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final greenColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: primaryColor,
-        ),
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Container(
-              height: height * 0.75,
-              width: width,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                ),
-              ),
+      body: PageView(
+        controller: _annotationsController.annotationsPageController,
+        children: [
+          AnnotationHome(annotationEntity: annotationEntity),
+          Container(),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(color: backgroundColor),
+        child: CashHelperBottomNavigationBar(
+          itemContentColor: surfaceColor,
+          pageController: _annotationsController.annotationsPageController,
+          itemColor: greenColor,
+          position: widget.position,
+          radius: 20,
+          backgroundColor: primaryColor,
+          height: 60,
+          items: [
+            CashHelperBottomNavigationItem(
+              icon: Icons.home,
+              itemName: "Início",
+              itemBackgroundColor: backgroundColor,
+              position: BottomNavigationBarPosition.appAppearance,
+              onTap: () {
+                _annotationsController.annotationsPageController.animateToPage(
+                    BottomNavigationBarPosition.annotationHome.position,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    curve: Curves.easeInSine);
+                setState(() {
+                  widget.position = BottomNavigationBarPosition.appAppearance;
+                });
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 20,
-              ),
-              child: SizedBox(
-                child: Column(
-                  children: [
-                    CashHelperInformationCard(
-                        height: height * 0.15,
-                        width: width,
-                        radius: 15,
-                        backgroundColor: tertiaryColor,
-                        cardIcon: Icons.house_outlined,
-                        iconSize: 65,
-                        informationTitle: "Endereço:",
-                        information:
-                            "${annotationEntity.annotationClientAddress}",
-                        complementInformationTitle: "Horário:",
-                        complementInformation:
-                            "${annotationEntity.annotationSaleTime}"),
-                  ],
-                ),
-              ),
+            CashHelperBottomNavigationItem(
+              icon: Icons.settings,
+              itemName: "Opções",
+              position: BottomNavigationBarPosition.operatorAccount,
+              onTap: () {
+                _annotationsController.annotationsPageController.animateToPage(
+                    BottomNavigationBarPosition.annotationSettings.position,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    curve: Curves.easeInSine);
+                setState(() {
+                  widget.position = BottomNavigationBarPosition.operatorAccount;
+                });
+              },
             ),
           ],
         ),

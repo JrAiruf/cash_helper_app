@@ -6,24 +6,26 @@ class CashHelperInformationCard extends StatelessWidget {
       required this.height,
       required this.width,
       required this.radius,
+      required this.spacing,
       required this.backgroundColor,
       required this.cardIcon,
       required this.iconSize,
       required this.informationTitle,
       required this.information,
-      required this.complementInformationTitle,
-      required this.complementInformation});
+      this.complementInformationTitle,
+      this.complementInformation});
 
   final double height;
   final double width;
   final double radius;
+  final double spacing;
   final Color backgroundColor;
   final IconData cardIcon;
   final double iconSize;
   final String informationTitle;
   final String information;
-  final String complementInformationTitle;
-  final String complementInformation;
+  final String? complementInformationTitle;
+  final String? complementInformation;
   @override
   Widget build(BuildContext context) {
     final surfaceColor = Theme.of(context).colorScheme.surface;
@@ -35,7 +37,7 @@ class CashHelperInformationCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 10,
-          horizontal: 15,
+          horizontal: 10,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,26 +54,38 @@ class CashHelperInformationCard extends StatelessWidget {
               children: [
                 Text(
                   informationTitle,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: surfaceColor),
                 ),
                 Text(
                   information,
-                  style: Theme.of(context).textTheme.displayMedium,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayMedium
+                      ?.copyWith(color: surfaceColor),
                 ),
               ],
             ),
-            SizedBox(width: width * 0.18),
+            SizedBox(width: spacing),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  complementInformationTitle,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  complementInformationTitle ?? "",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: surfaceColor),
                 ),
                 Text(
-                  complementInformation,
-                  style: Theme.of(context).textTheme.displayMedium,
+                  complementInformation ?? "",
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayMedium
+                      ?.copyWith(color: surfaceColor),
                 ),
               ],
             ),

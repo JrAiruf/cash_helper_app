@@ -122,7 +122,7 @@ class AnnotationModule extends Module {
     ),
     ChildRoute(
       "/annotation-page/:enterpriseId",
-      child: (_, args) => const AnnotationPage(),
+      child: (_, args) => AnnotationPage(),
     ),
   ];
 }
