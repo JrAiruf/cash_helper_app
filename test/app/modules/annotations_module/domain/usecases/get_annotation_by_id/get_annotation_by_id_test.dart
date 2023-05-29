@@ -18,7 +18,7 @@ class GetAnnotationByIdMock implements IGetAnnotationById {
   @override
   Future<AnnotationEntity?> call(
       String? operatorId, String? annotationId) async {
-      final annotationModel = await _repository.getAnnotationById(operatorId, annotationId);
+      final annotationModel = await _repository.getAnnotationById(operatorId!, annotationId!);
     if (annotationModel != null && _dataVerifier.validateInputData(inputs: [operatorId, annotationId])) {
       return AnnotationModel.toEntityData(annotationModel);
     } else {

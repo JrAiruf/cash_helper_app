@@ -10,7 +10,7 @@ class GetAllAnnotations implements IGetAllAnnotations {
   final AnnotationRepository _repository; @override
   Future<List<AnnotationEntity>?>? call(String? operatorId) async {
    if(operatorId!.isNotEmpty){
-    final annotationModelList = await _repository.getAllAnnotations(operatorId);
+    final annotationModelList = await _repository.getAllAnnotations("",operatorId);
     final annotationEntityList = annotationModelList
         ?.map(
             (annotationModel) => AnnotationModel.toEntityData(annotationModel))
