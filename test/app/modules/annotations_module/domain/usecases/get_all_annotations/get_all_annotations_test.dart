@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/a
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_all_annotations/iget_all_annotations.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
+import 'package:cash_helper_app/app/utils/tests/annotations_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -14,10 +15,11 @@ class GetAllAnnotationsMock implements IGetAllAnnotations {
 
   final AnnotationRepository _repository;
   @override
-  Future<List<AnnotationEntity>?>? call(String? operatorId) async {
-    if (operatorId!.isNotEmpty) {
+  Future<List<AnnotationEntity>?>? call(
+      String? enterpriseId, String? operatorId) async {
+    if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty) {
       final annotationModelList =
-          await _repository.getAllAnnotations(operatorId,"");
+          await _repository.getAllAnnotations(enterpriseId,operatorId);
       final annotationEntityList = annotationModelList
           ?.map((annotationModel) =>
               AnnotationModel.toEntityData(annotationModel))
@@ -31,31 +33,19 @@ class GetAllAnnotationsMock implements IGetAllAnnotations {
 
 void main() {
   final repository = AnnotationRepo();
-  final createAnnotation = CreateAnnotationUsecaseMock(repository: repository);
   final getAllAnnotations = GetAllAnnotationsMock(repository: repository);
-  final newAnnotation = AnnotationEntity(
-      annotationClientAddress: "Andorinhas 381",
-      annotationConcluied: false,
-      annotationPaymentMethod: "Dinheiro",
-      annotationReminder: "No Reminder",
-      annotationSaleDate: "Data Atual",
-      annotationSaleTime: "Hora Atual",
-      annotationSaleValue: "1455,67");
   group(
     "GetAllAnnotations Function Should",
     () {
       test(
         "Return a List<AnnotationEntity>",
         () async {
-          when(repository.createAnnotation(any,any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          when(repository.getAllAnnotations(any,any)).thenAnswer((_) async => [
-                repositoryAnnotation,
+          when(repository.getAllAnnotations(any, any)).thenAnswer((_) async => [
+            AnnotationsTestObjects.newAnnotationModel,
+            AnnotationsTestObjects.newAnnotationModel,
               ]);
-          final annotationsList = await getAllAnnotations("operatorId");
+          final annotationsList =
+              await getAllAnnotations("enterpriseId", "operatorId");
           expect(annotationsList, isA<List<AnnotationEntity>>());
           expect(annotationsList?.isNotEmpty, equals(true));
         },
@@ -63,15 +53,10 @@ void main() {
       test(
         "Fail returning a List<AnnotationEntity>(returns [])",
         () async {
-          when(repository.createAnnotation(any,any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          when(repository.getAllAnnotations(any,any)).thenAnswer((_) async => [
+          when(repository.getAllAnnotations(any, any)).thenAnswer((_) async => [
                 repositoryAnnotation,
               ]);
-          final annotationsList = await getAllAnnotations("");
+          final annotationsList = await getAllAnnotations("", "");
           expect(annotationsList?.isNotEmpty, equals(false));
         },
       );

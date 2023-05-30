@@ -12,6 +12,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/wid
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
+import '../../components/widgets/annotation_info_list_view_component.dart';
 import '../../components/widgets/empty_annotations_list_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
@@ -31,7 +32,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   void initState() {
     _loginStore.getUserById(_enterpriseId, widget.operatorEntity.operatorId!,
         widget.operatorEntity.businessPosition!);
-    _annotationListStore.getAllAnnotations(widget.operatorEntity.operatorId!);
+    _annotationListStore.getAllAnnotations(
+        _enterpriseId, widget.operatorEntity.operatorId!);
     super.initState();
   }
 
@@ -84,59 +86,33 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         color: primaryColor,
                       ),
                       SizedBox(height: height * 0.07),
-                      ValueListenableBuilder(
-                        valueListenable: _annotationListStore,
-                        builder: ((context, annotationListState, child) {
-                          if (annotationListState.isEmpty) {
-                            return Container(
-                              decoration: BoxDecoration(color: primaryColor),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: indicatorColor,
-                                ),
-                              ),
-                            );
-                          } else if (annotationListState.isNotEmpty) {
-                            final annotationsList = annotationListState;
-                            final pendingAnnotations = annotationsList.where(
-                                (annotation) =>
-                                    annotation.annotationConcluied == false);
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: Text(
-                                    "Últimas anotações:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(color: surfaceColor),
+                      SizedBox(
+                        height: height * 0.18,
+                        child: ValueListenableBuilder(
+                          valueListenable: _annotationListStore,
+                          builder: ((context, annotationListState, child) {
+                            if (annotationListState.isEmpty) {
+                              return Container(
+                                decoration: BoxDecoration(color: primaryColor),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: indicatorColor,
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 15),
-                                  child: SizedBox(
-                                    height: height * 0.2,
-                                    child: Center(
-                                      child: Text(
-                                        "Sem Anotações no momento",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(color: surfaceColor),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return Container();
-                          }
-                        }),
+                              );
+                            } else if (annotationListState.isNotEmpty) {
+                              final annotationsList = annotationListState;
+                              final pendingAnnotations = annotationsList.where(
+                                  (annotation) =>
+                                      annotation.annotationConcluied == false);
+                              return AnnotationInfoListViewComponent(
+                                annotations: annotationListState,
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

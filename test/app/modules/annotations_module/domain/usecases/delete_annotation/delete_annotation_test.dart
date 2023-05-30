@@ -51,13 +51,13 @@ void main() {
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
-          final annotationsList = await getAllAnnotations("operatorId");
+          final annotationsList = await getAllAnnotations("","operatorId");
           expect(annotationsList, isA<List<AnnotationEntity>>());
           expect(annotationsList?.isNotEmpty, equals(true));
           when(repository.deleteAnnotation(any, any)).thenReturn(null);
           await deleteAnnotation("operatorId", createdAnnotation?.annotationId);
           when(repository.getAllAnnotations(any,any)).thenAnswer((_) async => []);
-          final currentAnnotationsList = await getAllAnnotations("operatorId");
+          final currentAnnotationsList = await getAllAnnotations("","operatorId");
           expect(currentAnnotationsList?.isEmpty, equals(true));
         },
       );
@@ -71,14 +71,14 @@ void main() {
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
-          final annotationsList = await getAllAnnotations("operatorId");
+          final annotationsList = await getAllAnnotations("","operatorId");
           expect(annotationsList, isA<List<AnnotationEntity>>());
           expect(annotationsList?.isNotEmpty, equals(true));
           when(repository.deleteAnnotation(any, any)).thenReturn(null);
           await deleteAnnotation("operatorId", "");
           when(repository.getAllAnnotations(any,any))
               .thenAnswer((_) async => [repositoryAnnotation]);
-          final currentAnnotationsList = await getAllAnnotations("operatorId");
+          final currentAnnotationsList = await getAllAnnotations("","operatorId");
           expect(currentAnnotationsList?.isEmpty, equals(false));
         },
       );

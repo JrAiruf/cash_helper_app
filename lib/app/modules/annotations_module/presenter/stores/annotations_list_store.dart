@@ -17,10 +17,11 @@ class AnnotationsListStore extends ValueNotifier<List<AnnotationEntity>> {
   final ISearchAnnotationsByClientAddress _searchAnnotationsByClientAddress;
 
   final loadingAnnotations = ValueNotifier(false);
-  Future<void> getAllAnnotations(String? operatorId) async {
+  Future<void> getAllAnnotations(
+      String? enterpriseId, String? operatorId) async {
     loadingAnnotations.value = true;
-    final annotationsList =
-        await _getAllAnnotations(operatorId) as List<AnnotationEntity>;
+    final annotationsList = await _getAllAnnotations(enterpriseId!, operatorId!)
+        as List<AnnotationEntity>;
     if (annotationsList.isNotEmpty) {
       value = annotationsList;
       loadingAnnotations.value = false;

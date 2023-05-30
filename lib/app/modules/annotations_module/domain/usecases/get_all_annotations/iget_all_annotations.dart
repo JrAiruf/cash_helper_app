@@ -1,3 +1,3 @@
 abstract class IGetAllAnnotations {
-  Future<dynamic>? call(String? operatorId);
+  Future<dynamic>? call(String enterpriseId,String operatorId);
 }
