@@ -9,7 +9,7 @@ class AnnotationInfoListViewComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
       child: ListView.builder(
         itemCount: annotations.length,
         scrollDirection: Axis.horizontal,
@@ -27,14 +27,7 @@ class AnnotationInfoListViewComponent extends StatelessWidget {
                         ?.copyWith(color: surfaceColor),
                   ),
                   Text(
-                    "23 Anotações",
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall
-                        ?.copyWith(color: surfaceColor),
-                  ),
-                  Text(
-                    "Sem pendências",
+                    annotations[index].annotationSaleValue ?? "",
                     style: Theme.of(context)
                         .textTheme
                         .displaySmall
@@ -48,7 +41,10 @@ class AnnotationInfoListViewComponent extends StatelessWidget {
                         ?.copyWith(color: surfaceColor),
                   ),
                   Text(
-                    annotations[index].annotationSaleDate ?? "",
+                    annotations[index]
+                            .annotationSaleDate
+                            ?.replaceAll("/", "-") ??
+                        "",
                     style: Theme.of(context)
                         .textTheme
                         .displaySmall

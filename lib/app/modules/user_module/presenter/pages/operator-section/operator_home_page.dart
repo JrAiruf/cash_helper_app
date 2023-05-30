@@ -83,7 +83,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                       ),
                       SizedBox(height: height * 0.07),
                       SizedBox(
-                        height: height * 0.18,
+                        height: height * 0.2,
                         child: ValueListenableBuilder(
                           valueListenable: _annotationListStore,
                           builder: ((context, annotationListState, child) {
@@ -98,10 +98,6 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                 ),
                               );
                             } else if (annotationListState.isNotEmpty) {
-                              final annotationsList = annotationListState;
-                              final pendingAnnotations = annotationsList.where(
-                                  (annotation) =>
-                                      annotation.annotationConcluied == false);
                               return AnnotationInfoListViewComponent(
                                 annotations: annotationListState,
                               );
@@ -112,8 +108,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 15),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 15, vertical: height * 0.05),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
