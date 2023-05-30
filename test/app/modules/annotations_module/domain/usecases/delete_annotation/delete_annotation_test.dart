@@ -46,18 +46,18 @@ void main() {
         () async {
           when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
-          when(repository.getAllAnnotations(any))
+          when(repository.getAllAnnotations(any,any))
               .thenAnswer((_) async => [repositoryAnnotation]);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
-          final annotationsList = await getAllAnnotations("operatorId");
+          final annotationsList = await getAllAnnotations("","operatorId");
           expect(annotationsList, isA<List<AnnotationEntity>>());
           expect(annotationsList?.isNotEmpty, equals(true));
           when(repository.deleteAnnotation(any, any)).thenReturn(null);
           await deleteAnnotation("operatorId", createdAnnotation?.annotationId);
-          when(repository.getAllAnnotations(any)).thenAnswer((_) async => []);
-          final currentAnnotationsList = await getAllAnnotations("operatorId");
+          when(repository.getAllAnnotations(any,any)).thenAnswer((_) async => []);
+          final currentAnnotationsList = await getAllAnnotations("","operatorId");
           expect(currentAnnotationsList?.isEmpty, equals(true));
         },
       );
@@ -66,19 +66,19 @@ void main() {
         () async {
           when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
-          when(repository.getAllAnnotations(any))
+          when(repository.getAllAnnotations(any,any))
               .thenAnswer((_) async => [repositoryAnnotation]);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
-          final annotationsList = await getAllAnnotations("operatorId");
+          final annotationsList = await getAllAnnotations("","operatorId");
           expect(annotationsList, isA<List<AnnotationEntity>>());
           expect(annotationsList?.isNotEmpty, equals(true));
           when(repository.deleteAnnotation(any, any)).thenReturn(null);
           await deleteAnnotation("operatorId", "");
-          when(repository.getAllAnnotations(any))
+          when(repository.getAllAnnotations(any,any))
               .thenAnswer((_) async => [repositoryAnnotation]);
-          final currentAnnotationsList = await getAllAnnotations("operatorId");
+          final currentAnnotationsList = await getAllAnnotations("","operatorId");
           expect(currentAnnotationsList?.isEmpty, equals(false));
         },
       );

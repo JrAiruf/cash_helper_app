@@ -43,10 +43,11 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
   }
 
   @override
-  Future<List<AnnotationModel>?>? getAllAnnotations(String? operatorId) async {
+  Future<List<AnnotationModel>?>? getAllAnnotations(
+      String? enterpriseId, String? operatorId) async {
     final datasoourceAnnotationsList =
-        await _datasource.getAllAnnotations("",operatorId!);
-    if (operatorId.isNotEmpty) {
+        await _datasource.getAllAnnotations(enterpriseId!, operatorId!);
+    if (enterpriseId.isNotEmpty && operatorId.isNotEmpty) {
       final annotationsModelList = datasoourceAnnotationsList
           ?.map((annotationMap) => AnnotationModel.fromMap(annotationMap))
           .toList();
@@ -137,7 +138,35 @@ void main() {
       );
     },
   );
-/* 
+
+  group(
+    "GetAllAnnotations Function Should",
+    () {
+      test(
+        "Return a List<AnnotationModel>",
+        () async {
+          when(datasource.getAllAnnotations(any, any)).thenAnswer((_) async => [
+                databaseAnnotation,
+              ]);
+          final annotationsList =
+              await repository.getAllAnnotations("enterpriseId", "operatorId");
+          expect(annotationsList, isA<List<AnnotationModel>>());
+          expect(annotationsList?.isNotEmpty, equals(true));
+        },
+      );
+      test(
+        "Fail returning a List<AnnotationModel>(returns [])",
+        () async {
+          when(datasource.getAllAnnotations(any, any)).thenAnswer((_) async => [
+                databaseAnnotation,
+              ]);
+          final annotationsList = await repository.getAllAnnotations("", "");
+          expect(annotationsList?.isNotEmpty, equals(false));
+        },
+      );
+    },
+  );
+  /*
   group(
     "GetAnnotationById Function Should",
     () {
@@ -173,43 +202,6 @@ void main() {
           final obtainedAnnotation = await repository.getAnnotationById(
               "", createdAnnotation?.annotationId);
           expect(obtainedAnnotation, equals(null));
-        },
-      );
-    },
-  );
-  group(
-    "GetAllAnnotations Function Should",
-    () {
-      test(
-        "Return a List<AnnotationModel>",
-        () async {
-          when(datasource.createAnnotation(any, any))
-              .thenAnswer((_) async => databaseAnnotation);
-          final createdAnnotation =
-              await repository.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationModel>());
-          when(datasource.getAllAnnotations(any)).thenAnswer((_) async => [
-                databaseAnnotation,
-              ]);
-          final annotationsList =
-              await repository.getAllAnnotations("operatorId");
-          expect(annotationsList, isA<List<AnnotationModel>>());
-          expect(annotationsList?.isNotEmpty, equals(true));
-        },
-      );
-      test(
-        "Fail returning a List<AnnotationModel>(returns [])",
-        () async {
-          when(datasource.createAnnotation(any, any))
-              .thenAnswer((_) async => databaseAnnotation);
-          final createdAnnotation =
-              await repository.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationModel>());
-          when(datasource.getAllAnnotations(any)).thenAnswer((_) async => [
-                databaseAnnotation,
-              ]);
-          final annotationsList = await repository.getAllAnnotations("");
-          expect(annotationsList?.isNotEmpty, equals(false));
         },
       );
     },

@@ -21,7 +21,7 @@ class CreateAnnotationUsecaseMock implements ICreateAnnotation {
     final annotationModel =
         AnnotationModel.fromEntityData(annotation ?? AnnotationEntity());
     final usecaseAnnotation =
-        await _repository.createAnnotation("", operatorId, annotationModel);
+        await _repository.createAnnotation("", operatorId!, annotationModel);
     if (usecaseAnnotation != null &&
         _dataVerifier.validateInputData(inputs: [operatorId])) {
       return AnnotationModel.toEntityData(usecaseAnnotation);
