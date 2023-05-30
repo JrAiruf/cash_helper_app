@@ -9,11 +9,11 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../components/widgets/annotation_info_list_view_component.dart';
-import '../../components/widgets/empty_annotations_list_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
   OperartorHomePage({super.key, required this.operatorEntity});
@@ -39,23 +39,18 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appThemes = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final secondaryColor = Theme.of(context).colorScheme.secondary;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
-    final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     return ValueListenableBuilder(
       valueListenable: _loginStore,
       builder: (_, operatorState, __) {
         if (operatorState is LoginLoadingState) {
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
               child: CircularProgressIndicator(
-                color: indicatorColor,
+                color: appThemes.indicatorColor(context),
               ),
             ),
           );
@@ -65,7 +60,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
           return Scaffold(
             appBar: AppBar(),
             drawer: CashHelperDrawer(
-              backgroundColor: primaryColor,
+              backgroundColor: appThemes.primaryColor(context),
               radius: 20,
               width: width * 0.75,
               pagePosition: DrawerPagePosition.home,
@@ -75,7 +70,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
             body: Stack(
               children: [
                 Container(
-                  decoration: BoxDecoration(color: backgroundContainer),
+                  decoration:
+                      BoxDecoration(color: appThemes.backgroundColor(context)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -83,7 +79,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         operator: currentOperator,
                         height: height * 0.19,
                         width: width,
-                        color: primaryColor,
+                        color: appThemes.primaryColor(context),
                       ),
                       SizedBox(height: height * 0.07),
                       SizedBox(
@@ -93,10 +89,11 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           builder: ((context, annotationListState, child) {
                             if (annotationListState.isEmpty) {
                               return Container(
-                                decoration: BoxDecoration(color: primaryColor),
+                                decoration: BoxDecoration(
+                                    color: appThemes.primaryColor(context)),
                                 child: Center(
                                   child: CircularProgressIndicator(
-                                    color: indicatorColor,
+                                    color: appThemes.indicatorColor(context),
                                   ),
                                 ),
                               );
@@ -127,7 +124,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   .textTheme
                                   .bodySmall
                                   ?.copyWith(
-                                    color: surfaceColor,
+                                    color: appThemes.surfaceColor(context),
                                   ),
                             ),
                             const SizedBox(height: 30),
@@ -135,7 +132,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 QuickAccessButton(
-                                  backgroundColor: primaryColor,
+                                  backgroundColor:
+                                      appThemes.primaryColor(context),
                                   border: true,
                                   height: height * 0.1,
                                   width: width * 0.38,
@@ -143,7 +141,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   items: [
                                     Icon(
                                       Icons.list_alt_outlined,
-                                      color: surfaceColor,
+                                      color: appThemes.surfaceColor(context),
                                     ),
                                     Text(
                                       "Anotações",
@@ -151,7 +149,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                           .textTheme
                                           .bodySmall
                                           ?.copyWith(
-                                            color: surfaceColor,
+                                            color:
+                                                appThemes.surfaceColor(context),
                                           ),
                                     ),
                                   ],
@@ -160,7 +159,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   },
                                 ),
                                 QuickAccessButton(
-                                  backgroundColor: primaryColor,
+                                  backgroundColor:
+                                      appThemes.primaryColor(context),
                                   border: true,
                                   height: height * 0.1,
                                   width: width * 0.38,
@@ -168,7 +168,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   items: [
                                     Icon(
                                       Icons.add,
-                                      color: surfaceColor,
+                                      color: appThemes.surfaceColor(context),
                                     ),
                                     Text(
                                       "Nova Anotação",
@@ -176,7 +176,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                           .textTheme
                                           .bodySmall
                                           ?.copyWith(
-                                            color: surfaceColor,
+                                            color:
+                                                appThemes.surfaceColor(context),
                                           ),
                                     )
                                   ],
@@ -204,7 +205,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                               "./operator-area",
                               arguments: currentOperator),
                           buttonName: "Área do operador",
-                          backgroundColor: tertiaryColor,
+                          backgroundColor: appThemes.greenColor(context),
                           fontSize: 16,
                         ),
                       ),
@@ -217,13 +218,12 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
+                        backgroundColor: appThemes.backgroundColor(context),
                         maxRadius: 30,
                         child: CircleAvatar(
                           backgroundColor: currentOperator.operatorEnabled!
-                              ? tertiaryColor
-                              : secondaryColor,
+                              ? appThemes.greenColor(context)
+                              : appThemes.purpleColor(context),
                           maxRadius: 29,
                           child: const Icon(
                             color: Colors.white,
@@ -238,7 +238,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         style: Theme.of(context)
                             .textTheme
                             .displaySmall
-                            ?.copyWith(color: surfaceColor),
+                            ?.copyWith(color: appThemes.surfaceColor(context)),
                       ),
                     ],
                   ),
@@ -252,7 +252,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
           return Container();
         } else {
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
           );
         }
       },
