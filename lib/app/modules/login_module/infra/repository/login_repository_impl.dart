@@ -21,11 +21,11 @@ class LoginRepositoryImpl implements LoginRepository {
         _dataVerifier.validateInputData(inputs: [enterpriseId, collection])) {
       if (_dataVerifier.operatorModelVerifier(model: newUser)) {
         final opertatorMap = await _datasource.register(
-            newUser.toMap(), enterpriseId, collection);
+            newUser.toMap(), enterpriseId!, collection!);
         return OperatorModel.fromMap(opertatorMap);
       } else if (_dataVerifier.managerModelVerifier(model: newUser)) {
         final managerMap = await _datasource.register(
-            newUser.toMap(), enterpriseId, collection);
+            newUser.toMap(), enterpriseId!, collection!);
         return ManagerModel.fromMap(managerMap);
       }
     } else {
@@ -39,7 +39,7 @@ class LoginRepositoryImpl implements LoginRepository {
     if (_dataVerifier.validateInputData(
         inputs: [email, password, enterpriseId, collection])) {
       final databaseMap =
-          await _datasource.login(email, password, enterpriseId, collection);
+          await _datasource.login(email!, password!, enterpriseId!, collection!);
       if (_dataVerifier.operatorMapVerifier(map: databaseMap)) {
         return OperatorModel.fromMap(databaseMap);
       } else if (_dataVerifier.managerMapVerifier(map: databaseMap)) {
@@ -50,15 +50,16 @@ class LoginRepositoryImpl implements LoginRepository {
     }
   }
 
-  @override
+ @override
   Future<dynamic>? getUserById(
       String? enterpriseId, String? operatorId, String? collection) async {
     if (_dataVerifier
         .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
-       final databaseMap = await _datasource.getUserById(enterpriseId, operatorId, collection);
-       if (_dataVerifier.operatorMapVerifier(map: databaseMap ?? {})) {
-           return OperatorModel.fromMap(databaseMap);
-       } else if (_dataVerifier.managerMapVerifier(map: databaseMap ?? {})) {
+      final databaseMap =
+          await _datasource.getUserById(enterpriseId!, operatorId!, collection!);
+      if (_dataVerifier.operatorMapVerifier(map: databaseMap ?? {})) {
+        return OperatorModel.fromMap(databaseMap);
+      } else if (_dataVerifier.managerMapVerifier(map: databaseMap ?? {})) {
         return ManagerModel.fromMap(databaseMap);
       }
     } else {

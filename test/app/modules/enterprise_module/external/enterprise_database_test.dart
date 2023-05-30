@@ -53,7 +53,7 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? getEnterpriseByCode(
+  Future<Map<String, dynamic>>? getEnterpriseByCode(
       String? enterpriseCode) async {
     try {
       final enterprisesDocumentsList =
@@ -62,7 +62,7 @@ class EnterpriseDatabaseMock implements ApplicationEnterpriseDatabase {
           (element) => element.data()["enterpriseCode"] == enterpriseCode);
       return mathcerEntepriseDocument.data().isNotEmpty
           ? mathcerEntepriseDocument.data()
-          : null;
+          : {};
     } catch (e) {
       throw EnterpriseAccountNotFoundError(message: e.toString());
     }
@@ -134,6 +134,24 @@ void main() {
         () async {
           expect(
             () async => database.getEnterpriseByCode(""),
+            throwsA(isA<EnterpriseAccountNotFoundError>()),
+          );
+        },
+      );
+      test(
+        'Fail to return enterprise data',
+        () async {
+          expect(
+            () async => database.getEnterpriseByCode(null),
+            throwsA(isA<EnterpriseAccountNotFoundError>()),
+          );
+        },
+      );
+      test(
+        'Fail to return enterprise data,using a wrong code',
+        () async {
+          expect(
+            () async => database.getEnterpriseByCode("agfhsadg6"),
             throwsA(isA<EnterpriseAccountNotFoundError>()),
           );
         },

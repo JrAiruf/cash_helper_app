@@ -19,9 +19,12 @@ class VisibilityIconComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Icon(
-        condition == true ? forVisibility : forHideContent,
-        color: iconColor ?? Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Icon(
+          condition == true ? forVisibility : forHideContent,
+          color: iconColor ?? Colors.white,
+        ),
       ),
     );
   }

@@ -16,6 +16,10 @@ class EnterpriseStore extends ValueNotifier<EnterpriseStates> {
   final ICreateEnterpriseAccount _createEnterpriseAccount;
   final IGetEnterpriseByCode _getEnterpriseByCode;
 
+  void resetEnterpriseAuthPageState() {
+    value = EnterpriseStoreInitialState();
+  }
+
   Future<void> createEnterpriseAccount(
       EnterpriseEntity enterpriseEntity) async {
     value = LoadingState();
@@ -25,5 +29,10 @@ class EnterpriseStore extends ValueNotifier<EnterpriseStates> {
     } else {
       value = CreationFailedState();
     }
+  }
+
+  Future<EnterpriseEntity?> getEnterpriseByCode(String enterpriseCode) async {
+    return await _getEnterpriseByCode(enterpriseCode);
+    
   }
 }

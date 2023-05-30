@@ -1,4 +1,7 @@
+import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../login_module/presenter/controllers/login_controller.dart';
 
 class DrawerTile extends StatelessWidget {
   const DrawerTile({
@@ -7,19 +10,27 @@ class DrawerTile extends StatelessWidget {
     this.icon,
     this.title,
     this.itemColor,
+    this.currentPage,
+    this.currentOperatorPage,
     this.onTap,
   });
   final double? width;
   final IconData? icon;
   final String? title;
   final Color? itemColor;
+  final ManagerDrawerPage? currentPage;
+  final DrawerPagePosition? currentOperatorPage;
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: GestureDetector(
-        onTap: onTap,
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(border: Border.all(color: primaryColor)),
+        width: width,
+        height: 70,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -28,9 +39,7 @@ class DrawerTile extends StatelessWidget {
               size: 40,
               color: itemColor,
             ),
-            SizedBox(
-              width: width! * 0.05,
-            ),
+            const SizedBox(width: 35),
             Text(
               title ?? "",
               style: TextStyle(

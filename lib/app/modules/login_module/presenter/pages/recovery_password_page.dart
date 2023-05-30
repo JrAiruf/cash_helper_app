@@ -121,7 +121,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               widget.operatorEntity.operatorEmail!,
                               widget.operatorEntity.operatorCode!,
                               _operatorEntity.operatorPassword!);
-                          final recoveredOperator = await _loginStore
+                          _loginStore
                               .login(
                                   widget.operatorEntity.operatorEmail,
                                   _operatorEntity.operatorPassword,
@@ -131,15 +131,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                               .catchError((e) {
                             _loginController.onFail(context);
                           });
-                          if (recoveredOperator != null) {
-                            Modular.to.navigate("/user-module/",
-                                arguments: recoveredOperator);
-                          } else {
-                            setState(() {
-                              _loginController.loadingLoginData = false;
-                            });
-                            return;
-                          }
+
                           setState(() {
                             _loginController.loadingLoginData = false;
                           });

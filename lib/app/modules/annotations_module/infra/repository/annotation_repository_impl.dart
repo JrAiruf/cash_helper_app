@@ -1,18 +1,24 @@
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 
+import '../../../../helpers/data_verifier.dart';
 import '../../external/data/application_annotations_database.dart';
 
 class AnnotationRepositoryImpl implements AnnotationRepository {
-  AnnotationRepositoryImpl({required ApplicationAnnotationDatabase datasource})
-      : _datasource = datasource;
+  AnnotationRepositoryImpl(
+      {required ApplicationAnnotationDatabase datasource,
+      required DataVerifier dataVerifier})
+      : _datasource = datasource,
+        _dataVerifier = dataVerifier;
   final ApplicationAnnotationDatabase _datasource;
+  final DataVerifier _dataVerifier;
   @override
-  Future<AnnotationModel?>? createAnnotation(
+  Future<AnnotationModel?>? createAnnotation(String? enterpriseId,
       String? operatorId, AnnotationModel? annotation) async {
-    final datasourceAnnotation =
-        await _datasource.createAnnotation(operatorId, annotation?.toMap());
-    if (operatorId!.isNotEmpty && annotation!.toMap().isNotEmpty) {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId]) &&
+        _dataVerifier.objectVerifier(object: annotation!.toMap())) {
+      final datasourceAnnotation = await _datasource.createAnnotation(
+          enterpriseId!, operatorId!, annotation.toMap());
       return AnnotationModel.fromMap(datasourceAnnotation!);
     } else {
       return null;
@@ -32,10 +38,11 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
-  Future<List<AnnotationModel>?>? getAllAnnotations(String? operatorId) async {
+  Future<List<AnnotationModel>?>? getAllAnnotations(
+      String? enterpriseId, String? operatorId) async {
     final datasoourceAnnotationsList =
-        await _datasource.getAllAnnotations(operatorId);
-    if (operatorId!.isNotEmpty) {
+        await _datasource.getAllAnnotations(enterpriseId!, operatorId!);
+    if (enterpriseId.isNotEmpty && operatorId.isNotEmpty) {
       final annotationsModelList = datasoourceAnnotationsList
           ?.map((annotationMap) => AnnotationModel.fromMap(annotationMap))
           .toList();
@@ -73,8 +80,9 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
-  Future<void>? finishAnnotation(String? operatorId, String? annotationId) async {
-    if(operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
+  Future<void>? finishAnnotation(
+      String? operatorId, String? annotationId) async {
+    if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
       await _datasource.finishAnnotation(operatorId, annotationId);
     } else {
       return;
@@ -82,10 +90,12 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
-  Future<void>? deleteAnnotation(String? operatorId, String? annotationId) async {
-     if(operatorId!.isNotEmpty && annotationId!.isNotEmpty){
+  Future<void>? deleteAnnotation(
+      String? operatorId, String? annotationId) async {
+    if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
       await _datasource.deleteAnnotation(operatorId, annotationId);
-     } else {
+    } else {
       return;
-     }
-  }}
+    }
+  }
+}

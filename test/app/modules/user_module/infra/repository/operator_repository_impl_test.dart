@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/data/operator_repository.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';

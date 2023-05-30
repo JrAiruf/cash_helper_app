@@ -3,7 +3,7 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_ou
 import '../../../infra/data/login_repository.dart';
 
 class SignOut implements ISignOut {
-SignOut({required LoginRepository repository}) : _repository = repository;
+  SignOut({required LoginRepository repository}) : _repository = repository;
 
   final LoginRepository _repository;
 

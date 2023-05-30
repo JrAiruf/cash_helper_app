@@ -3,14 +3,14 @@ import 'package:cash_helper_app/app/modules/annotations_module/external/annotati
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/repository/annotation_repository_impl.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_store.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
-
-import '../domain/usecases/create_annotation/create_annotation.dart';
-import '../domain/usecases/create_annotation/icreate_annotation.dart';
+import '../domain/usecases/create_annotation/create_new_annotation.dart';
+import '../domain/usecases/create_annotation/icreate_new_annotation.dart';
 import '../domain/usecases/delete_annotation/delete_annotation.dart';
 import '../domain/usecases/delete_annotation/idelete_annotation.dart';
 import '../domain/usecases/finish_annotation/finish_annotation.dart';
@@ -35,9 +35,12 @@ abstract class AppAnnotationModule {
 
 class AnnotationModule extends Module {
   AnnotationModule._();
+
   static final instance = AnnotationModule._();
+
   @override
   List<Bind<Object>> get binds => bindsList;
+
   @override
   List<ModularRoute> get routes => routesList;
 
@@ -54,10 +57,11 @@ class AnnotationModule extends Module {
     Bind<AnnotationRepository>(
       (i) => AnnotationRepositoryImpl(
         datasource: i(),
+        dataVerifier: i(),
       ),
     ),
-    Bind<ICreateAnnotation>(
-      (i) => CreateAnnotation(
+    Bind<ICreateNewAnnotation>(
+      (i) => CreateNewAnnotation(
         repository: i(),
       ),
     ),
@@ -97,9 +101,12 @@ class AnnotationModule extends Module {
         searchAnnotationsByClientAddress: i(),
       ),
     ),
+    Bind<AnnotationsController>(
+      (i) => AnnotationsController(),
+    ),
     Bind<AnnotationStore>(
       (i) => AnnotationStore(
-        createAnnotation: i(),
+        createNewAnnotation: i(),
         getAnnotationById: i(),
         updateAnnotation: i(),
         finishAnnotation: i(),
@@ -110,13 +117,12 @@ class AnnotationModule extends Module {
 
   final routesList = <ModularRoute>[
     ChildRoute(
-      "/:operatorId",
-      child: (_, args) =>
-          CreateAnnotationsPage(operatorId: args.params["operatorId"]),
+      "/:enterpriseId",
+      child: (_, args) => CreateAnnotationsPage(operatorEntity: args.data),
     ),
     ChildRoute(
-      "/name",
-      child: (_, args) => Container(),
+      "/annotation-page/:enterpriseId",
+      child: (_, args) => AnnotationPage(),
     ),
   ];
 }

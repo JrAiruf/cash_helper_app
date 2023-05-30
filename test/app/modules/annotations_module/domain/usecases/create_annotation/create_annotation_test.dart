@@ -18,9 +18,12 @@ class CreateAnnotationUsecaseMock implements ICreateAnnotation {
   @override
   Future<AnnotationEntity?> call(
       String? operatorId, AnnotationEntity? annotation) async {
-      final annotationModel = AnnotationModel.fromEntityData(annotation ?? AnnotationEntity());
-      final usecaseAnnotation = await _repository.createAnnotation(operatorId, annotationModel);
-    if (usecaseAnnotation != null && _dataVerifier.validateInputData(inputs: [operatorId])) {
+    final annotationModel =
+        AnnotationModel.fromEntityData(annotation ?? AnnotationEntity());
+    final usecaseAnnotation =
+        await _repository.createAnnotation("", operatorId!, annotationModel);
+    if (usecaseAnnotation != null &&
+        _dataVerifier.validateInputData(inputs: [operatorId])) {
       return AnnotationModel.toEntityData(usecaseAnnotation);
     } else {
       return null;
@@ -45,7 +48,7 @@ void main() {
       test(
         "Call repository to create an annotation and return an AnnotationEntity object",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation =
               await createAnnotation("operatorId", newAnnotation);
@@ -56,7 +59,7 @@ void main() {
       test(
         "Fail creating an annotation and returning an AnnotationEntity object(returns Null)",
         () async {
-          when(repository.createAnnotation(any, any))
+          when(repository.createAnnotation(any, any, any))
               .thenAnswer((_) async => repositoryAnnotation);
           final createdAnnotation = await createAnnotation("", newAnnotation);
           expect(createdAnnotation, equals(null));

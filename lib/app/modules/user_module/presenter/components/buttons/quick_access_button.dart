@@ -23,27 +23,32 @@ class QuickAccessButton extends StatelessWidget {
   final List<Widget>? items;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(radius ?? 5)),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                  color:
-                      border ? itemsColor ?? Colors.white : Colors.transparent,
-                  width: 0.9),
-              borderRadius: BorderRadius.circular(radius ?? 5),
-            ),
-            fixedSize: Size(width ?? 105, height ?? 45)),
-        onPressed: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: items ?? [],
+    final surfaceColor = Theme.of(context).colorScheme.surface;
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: border ? itemsColor ?? surfaceColor : Colors.transparent,
+              width: 0.9),
+          borderRadius: BorderRadius.circular(
+            radius ?? 5,
           ),
+        ),
+        fixedSize: Size(
+          width ?? 105,
+          height ?? 45,
+        ),
+      ),
+      onPressed: onPressed!,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: items ?? [],
         ),
       ),
     );

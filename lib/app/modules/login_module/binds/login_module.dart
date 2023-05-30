@@ -1,5 +1,4 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_operator_by_id/iget_operator_by_id.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/login.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/register_operator.dart';
@@ -7,6 +6,7 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_ou
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/sign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_manager_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/forgot_password_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_operator_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/login_page.dart';
@@ -17,8 +17,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/check_operator_data_for_reset_password.dart';
 import '../domain/usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
-import '../domain/usecases/get_operator_by_id/get_operator_by_id.dart';
+import '../domain/usecases/get_user_by_id/get_user_by_id.dart';
+import '../domain/usecases/get_user_by_id/iget_user_by_id.dart';
 import '../domain/usecases/login/ilogin.dart';
+import '../domain/usecases/register_manager/iregister_manager.dart';
+import '../domain/usecases/register_manager/register_manager.dart';
 import '../domain/usecases/reset_operator_password/ireset_operator_password.dart';
 import '../domain/usecases/reset_operator_password/reset_operator_password.dart';
 import '../infra/data/login_repository.dart';
@@ -48,8 +51,12 @@ class LoginModule extends Module {
 
   final routesList = <ModularRoute>[
     ChildRoute(
-      "/create-new-operator",
-      child: (_, args) => const CreateOperatorPage(),
+      LoginRoutes.createManager,
+      child: (_, args) => CreateManagerPage(enterpriseEntity: args.data),
+    ),
+    ChildRoute(
+      LoginRoutes.createOperator,
+      child: (_, args) => CreateOperatorPage(enterpriseEntity: args.data),
     ),
     ChildRoute(
       "/forgot-password-page",
@@ -60,8 +67,8 @@ class LoginModule extends Module {
       child: (_, args) => RecoveryPasswordPage(operatorEntity: args.data),
     ),
     ChildRoute(
-      "/login",
-      child: (_, args) => const LoginPage(),
+      LoginRoutes.login,
+      child: (_, args) => LoginPage(enterpriseEntity: args.data),
     ),
     ChildRoute(
       LoginRoutes.initial,
@@ -86,8 +93,8 @@ class LoginModule extends Module {
       (i) => FirebaseDatabase(
         database: i(),
         auth: i(),
+        encryptService: i(),
         uuid: i(),
-        dataVerifier: i(),
       ),
     ),
     Bind<LoginRepository>(
@@ -101,15 +108,21 @@ class LoginModule extends Module {
         repository: i(),
       ),
     ),
+    Bind<IRegisterManager>(
+      (i) => RegisterManager(
+        repository: i(),
+      ),
+    ),
     Bind<ILogin>(
       (i) => Login(
         repository: i(),
         dataVerifier: i(),
       ),
     ),
-    Bind<IGetOperatorById>(
-      (i) => GetOperatorById(
+    Bind<IGetUserById>(
+      (i) => GetUserById(
         repository: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<ICheckOperatorDataForResetPassword>(
@@ -130,11 +143,13 @@ class LoginModule extends Module {
     Bind<LoginStore>(
       (i) => LoginStore(
         registerOperator: i(),
+        registerManager: i(),
         login: i(),
-        getOperatorById: i(),
+        getUserById: i(),
         checkOperatorDataForResetPassword: i(),
         resetOperatorPassword: i(),
         signOut: i(),
+        dataVerifier: i(),
       ),
     ),
     Bind<LoginController>(

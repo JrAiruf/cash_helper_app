@@ -1,204 +1,281 @@
-// ignore_for_file: unnecessary_string_interpolations
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_business_position.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/auth_error_view.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/user_not_found_view.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../user_module/domain/entities/operator_entity.dart';
+import '../../../../routes/app_routes.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({super.key, required this.enterpriseEntity});
 
+  final EnterpriseEntity enterpriseEntity;
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
-final _loginFormKey = GlobalKey<FormState>();
 final _loginStore = Modular.get<LoginStore>();
 final _loginController = Modular.get<LoginController>();
-final _userLogin = OperatorEntity();
-bool _passwordVisible = false;
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+    _loginStore.restartLoginStoreState();
+    _loginController.enterpriseId = widget.enterpriseEntity.enterpriseId!;
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final surfaceColor = Theme.of(context).colorScheme.onSurface;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final surface = Theme.of(context).colorScheme.surface;
+    final secondaryColor = Theme.of(context).colorScheme.secondary;
+    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(color: primaryColor),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
+
+    return ValueListenableBuilder(
+      valueListenable: _loginStore,
+      builder: (_, state, __) {
+        if (state is LoginLoadingState) {
+          return Container(
+            decoration: BoxDecoration(color: primaryColor),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: indicatorColor,
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: height * 0.1),
-                Text('Cash Helper',
-                    style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: height * 0.2),
-                Stack(
-                  children: [
-                    Card(
-                      color: seccondaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: SizedBox(
-                        height: height * 0.4,
-                        width: width,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 30),
-                          child: Form(
-                            key: _loginFormKey,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  CashHelperTextFieldComponent(
-                                    primaryColor: surfaceColor,
-                                    radius: 15,
-                                    validator: (value) =>
-                                        _loginController.emailValidate(value),
-                                    onSaved: (value) =>
-                                        _userLogin.operatorEmail = value,
-                                    controller: _loginController.emailField,
-                                    label: 'Email',
-                                  ),
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-                                  CashHelperTextFieldComponent(
-                                    primaryColor: surfaceColor,
-                                    suffixIcon: VisibilityIconComponent(
-                                        iconColor: surfaceColor,
-                                        onTap: () {
-                                          setState(() {
-                                            _passwordVisible =
-                                                !_passwordVisible;
-                                          });
-                                        },
-                                        forVisibility: Icons.visibility,
-                                        forHideContent: Icons.visibility_off,
-                                        condition: _passwordVisible),
-                                    radius: 15,
-                                    obscureText:
-                                        _passwordVisible == true ? false : true,
-                                    validator: (value) => _loginController
-                                        .passwordValidate(value),
-                                    onSaved: (value) =>
-                                        _userLogin.operatorPassword = value,
-                                    controller: _loginController.passwordField,
-                                    label: 'Senha',
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: height * 0.35),
-                      child: Center(
-                        child: TextButton(
-                          style: TextButton.styleFrom(),
-                          onPressed: () {
-                            Modular.to.pushNamed("./create-new-operator");
-                          },
-                          child: Text(
-                            'Criar conta',
-                            style: Theme.of(context).textTheme.displaySmall,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 5,
-                      bottom: height * 0.1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+          );
+        } else if (state is LoginInitialState) {
+          return Scaffold(
+            body: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Container(
+                height: height,
+                width: width,
+                decoration: BoxDecoration(color: primaryColor),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: height * 0.1),
+                      Text('Cash Helper',
+                          style: Theme.of(context).textTheme.bodyLarge),
+                      SizedBox(height: height * 0.2),
+                      Row(
                         children: [
-                          TextButton(
-                            style: TextButton.styleFrom(),
-                            onPressed: () {
-                              Modular.to.pushNamed("/forgot-password-page");
+                          AnimatedBuilder(
+                            animation: _loginController.managerUser,
+                            builder: (_, __) {
+                              return Switch(
+                                activeColor: tertiaryColor,
+                                value: _loginController.userStatus,
+                                onChanged: (value) {
+                                  _loginController.userStatus = value;
+                                  _loginController.userBusinessPosition = value
+                                      ? EnterpriseBusinessPosition
+                                          .manager.position
+                                      : EnterpriseBusinessPosition
+                                          .cashOperator.position;
+                                },
+                              );
                             },
-                            child: Text('Esqueci minha senha',
-                                style:
-                                    Theme.of(context).textTheme.displaySmall),
+                          ),
+                          const SizedBox(width: 25),
+                          AnimatedBuilder(
+                            animation: _loginController.businessPosition,
+                            builder: (_, __) {
+                              return Text(
+                                _loginController.userBusinessPosition,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium
+                                    ?.copyWith(color: surface),
+                              );
+                            },
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 25),
-                  child: Visibility(
-                    visible: !_loginController.loadingData,
-                    replacement: Center(
-                      child: CircularProgressIndicator(
-                        color: indicatorColor,
+                      Stack(
+                        children: [
+                          Card(
+                            color: secondaryColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: SizedBox(
+                              height: height * 0.4,
+                              width: width,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 30),
+                                child: Form(
+                                  key: _loginController.loginFormKey,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        CashHelperTextFieldComponent(
+                                          primaryColor: surfaceColor,
+                                          radius: 15,
+                                          validator: (value) => _loginController
+                                              .emailValidate(value),
+                                          onSaved: (value) => _loginController
+                                              .emailField.text = value ?? "",
+                                          controller:
+                                              _loginController.emailField,
+                                          label: 'Email',
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        AnimatedBuilder(
+                                            animation: _loginController
+                                                .passwordVisible,
+                                            builder: (_, __) {
+                                              return CashHelperTextFieldComponent(
+                                                primaryColor: surfaceColor,
+                                                suffixIcon:
+                                                    VisibilityIconComponent(
+                                                        iconColor: surfaceColor,
+                                                        onTap: () {
+                                                          _loginController
+                                                                  .passwordVisible
+                                                                  .value =
+                                                              !_loginController
+                                                                  .passwordVisible
+                                                                  .value;
+                                                        },
+                                                        forVisibility:
+                                                            Icons.visibility,
+                                                        forHideContent: Icons
+                                                            .visibility_off,
+                                                        condition:
+                                                            _loginController
+                                                                .passwordVisible
+                                                                .value),
+                                                radius: 15,
+                                                obscureText: _loginController
+                                                            .passwordVisible
+                                                            .value ==
+                                                        true
+                                                    ? false
+                                                    : true,
+                                                validator: _loginController
+                                                    .passwordValidate,
+                                                onSaved: (value) =>
+                                                    _loginController
+                                                        .passwordField
+                                                        .text = value ?? "",
+                                                controller: _loginController
+                                                    .passwordField,
+                                                label: 'Senha',
+                                              );
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: height * 0.35),
+                            child: Center(
+                              child: TextButton(
+                                style: TextButton.styleFrom(),
+                                onPressed: () {
+                                  Modular.to.pushNamed("./create-new-operator",
+                                      arguments: widget.enterpriseEntity);
+                                },
+                                child: Text(
+                                  'Criar conta',
+                                  style:
+                                      Theme.of(context).textTheme.displaySmall,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 5,
+                            bottom: height * 0.09,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  style: TextButton.styleFrom(),
+                                  onPressed: () {
+                                    Modular.to
+                                        .pushNamed("/forgot-password-page");
+                                  },
+                                  child: Text('Esqueci minha senha',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    child: CashHelperElevatedButton(
-                      onPressed: () async {
-                        _loginFormKey.currentState!.validate();
-                        _loginFormKey.currentState!.save();
-
-                        if (_loginFormKey.currentState!.validate()) {
-                          setState(() {
-                            _loginController.loadingData = true;
-                          });
-                          final loggedUser = await _loginStore
-                              .login(
-                                  _userLogin.operatorEmail,
-                                  _userLogin.operatorPassword,
-                                  "",
-                                  _userLogin.businessPosition ?? "operator")
-                              ?.then((value) => value)
-                              .catchError((e) {
-                            _loginController.onFail(context);
-                          });
-                          loggedUser != null
-                              ? Modular.to.navigate("/user-module/",
-                                  arguments: loggedUser)
-                              : null;
-                        }
-                        setState(() {
-                          _loginController.loadingData = false;
-                        });
-                      },
-                      radius: 12,
-                      width: width,
-                      height: 65,
-                      buttonName: 'Entrar',
-                      fontSize: 20,
-                      nameColor: surfaceColor,
-                      backgroundColor: seccondaryColor,
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25),
+                        child: CashHelperElevatedButton(
+                          onPressed: _loginController.login,
+                          radius: 12,
+                          width: width,
+                          height: 65,
+                          buttonName: 'Entrar',
+                          fontSize: 20,
+                          nameColor: surfaceColor,
+                          backgroundColor: secondaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        } else if (state is LoginSuccessState) {
+          final enterpriseId = widget.enterpriseEntity.enterpriseId;
+          final operatorEntity = state.operatorEntity;
+          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
+              arguments: operatorEntity);
+          return Container(
+            decoration: BoxDecoration(color: primaryColor),
+          );
+        } else if (state is ManagerLoginSuccessState) {
+          final enterpriseId = widget.enterpriseEntity.enterpriseId;
+          final managerEntity = state.managerEntity;
+          Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId",
+              arguments: managerEntity);
+          return Container(
+            decoration: BoxDecoration(color: primaryColor),
+          );
+        } else if (state is LoginAuthErrorState) {
+          return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
+        } else if (state is LoginNoUserErrorState) {
+          return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
+        }
+        return Container(
+          decoration: BoxDecoration(color: primaryColor),
+        );
+      },
     );
   }
 }

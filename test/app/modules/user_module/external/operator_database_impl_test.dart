@@ -1,6 +1,9 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/errors/operation_errors.dart';
+import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,11 +46,8 @@ class OperatorDatabaseMock implements OperatorDatabase {
   }
 
   @override
-  Future<void> deleteUserAccount(
-      String? operatorCode,
-      String? operatorEmail,
-      String? operatorPassword,
-      String? collection) async {
+  Future<void> deleteUserAccount(String? operatorCode, String? operatorEmail,
+      String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection ?? "");
     if (_validOperatorData(operatorEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
@@ -148,7 +148,11 @@ void main() {
   final authMock = MockFirebaseAuth(mockUser: user);
   final firebaseMock = FakeFirebaseFirestore();
   final loginDatabase = FirebaseDatabaseMock(
-      auth: authMock, uuid: const Uuid(), database: firebaseMock,dataVerifier:DataVerifier());
+      database: firebaseMock,
+      auth: authMock,
+      encryptService: EncryptService(),
+      uuid: const Uuid(),
+      dataVerifier: DataVerifier());
   final database =
       OperatorDatabaseMock(auth: authMock, datasource: firebaseMock);
   final Map<String, dynamic> newOperator = {

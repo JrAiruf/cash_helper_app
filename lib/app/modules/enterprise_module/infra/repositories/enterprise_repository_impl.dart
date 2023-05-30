@@ -3,6 +3,8 @@ import 'package:cash_helper_app/app/modules/enterprise_module/external/data/appl
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/data/enterprise_repository.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/enterprise_model.dart';
 
+import '../models/payment_method_model.dart';
+
 class EnterpriseRepositoryImpl implements EnterpriseRepository {
   EnterpriseRepositoryImpl({
     required ApplicationEnterpriseDatabase database,
@@ -34,5 +36,10 @@ class EnterpriseRepositoryImpl implements EnterpriseRepository {
     } else {
       return null;
     }
+  }
+  
+   @override
+  Future? createPaymenMethod(PaymentMethodModel? paymentMethodModel, String? managerCode) {
+    throw UnimplementedError();
   }
 }

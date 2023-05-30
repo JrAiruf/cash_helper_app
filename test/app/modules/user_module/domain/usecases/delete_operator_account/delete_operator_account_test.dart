@@ -1,3 +1,6 @@
+// ignore_for_file: unused_local_variable
+
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/delete_operator_account/idelete_operator_account.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/data/operator_repository.dart';
@@ -6,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../mocks/mocks.dart';
-import '../../../../login_module/domain/usecases/get_operator_by_id/get_operator_by_id_test.dart';
+import '../../../../login_module/domain/usecases/get_user_by_id/get_user_by_id_test.dart';
 import '../../../../login_module/domain/usecases/register_operator/register_operator_test.dart';
 
 class OperatorRepositoryMock extends Mock implements OperatorRepository {}
@@ -35,7 +38,7 @@ class DeleteOperatorAccountUsecaseMock implements IDeleteOperatorAccount {
 void main() {
   final loginRepository = LoginRepositoryMock();
   final register = RegisterOperatorUsecaseMock(repository: loginRepository);
-  final getOperatorById = GetOperatorByIdMock(repository: loginRepository);
+  final getOperatorById = GetUserByIdMock(repository: loginRepository,dataVerifier: DataVerifier());
   final operatorRepository = OperatorRepositoryMock();
   final deleteOperatorAccount =
       DeleteOperatorAccountUsecaseMock(repository: operatorRepository);
