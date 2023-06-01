@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import '../date_values/date_values.dart';
 import '../stores/annotations_store.dart';
 
@@ -23,7 +24,7 @@ class AnnotationsController {
   String get annotationPaymentMethod => annotationPaymentMethodField.text;
 
   String get annotationValue => annotationValueField.text;
-
+  BottomNavigationBarPosition? position;
   final newAnnotationFormKey = GlobalKey<FormState>();
   final annotationLoadingState = ValueNotifier(false);
 

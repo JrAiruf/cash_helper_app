@@ -28,7 +28,6 @@ class CashHelperInformationCard extends StatelessWidget {
   final String? complementInformation;
   @override
   Widget build(BuildContext context) {
-    final surfaceColor = Theme.of(context).colorScheme.surface;
     return Container(
       height: height,
       width: width,
@@ -45,7 +44,7 @@ class CashHelperInformationCard extends StatelessWidget {
             Icon(
               cardIcon,
               size: iconSize,
-              color: surfaceColor,
+              color: Colors.white,
             ),
             const SizedBox(width: 10),
             Column(
@@ -54,17 +53,11 @@ class CashHelperInformationCard extends StatelessWidget {
               children: [
                 Text(
                   informationTitle,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: surfaceColor),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 Text(
                   information,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium
-                      ?.copyWith(color: surfaceColor),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
               ],
             ),
@@ -75,17 +68,11 @@ class CashHelperInformationCard extends StatelessWidget {
               children: [
                 Text(
                   complementInformationTitle ?? "",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: surfaceColor),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 Text(
                   complementInformation ?? "",
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium
-                      ?.copyWith(color: surfaceColor),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
               ],
             ),

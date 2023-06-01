@@ -99,11 +99,17 @@ class AnnotationHome extends StatelessWidget {
                     children: [
                       Text(
                         "Criada em :",
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: surfaceColor),
                       ),
                       Text(
                         "${annotationEntity.annotationSaleDate}",
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: surfaceColor),
                       ),
                     ],
                   ),

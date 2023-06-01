@@ -11,7 +11,6 @@ import '../../../user_module/domain/entities/operator_entity.dart';
 class AnnotationPage extends StatefulWidget {
   AnnotationPage({Key? key}) : super(key: key);
 
-  BottomNavigationBarPosition? position;
   @override
   State<AnnotationPage> createState() => _AnnotationPageState();
 }
@@ -21,6 +20,12 @@ final OperatorEntity operatorEntity = Modular.args.data["operatorEntity"];
 final _annotationsController = Modular.get<AnnotationsController>();
 
 class _AnnotationPageState extends State<AnnotationPage> {
+  @override
+  void initState() {
+    super.initState();
+    _annotationsController.position = BottomNavigationBarPosition.appAppearance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
@@ -42,7 +47,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
           itemContentColor: surfaceColor,
           pageController: _annotationsController.annotationsPageController,
           itemColor: greenColor,
-          position: widget.position,
+          position: _annotationsController.position,
           radius: 20,
           backgroundColor: primaryColor,
           height: 60,
@@ -60,7 +65,8 @@ class _AnnotationPageState extends State<AnnotationPage> {
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
-                  widget.position = BottomNavigationBarPosition.appAppearance;
+                  _annotationsController.position =
+                      BottomNavigationBarPosition.appAppearance;
                 });
               },
             ),
@@ -76,7 +82,8 @@ class _AnnotationPageState extends State<AnnotationPage> {
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
-                  widget.position = BottomNavigationBarPosition.operatorAccount;
+                  _annotationsController.position =
+                      BottomNavigationBarPosition.operatorAccount;
                 });
               },
             ),
