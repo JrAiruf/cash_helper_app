@@ -15,13 +15,15 @@ class AnnotationPage extends StatefulWidget {
   State<AnnotationPage> createState() => _AnnotationPageState();
 }
 
-final AnnotationEntity annotationEntity = Modular.args.data["annotationEntity"];
-final OperatorEntity operatorEntity = Modular.args.data["operatorEntity"];
+AnnotationEntity? annotationEntity;
+OperatorEntity? operatorEntity;
 final _annotationsController = Modular.get<AnnotationsController>();
 
 class _AnnotationPageState extends State<AnnotationPage> {
   @override
   void initState() {
+    annotationEntity = Modular.args.data["annotationEntity"];
+    operatorEntity = Modular.args.data["operatorEntity"];
     super.initState();
     _annotationsController.position = BottomNavigationBarPosition.appAppearance;
   }
@@ -37,7 +39,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
       body: PageView(
         controller: _annotationsController.annotationsPageController,
         children: [
-          AnnotationHome(annotationEntity: annotationEntity),
+          AnnotationHome(annotationEntity: annotationEntity!),
           Container(),
         ],
       ),

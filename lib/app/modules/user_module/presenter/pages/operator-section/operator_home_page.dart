@@ -13,6 +13,7 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
+import '../../components/operator_widgets/operator_status_component.dart';
 import '../../components/widgets/annotation_info_list_view_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
@@ -208,36 +209,14 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                     ],
                   ),
                 ),
-                Positioned(
-                  top: height * 0.155,
-                  right: 25,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: appThemes.backgroundColor(context),
-                        maxRadius: 30,
-                        child: CircleAvatar(
-                          backgroundColor: currentOperator.operatorEnabled!
-                              ? appThemes.greenColor(context)
-                              : appThemes.purpleColor(context),
-                          maxRadius: 29,
-                          child: const Icon(
-                            color: Colors.white,
-                            Icons.person,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25),
-                      Text(
-                        currentOperator.operatorEnabled! ? "Ativo" : "Inativo",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall
-                            ?.copyWith(color: appThemes.surfaceColor(context)),
-                      ),
-                    ],
-                  ),
+                OperatorStatusComponent(
+                  textColor: appThemes.surfaceColor(context),
+                  activeColor: appThemes.greenColor(context),
+                  borderColor: appThemes.backgroundColor(context),
+                  inactiveColor: appThemes.purpleColor(context),
+                  operatorEntity: currentOperator,
+                  sidePosition: 25,
+                  topPosition: height * 0.155,
                 ),
               ],
             ),

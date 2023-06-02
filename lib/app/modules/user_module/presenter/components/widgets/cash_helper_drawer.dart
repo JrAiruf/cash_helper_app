@@ -103,9 +103,7 @@ class CashHelperDrawer extends StatelessWidget {
                   ),
                   SizedBox(height: itemSpacingHeight * 10),
                   TextButton(
-                    onPressed: () {
-                      loginStore.signOut();
-                    },
+                    onPressed: loginStore.signOut,
                     child: Row(
                       children: [
                         Text(
