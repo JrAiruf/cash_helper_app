@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import '../date_values/date_values.dart';
+import '../stores/annotations_list_store.dart';
 import '../stores/annotations_store.dart';
 
 class AnnotationsController {
@@ -15,8 +16,9 @@ class AnnotationsController {
   final annotationSaleTimeField = TextEditingController();
   final dateValue = DateValues();
   final _annotationsStore = Modular.get<AnnotationStore>();
+  final _annotationsListStore = Modular.get<AnnotationsListStore>();
   final annotationsPageController = PageController();
-  
+
   String get annotationClientAddress => annotationAddressField.text;
 
   String get annotationSaleTime => annotationSaleTimeField.text;
@@ -24,13 +26,15 @@ class AnnotationsController {
   String get annotationPaymentMethod => annotationPaymentMethodField.text;
 
   String get annotationValue => annotationValueField.text;
+
   BottomNavigationBarPosition? position;
+
   final newAnnotationFormKey = GlobalKey<FormState>();
   final annotationLoadingState = ValueNotifier(false);
 
   String enterpriseId = "";
   String operatorId = "";
-
+  List<AnnotationEntity> annotationsList = [];
   String? annotationAddressValidate(String? value) {
     return value!.isNotEmpty && value != ''
         ? null
@@ -69,5 +73,9 @@ class AnnotationsController {
     } else {
       return;
     }
+  }
+
+  Future<void> getAllAnnotations() async {
+    annotationsList = _annotationsListStore.value;
   }
 }

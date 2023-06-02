@@ -1,18 +1,14 @@
 // ignore_for_file: must_be_immutable
-
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/components/cards/annotations_status_card_component.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../../login_module/presenter/controllers/login_controller.dart';
-import '../../../../../../login_module/presenter/stores/login_store.dart';
+import '../../../../components/cards/annotation_informations_card.dart';
+import '../../../../components/cards/annotations_status_card_component.dart';
 import '../../../../components/cards/operator_card_component.dart';
-import '../../../../components/cards/profile_informations_card.dart';
 import '../../../../components/operator_widgets/operator_status_component.dart';
-import '../../../../components/tiles/drawer_tile.dart';
 import '../../../../components/widgets/cash_helper_drawer.dart';
 
 class OperatorProfilePage extends StatefulWidget {
@@ -29,14 +25,20 @@ class OperatorProfilePage extends StatefulWidget {
 final _enterpriseId = Modular.args.params["enterpriseId"];
 DrawerPagePosition? drawerPosition;
 bool showOperatorCode = false;
+final _annotationController = Modular.get<AnnotationsController>();
 
 class _OperatorProfilePageState extends State<OperatorProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    _annotationController.getAllAnnotations();
+  }
+
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final fontSize = Theme.of(context).textTheme.bodySmall;
     widget.operatorEntity.operatorEnabled = false;
     return Scaffold(
       appBar: AppBar(),
@@ -84,6 +86,148 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
               operatorEntity: widget.operatorEntity,
               sidePosition: 25,
               topPosition: height * 0.12,
+            ),
+            SizedBox(
+              height: height * 0.7,
+              width: width,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Informações:",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: appTheme.surfaceColor(context),
+                          ),
+                    ),
+                    OperatorCardComponent(
+                      height: height * 0.18,
+                      width: width,
+                      backgroundColor: appTheme.primaryColor(context),
+                      operatorEntity: widget.operatorEntity,
+                      annotationsList: _annotationController.annotationsList,
+                    ),
+                    Text(
+                      "Anotações nesta semana:",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: appTheme.surfaceColor(context),
+                          ),
+                    ),
+                    const SizedBox(width: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AnnotationInformationsCard(
+                            backgroundColor: appTheme.backgroundColor(context),
+                            height: height * 0.09,
+                            width: width * 0.2,
+                            items: [
+                              Text(
+                                "Dinheiro:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                              Text(
+                                "25%",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                            ],
+                          ),
+                          AnnotationInformationsCard(
+                            backgroundColor: appTheme.backgroundColor(context),
+                            height: height * 0.09,
+                            width: width * 0.2,
+                            items: [
+                              Text(
+                                "Dinheiro:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                              Text(
+                                "25%",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                            ],
+                          ),
+                          AnnotationInformationsCard(
+                            backgroundColor: appTheme.backgroundColor(context),
+                            height: height * 0.09,
+                            width: width * 0.2,
+                            items: [
+                              Text(
+                                "Dinheiro:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                              Text(
+                                "25%",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                            ],
+                          ),
+                          AnnotationInformationsCard(
+                            backgroundColor: appTheme.backgroundColor(context),
+                            height: height * 0.09,
+                            width: width * 0.2,
+                            items: [
+                              Text(
+                                "Dinheiro:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                              Text(
+                                "25%",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: appTheme.surfaceColor(context),
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

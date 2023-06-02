@@ -19,7 +19,7 @@ class AnnotationInformationsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? 10,
+      height: height,
       width: width,
       decoration: BoxDecoration(
         border: Border.all(color: borderColor ?? Colors.white),
