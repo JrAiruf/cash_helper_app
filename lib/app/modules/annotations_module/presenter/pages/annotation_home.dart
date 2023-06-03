@@ -52,7 +52,7 @@ class AnnotationHome extends StatelessWidget {
                     height: height * 0.15,
                     width: width,
                     radius: 15,
-                    spacing: width * 0.2,
+                    spacing: 0.15,
                     backgroundColor: tertiaryColor,
                     cardIcon: Icons.house_outlined,
                     iconSize: 55,
@@ -66,7 +66,7 @@ class AnnotationHome extends StatelessWidget {
                     height: height * 0.15,
                     width: width,
                     radius: 15,
-                    spacing: width * 0.24,
+                    spacing: 0.154,
                     backgroundColor: redColor.withBlue(90).withOpacity(0.7),
                     cardIcon: Icons.monetization_on_outlined,
                     iconSize: 55,
@@ -80,7 +80,6 @@ class AnnotationHome extends StatelessWidget {
                     height: height * 0.15,
                     width: width,
                     radius: 15,
-                    spacing: width * 0.03,
                     backgroundColor: annotationEntity.annotationConcluied!
                         ? greenColor.withOpacity(0.7)
                         : red,

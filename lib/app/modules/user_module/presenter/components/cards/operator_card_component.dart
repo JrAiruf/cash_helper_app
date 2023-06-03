@@ -26,8 +26,7 @@ class OperatorCardComponent extends StatelessWidget {
     final dateValue = DateValues();
     final fontSize = Theme.of(context).textTheme.bodySmall;
     final dailyAnnotations = annotationsList.where((annotation) {
-      return annotation.annotationSaleDate!.split("/").first ==
-          dateValue.currentDay;
+      return annotation.annotationSaleDate! == dateValue.annotationDayDateTime;
     }).toList();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),

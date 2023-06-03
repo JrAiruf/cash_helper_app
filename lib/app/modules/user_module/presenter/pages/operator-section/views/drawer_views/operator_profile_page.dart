@@ -1,12 +1,12 @@
 // ignore_for_file: must_be_immutable
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/components/payment_method_using_rate_component.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../../login_module/presenter/controllers/login_controller.dart';
-import '../../../../components/cards/annotation_informations_card.dart';
-import '../../../../components/cards/annotations_status_card_component.dart';
+import '../../../../../../management_module/presenter/controller/management_controller.dart';
 import '../../../../components/cards/operator_card_component.dart';
 import '../../../../components/operator_widgets/operator_status_component.dart';
 import '../../../../components/widgets/cash_helper_drawer.dart';
@@ -26,12 +26,14 @@ final _enterpriseId = Modular.args.params["enterpriseId"];
 DrawerPagePosition? drawerPosition;
 bool showOperatorCode = false;
 final _annotationController = Modular.get<AnnotationsController>();
+final _managementController = Modular.get<ManagementController>();
 
 class _OperatorProfilePageState extends State<OperatorProfilePage> {
   @override
   void initState() {
     super.initState();
     _annotationController.getAllAnnotations();
+    _managementController.getAllPaymentMethods(_enterpriseId);
   }
 
   @override
@@ -116,115 +118,21 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                             color: appTheme.surfaceColor(context),
                           ),
                     ),
-                    const SizedBox(width: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AnnotationInformationsCard(
-                            backgroundColor: appTheme.backgroundColor(context),
-                            height: height * 0.09,
+                    AnimatedBuilder(
+                        animation: _managementController.paymentMethods,
+                        builder: (_, __) {
+                          return PaymentMethodUsingRateComponent(
+                            cardBackgroundColor: appTheme.primaryColor(context),
+                            textColor: appTheme.surfaceColor(context),
+                            height: height * 0.001,
                             width: width * 0.2,
-                            items: [
-                              Text(
-                                "Dinheiro:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                              Text(
-                                "25%",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                            ],
-                          ),
-                          AnnotationInformationsCard(
-                            backgroundColor: appTheme.backgroundColor(context),
-                            height: height * 0.09,
-                            width: width * 0.2,
-                            items: [
-                              Text(
-                                "Dinheiro:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                              Text(
-                                "25%",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                            ],
-                          ),
-                          AnnotationInformationsCard(
-                            backgroundColor: appTheme.backgroundColor(context),
-                            height: height * 0.09,
-                            width: width * 0.2,
-                            items: [
-                              Text(
-                                "Dinheiro:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                              Text(
-                                "25%",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                            ],
-                          ),
-                          AnnotationInformationsCard(
-                            backgroundColor: appTheme.backgroundColor(context),
-                            height: height * 0.09,
-                            width: width * 0.2,
-                            items: [
-                              Text(
-                                "Dinheiro:",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                              Text(
-                                "25%",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: appTheme.surfaceColor(context),
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                            componentHeight: height * 0.12,
+                            componentWidth: width,
+                            paymentMethods:
+                                _managementController.paymentMethods.value,
+                            annotations: _annotationController.annotationsList,
+                          );
+                        })
                   ],
                 ),
               ),

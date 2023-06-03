@@ -173,67 +173,67 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                             animation: _paymentMethodListStore,
                                             builder: (_, __) {
                                               return DropdownButtonFormField<
-                                                      PaymentMethodEntity>(
-                                                  decoration: InputDecoration(
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      borderSide: BorderSide(
-                                                        color: surfaceColor,
-                                                      ),
-                                                    ),
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                      borderSide: BorderSide(
-                                                        color: surfaceColor,
-                                                      ),
+                                                  PaymentMethodEntity>(
+                                                decoration: InputDecoration(
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    borderSide: BorderSide(
+                                                      color: surfaceColor,
                                                     ),
                                                   ),
-                                                  validator:
-                                                      _managementController
-                                                          .paymentMethodValidate,
-                                                  onSaved: (value) =>
-                                                      _annotationsController
-                                                              .annotationPaymentMethodField
-                                                              .text =
-                                                          value!
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    borderSide: BorderSide(
+                                                      color: surfaceColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                                validator: _managementController
+                                                    .paymentMethodValidate,
+                                                onSaved: (value) =>
+                                                    _annotationsController
+                                                            .annotationPaymentMethodField
+                                                            .text =
+                                                        value!
+                                                            .paymentMethodName!,
+                                                onChanged: (value) => value,
+                                                hint: Text(
+                                                  "Selecione o método de pagamento",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .displaySmall
+                                                      ?.copyWith(
+                                                        color: surfaceColor,
+                                                      ),
+                                                ),
+                                                items: _paymentMethodListStore
+                                                    .value
+                                                    ?.map(
+                                                      (paymentMethod) =>
+                                                          DropdownMenuItem(
+                                                        value: paymentMethod,
+                                                        child: Text(
+                                                          paymentMethod
                                                               .paymentMethodName!,
-                                                  onChanged: (value) => value,
-                                                  hint: Text(
-                                                    "Selecione o método de pagamento",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .displaySmall
-                                                        ?.copyWith(
-                                                          color: surfaceColor,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .displaySmall
+                                                                  ?.copyWith(
+                                                                    color:
+                                                                        surfaceColor,
+                                                                  ),
                                                         ),
-                                                  ),
-                                                  items: _paymentMethodListStore
-                                                      .value
-                                                      ?.map(
-                                                        (paymentMethod) =>
-                                                            DropdownMenuItem(
-                                                          value: paymentMethod,
-                                                          child: Text(
-                                                            paymentMethod
-                                                                .paymentMethodName!,
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .displaySmall
-                                                                ?.copyWith(
-                                                                  color:
-                                                                      surfaceColor,
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                      .toList());
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                              );
                                             },
                                           ),
                                           Row(
@@ -290,7 +290,8 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                   height: 50,
                                   width: width * 0.7,
                                   radius: 12,
-                                  onPressed:() =>  _annotationsController.createAnnotation(widget.operatorEntity),
+                                  onPressed: () => _annotationsController
+                                      .createAnnotation(widget.operatorEntity),
                                 ),
                               ),
                             ],

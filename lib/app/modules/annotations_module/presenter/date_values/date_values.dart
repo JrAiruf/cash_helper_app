@@ -12,7 +12,4 @@ class DateValues {
       '${hoursDateTime >= 10 ? hoursDateTime : '0$hoursDateTime'}:${minutesDateTime >= 10 ? minutesDateTime : '0$minutesDateTime'}';
   String get operatorClosing =>
       '${hoursDateTime >= 10 ? hoursDateTime : '0$hoursDateTime'}:${minutesDateTime >= 10 ? minutesDateTime : '0$minutesDateTime'}';
-
-  String get currentDay =>
-      "${dayDateTime >= 10 ? dayDateTime : '0$dayDateTime'}";
 }
