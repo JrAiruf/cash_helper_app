@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,10 @@ class OperatorCardComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateValue = DateValues();
-    final fontSize = Theme.of(context).textTheme.bodySmall;
+    final fontSize = Theme.of(context)
+        .textTheme
+        .bodySmall
+        ?.copyWith(color: Theme.of(context).colorScheme.surface);
     final dailyAnnotations = annotationsList.where((annotation) {
       return annotation.annotationSaleDate! == dateValue.annotationDayDateTime;
     }).toList();

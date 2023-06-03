@@ -189,7 +189,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                                       )),
                               Text(
                                 showOperatorCode
-                                    ? widget.operatorEntity.operatorCode ?? ""
+                                    ? widget.operatorEntity.operatorCode!
                                     : "......",
                                 style: Theme.of(context)
                                     .textTheme
