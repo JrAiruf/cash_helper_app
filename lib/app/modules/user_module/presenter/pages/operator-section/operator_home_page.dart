@@ -93,8 +93,15 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                 decoration: BoxDecoration(
                                     color: appThemes.primaryColor(context)),
                                 child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: appThemes.indicatorColor(context),
+                                  child: Text(
+                                    "Nenhuma anotação encontrada",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color:
+                                              appThemes.surfaceColor(context),
+                                        ),
                                   ),
                                 ),
                               );

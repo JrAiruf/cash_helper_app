@@ -62,7 +62,9 @@ class PaymentMethodUsingRateComponent extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    "${usingRate.toStringAsFixed(1)} %",
+                    usingRate.isNaN
+                        ? "0 %"
+                        : "${usingRate.toStringAsFixed(1)} %",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: textColor,
                         ),
