@@ -2,14 +2,12 @@ import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/finish_annotation/ifinish_annotation.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
+import 'package:cash_helper_app/app/utils/tests/annotations_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
 import '../../../../../mocks/mocks.dart';
-import '../create_annotation/create_annotation_test.dart';
+import '../create_annotation/create_new_annotation_test.dart';
 import '../get_annotation_by_id/get_annotation_by_id_test.dart';
-import '../update_annotation/update_annotation_test.dart';
 
 class FinishAnnotationMock implements IFinishAnnotation {
   FinishAnnotationMock({required AnnotationRepository repository})
@@ -18,9 +16,11 @@ class FinishAnnotationMock implements IFinishAnnotation {
   final AnnotationRepository _repository;
   final _dataVerifier = DataVerifier();
   @override
-  Future? call(String? operatorId, String? annotationId) async {
-    if (_dataVerifier.validateInputData(inputs: [operatorId, annotationId])) {
-      await _repository.finishAnnotation(operatorId, annotationId);
+  Future? call(
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId, annotationId])) {
+      await _repository.finishAnnotation(
+          enterpriseId!, operatorId!, annotationId!);
     } else {
       return;
     }
@@ -29,78 +29,50 @@ class FinishAnnotationMock implements IFinishAnnotation {
 
 void main() {
   final repository = AnnotationRepo();
-  final createAnnotation = CreateAnnotationUsecaseMock(repository: repository);
+  final createAnnotation = CreateNewAnnotationMock(repository: repository);
   final getAnnotationById = GetAnnotationByIdMock(repository: repository);
-  final updateAnnotation = UpdateAnnotationMock(repository: repository);
-
-  final newAnnotation = AnnotationEntity(
-      annotationClientAddress: "Andorinhas 381",
-      annotationConcluied: false,
-      annotationPaymentMethod: "Dinheiro",
-      annotationReminder: null,
-      annotationSaleDate: "Data Atual",
-      annotationSaleTime: "Hora Atual",
-      annotationSaleValue: "1455,67");
-
-  final modifiedAnnotation = AnnotationEntity(
-      annotationClientAddress: "Andorinhas 381",
-      annotationConcluied: true,
-      annotationPaymentMethod: null,
-      annotationReminder: "Reminder",
-      annotationSaleDate: "Data Atual",
-      annotationSaleTime: "Hora Atual",
-      annotationSaleValue: "1455,67");
+  final finishAnnotation = FinishAnnotationMock(repository: repository);
   group(
     "UpdateAnnotation Function Should",
     () {
       test(
-        "Update the respective property passed in object",
+        "Change annotation status",
         () async {
-          when(repository.createAnnotation(any,any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await createAnnotation("operatorId", newAnnotation);
+          when(repository.createAnnotation(any, any, any)).thenAnswer(
+              (_) async => AnnotationsTestObjects.repositoryAnnotation);
+          final createdAnnotation = await createAnnotation("enterpriseId",
+              "operatorId", AnnotationsTestObjects.newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
-          when(repository.updateAnnotation(any, any, any)).thenReturn(null);
-          when(repository.getAnnotationById(any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          await updateAnnotation(
-              "operatorId", createdAnnotation?.annotationId, createdAnnotation);
-          final updatedAnnotation = await getAnnotationById(
-              "operatorId", createdAnnotation?.annotationId);
-          expect(updatedAnnotation, isA<AnnotationEntity>());
-          expect(updatedAnnotation?.annotationReminder, equals(null));
-          expect(updatedAnnotation?.annotationConcluied, equals(false));
+          when(repository.finishAnnotation(any, any, any)).thenReturn(null);
+          when(repository.getAnnotationById(any, any, any)).thenAnswer(
+              (_) async => AnnotationsTestObjects.modifiedAnnotationModel);
+          await finishAnnotation(
+              "enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          final finishedAnnotation = await getAnnotationById(
+              "enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          expect(finishedAnnotation, isA<AnnotationEntity>());
+          expect(finishedAnnotation?.annotationConcluied, equals(true));
         },
       );
       test(
-        "Fail update properties",
+        "Fail changing status",
         () async {
-          when(repository.createAnnotation(any,any, any))
-              .thenAnswer((_) async => repositoryAnnotation);
-          final createdAnnotation =
-              await createAnnotation("operatorId", newAnnotation);
+        when(repository.createAnnotation(any, any, any)).thenAnswer(
+              (_) async => AnnotationsTestObjects.repositoryAnnotation);
+          final createdAnnotation = await createAnnotation("enterpriseId",
+              "operatorId", AnnotationsTestObjects.newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
-          when(repository.updateAnnotation(any, any, any)).thenReturn(null);
-          when(repository.getAnnotationById(any, any))
-              .thenAnswer((_) async => repositoryAnnotationWithNullValue);
-          await updateAnnotation("operatorId", createdAnnotation?.annotationId,
-              modifiedAnnotation);
-          final updatedAnnotation = await getAnnotationById(
-              "operatorId", createdAnnotation?.annotationId);
-          expect(updatedAnnotation?.annotationPaymentMethod, equals(null));
+          when(repository.finishAnnotation(any, any, any)).thenReturn(null);
+          when(repository.getAnnotationById(any, any, any)).thenAnswer(
+              (_) async => AnnotationsTestObjects.newAnnotationModel);
+          await finishAnnotation(
+              "enterpriseId", "", createdAnnotation?.annotationId);
+          final finishedAnnotation = await getAnnotationById(
+              "enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          expect(finishedAnnotation, isA<AnnotationEntity>());
+          expect(finishedAnnotation?.annotationConcluied, equals(false));
         },
       );
     },
   );
 }
-
-final repositoryAnnotation = AnnotationModel(
-    annotationId: "askjdfhlakjsdhkajshdgkjahlskjdghla",
-    annotationClientAddress: "Andorinhas 381",
-    annotationConcluied: false,
-    annotationPaymentMethod: "Dinheiro",
-    annotationReminder: null,
-    annotationSaleDate: "Data Atual",
-    annotationSaleTime: "Hora Atual",
-    annotationSaleValue: "1455,67");
