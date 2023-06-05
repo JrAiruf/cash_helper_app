@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../shared/themes/cash_helper_themes.dart';
 import '../components/cash_helper_information_card.dart';
 
 class AnnotationHome extends StatelessWidget {
@@ -9,20 +10,14 @@ class AnnotationHome extends StatelessWidget {
   AnnotationEntity annotationEntity;
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final redColor = Theme.of(context).colorScheme.errorContainer;
-    final red = Theme.of(context).colorScheme.onError;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiary;
-    final greenColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: primaryColor,
+        color: appTheme.primaryColor(context),
       ),
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -31,7 +26,7 @@ class AnnotationHome extends StatelessWidget {
             height: height * 0.7,
             width: width,
             decoration: BoxDecoration(
-              color: backgroundColor,
+              color: appTheme.backgroundColor(context),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15),
                 topRight: Radius.circular(15),
@@ -53,7 +48,7 @@ class AnnotationHome extends StatelessWidget {
                     width: width,
                     radius: 15,
                     spacing: 0.15,
-                    backgroundColor: tertiaryColor,
+                    backgroundColor: appTheme.violetColor(context),
                     cardIcon: Icons.house_outlined,
                     iconSize: 55,
                     informationTitle: "Endereço:",
@@ -67,7 +62,10 @@ class AnnotationHome extends StatelessWidget {
                     width: width,
                     radius: 15,
                     spacing: 0.154,
-                    backgroundColor: redColor.withBlue(90).withOpacity(0.7),
+                    backgroundColor: appTheme
+                        .redColor(context)
+                        .withBlue(90)
+                        .withOpacity(0.7),
                     cardIcon: Icons.monetization_on_outlined,
                     iconSize: 55,
                     informationTitle: "Valor:",
@@ -81,8 +79,8 @@ class AnnotationHome extends StatelessWidget {
                     width: width,
                     radius: 15,
                     backgroundColor: annotationEntity.annotationConcluied!
-                        ? greenColor.withOpacity(0.7)
-                        : red,
+                        ? appTheme.greenColor(context).withOpacity(0.7)
+                        : appTheme.red(context),
                     cardIcon: Icons.monetization_on_outlined,
                     iconSize: 55,
                     informationTitle: "Status:",
@@ -101,14 +99,14 @@ class AnnotationHome extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall
-                            ?.copyWith(color: surfaceColor),
+                            ?.copyWith(color: appTheme.surfaceColor(context)),
                       ),
                       Text(
                         "${annotationEntity.annotationSaleDate}",
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall
-                            ?.copyWith(color: surfaceColor),
+                            ?.copyWith(color: appTheme.surfaceColor(context)),
                       ),
                     ],
                   ),
@@ -125,7 +123,7 @@ class AnnotationHome extends StatelessWidget {
               child: Icon(
                 Icons.library_books_outlined,
                 size: 55,
-                color: surfaceColor,
+                color: appTheme.surfaceColor(context),
               ))
         ],
       ),

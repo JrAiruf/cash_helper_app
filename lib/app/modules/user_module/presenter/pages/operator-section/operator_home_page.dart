@@ -83,36 +83,48 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         color: appThemes.primaryColor(context),
                       ),
                       SizedBox(height: height * 0.07),
-                      SizedBox(
-                        height: height * 0.2,
-                        child: ValueListenableBuilder(
-                          valueListenable: _annotationListStore,
-                          builder: ((context, annotationListState, child) {
-                            if (annotationListState.isEmpty) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                    color: appThemes.primaryColor(context)),
-                                child: Center(
-                                  child: Text(
-                                    "Nenhuma anotação encontrada",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color:
-                                              appThemes.surfaceColor(context),
-                                        ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: appThemes.primaryColor(context),
+                            border: Border.all(
+                              color: appThemes.surfaceColor(context),
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          height: height * 0.2,
+                          child: ValueListenableBuilder(
+                            valueListenable: _annotationListStore,
+                            builder: ((context, annotationListState, child) {
+                              if (annotationListState.isEmpty) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: appThemes.primaryColor(context),
                                   ),
-                                ),
-                              );
-                            } else if (annotationListState.isNotEmpty) {
-                              return AnnotationInfoListViewComponent(
-                                annotations: annotationListState,
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
+                                  child: Center(
+                                    child: Text(
+                                      "Nenhuma anotação encontrada",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color:
+                                                appThemes.surfaceColor(context),
+                                          ),
+                                    ),
+                                  ),
+                                );
+                              } else if (annotationListState.isNotEmpty) {
+                                return AnnotationInfoListViewComponent(
+                                  annotations: annotationListState,
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
+                          ),
                         ),
                       ),
                       Padding(

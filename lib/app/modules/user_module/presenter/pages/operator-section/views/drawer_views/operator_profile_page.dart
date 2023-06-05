@@ -42,7 +42,6 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    widget.operatorEntity.operatorEnabled = false;
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(
@@ -84,8 +83,8 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
             OperatorStatusComponent(
               textColor: appTheme.surfaceColor(context),
               activeColor: appTheme.greenColor(context),
-              borderColor: appTheme.backgroundColor(context),
               inactiveColor: appTheme.purpleColor(context),
+              borderColor: appTheme.backgroundColor(context),
               operatorEntity: widget.operatorEntity,
               sidePosition: 25,
               topPosition: height * 0.12,
@@ -226,136 +225,3 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
     );
   }
 }
-
-/* Stack(
-          children: [
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: height * 0.82,
-                decoration: BoxDecoration(
-                  color: appTheme.backgroundColor(context),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: height * 0.04,
-              left: width * 0.36,
-              child: Text(
-                widget.operatorEntity.operatorName ?? "",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            Positioned(
-              top: height * 0.02,
-              left: width * 0.05,
-              child: const Icon(
-                Icons.person,
-                size: 85,
-              ),
-            ),
-            Positioned(
-              top: height * 0.2,
-              left: width * 0.01,
-              child: SizedBox(
-                height: height * 0.55,
-                width: width * 0.98,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  color: appTheme.primaryColor(context),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        OperatorCardComponent(
-                            height: height * 0.15,
-                            width: width,
-                            /* backgroundColor: secondaryColor, */
-                            operatorEntity: widget.operatorEntity),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  ProfileInformationCard(
-                                    /* backgroundColor: secondaryColor, */
-                                    height: height * 0.165,
-                                    width: width * 0.35,
-                                    items: [
-                                      Icon(
-                                        Icons.access_time_rounded,
-                                        color: appTheme.surfaceColor(context),
-                                      ),
-                                      Text("Abertura:", style: fontSize),
-                                      Text(
-                                        widget.operatorEntity
-                                                .operatorOppening ??
-                                            "",
-                                        style: fontSize,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  ProfileInformationCard(
-                                    height: height * 0.165,
-                                    width: width * 0.35,
-                                    /* backgroundColor: secondaryColor, */
-                                    items: [
-                                      Text("Código Ops.", style: fontSize),
-                                      Text(
-                                        showOperatorCode
-                                            ? widget.operatorEntity
-                                                    .operatorCode ??
-                                                ""
-                                            : "......",
-                                        style: fontSize,
-                                      ),
-                                      GestureDetector(
-                                        onTap: (() {
-                                          setState(() {
-                                            showOperatorCode =
-                                                !showOperatorCode;
-                                          });
-                                        }),
-                                        child: Icon(
-                                          showOperatorCode
-                                              ? Icons.visibility_outlined
-                                              : Icons.visibility_off_outlined,
-                                          color: appTheme.surfaceColor(context),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(width: 10),
-                              AnnotationsStatusCardComponent(
-                                height: height * 0.34,
-                                width: width * 0.54,
-                                /* backgroundColor: secondaryColor, */
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ), */

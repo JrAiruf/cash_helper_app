@@ -4,9 +4,11 @@ import 'package:cash_helper_app/app/modules/annotations_module/presenter/control
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_home.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_item.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../user_module/domain/entities/operator_entity.dart';
+import 'annotation_settings.dart';
 
 class AnnotationPage extends StatefulWidget {
   AnnotationPage({Key? key}) : super(key: key);
@@ -30,34 +32,31 @@ class _AnnotationPageState extends State<AnnotationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final greenColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final appTheme = CashHelperThemes();
     return Scaffold(
       appBar: AppBar(),
       body: PageView(
         controller: _annotationsController.annotationsPageController,
         children: [
           AnnotationHome(annotationEntity: annotationEntity!),
-          Container(),
+          AnnotationSettings(annotationEntity: annotationEntity!),
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: backgroundColor),
+        decoration: BoxDecoration(color: appTheme.backgroundColor(context)),
         child: CashHelperBottomNavigationBar(
-          itemContentColor: surfaceColor,
+          itemContentColor: appTheme.surfaceColor(context),
           pageController: _annotationsController.annotationsPageController,
-          itemColor: greenColor,
+          itemColor: appTheme.greenColor(context),
           position: _annotationsController.position,
           radius: 20,
-          backgroundColor: primaryColor,
+          backgroundColor: appTheme.primaryColor(context),
           height: 60,
           items: [
             CashHelperBottomNavigationItem(
               icon: Icons.home,
               itemName: "Início",
-              itemBackgroundColor: backgroundColor,
+              itemBackgroundColor: appTheme.backgroundColor(context),
               position: BottomNavigationBarPosition.appAppearance,
               onTap: () {
                 _annotationsController.annotationsPageController.animateToPage(
