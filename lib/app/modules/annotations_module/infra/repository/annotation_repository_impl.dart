@@ -29,8 +29,8 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   Future<AnnotationModel?>? getAnnotationById(
       String? operatorId, String? annotationId) async {
     final datasourceAnnotation =
-        await _datasource.getAnnotationById(operatorId, annotationId);
-    if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
+        await _datasource.getAnnotationById(operatorId!, annotationId!);
+    if (operatorId.isNotEmpty && annotationId.isNotEmpty) {
       return AnnotationModel.fromMap(datasourceAnnotation!);
     } else {
       return null;
@@ -56,8 +56,8 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   Future<List<AnnotationModel>?>? searchAnnotationsByClientAddress(
       String? operatorId, String? clientAddress) async {
     final datasourceSugestedMaps = await _datasource
-        .searchAnnotationsByClientAddress(operatorId, clientAddress);
-    if (operatorId!.isNotEmpty && clientAddress!.isNotEmpty) {
+        .searchAnnotationsByClientAddress(operatorId!, clientAddress!);
+    if (operatorId.isNotEmpty && clientAddress.isNotEmpty) {
       final repositorySugestedAnnotations = datasourceSugestedMaps
           ?.map((annotationMap) => AnnotationModel.fromMap(annotationMap))
           .toList();
@@ -73,7 +73,7 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
     if (annotationId!.isNotEmpty &&
         !annotation!.toMap().values.contains(null)) {
       await _datasource.updateAnnotation(
-          operatorId, annotationId, annotation.toMap());
+          operatorId!, annotationId, annotation.toMap());
     } else {
       return;
     }
@@ -83,7 +83,7 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   Future<void>? finishAnnotation(
       String? operatorId, String? annotationId) async {
     if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
-      await _datasource.finishAnnotation(operatorId, annotationId);
+      await _datasource.finishAnnotation("",operatorId, annotationId);
     } else {
       return;
     }
@@ -93,7 +93,7 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   Future<void>? deleteAnnotation(
       String? operatorId, String? annotationId) async {
     if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
-      await _datasource.deleteAnnotation(operatorId, annotationId);
+      await _datasource.deleteAnnotation("",operatorId, annotationId);
     } else {
       return;
     }

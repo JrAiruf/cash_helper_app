@@ -3,7 +3,7 @@ abstract class ApplicationAnnotationDatabase {
   Future<Map<String, dynamic>?>? getAnnotationById(String operatorId, String annotationId);
   Future<List<Map<String, dynamic>>?>? getAllAnnotations(String entepriseId, String operatorId);
   Future<List<Map<String, dynamic>>?>? searchAnnotationsByClientAddress(String operatorId, String clientAddress);
-  Future<void>? updateAnnotation(String operatorId,String annotationId,Map<String, dynamic> annotation);
+  Future<void>? updateAnnotation(String operatorId, String annotationId,Map<String, dynamic> annotation);
   Future<void>? finishAnnotation(String enterpriseId, String operatorId,String annotationId);
   Future<void>? deleteAnnotation(String enterpriseId, String operatorId, String annotationId);
 }

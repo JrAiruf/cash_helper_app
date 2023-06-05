@@ -71,7 +71,7 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<void>? finishAnnotation(
+  Future<void>? finishAnnotation(String? enterpriseId,
       String? operatorId, String? annotationId) async {
     throw UnimplementedError();
   }
@@ -83,7 +83,7 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<void>? deleteAnnotation(
+  Future<void>? deleteAnnotation(String? enterpriseId,
       String? operatorId, String? annotationId) async {
     throw UnimplementedError();
   }

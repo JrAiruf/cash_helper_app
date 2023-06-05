@@ -85,7 +85,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<void>? finishAnnotation(
+  Future<void>? finishAnnotation(String? enterpriseId,
       String? operatorId, String? annotationId) async {
     if (operatorId != null && annotationId != null) {
       final annotationsCollection = _getCollection("",operatorId);
@@ -107,7 +107,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<void>? deleteAnnotation(
+  Future<void>? deleteAnnotation(String? enterpriseId,
       String? operatorId, String? annotationId) async {
     if (operatorId != null && annotationId != null) {
       final annotationsCollection = _getCollection("",operatorId);
