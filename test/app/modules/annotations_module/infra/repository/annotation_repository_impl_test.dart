@@ -105,7 +105,8 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
     if (enterpriseId!.isNotEmpty &&
         operatorId!.isNotEmpty &&
         annotationId!.isNotEmpty) {
-      await _datasource.deleteAnnotation("", operatorId, annotationId);
+      await _datasource.deleteAnnotation(
+          enterpriseId, operatorId, annotationId);
     } else {
       return;
     }
@@ -275,11 +276,35 @@ void main() {
           when(datasource.deleteAnnotation(any, any, any)).thenReturn(null);
           await repository.deleteAnnotation(
               "enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          when(datasource.getAnnotationById(any, any, any))
+              .thenAnswer((realInvocation) async => null);
+          final repositoryFinishedAnnotation =
+              await repository.getAnnotationById("enterpriseId", "operatorId",
+                  createdAnnotation?.annotationId);
+          expect(repositoryFinishedAnnotation?.annotationId, equals(null));
         },
       );
       test(
         "Fail removing annotation",
-        () async {},
+        () async {
+           when(datasource.createAnnotation(any, any, any)).thenAnswer(
+              (realInvocation) async =>
+                  AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation(
+              "enterpriseId",
+              "operatorId",
+              AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.deleteAnnotation(any, any, any)).thenReturn(null);
+          await repository.deleteAnnotation(
+              "enterpriseId", "", createdAnnotation?.annotationId);
+          when(datasource.getAnnotationById(any, any, any))
+              .thenAnswer((realInvocation) async => AnnotationsTestObjects.databaseAnnotation);
+          final repositoryFinishedAnnotation =
+              await repository.getAnnotationById("enterpriseId", "operatorId",
+                  createdAnnotation?.annotationId);
+           expect(repositoryFinishedAnnotation, isA<AnnotationModel>());
+          expect(repositoryFinishedAnnotation?.annotationId != null, equals(true));
+        },
       );
     },
   );

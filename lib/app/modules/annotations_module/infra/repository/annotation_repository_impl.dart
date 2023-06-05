@@ -27,11 +27,13 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
 
   @override
   Future<AnnotationModel?>? getAnnotationById(
-      String? operatorId, String? annotationId) async {
-    final datasourceAnnotation =
-        await _datasource.getAnnotationById(operatorId!, annotationId!);
-    if (operatorId.isNotEmpty && annotationId.isNotEmpty) {
-      return AnnotationModel.fromMap(datasourceAnnotation!);
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (enterpriseId!.isNotEmpty &&
+        operatorId!.isNotEmpty &&
+        annotationId!.isNotEmpty) {
+      final datasourceAnnotation = await _datasource.getAnnotationById(
+          enterpriseId, operatorId, annotationId);
+      return AnnotationModel.fromMap(datasourceAnnotation ?? {});
     } else {
       return null;
     }
@@ -68,8 +70,8 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
-  Future<void>? updateAnnotation(String? operatorId, String? annotationId,
-      AnnotationModel? annotation) async {
+  Future<void>? updateAnnotation(String? enterpriseId, String? operatorId,
+      String? annotationId, AnnotationModel? annotation) async {
     if (annotationId!.isNotEmpty &&
         !annotation!.toMap().values.contains(null)) {
       await _datasource.updateAnnotation(
@@ -81,9 +83,12 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
 
   @override
   Future<void>? finishAnnotation(
-      String? operatorId, String? annotationId) async {
-    if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
-      await _datasource.finishAnnotation("",operatorId, annotationId);
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (enterpriseId!.isNotEmpty &&
+        operatorId!.isNotEmpty &&
+        annotationId!.isNotEmpty) {
+      await _datasource.finishAnnotation(
+          enterpriseId, operatorId, annotationId);
     } else {
       return;
     }
@@ -91,9 +96,12 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
 
   @override
   Future<void>? deleteAnnotation(
-      String? operatorId, String? annotationId) async {
-    if (operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
-      await _datasource.deleteAnnotation("",operatorId, annotationId);
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (enterpriseId!.isNotEmpty &&
+        operatorId!.isNotEmpty &&
+        annotationId!.isNotEmpty) {
+      await _datasource.deleteAnnotation(
+          enterpriseId, operatorId, annotationId);
     } else {
       return;
     }
