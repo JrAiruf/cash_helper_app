@@ -82,27 +82,49 @@ class AnnotationSettings extends StatelessWidget {
                         QuickAccessButton(
                           border: true,
                           radius: 20,
-                          backgroundColor: appTheme.backgroundColor(context),
+                          backgroundColor: appTheme.primaryColor(context),
                           height: height * 0.1,
                           width: width * 0.42,
                           itemsColor: appTheme.surfaceColor(context),
                           onPressed: () {},
-                          items: const [
-                            Icon(Icons.done),
-                            Text("Finalizar"),
+                          items: [
+                            Icon(
+                              Icons.done,
+                              color: appTheme.surfaceColor(context),
+                            ),
+                            Text(
+                              "Finalizar",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: appTheme.surfaceColor(context),
+                                  ),
+                            ),
                           ],
                         ),
                         QuickAccessButton(
                           border: true,
                           radius: 20,
-                          backgroundColor: appTheme.backgroundColor(context),
+                          backgroundColor: appTheme.primaryColor(context),
                           height: height * 0.1,
                           width: width * 0.42,
                           itemsColor: appTheme.surfaceColor(context),
                           onPressed: () {},
-                          items: const [
-                            Icon(Icons.delete),
-                            Text("Excluir"),
+                          items: [
+                            Icon(
+                              Icons.delete,
+                              color: appTheme.surfaceColor(context),
+                            ),
+                            Text(
+                              "Excluir",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: appTheme.surfaceColor(context),
+                                  ),
+                            ),
                           ],
                         ),
                       ],
