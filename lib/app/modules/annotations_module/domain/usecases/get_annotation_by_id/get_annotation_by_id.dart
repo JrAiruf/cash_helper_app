@@ -11,9 +11,9 @@ GetAnnotationById({required AnnotationRepository repository})
   final AnnotationRepository _repository;
   final _dataVerifier = DataVerifier();
  @override
-  Future<AnnotationEntity?> call(
+  Future<AnnotationEntity?> call(String? enterpriseId,
       String? operatorId, String? annotationId) async {
-      final annotationModel = await _repository.getAnnotationById(operatorId!, annotationId!);
+      final annotationModel = await _repository.getAnnotationById(enterpriseId!,operatorId!, annotationId!);
     if (annotationModel != null && _dataVerifier.validateInputData(inputs: [operatorId, annotationId])) {
       return AnnotationModel.toEntityData(annotationModel);
     } else {

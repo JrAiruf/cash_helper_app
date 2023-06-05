@@ -33,7 +33,7 @@ void main() {
   final getAnnotationById = GetAnnotationByIdMock(repository: repository);
   final finishAnnotation = FinishAnnotationMock(repository: repository);
   group(
-    "UpdateAnnotation Function Should",
+    "FinishAnnotation Function Should",
     () {
       test(
         "Change annotation status",

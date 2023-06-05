@@ -10,10 +10,12 @@ class FinishAnnotation implements IFinishAnnotation {
   final AnnotationRepository _repository;
   final _dataVerifier = DataVerifier();
   
-   @override
-  Future? call(String? operatorId, String? annotationId) async {
-    if (_dataVerifier.validateInputData(inputs: [operatorId, annotationId])) {
-      await _repository.finishAnnotation(operatorId, annotationId);
+  @override
+  Future? call(
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId, annotationId])) {
+      await _repository.finishAnnotation(
+          enterpriseId!, operatorId!, annotationId!);
     } else {
       return;
     }
