@@ -36,13 +36,17 @@ class _AnnotationPageState extends State<AnnotationPage> {
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _annotationsController.annotationsPageController,
         children: [
-          AnnotationHome(annotationEntity: annotationEntity!),
+          AnnotationHome(
+            annotationEntity: annotationEntity!,
+          ),
           AnnotationSettings(
             annotationEntity: annotationEntity!,
             operatorEntity: operatorEntity!,
@@ -51,8 +55,11 @@ class _AnnotationPageState extends State<AnnotationPage> {
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: appTheme.backgroundColor(context)),
+        decoration: BoxDecoration(
+          color: appTheme.backgroundColor(context),
+        ),
         child: CashHelperBottomNavigationBar(
+          width: width,
           itemContentColor: appTheme.surfaceColor(context),
           pageController: _annotationsController.annotationsPageController,
           itemColor: appTheme.greenColor(context),
@@ -65,7 +72,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
               icon: Icons.home,
               itemName: "Início",
               itemBackgroundColor: appTheme.backgroundColor(context),
-              position: BottomNavigationBarPosition.appAppearance,
+              position: BottomNavigationBarPosition.annotationHome,
               onTap: () {
                 _annotationsController.annotationsPageController.animateToPage(
                     BottomNavigationBarPosition.annotationHome.position,
@@ -75,14 +82,14 @@ class _AnnotationPageState extends State<AnnotationPage> {
                     curve: Curves.easeInSine);
                 setState(() {
                   _annotationsController.position =
-                      BottomNavigationBarPosition.appAppearance;
+                      BottomNavigationBarPosition.annotationHome;
                 });
               },
             ),
             CashHelperBottomNavigationItem(
               icon: Icons.settings,
               itemName: "Opções",
-              position: BottomNavigationBarPosition.operatorAccount,
+              position: BottomNavigationBarPosition.annotationSettings,
               onTap: () {
                 _annotationsController.annotationsPageController.animateToPage(
                     BottomNavigationBarPosition.annotationSettings.position,
@@ -92,7 +99,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
                     curve: Curves.easeInSine);
                 setState(() {
                   _annotationsController.position =
-                      BottomNavigationBarPosition.operatorAccount;
+                      BottomNavigationBarPosition.annotationSettings;
                 });
               },
             ),

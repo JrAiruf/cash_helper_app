@@ -47,11 +47,9 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            Modular.to.navigate(
-                "${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}",
-                arguments: widget.operatorEntity);
-          },
+          onPressed: () => Modular.to.navigate(
+              "${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}",
+              arguments: widget.operatorEntity),
           icon: const Icon(
             Icons.arrow_back,
           ),

@@ -69,7 +69,9 @@ enum BottomNavigationBarPosition {
   appAppearance(position: 0),
   operatorAccount(position: 1),
   annotationHome(position: 0),
-  annotationSettings(position: 1);
+  annotationSettings(position: 1),
+  notFinishedAnnotations(position: 0),
+  finishedAnnotations(position: 1);
 
   final int position;
   const BottomNavigationBarPosition({required this.position});

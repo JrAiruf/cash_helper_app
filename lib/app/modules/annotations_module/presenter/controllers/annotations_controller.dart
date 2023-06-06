@@ -64,7 +64,7 @@ class AnnotationsController {
       await _annotationsStore.createNewAnnotation(
           enterpriseId, operatorId, newAnnotation);
       annotationLoadingState.value = false;
-      Modular.to.pushNamed("${AnnotationRoutes.annotationsListPage}$enterpriseId",
+      Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$enterpriseId",
           arguments: operatorEntity);
     } else {
       return;
