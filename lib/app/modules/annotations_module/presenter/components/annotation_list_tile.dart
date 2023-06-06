@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +32,13 @@ class AnnotationListTile extends StatelessWidget {
               children: [
                 Text(
                   "Endereço:",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: appTheme.surfaceColor(context),
                       ),
                 ),
                 Text(
                   annotationEntity.annotationClientAddress ?? "",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: appTheme.surfaceColor(context),
                       ),
                 ),
@@ -47,13 +49,13 @@ class AnnotationListTile extends StatelessWidget {
               children: [
                 Text(
                   "Valor:",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: appTheme.surfaceColor(context),
                       ),
                 ),
                 Text(
                   annotationEntity.annotationSaleValue ?? "",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: appTheme.surfaceColor(context),
                       ),
                 ),
@@ -64,13 +66,13 @@ class AnnotationListTile extends StatelessWidget {
               children: [
                 Text(
                   "Pagamento:",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: appTheme.surfaceColor(context),
                       ),
                 ),
                 Text(
                   annotationEntity.annotationPaymentMethod ?? "",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: appTheme.surfaceColor(context),
                       ),
                 ),

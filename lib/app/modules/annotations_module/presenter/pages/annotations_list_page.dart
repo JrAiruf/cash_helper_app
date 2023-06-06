@@ -23,7 +23,6 @@ class AnnotationsListPage extends StatefulWidget {
 
 final _annotationsController = Modular.get<AnnotationsController>();
 final _annotationsListStore = Modular.get<AnnotationsListStore>();
-BottomNavigationBarPosition? position;
 
 class _AnnotationsListPageState extends State<AnnotationsListPage> {
   @override
@@ -32,14 +31,13 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
     _annotationsListStore.getAllAnnotations(
         _annotationsController.enterpriseId, widget.operatorEntity.operatorId!);
-    position = BottomNavigationBarPosition.notFinishedAnnotations;
+    _annotationsController.position =
+        BottomNavigationBarPosition.notFinishedAnnotations;
   }
 
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

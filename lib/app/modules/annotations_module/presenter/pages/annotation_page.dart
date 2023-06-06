@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_const_constructors_in_immutables
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_home.dart';
