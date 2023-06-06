@@ -34,6 +34,7 @@ class AnnotationsController {
 
   String enterpriseId = "";
   String operatorId = "";
+  String annotationId = "";
   List<AnnotationEntity> annotationsList = [];
   String? annotationAddressValidate(String? value) {
     return value!.isNotEmpty && value != ''
@@ -77,5 +78,14 @@ class AnnotationsController {
 
   Future<void> getAllAnnotations() async {
     annotationsList = _annotationsListStore.value;
+  }
+
+  Future<void> finishAnnotation(OperatorEntity operatorEntity) async {
+    annotationLoadingState.value = true;
+    await _annotationsStore.finishAnnotation(
+        enterpriseId, operatorId, annotationId);
+    Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
+        arguments: operatorEntity);
+    annotationLoadingState.value = false;
   }
 }

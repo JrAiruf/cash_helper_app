@@ -19,6 +19,7 @@ class AnnotationPage extends StatefulWidget {
 
 AnnotationEntity? annotationEntity;
 OperatorEntity? operatorEntity;
+String? enterpriseId;
 final _annotationsController = Modular.get<AnnotationsController>();
 
 class _AnnotationPageState extends State<AnnotationPage> {
@@ -26,6 +27,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
   void initState() {
     annotationEntity = Modular.args.data["annotationEntity"];
     operatorEntity = Modular.args.data["operatorEntity"];
+    enterpriseId = Modular.args.params["enterpriseId"];
     super.initState();
     _annotationsController.position = BottomNavigationBarPosition.appAppearance;
   }
@@ -39,7 +41,11 @@ class _AnnotationPageState extends State<AnnotationPage> {
         controller: _annotationsController.annotationsPageController,
         children: [
           AnnotationHome(annotationEntity: annotationEntity!),
-          AnnotationSettings(annotationEntity: annotationEntity!),
+          AnnotationSettings(
+            annotationEntity: annotationEntity!,
+            operatorEntity: operatorEntity!,
+            enterpriseId: enterpriseId!,
+          ),
         ],
       ),
       bottomNavigationBar: Container(
