@@ -27,6 +27,7 @@ class UserRoutes {
 class AnnotationRoutes {
   static const createAnnotationPage = "/annotations-module/";
   static const annotationPage = "/annotations-module/annotation-page/";
+  static const annotationsListPage = "/annotations-module/annotations-list-page/";
 }
 
 class ManagementRoutes {

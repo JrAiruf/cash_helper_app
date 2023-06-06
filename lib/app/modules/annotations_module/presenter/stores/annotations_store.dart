@@ -41,7 +41,7 @@ class AnnotationStore extends ValueNotifier<AnnotationEntity?> {
 //FINALIZAR
   Future<void>? finishAnnotation(
       String enterpriseId, String operatorId, String annotationId) async {
-    await finishAnnotation(enterpriseId, operatorId, annotationId);
+    await _finishAnnotation(enterpriseId, operatorId, annotationId);
   }
 //DELETAR
 }

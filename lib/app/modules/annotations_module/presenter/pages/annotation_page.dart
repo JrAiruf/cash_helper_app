@@ -28,6 +28,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
     annotationEntity = Modular.args.data["annotationEntity"];
     operatorEntity = Modular.args.data["operatorEntity"];
     enterpriseId = Modular.args.params["enterpriseId"];
+    _annotationsController.getAllAnnotations();
     super.initState();
     _annotationsController.position = BottomNavigationBarPosition.appAppearance;
   }
@@ -38,6 +39,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
     return Scaffold(
       appBar: AppBar(),
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _annotationsController.annotationsPageController,
         children: [
           AnnotationHome(annotationEntity: annotationEntity!),
