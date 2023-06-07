@@ -169,9 +169,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                           ),
                                     ),
                                   ],
-                                  onPressed: () {
-                                    print("Botão 1");
-                                  },
+                                  onPressed: () => Modular.to.pushNamed(
+                                    "${AnnotationRoutes.annotationsListPage}$_enterpriseId",
+                                    arguments: currentOperator,
+                                  ),
                                 ),
                                 QuickAccessButton(
                                   backgroundColor:

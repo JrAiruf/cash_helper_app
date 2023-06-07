@@ -2,17 +2,25 @@
 
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../shared/themes/cash_helper_themes.dart';
+import '../../../../user_module/domain/entities/operator_entity.dart';
 import '../../components/annotation_list_tile.dart';
 
 class FinishedAnnotations extends StatelessWidget {
   FinishedAnnotations(
-      {super.key, required this.annotations, required this.position});
-
+      {super.key,
+      required this.operatorEntity,
+      required this.annotations,
+      required this.position,
+      required this.enterpriseId});
+  OperatorEntity operatorEntity;
   List<AnnotationEntity> annotations;
   BottomNavigationBarPosition position;
+  String enterpriseId;
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
@@ -65,10 +73,19 @@ class FinishedAnnotations extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: annotations.length,
                       itemBuilder: (_, i) {
+                        final annotationAndOperatorObjects = {
+                          "operatorEntity": operatorEntity,
+                          "annotationEntity": annotations[i],
+                        };
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: AnnotationListTile(
-                              annotationEntity: annotations[i]),
+                            annotationEntity: annotations[i],
+                            onTap: () => Modular.to.pushNamed(
+                              "${AnnotationRoutes.annotationPage}$enterpriseId",
+                              arguments: annotationAndOperatorObjects,
+                            ),
+                          ),
                         );
                       },
                     ),

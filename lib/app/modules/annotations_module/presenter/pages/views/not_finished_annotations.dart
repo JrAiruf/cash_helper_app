@@ -1,16 +1,24 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/components/annotation_list_tile.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../shared/themes/cash_helper_themes.dart';
+import '../../../../../routes/app_routes.dart';
 
 class NotFinishedAnnotations extends StatelessWidget {
   NotFinishedAnnotations(
-      {super.key, required this.position, required this.annotations});
-
+      {super.key,
+      required this.operatorEntity,
+      required this.position,
+      required this.annotations,
+      required this.enterpriseId});
+  OperatorEntity operatorEntity;
   List<AnnotationEntity> annotations;
   BottomNavigationBarPosition position;
+  String enterpriseId;
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
@@ -61,10 +69,21 @@ class NotFinishedAnnotations extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: annotations.length,
                       itemBuilder: (_, i) {
+                        final annotationAndOperatorObjects = {
+                          "operatorEntity": operatorEntity,
+                          "annotationEntity": annotations[i],
+                        };
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: AnnotationListTile(
-                              annotationEntity: annotations[i]),
+                            annotationEntity: annotations[i],
+                            onTap: () {
+                              Modular.to.pushNamed(
+                                "${AnnotationRoutes.annotationPage}$enterpriseId",
+                                arguments: annotationAndOperatorObjects,
+                              );
+                            },
+                          ),
                         );
                       },
                     ),

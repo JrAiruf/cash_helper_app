@@ -68,13 +68,16 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
               controller: _annotationsController.annotationsPageController,
               children: [
                 NotFinishedAnnotations(
+                    operatorEntity: widget.operatorEntity,
                     annotations: _annotationsListStore.value,
                     position:
-                        BottomNavigationBarPosition.notFinishedAnnotations),
+                        BottomNavigationBarPosition.notFinishedAnnotations,
+                    enterpriseId:     _annotationsController.enterpriseId),
                 FinishedAnnotations(
-                  annotations: finishedAnnotations,
-                  position: BottomNavigationBarPosition.finishedAnnotations,
-                ),
+                    operatorEntity: widget.operatorEntity,
+                    annotations: finishedAnnotations,
+                    position: BottomNavigationBarPosition.finishedAnnotations,
+                    enterpriseId:     _annotationsController.enterpriseId),
               ],
             );
           }),
