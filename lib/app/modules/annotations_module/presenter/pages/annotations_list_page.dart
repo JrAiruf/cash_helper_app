@@ -52,6 +52,9 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
       body: AnimatedBuilder(
           animation: _annotationsListStore,
           builder: (context, _) {
+            final annotations = _annotationsListStore.value
+                .where((element) => element.annotationConcluied == false)
+                .toList();
             final finishedAnnotations = _annotationsListStore.value
                 .where((element) => element.annotationConcluied == true)
                 .toList();
@@ -65,75 +68,76 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
             }
             return PageView(
               physics: const NeverScrollableScrollPhysics(),
-              controller: _annotationsController.annotationsPageController,
+              controller: _annotationsController.annotationsListPageController,
               children: [
                 NotFinishedAnnotations(
                     operatorEntity: widget.operatorEntity,
-                    annotations: _annotationsListStore.value,
+                    annotations: annotations,
                     position:
                         BottomNavigationBarPosition.notFinishedAnnotations,
-                    enterpriseId:     _annotationsController.enterpriseId),
+                    enterpriseId: _annotationsController.enterpriseId),
                 FinishedAnnotations(
                     operatorEntity: widget.operatorEntity,
                     annotations: finishedAnnotations,
                     position: BottomNavigationBarPosition.finishedAnnotations,
-                    enterpriseId:     _annotationsController.enterpriseId),
+                    enterpriseId: _annotationsController.enterpriseId),
               ],
             );
           }),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: appTheme.backgroundColor(context)),
         child: CashHelperBottomNavigationBar(
-            radius: 20,
-            backgroundColor: appTheme.primaryColor(context),
-            pageController: _annotationsController.annotationsPageController,
-            itemColor: appTheme.greenColor(context),
-            height: 60,
-            position: _annotationsController.position,
-            items: [
-              CashHelperBottomNavigationItem(
-                onTap: () {
-                  _annotationsController.annotationsPageController
-                      .animateToPage(
-                          BottomNavigationBarPosition
-                              .notFinishedAnnotations.position,
-                          duration: const Duration(
-                            milliseconds: 400,
-                          ),
-                          curve: Curves.easeInSine);
-                  setState(() {
-                    _annotationsController.position =
-                        BottomNavigationBarPosition.notFinishedAnnotations;
-                  });
-                },
-                position: BottomNavigationBarPosition.notFinishedAnnotations,
-                icon: Icons.library_books_outlined,
-                contentColor: appTheme.surfaceColor(context),
-                itemName: "Não Finalizadas",
-                itemBackgroundColor: appTheme.primaryColor(context),
-              ),
-              CashHelperBottomNavigationItem(
-                onTap: () {
-                  _annotationsController.annotationsPageController
-                      .animateToPage(
-                          BottomNavigationBarPosition
-                              .finishedAnnotations.position,
-                          duration: const Duration(
-                            milliseconds: 400,
-                          ),
-                          curve: Curves.easeInSine);
-                  setState(() {
-                    _annotationsController.position =
-                        BottomNavigationBarPosition.finishedAnnotations;
-                  });
-                },
-                position: BottomNavigationBarPosition.finishedAnnotations,
-                icon: Icons.download_done_rounded,
-                contentColor: appTheme.surfaceColor(context),
-                itemName: "Finalizadas",
-                itemBackgroundColor: appTheme.primaryColor(context),
-              ),
-            ]),
+          radius: 20,
+          backgroundColor: appTheme.primaryColor(context),
+          pageController: _annotationsController.annotationsListPageController,
+          itemColor: appTheme.greenColor(context),
+          height: 60,
+          position: _annotationsController.position,
+          items: [
+            CashHelperBottomNavigationItem(
+              onTap: () {
+                _annotationsController.annotationsListPageController
+                    .animateToPage(
+                        BottomNavigationBarPosition
+                            .notFinishedAnnotations.position,
+                        duration: const Duration(
+                          milliseconds: 400,
+                        ),
+                        curve: Curves.easeInSine);
+                setState(() {
+                  _annotationsController.position =
+                      BottomNavigationBarPosition.notFinishedAnnotations;
+                });
+              },
+              position: BottomNavigationBarPosition.notFinishedAnnotations,
+              icon: Icons.library_books_outlined,
+              contentColor: appTheme.surfaceColor(context),
+              itemName: "Não Finalizadas",
+              itemBackgroundColor: appTheme.primaryColor(context),
+            ),
+            CashHelperBottomNavigationItem(
+              onTap: () {
+                _annotationsController.annotationsListPageController
+                    .animateToPage(
+                        BottomNavigationBarPosition
+                            .finishedAnnotations.position,
+                        duration: const Duration(
+                          milliseconds: 400,
+                        ),
+                        curve: Curves.easeInSine);
+                setState(() {
+                  _annotationsController.position =
+                      BottomNavigationBarPosition.finishedAnnotations;
+                });
+              },
+              position: BottomNavigationBarPosition.finishedAnnotations,
+              icon: Icons.download_done_rounded,
+              contentColor: appTheme.surfaceColor(context),
+              itemName: "Finalizadas",
+              itemBackgroundColor: appTheme.primaryColor(context),
+            ),
+          ],
+        ),
       ),
     );
   }

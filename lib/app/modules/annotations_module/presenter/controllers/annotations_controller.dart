@@ -18,6 +18,7 @@ class AnnotationsController {
   final _annotationsStore = Modular.get<AnnotationStore>();
   final _annotationsListStore = Modular.get<AnnotationsListStore>();
   final annotationsPageController = PageController();
+  final annotationsListPageController = PageController();
 
   String get annotationClientAddress => annotationAddressField.text;
 
@@ -34,6 +35,7 @@ class AnnotationsController {
 
   String enterpriseId = "";
   String operatorId = "";
+  String annotationId = "";
   List<AnnotationEntity> annotationsList = [];
   String? annotationAddressValidate(String? value) {
     return value!.isNotEmpty && value != ''
@@ -64,7 +66,8 @@ class AnnotationsController {
       await _annotationsStore.createNewAnnotation(
           enterpriseId, operatorId, newAnnotation);
       annotationLoadingState.value = false;
-      Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$enterpriseId",
+      Modular.to.navigate(
+          "${AnnotationRoutes.annotationsListPage}$enterpriseId",
           arguments: operatorEntity);
     } else {
       return;
@@ -75,10 +78,11 @@ class AnnotationsController {
     annotationsList = _annotationsListStore.value;
   }
 
- /*  Future<void> finishAnnotation(OperatorEntity operatorEntity) async {
-    await _annotationsStore.finishAnnotation(enterpriseId, operatorId, "");
+  Future<void> finishAnnotation(OperatorEntity operatorEntity) async {
+    await _annotationsStore.finishAnnotation(
+        enterpriseId, operatorEntity.operatorId!, annotationId);
     annotationLoadingState.value = false;
     Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
         arguments: operatorEntity);
-  } */
+  }
 }

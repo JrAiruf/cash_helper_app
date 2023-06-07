@@ -26,6 +26,8 @@ class AnnotationSettings extends StatelessWidget {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    _annotationsController.annotationId = annotationEntity.annotationId!;
+    _annotationsController.enterpriseId = enterpriseId;
     return AnimatedBuilder(
         animation: _annotationsController.annotationLoadingState,
         builder: (context, _) {
@@ -113,8 +115,8 @@ class AnnotationSettings extends StatelessWidget {
                                   width: width * 0.42,
                                   itemsColor: appTheme.surfaceColor(context),
                                   onPressed: () {
-                                    /* _annotationsController
-                                        .finishAnnotation(operatorEntity); */
+                                    _annotationsController
+                                        .finishAnnotation(operatorEntity);
                                   },
                                   items: [
                                     Icon(
@@ -167,13 +169,14 @@ class AnnotationSettings extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                      top: height * 0.1,
-                      left: width * 0.07,
-                      child: Icon(
-                        Icons.settings,
-                        size: 55,
-                        color: appTheme.surfaceColor(context),
-                      ))
+                    top: height * 0.1,
+                    left: width * 0.07,
+                    child: Icon(
+                      Icons.settings,
+                      size: 55,
+                      color: appTheme.surfaceColor(context),
+                    ),
+                  ),
                 ],
               ),
             ),

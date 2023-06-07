@@ -30,13 +30,13 @@ class _AnnotationPageState extends State<AnnotationPage> {
     enterpriseId = Modular.args.params["enterpriseId"];
     _annotationsController.getAllAnnotations();
     super.initState();
-    _annotationsController.position = BottomNavigationBarPosition.appAppearance;
+    _annotationsController.position =
+        BottomNavigationBarPosition.annotationHome;
   }
 
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
