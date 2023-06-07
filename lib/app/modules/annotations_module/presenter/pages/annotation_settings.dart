@@ -114,10 +114,9 @@ class AnnotationSettings extends StatelessWidget {
                                   height: height * 0.1,
                                   width: width * 0.42,
                                   itemsColor: appTheme.surfaceColor(context),
-                                  onPressed: () {
-                                    _annotationsController
-                                        .finishAnnotation(operatorEntity);
-                                  },
+                                  onPressed: () =>
+                                      _annotationsController.finishAnnotation(
+                                          context, operatorEntity),
                                   items: [
                                     Icon(
                                       Icons.done,

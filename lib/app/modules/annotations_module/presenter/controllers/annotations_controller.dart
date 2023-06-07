@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
@@ -79,10 +81,12 @@ class AnnotationsController {
     annotationsList = _annotationsListStore.value;
   }
 
-  Future<void> finishAnnotation(OperatorEntity operatorEntity) async {
+  Future<void> finishAnnotation(
+      BuildContext context, OperatorEntity operatorEntity) async {
     await _annotationsStore.finishAnnotation(
         enterpriseId, operatorEntity.operatorId!, annotationId);
     annotationLoadingState.value = false;
+    annotationFinished(context);
     Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
         arguments: operatorEntity);
   }
@@ -96,9 +100,62 @@ class AnnotationsController {
         await _annotationsStore.deleteAnnotation(
             enterpriseId, operatorEntity.operatorId!, annotationId);
         annotationLoadingState.value = false;
+        annotationDeleted(context);
         Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
             arguments: operatorEntity);
       },
+    );
+  }
+
+  annotationFinished(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: appTheme.greenColor(context),
+        elevation: 5,
+        duration: const Duration(seconds: 2),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Center(
+            child: Text(
+              'Anotação Finzalizada!',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  annotationDeleted(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: appTheme.red(context),
+        elevation: 5,
+        duration: const Duration(seconds: 2),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Center(
+            child: Text(
+              'Anotação Removida!',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
