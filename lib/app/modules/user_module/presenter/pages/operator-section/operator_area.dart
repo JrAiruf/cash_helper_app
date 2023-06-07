@@ -20,10 +20,10 @@ class OperatorArea extends StatefulWidget {
   @override
   State<OperatorArea> createState() => _OperatorArea();
 }
+
 final _operatorPageController = PageController();
 
 class _OperatorArea extends State<OperatorArea> {
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -33,114 +33,103 @@ class _OperatorArea extends State<OperatorArea> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
-    return  Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                color: surfaceColor,
-                onPressed: () {
-                  Modular.to.navigate("/operator-module/",
-                      arguments: widget.operatorEntity);
-                },
-                icon: const Icon(Icons.arrow_back),
-              ),
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          color: seccondaryColor,
+        ),
+        child: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _operatorPageController,
+          children: [
+            OperatorInitialPage(
+              operatorEntity: widget.operatorEntity,
+              pageController: _operatorPageController,
+              position: BottomNavigationBarPosition.operatorHome,
             ),
-            body: Container(
-              height: height,
-              width: width,
-              decoration: BoxDecoration(
-                color: seccondaryColor,
-              ),
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _operatorPageController,
-                children: [
-                  OperatorInitialPage(
-                    operatorEntity: widget.operatorEntity,
-                    pageController: _operatorPageController,
-                    position: BottomNavigationBarPosition.operatorHome,
-                  ),
-                  OperatorOptionsPage(
-                    position: BottomNavigationBarPosition.operatorOptions,
-                    pageController: _operatorPageController,
-                    operatorId: '',
-                  ),
-                  OperatorOppeningPage(
-                      operatorEntity: OperatorEntity(),
-                      position: BottomNavigationBarPosition.operatorOppening,
-                      pageController: _operatorPageController)
-                ],
-              ),
+            OperatorOptionsPage(
+              position: BottomNavigationBarPosition.operatorOptions,
+              pageController: _operatorPageController,
+              operatorId: '',
             ),
-            bottomNavigationBar: Container(
-              decoration: BoxDecoration(color: backgroundColor),
-              child: CashHelperBottomNavigationBar(
-                itemColor: tertiaryColor,
-                itemContentColor: surfaceColor,
-                pageController: _operatorPageController,
-                position: widget.position,
-                backgroundColor: primaryColor,
-                radius: 20,
-                height: 55,
-                items: [
-                  CashHelperBottomNavigationItem(
-                    itemBackgroundColor: primaryColor,
-                    onTap: () {
-                      _operatorPageController.animateToPage(
-                          BottomNavigationBarPosition.operatorHome.position,
-                          duration: const Duration(
-                            milliseconds: 400,
-                          ),
-                          curve: Curves.easeInSine);
-                      setState(() {
-                        widget.position =
-                            BottomNavigationBarPosition.operatorHome;
-                      });
-                    },
-                    icon: Icons.person,
-                    itemName: 'Início',
-                    position: BottomNavigationBarPosition.operatorHome,
-                  ),
-                  CashHelperBottomNavigationItem(
-                    itemBackgroundColor: primaryColor,
-                    contentColor: seccondaryColor,
-                    onTap: () {
-                      _operatorPageController.animateToPage(
-                          BottomNavigationBarPosition.operatorOptions.position,
-                          duration: const Duration(
-                            milliseconds: 400,
-                          ),
-                          curve: Curves.easeInSine);
-                      setState(() {
-                        widget.position =
-                            BottomNavigationBarPosition.operatorOptions;
-                      });
-                    },
-                    icon: Icons.menu,
-                    itemName: 'Opções',
-                    position: BottomNavigationBarPosition.operatorOptions,
-                  ),
-                  CashHelperBottomNavigationItem(
-                    itemBackgroundColor: primaryColor,
-                    contentColor: seccondaryColor,
-                    onTap: () {
-                      _operatorPageController.animateToPage(
-                          BottomNavigationBarPosition.operatorOppening.position,
-                          duration: const Duration(
-                            milliseconds: 400,
-                          ),
-                          curve: Curves.easeInSine);
-                      setState(() {
-                        widget.position =
-                            BottomNavigationBarPosition.operatorOppening;
-                      });
-                    },
-                    icon: Icons.adf_scanner_outlined,
-                    itemName: 'Abertura',
-                    position: BottomNavigationBarPosition.operatorOppening,
-                  ),
-                ],
-              ),
+            OperatorOppeningPage(
+                operatorEntity: OperatorEntity(),
+                position: BottomNavigationBarPosition.operatorOppening,
+                pageController: _operatorPageController)
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(color: backgroundColor),
+        child: CashHelperBottomNavigationBar(
+          itemColor: tertiaryColor,
+          itemContentColor: surfaceColor,
+          pageController: _operatorPageController,
+          position: widget.position,
+          backgroundColor: primaryColor,
+          radius: 20,
+          height: 55,
+          items: [
+            CashHelperBottomNavigationItem(
+              itemBackgroundColor: primaryColor,
+              onTap: () {
+                _operatorPageController.animateToPage(
+                    BottomNavigationBarPosition.operatorHome.position,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    curve: Curves.easeInSine);
+                setState(() {
+                  widget.position = BottomNavigationBarPosition.operatorHome;
+                });
+              },
+              icon: Icons.person,
+              itemName: 'Início',
+              position: BottomNavigationBarPosition.operatorHome,
             ),
-          );
+            CashHelperBottomNavigationItem(
+              itemBackgroundColor: primaryColor,
+              contentColor: seccondaryColor,
+              onTap: () {
+                _operatorPageController.animateToPage(
+                    BottomNavigationBarPosition.operatorOptions.position,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    curve: Curves.easeInSine);
+                setState(() {
+                  widget.position = BottomNavigationBarPosition.operatorOptions;
+                });
+              },
+              icon: Icons.menu,
+              itemName: 'Opções',
+              position: BottomNavigationBarPosition.operatorOptions,
+            ),
+            CashHelperBottomNavigationItem(
+              itemBackgroundColor: primaryColor,
+              contentColor: seccondaryColor,
+              onTap: () {
+                _operatorPageController.animateToPage(
+                    BottomNavigationBarPosition.operatorOppening.position,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    curve: Curves.easeInSine);
+                setState(() {
+                  widget.position =
+                      BottomNavigationBarPosition.operatorOppening;
+                });
+              },
+              icon: Icons.adf_scanner_outlined,
+              itemName: 'Abertura',
+              position: BottomNavigationBarPosition.operatorOppening,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

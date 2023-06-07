@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/operator_widgets/cash_number_component.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../../../../annotations_module/domain/entities/annotation_entity.dart';
 import '../../../../../domain/entities/operator_entity.dart';
 import '../../../../components/cash_helper_bottom_navigation_bar.dart';
@@ -25,6 +26,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appThemes = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -86,7 +88,11 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
                       child: Text(
-                          _doneAnnotations ? "Finalizadas" : "Não Finalizadas"),
+                        _doneAnnotations ? "Finalizadas" : "Não Finalizadas",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: appThemes.surfaceColor(context),
+                            ),
+                      ),
                     ),
                     const SizedBox(height: 35),
                     SizedBox(
@@ -97,6 +103,8 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           AnnoationsListViewComponent(
+                              borderColor: appThemes.surfaceColor(context),
+                              seccundaryColor: appThemes.surfaceColor(context),
                               backgroundColor: primaryColor,
                               itemWidth: width * 0.4,
                               annotations: annotationsListinha),
@@ -126,7 +134,9 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                       radius: 16),
                   Text(
                     "${widget.operatorEntity.operatorName}",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          color: appThemes.surfaceColor(context),
+                        ),
                   ),
                 ],
               ),
