@@ -1,8 +1,11 @@
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/operator_widgets/cash_number_component.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../../../../annotations_module/domain/entities/annotation_entity.dart';
+import '../../../../../../enterprise_module/domain/entities/payment_method_entity.dart';
+import '../../../../../../management_module/presenter/stores/payment_methods_list_store.dart';
 import '../../../../../domain/entities/operator_entity.dart';
 import '../../../../components/cash_helper_bottom_navigation_bar.dart';
 import '../../../../components/widgets/annotations_list_view_component.dart';
@@ -12,10 +15,14 @@ class OperatorInitialPage extends StatefulWidget {
       {super.key,
       required this.operatorEntity,
       this.position,
-      required this.pageController});
+      required this.pageController,
+      required this.annotations,
+      required this.enterpriseId});
+  final List<AnnotationEntity> annotations;
   final OperatorEntity operatorEntity;
   final BottomNavigationBarPosition? position;
   final PageController? pageController;
+  final String enterpriseId;
   @override
   State<OperatorInitialPage> createState() => _OperatorInitialtate();
 }
@@ -23,6 +30,13 @@ class OperatorInitialPage extends StatefulWidget {
 class _OperatorInitialtate extends State<OperatorInitialPage> {
   bool _doneAnnotations = true;
   final _listTypeController = PageController();
+  final _paymentMethodsStore = Modular.get<PaymentMethodsListStore>();
+  String paymentMethod = "";
+  @override
+  void initState() {
+    super.initState();
+    _paymentMethodsStore.getAllPaymentMethods(widget.enterpriseId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +47,16 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
-
-    final annotationzinha = AnnotationEntity(
-        annotationClientAddress: "Andorinhas 381",
-        annotationConcluied: false,
-        annotationPaymentMethod: "Dinheiro",
-        annotationReminder: "No Reminder",
-        annotationSaleDate: "Data Atual",
-        annotationSaleTime: "Hora Atual",
-        annotationSaleValue: "1455,67");
-
-    final annotationsListinha = <AnnotationEntity>[
-      annotationzinha,
-      annotationzinha,
-      annotationzinha,
-      annotationzinha,
-      annotationzinha,
-    ];
-
+    final notFinishedAnnotations = widget.annotations
+        .where(((element) =>
+            element.annotationConcluied == false &&
+            element.annotationPaymentMethod == paymentMethod))
+        .toList();
+    final finishedAnnotations = widget.annotations
+        .where(((element) =>
+            element.annotationConcluied == true &&
+            element.annotationPaymentMethod == paymentMethod))
+        .toList();
     return Container(
       height: height,
       width: width,
@@ -87,11 +93,81 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                     SizedBox(height: height * 0.27),
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
-                      child: Text(
-                        _doneAnnotations ? "Finalizadas" : "Não Finalizadas",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: appThemes.surfaceColor(context),
-                            ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _doneAnnotations
+                                ? "Finalizadas"
+                                : "Não Finalizadas",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: appThemes.surfaceColor(context),
+                                ),
+                          ),
+                          SizedBox(
+                            height: height * 0.06,
+                            width: width * 0.3,
+                            child: AnimatedBuilder(
+                                animation: _paymentMethodsStore,
+                                builder: (context, _) {
+                                  return DropdownButtonFormField<
+                                      PaymentMethodEntity>(
+                                    borderRadius: BorderRadius.circular(15),
+                                    decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                          color: surfaceColor,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                          color: surfaceColor,
+                                        ),
+                                      ),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        paymentMethod =
+                                            value!.paymentMethodName!;
+                                      });
+                                    },
+                                    hint: Text(
+                                      "Filtrar",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displaySmall
+                                          ?.copyWith(
+                                            color: surfaceColor,
+                                          ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    items: _paymentMethodsStore.value
+                                        ?.map(
+                                          (paymentMethod) => DropdownMenuItem(
+                                            value: paymentMethod,
+                                            child: Text(
+                                              paymentMethod.paymentMethodName!,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .displaySmall
+                                                  ?.copyWith(
+                                                    color: surfaceColor,
+                                                  ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  );
+                                }),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 35),
@@ -107,11 +183,13 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                               seccundaryColor: appThemes.surfaceColor(context),
                               backgroundColor: primaryColor,
                               itemWidth: width * 0.4,
-                              annotations: annotationsListinha),
+                              annotations: finishedAnnotations),
                           AnnoationsListViewComponent(
+                              borderColor: appThemes.surfaceColor(context),
+                              seccundaryColor: appThemes.surfaceColor(context),
                               backgroundColor: primaryColor,
                               itemWidth: width * 0.4,
-                              annotations: annotationsListinha),
+                              annotations: notFinishedAnnotations),
                         ],
                       ),
                     ),
@@ -146,16 +224,19 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
             top: height * 0.245,
             left: 2,
             child: Switch(
-                activeColor: tertiaryColor,
-                value: _doneAnnotations,
-                onChanged: (value) {
-                  setState(() {
+              activeColor: tertiaryColor,
+              value: _doneAnnotations,
+              onChanged: (value) {
+                setState(
+                  () {
                     _doneAnnotations = !_doneAnnotations;
                     _listTypeController.animateToPage(_doneAnnotations ? 0 : 1,
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.linear);
-                  });
-                }),
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),

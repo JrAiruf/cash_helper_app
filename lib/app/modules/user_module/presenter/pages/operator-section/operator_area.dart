@@ -7,6 +7,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../../annotations_module/presenter/stores/annotations_list_store.dart';
 import '../../components/cash_helper_bottom_navigation_item.dart';
 
 class OperatorArea extends StatefulWidget {
@@ -21,9 +22,18 @@ class OperatorArea extends StatefulWidget {
   State<OperatorArea> createState() => _OperatorArea();
 }
 
+final _annotationListStore = Modular.get<AnnotationsListStore>();
+final _enterpriseId = Modular.args.params["enterpriseId"];
 final _operatorPageController = PageController();
 
 class _OperatorArea extends State<OperatorArea> {
+  @override
+  void initState() {
+    super.initState();
+    _annotationListStore.getAllAnnotations(
+        _enterpriseId, widget.operatorEntity.operatorId!);
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -33,6 +43,7 @@ class _OperatorArea extends State<OperatorArea> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final annotations = _annotationListStore.value;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -49,6 +60,8 @@ class _OperatorArea extends State<OperatorArea> {
               operatorEntity: widget.operatorEntity,
               pageController: _operatorPageController,
               position: BottomNavigationBarPosition.operatorHome,
+              annotations: annotations,
+              enterpriseId: _enterpriseId,
             ),
             OperatorOptionsPage(
               position: BottomNavigationBarPosition.operatorOptions,
