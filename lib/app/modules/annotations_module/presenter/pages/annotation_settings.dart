@@ -143,7 +143,9 @@ class AnnotationSettings extends StatelessWidget {
                                   height: height * 0.1,
                                   width: width * 0.42,
                                   itemsColor: appTheme.surfaceColor(context),
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      _annotationsController.deleteAnnotation(
+                                          context, operatorEntity),
                                   items: [
                                     Icon(
                                       Icons.delete,

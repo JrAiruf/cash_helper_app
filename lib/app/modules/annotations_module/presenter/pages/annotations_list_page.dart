@@ -50,40 +50,40 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
         ),
       ),
       body: AnimatedBuilder(
-          animation: _annotationsListStore,
-          builder: (context, _) {
-            final annotations = _annotationsListStore.value
-                .where((element) => element.annotationConcluied == false)
-                .toList();
-            final finishedAnnotations = _annotationsListStore.value
-                .where((element) => element.annotationConcluied == true)
-                .toList();
-            if (_annotationsListStore.value.isEmpty) {
-              return Center(
-                child: Text(
-                  "Nenhuma Anotação Localizada",
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-              );
-            }
-            return PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _annotationsController.annotationsListPageController,
-              children: [
-                NotFinishedAnnotations(
-                    operatorEntity: widget.operatorEntity,
-                    annotations: annotations,
-                    position:
-                        BottomNavigationBarPosition.notFinishedAnnotations,
-                    enterpriseId: _annotationsController.enterpriseId),
-                FinishedAnnotations(
-                    operatorEntity: widget.operatorEntity,
-                    annotations: finishedAnnotations,
-                    position: BottomNavigationBarPosition.finishedAnnotations,
-                    enterpriseId: _annotationsController.enterpriseId),
-              ],
+        animation: _annotationsListStore,
+        builder: (context, _) {
+          final annotations = _annotationsListStore.value
+              .where((element) => element.annotationConcluied == false)
+              .toList();
+          final finishedAnnotations = _annotationsListStore.value
+              .where((element) => element.annotationConcluied == true)
+              .toList();
+          if (_annotationsListStore.value.isEmpty) {
+            return Center(
+              child: Text(
+                "Nenhuma Anotação Localizada",
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
             );
-          }),
+          }
+          return PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _annotationsController.annotationsListPageController,
+            children: [
+              NotFinishedAnnotations(
+                  operatorEntity: widget.operatorEntity,
+                  annotations: annotations,
+                  position: BottomNavigationBarPosition.notFinishedAnnotations,
+                  enterpriseId: _annotationsController.enterpriseId),
+              FinishedAnnotations(
+                  operatorEntity: widget.operatorEntity,
+                  annotations: finishedAnnotations,
+                  position: BottomNavigationBarPosition.finishedAnnotations,
+                  enterpriseId: _annotationsController.enterpriseId),
+            ],
+          );
+        },
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(color: appTheme.backgroundColor(context)),
         child: CashHelperBottomNavigationBar(

@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 
 class CashHelperInformationCard extends StatelessWidget {
@@ -28,11 +29,13 @@ class CashHelperInformationCard extends StatelessWidget {
   final String? complementInformation;
   @override
   Widget build(BuildContext context) {
+    final appTheme = CashHelperThemes();
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-          color: backgroundColor, borderRadius: BorderRadius.circular(radius ??4)),
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(radius ?? 4)),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 10,
@@ -44,7 +47,7 @@ class CashHelperInformationCard extends StatelessWidget {
             Icon(
               cardIcon,
               size: iconSize,
-              color: Colors.white,
+              color: appTheme.surfaceColor(context),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -55,11 +58,15 @@ class CashHelperInformationCard extends StatelessWidget {
                 children: [
                   Text(
                     informationTitle ?? "",
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: appTheme.surfaceColor(context),
+                        ),
                   ),
                   Text(
                     information ?? "",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          color: appTheme.surfaceColor(context),
+                        ),
                   ),
                 ],
               ),
@@ -73,11 +80,15 @@ class CashHelperInformationCard extends StatelessWidget {
                 children: [
                   Text(
                     complementInformationTitle ?? "",
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: appTheme.surfaceColor(context),
+                        ),
                   ),
                   Text(
                     complementInformation ?? "",
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          color: appTheme.surfaceColor(context),
+                        ),
                   ),
                 ],
               ),
