@@ -12,11 +12,11 @@ class UpdateAnnotation implements IUpdateAnnotation {
   final AnnotationRepository _repository;
   final _dataVerifier = DataVerifier();
    @override
-  Future<void>? call(String? operatorId, String? annotationId, AnnotationEntity? annotation) async {
-     if(_dataVerifier.validateInputData(inputs:[operatorId!,annotationId!])&& annotation != null){
+  Future<void>? call(String? enterpriseId,String? operatorId, String? annotationId, AnnotationEntity? annotation) async {
+     if(_dataVerifier.validateInputData(inputs:[enterpriseId, operatorId,annotationId])&& annotation != null){
     final annotationModel = AnnotationModel.fromEntityData(annotation);
-    await _repository.updateAnnotation(
-        operatorId, annotationId, annotationModel);
+    await _repository.updateAnnotation(enterpriseId!,
+        operatorId!, annotationId!, annotationModel);
         } else {
           return;
         }

@@ -1,3 +1,3 @@
 abstract class IGetAnnotationById {
-  Future<dynamic>? call(String? operatorId, String? annotationId);
+  Future<dynamic>? call(String enterpriseId, String operatorId, String annotationId);
 }

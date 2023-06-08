@@ -52,9 +52,9 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
 
   @override
   Future<Map<String, dynamic>?>? getAnnotationById(
-      String? operatorId, String? annotationId) async {
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    final annotationsCollection = _getCollection(enterpriseId, operatorId);
     if (operatorId != null && annotationId != null) {
-      final annotationsCollection = _getCollection("",operatorId);
       final databaseDocumentsList =
           await annotationsCollection.get().then((value) => value.docs);
       final annotationsMapsList =
@@ -70,50 +70,36 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   @override
   Future<List<Map<String, dynamic>>?>? searchAnnotationsByClientAddress(
       String? operatorId, String? clientAddress) async {
-    if (operatorId != null && clientAddress != null) {
-      final databaseSuggestedAnnotationsList = await _filterSearchClientAddress(
-          operatorId: operatorId, clientAddress: clientAddress);
-      final suggestedAnnotationsList = databaseSuggestedAnnotationsList
-          .map((annotation) => annotation.data())
-          .toList();
-      return suggestedAnnotationsList.isNotEmpty
-          ? suggestedAnnotationsList
-          : null;
-    } else {
-      return null;
-    }
+    throw UnimplementedError();
   }
 
   @override
   Future<void>? finishAnnotation(
-      String? operatorId, String? annotationId) async {
-    if (operatorId != null && annotationId != null) {
-      final annotationsCollection = _getCollection("",operatorId);
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    final annotationsCollection = _getCollection(enterpriseId, operatorId);
+    if (enterpriseId!.isNotEmpty &&
+        operatorId!.isNotEmpty &&
+        annotationId!.isNotEmpty) {
       await annotationsCollection
           .doc(annotationId)
           .update({"annotationConcluied": true});
-    } else {
-      return;
     }
   }
 
   @override
   Future<void>? updateAnnotation(String? operatorId, String? annotationId,
       Map<String, dynamic>? annotation) async {
-    if (operatorId != null && annotationId != null && annotation != null) {
-      final annotationsCollection = _getCollection("",operatorId);
-      await annotationsCollection.doc(annotationId).update(annotation);
-    }
+    throw UnimplementedError();
   }
 
   @override
   Future<void>? deleteAnnotation(
-      String? operatorId, String? annotationId) async {
-    if (operatorId != null && annotationId != null) {
-      final annotationsCollection = _getCollection("",operatorId);
+      String? enterpriseId, String? operatorId, String? annotationId) async {
+    final annotationsCollection = _getCollection(enterpriseId, operatorId);
+    if (enterpriseId!.isNotEmpty &&
+        operatorId!.isNotEmpty &&
+        annotationId!.isNotEmpty) {
       await annotationsCollection.doc(annotationId).delete();
-    } else {
-      return;
     }
   }
 

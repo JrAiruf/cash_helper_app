@@ -11,9 +11,9 @@ class DeleteAnnotation implements IDeleteAnnotation {
   final _dataVerifier = DataVerifier();
 
   @override
-  Future<void>? call(String? operatorId, String? annotationId) async {
-    if (_dataVerifier.validateInputData(inputs: [operatorId, annotationId])) {
-      await _repository.deleteAnnotation(operatorId, annotationId);
+  Future<void>? call(String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId, annotationId])) {
+      await _repository.deleteAnnotation(enterpriseId!, operatorId!, annotationId!);
     } else {
       return;
     }

@@ -333,9 +333,11 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Text(
-            'Olá!',
-            style: Theme.of(context).textTheme.bodySmall,
+          child: Center(
+            child: Text(
+              'Olá!',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
         ),
       ),
@@ -357,9 +359,11 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Text(
-            'Usuário criado com sucesso!',
-            style: Theme.of(context).textTheme.bodySmall,
+          child: Center(
+            child: Text(
+              'Usuário criado com sucesso!',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
         ),
       ),

@@ -1,5 +1,7 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class ManagementController {
   ManagementController();
@@ -7,6 +9,8 @@ class ManagementController {
   final paymentMethodDescriptionField = TextEditingController();
   final managerCodeField = TextEditingController();
 
+  var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
+  final _payementMethodsStore = Modular.get<PaymentMethodsListStore>();
   String? paymentMethodNameValidate(String? value) {
     return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
   }
@@ -19,6 +23,11 @@ class ManagementController {
 
   String? paymentMethodValidate(PaymentMethodEntity? value) {
     return value != null ? null : 'Campo obrigatório.';
+  }
+
+  Future<void> getAllPaymentMethods(String enterpriseId) async {
+    await _payementMethodsStore.getAllPaymentMethods(enterpriseId);
+    paymentMethods.value = _payementMethodsStore.value ?? [];
   }
 
   noMatchingCodes(BuildContext context, {required String message}) {
@@ -85,8 +94,8 @@ class ManagementController {
       ),
     );
   }
-  paymentMethodAddedSnackBar(BuildContext context,
-      {required String message}) {
+
+  paymentMethodAddedSnackBar(BuildContext context, {required String message}) {
     final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

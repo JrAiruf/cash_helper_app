@@ -9,7 +9,7 @@ class AnnotationInfoListViewComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
       child: ListView.builder(
         itemCount: annotations.length,
         scrollDirection: Axis.horizontal,

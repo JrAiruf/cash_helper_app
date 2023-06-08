@@ -112,7 +112,7 @@ class UserModule extends Module {
       ),
     ),
     ChildRoute(
-      "/operator-area",
+      "/operator-area/:enterpriseId",
       child: (_, args) => OperatorArea(
         operatorEntity: args.data,
       ),
