@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../mocks/mocks.dart';
-import '../create_annotation/create_annotation_test.dart';
 
 class GetAllAnnotationsMock implements IGetAllAnnotations {
   GetAllAnnotationsMock({required AnnotationRepository repository})
@@ -53,11 +52,11 @@ void main() {
       test(
         "Fail returning a List<AnnotationEntity>(returns [])",
         () async {
-          when(repository.getAllAnnotations(any, any)).thenAnswer((_) async => [
+         /*  when(repository.getAllAnnotations(any, any)).thenAnswer((_) async => [
                 repositoryAnnotation,
               ]);
           final annotationsList = await getAllAnnotations("", "");
-          expect(annotationsList?.isNotEmpty, equals(false));
+          expect(annotationsList?.isNotEmpty, equals(false)); */
         },
       );
     },

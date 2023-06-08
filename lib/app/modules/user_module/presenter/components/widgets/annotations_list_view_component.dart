@@ -80,7 +80,7 @@ class AnnoationsListViewComponent extends StatelessWidget {
                     annotations[index]?.annotationConcluied ?? false
                         ? Icons.verified_outlined
                         : Icons.warning,
-                    color: Colors.white,
+                    color: seccundaryColor,
                   ),
                 ],
               ),

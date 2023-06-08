@@ -1,5 +1,8 @@
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../annotations_module/domain/entities/annotation_entity.dart';
 
 class OperatorCardComponent extends StatelessWidget {
   const OperatorCardComponent({
@@ -9,17 +12,26 @@ class OperatorCardComponent extends StatelessWidget {
     this.backgroundColor,
     this.borderColor,
     required this.operatorEntity,
+    required this.annotationsList,
   });
   final OperatorEntity operatorEntity;
+  final List<AnnotationEntity> annotationsList;
   final double? height;
   final double? width;
   final Color? backgroundColor;
   final Color? borderColor;
   @override
   Widget build(BuildContext context) {
-    final fontSize = Theme.of(context).textTheme.bodySmall;
+    final dateValue = DateValues();
+    final fontSize = Theme.of(context)
+        .textTheme
+        .bodySmall
+        ?.copyWith(color: Theme.of(context).colorScheme.surface);
+    final dailyAnnotations = annotationsList.where((annotation) {
+      return annotation.annotationSaleDate! == dateValue.annotationDayDateTime;
+    }).toList();
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Container(
         height: height ?? 10,
         decoration: BoxDecoration(
@@ -36,7 +48,7 @@ class OperatorCardComponent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Ocupação:", style: fontSize),
-                  Text(operatorEntity.businessPosition ?? "", style: fontSize),
+                  Text("Operador", style: fontSize),
                 ],
               ),
               Row(
@@ -51,6 +63,13 @@ class OperatorCardComponent extends StatelessWidget {
                 children: [
                   Text("E-mail:", style: fontSize),
                   Text(operatorEntity.operatorEmail ?? "", style: fontSize),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Anotações Hoje:", style: fontSize),
+                  Text("${dailyAnnotations.length}", style: fontSize),
                 ],
               ),
             ],

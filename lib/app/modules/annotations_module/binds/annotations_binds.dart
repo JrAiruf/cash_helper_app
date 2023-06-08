@@ -22,6 +22,7 @@ import '../domain/usecases/search_annotations_by_client_address/isearch_annotati
 import '../domain/usecases/search_annotations_by_client_address/search_annotations_by_client_address.dart';
 import '../domain/usecases/update_annotation/iupdate_annotation.dart';
 import '../domain/usecases/update_annotation/update_annotation.dart';
+import '../presenter/pages/annotations_list_page.dart';
 import '../presenter/pages/create_annotations_page.dart';
 
 abstract class AppAnnotationModule {
@@ -123,6 +124,10 @@ class AnnotationModule extends Module {
     ChildRoute(
       "/annotation-page/:enterpriseId",
       child: (_, args) => AnnotationPage(),
+    ),
+    ChildRoute(
+      "/annotations-list-page/:enterpriseId",
+      child: (_, args) => AnnotationsListPage(operatorEntity: args.data),
     ),
   ];
 }

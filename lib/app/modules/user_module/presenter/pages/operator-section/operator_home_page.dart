@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable, unnecessary_string_interpolations
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotation_states.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
@@ -13,6 +12,7 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
+import '../../components/operator_widgets/operator_status_component.dart';
 import '../../components/widgets/annotation_info_list_view_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
@@ -82,29 +82,48 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         color: appThemes.primaryColor(context),
                       ),
                       SizedBox(height: height * 0.07),
-                      SizedBox(
-                        height: height * 0.2,
-                        child: ValueListenableBuilder(
-                          valueListenable: _annotationListStore,
-                          builder: ((context, annotationListState, child) {
-                            if (annotationListState.isEmpty) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                    color: appThemes.primaryColor(context)),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: appThemes.indicatorColor(context),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: appThemes.primaryColor(context),
+                            border: Border.all(
+                              color: appThemes.surfaceColor(context),
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          height: height * 0.2,
+                          child: ValueListenableBuilder(
+                            valueListenable: _annotationListStore,
+                            builder: ((context, annotationListState, child) {
+                              if (annotationListState.isEmpty) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: appThemes.primaryColor(context),
                                   ),
-                                ),
-                              );
-                            } else if (annotationListState.isNotEmpty) {
-                              return AnnotationInfoListViewComponent(
-                                annotations: annotationListState,
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
+                                  child: Center(
+                                    child: Text(
+                                      "Nenhuma anotação encontrada",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color:
+                                                appThemes.surfaceColor(context),
+                                          ),
+                                    ),
+                                  ),
+                                );
+                              } else if (annotationListState.isNotEmpty) {
+                                return AnnotationInfoListViewComponent(
+                                  annotations: annotationListState,
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
+                          ),
                         ),
                       ),
                       Padding(
@@ -150,9 +169,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                           ),
                                     ),
                                   ],
-                                  onPressed: () {
-                                    print("Botão 1");
-                                  },
+                                  onPressed: () => Modular.to.navigate(
+                                    "${AnnotationRoutes.annotationsListPage}$_enterpriseId",
+                                    arguments: currentOperator,
+                                  ),
                                 ),
                                 QuickAccessButton(
                                   backgroundColor:
@@ -198,7 +218,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           width: width * 0.7,
                           radius: 12,
                           onPressed: () => Modular.to.pushNamed(
-                              "./operator-area",
+                              "${UserRoutes.operatorArea}$_enterpriseId",
                               arguments: currentOperator),
                           buttonName: "Área do operador",
                           backgroundColor: appThemes.greenColor(context),
@@ -208,36 +228,14 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                     ],
                   ),
                 ),
-                Positioned(
-                  top: height * 0.155,
-                  right: 25,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: appThemes.backgroundColor(context),
-                        maxRadius: 30,
-                        child: CircleAvatar(
-                          backgroundColor: currentOperator.operatorEnabled!
-                              ? appThemes.greenColor(context)
-                              : appThemes.purpleColor(context),
-                          maxRadius: 29,
-                          child: const Icon(
-                            color: Colors.white,
-                            Icons.person,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 25),
-                      Text(
-                        currentOperator.operatorEnabled! ? "Ativo" : "Inativo",
-                        style: Theme.of(context)
-                            .textTheme
-                            .displaySmall
-                            ?.copyWith(color: appThemes.surfaceColor(context)),
-                      ),
-                    ],
-                  ),
+                OperatorStatusComponent(
+                  textColor: appThemes.surfaceColor(context),
+                  activeColor: appThemes.greenColor(context),
+                  borderColor: appThemes.backgroundColor(context),
+                  inactiveColor: appThemes.purpleColor(context),
+                  operatorEntity: currentOperator,
+                  sidePosition: 25,
+                  topPosition: height * 0.155,
                 ),
               ],
             ),

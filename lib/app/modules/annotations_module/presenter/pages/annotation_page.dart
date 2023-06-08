@@ -1,57 +1,78 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_const_constructors_in_immutables
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_home.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_item.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../user_module/domain/entities/operator_entity.dart';
+import 'annotation_settings.dart';
 
 class AnnotationPage extends StatefulWidget {
   AnnotationPage({Key? key}) : super(key: key);
 
-  BottomNavigationBarPosition? position;
   @override
   State<AnnotationPage> createState() => _AnnotationPageState();
 }
 
-final AnnotationEntity annotationEntity = Modular.args.data["annotationEntity"];
-final OperatorEntity operatorEntity = Modular.args.data["operatorEntity"];
+AnnotationEntity? annotationEntity;
+OperatorEntity? operatorEntity;
+String? enterpriseId;
 final _annotationsController = Modular.get<AnnotationsController>();
 
 class _AnnotationPageState extends State<AnnotationPage> {
   @override
+  void initState() {
+    annotationEntity = Modular.args.data["annotationEntity"];
+    operatorEntity = Modular.args.data["operatorEntity"];
+    enterpriseId = Modular.args.params["enterpriseId"];
+    _annotationsController.getAllAnnotations();
+    super.initState();
+    _annotationsController.position =
+        BottomNavigationBarPosition.annotationHome;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final greenColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final appTheme = CashHelperThemes();
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _annotationsController.annotationsPageController,
         children: [
-          AnnotationHome(annotationEntity: annotationEntity),
-          Container(),
+          AnnotationHome(
+            annotationEntity: annotationEntity!,
+          ),
+          AnnotationSettings(
+            annotationEntity: annotationEntity!,
+            operatorEntity: operatorEntity!,
+            enterpriseId: enterpriseId!,
+          ),
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: backgroundColor),
+        decoration: BoxDecoration(
+          color: appTheme.backgroundColor(context),
+        ),
         child: CashHelperBottomNavigationBar(
-          itemContentColor: surfaceColor,
+          width: width,
+          itemContentColor: appTheme.surfaceColor(context),
           pageController: _annotationsController.annotationsPageController,
-          itemColor: greenColor,
-          position: widget.position,
+          itemColor: appTheme.greenColor(context),
+          position: _annotationsController.position,
           radius: 20,
-          backgroundColor: primaryColor,
+          backgroundColor: appTheme.primaryColor(context),
           height: 60,
           items: [
             CashHelperBottomNavigationItem(
               icon: Icons.home,
               itemName: "Início",
-              itemBackgroundColor: backgroundColor,
-              position: BottomNavigationBarPosition.appAppearance,
+              itemBackgroundColor: appTheme.backgroundColor(context),
+              position: BottomNavigationBarPosition.annotationHome,
               onTap: () {
                 _annotationsController.annotationsPageController.animateToPage(
                     BottomNavigationBarPosition.annotationHome.position,
@@ -60,14 +81,15 @@ class _AnnotationPageState extends State<AnnotationPage> {
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
-                  widget.position = BottomNavigationBarPosition.appAppearance;
+                  _annotationsController.position =
+                      BottomNavigationBarPosition.annotationHome;
                 });
               },
             ),
             CashHelperBottomNavigationItem(
               icon: Icons.settings,
               itemName: "Opções",
-              position: BottomNavigationBarPosition.operatorAccount,
+              position: BottomNavigationBarPosition.annotationSettings,
               onTap: () {
                 _annotationsController.annotationsPageController.animateToPage(
                     BottomNavigationBarPosition.annotationSettings.position,
@@ -76,7 +98,8 @@ class _AnnotationPageState extends State<AnnotationPage> {
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
-                  widget.position = BottomNavigationBarPosition.operatorAccount;
+                  _annotationsController.position =
+                      BottomNavigationBarPosition.annotationSettings;
                 });
               },
             ),

@@ -35,8 +35,17 @@ class AnnotationStore extends ValueNotifier<AnnotationEntity?> {
         await _createNewAnnotation(enterpriseId, operatorId, annotation);
     newAnnotation != null ? value = newAnnotation : null;
   }
+
 //BUSCAR PELO ID
 //ATUALIZAR
 //FINALIZAR
+  Future<void>? finishAnnotation(
+      String enterpriseId, String operatorId, String annotationId) async {
+    await _finishAnnotation(enterpriseId, operatorId, annotationId);
+  }
 //DELETAR
+ Future<void>? deleteAnnotation(
+      String enterpriseId, String operatorId, String annotationId) async {
+    await _deleteAnnotation(enterpriseId, operatorId, annotationId);
+  }
 }

@@ -3,7 +3,6 @@ import 'package:cash_helper_app/app/modules/management_module/domain/usecases/cr
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/get_all_payment_methods/iget_all_payment_methods.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/get_operator_informations/iget_operators_informations.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/remove_payment_method/iremove_payment_method.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/cupertino.dart';
