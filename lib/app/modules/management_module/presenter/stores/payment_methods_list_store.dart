@@ -1,6 +1,6 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:flutter/cupertino.dart';
-import '../../domain/usecases/get_all_payment_methods/iget_all_payment_methods.dart';
+import '../../domain/usecases/payment_methods/get_all_payment_methods/iget_all_payment_methods.dart';
 
 class PaymentMethodsListStore
     extends ValueNotifier<List<PaymentMethodEntity>?> {

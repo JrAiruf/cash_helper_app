@@ -134,6 +134,7 @@ class LoginController {
     loadingData.value = true;
     createOperatorFormKey.currentState!.validate();
     operatorEntity.operatorEnabled = enabledOperator ? true : false;
+    operatorEntity.hasPendencies = false;
     operatorEntity.operatorOppening =
         enabledOperator ? dateValue.operatorOppening : 'Pendente';
     if (createOperatorFormKey.currentState!.validate()) {

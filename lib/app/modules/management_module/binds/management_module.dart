@@ -1,6 +1,6 @@
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/create_new_payment_method/icreate_new_payment_method.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/get_all_payment_methods/iget_all_payment_methods.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/get_operator_informations/iget_operators_informations.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/create_new_payment_method/icreate_new_payment_method.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/get_all_payment_methods/iget_all_payment_methods.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/operators/get_operator_informations/iget_operators_informations.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
@@ -11,11 +11,11 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/pages/pa
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/remove_payment_method_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../domain/usecases/create_new_payment_method/create_new_payment_method.dart';
-import '../domain/usecases/get_all_payment_methods/get_all_payment_methods.dart';
-import '../domain/usecases/get_operator_informations/get_operators_informations.dart';
-import '../domain/usecases/remove_payment_method/iremove_payment_method.dart';
-import '../domain/usecases/remove_payment_method/remove_payment_method.dart';
+import '../domain/usecases/payment_methods/create_new_payment_method/create_new_payment_method.dart';
+import '../domain/usecases/payment_methods/get_all_payment_methods/get_all_payment_methods.dart';
+import '../domain/usecases/operators/get_operator_informations/get_operators_informations.dart';
+import '../domain/usecases/payment_methods/remove_payment_method/iremove_payment_method.dart';
+import '../domain/usecases/payment_methods/remove_payment_method/remove_payment_method.dart';
 import '../presenter/pages/create_payment_methods_page.dart';
 import '../presenter/stores/payment_methods_list_store.dart';
 

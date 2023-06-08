@@ -1,4 +1,4 @@
-import '../../../infra/data/management_repository.dart';
+import '../../../../infra/data/management_repository.dart';
 import 'iremove_payment_method.dart';
 
 class RemovePaymentMethod implements IRemovePaymentMethod{

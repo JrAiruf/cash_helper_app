@@ -1,8 +1,8 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/create_new_payment_method/icreate_new_payment_method.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/get_all_payment_methods/iget_all_payment_methods.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/get_operator_informations/iget_operators_informations.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/remove_payment_method/iremove_payment_method.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/create_new_payment_method/icreate_new_payment_method.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/get_all_payment_methods/iget_all_payment_methods.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/operators/get_operator_informations/iget_operators_informations.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/remove_payment_method/iremove_payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/cupertino.dart';

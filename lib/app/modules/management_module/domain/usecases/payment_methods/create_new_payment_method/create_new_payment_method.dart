@@ -1,7 +1,7 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 
-import '../../../../enterprise_module/infra/models/payment_method_model.dart';
-import '../../../infra/data/management_repository.dart';
+import '../../../../../enterprise_module/infra/models/payment_method_model.dart';
+import '../../../../infra/data/management_repository.dart';
 import 'icreate_new_payment_method.dart';
 
 class CreateNewpaymentMethod implements ICreateNewpaymentMethod {

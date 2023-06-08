@@ -1,7 +1,7 @@
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
 
-import '../../../../enterprise_module/domain/entities/payment_method_entity.dart';
-import '../../../../enterprise_module/infra/models/payment_method_model.dart';
+import '../../../../../enterprise_module/domain/entities/payment_method_entity.dart';
+import '../../../../../enterprise_module/infra/models/payment_method_model.dart';
 import 'iget_all_payment_methods.dart';
 
 class GetAllPaymentMethods implements IGetAllPaymentMethods {
