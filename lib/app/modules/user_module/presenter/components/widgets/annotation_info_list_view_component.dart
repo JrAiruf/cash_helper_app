@@ -34,7 +34,7 @@ class AnnotationInfoListViewComponent extends StatelessWidget {
                         ?.copyWith(color: surfaceColor),
                   ),
                   Text(
-                    "Venda em:",
+                    "Data da venda:",
                     style: Theme.of(context)
                         .textTheme
                         .displaySmall

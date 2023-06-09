@@ -25,10 +25,15 @@ class NotFinishedAnnotations extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return annotations.isEmpty
-        ? Center(
-            child: Text(
-              "Nenhuma Anotação Localizada",
-              style: Theme.of(context).textTheme.displayMedium,
+        ? Container(
+            decoration: BoxDecoration(
+              color: appTheme.backgroundColor(context),
+            ),
+            child: Center(
+              child: Text(
+                "Nenhuma Anotação Localizada",
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
             ),
           )
         : Container(

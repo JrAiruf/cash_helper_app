@@ -1,17 +1,25 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/options_page_menu_component.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_modular/flutter_modular.dart';
+
+import '../../../../components/operator_widgets/cash_number_component.dart';
 
 class OperatorOptionsPage extends StatefulWidget {
   const OperatorOptionsPage(
       {super.key,
-      required this.operatorId,
+      required this.operatorEntity,
+      required this.enterpriseId,
       this.position,
       required this.pageController});
-  final String operatorId;
+  final OperatorEntity operatorEntity;
+  final String enterpriseId;
   final BottomNavigationBarPosition? position;
   final PageController? pageController;
   @override
@@ -23,19 +31,122 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final operatorPageController = PageController();
+    final appThemes = CashHelperThemes();
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: appThemes.backgroundColor(context),
       ),
-      child: Column(
+      child: Stack(
+        children: [
+          Container(
+            height: height * 0.15,
+            width: width,
+            decoration: BoxDecoration(
+              color: appThemes.primaryColor(context),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OptionsPageMenuComponent(
+                      elevation: 10,
+                      itemName: "Listar Anotações",
+                      radius: 15,
+                      borderColor: appThemes.surfaceColor(context),
+                      itemColor: appThemes.primaryColor(context),
+                      icon: Icons.view_list_outlined,
+                      height: height * 0.11,
+                      width: width * 0.4,
+                      onTap: () => Modular.to.pushNamed(
+                          "${AnnotationRoutes.annotationsListPage}${widget.enterpriseId}",
+                          arguments: widget.operatorEntity),
+                    ),
+                    OptionsPageMenuComponent(
+                      elevation: 10,
+                      itemName: "Pesquisar",
+                      radius: 15,
+                      borderColor: appThemes.surfaceColor(context),
+                      itemColor: appThemes.primaryColor(context),
+                      icon: Icons.search,
+                      height: height * 0.11,
+                      width: width * 0.4,
+                    ),
+                  ],
+                ),
+                SizedBox(height: height * 0.03),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OptionsPageMenuComponent(
+                      elevation: 10,
+                      itemName: "Criar Anotação",
+                      radius: 15,
+                      borderColor: appThemes.surfaceColor(context),
+                      itemColor: appThemes.primaryColor(context),
+                      icon: Icons.library_books_outlined,
+                      height: height * 0.11,
+                      width: width * 0.4,
+                      onTap: () => Modular.to.pushNamed(
+                          "${AnnotationRoutes.createAnnotationPage}${widget.enterpriseId}",
+                          arguments: widget.operatorEntity),
+                    ),
+                    OptionsPageMenuComponent(
+                      elevation: 10,
+                      itemName: "Fechar caixa",
+                      radius: 15,
+                      borderColor: appThemes.surfaceColor(context),
+                      itemColor: appThemes.primaryColor(context),
+                      icon: Icons.power_settings_new_outlined,
+                      height: height * 0.11,
+                      width: width * 0.4,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: height * 0.12,
+            left: width * 0.02,
+            child: SizedBox(
+              width: width * 0.95,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CashNumberComponent(
+                      operatorEntity: widget.operatorEntity,
+                      backgroundColor: appThemes.surfaceColor(context),
+                      radius: 16),
+                  Text(
+                    "${widget.operatorEntity.operatorName}",
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          color: appThemes.surfaceColor(context),
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+/* 
+Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -111,7 +222,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   OptionsPageMenuComponent(
-                    onTap: () => Modular.to.navigate("/annotations-module/${widget.operatorId}"),
+                    onTap: () => Modular.to.navigate("/annotations-module/${widget.operatorEntity.operatorId}"),
                     elevation: 10,
                     itemName: "Criar Anotação",
                     radius: 15,
@@ -137,6 +248,4 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
           ),
         ],
       ),
-    );
-  }
-}
+ */

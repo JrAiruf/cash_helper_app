@@ -197,11 +197,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                           ),
                                     )
                                   ],
-                                  onPressed: () {
-                                    Modular.to.navigate(
-                                        "${AnnotationRoutes.createAnnotationPage}$_enterpriseId",
-                                        arguments: currentOperator);
-                                  },
+                                  onPressed: () => Modular.to.navigate(
+                                      "${AnnotationRoutes.createAnnotationPage}$_enterpriseId",
+                                      arguments: currentOperator),
                                 ),
                               ],
                             ),
