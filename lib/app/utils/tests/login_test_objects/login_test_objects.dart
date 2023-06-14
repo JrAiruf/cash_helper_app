@@ -130,4 +130,15 @@ class LoginTestObjects {
     operatorEnabled: false,
     businessPosition: "operator",
   );
+  static final activeOperator = OperatorEntity(
+    operatorId: 'q34u6hu1qeuyoio',
+    operatorNumber: 1,
+    operatorName: ' Josy Kelly',
+    operatorEmail: 'josy@email.com',
+    operatorPassword: '12345678',
+    operatorOppening: 'Now',
+    operatorClosing: 'operatorClosing',
+    operatorEnabled: true,
+    businessPosition: "operator",
+  );
 }

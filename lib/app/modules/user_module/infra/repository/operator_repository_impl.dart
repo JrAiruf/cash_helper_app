@@ -53,7 +53,7 @@ class OperatorRepositoryImpl implements OperatorRepository {
 
   @override
   Future? openOperatorCash(
-      String? operatorId, String? collection, String? oppeningTime) {
+      String? enterpriseId,  String? operatorId, String? oppeningTime) {
     throw UnimplementedError();
   }
 }
