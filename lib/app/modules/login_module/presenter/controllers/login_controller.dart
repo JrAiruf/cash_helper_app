@@ -188,6 +188,11 @@ class LoginController {
     loadingData.value = false;
   }
 
+  void signOut() async {
+    await loginStore.signOut();
+    Modular.to.navigate(EnterpriseRoutes.initial);
+  }
+
   onFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

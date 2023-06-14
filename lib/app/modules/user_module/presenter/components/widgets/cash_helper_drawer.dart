@@ -25,7 +25,7 @@ class CashHelperDrawer extends StatelessWidget {
   final String? enterpriseId;
   final DrawerPagePosition? pagePosition;
   final OperatorEntity? operator;
-  final loginStore = Modular.get<LoginStore>();
+  final loginController = Modular.get<LoginController>();
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -103,7 +103,7 @@ class CashHelperDrawer extends StatelessWidget {
                   ),
                   SizedBox(height: itemSpacingHeight * 10),
                   TextButton(
-                    onPressed: loginStore.signOut,
+                    onPressed: loginController.signOut,
                     child: Row(
                       children: [
                         Text(
