@@ -9,8 +9,8 @@ import 'package:mockito/mockito.dart';
 
 import '../../../../mocks/mocks.dart';
 
-class LoginRepositoryMock implements LoginRepository {
-  LoginRepositoryMock({
+class LoginRepoMock implements LoginRepository {
+  LoginRepoMock({
     required ApplicationLoginDatabase datasource,
     required DataVerifier dataVerifier,
   })  : _datasource = datasource,
@@ -91,13 +91,13 @@ class LoginRepositoryMock implements LoginRepository {
 
 void main() {
   late FirebaseDatabaseMock datasource;
-  late LoginRepositoryMock repository;
+  late LoginRepoMock repository;
   late DataVerifier dataVerifier;
   setUp(() {
     datasource = FirebaseDatabaseMock();
     dataVerifier = DataVerifier();
     repository =
-        LoginRepositoryMock(datasource: datasource, dataVerifier: dataVerifier);
+        LoginRepoMock(datasource: datasource, dataVerifier: dataVerifier);
   });
 
   group(

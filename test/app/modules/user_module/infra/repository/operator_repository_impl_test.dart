@@ -1,18 +1,20 @@
 // ignore_for_file: unused_import
 
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/data/operator_repository.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
+import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
+import '../../../../mocks/mocks.dart';
 import '../../../login_module/infra/repository/login_repository_impl_test.dart';
 
 class OperatorDatabaseMock extends Mock implements OperatorDatabase {}
-/* 
-class OperatorRepositoryMock implements OperatorRepository {
-  OperatorRepositoryMock({required OperatorDatabase database})
-      : _database = database;
+
+class OperatorRepoMock implements OperatorRepository {
+  OperatorRepoMock({required OperatorDatabase database}) : _database = database;
 
   final OperatorDatabase _database;
 
@@ -61,7 +63,13 @@ class OperatorRepositoryMock implements OperatorRepository {
 
   @override
   Future<void> closeOperatorCash(
-      String? operatorId, String? collection) async {}
+      String? operatorId, String? collection, String? closingTime) async {
+    if (_validOperatorData(operatorId, collection, closingTime)) {
+      await _database.closeOperatorCash(operatorId, collection, closingTime);
+    } else {
+      return;
+    }
+  }
 
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
@@ -71,315 +79,69 @@ class OperatorRepositoryMock implements OperatorRepository {
 }
 
 void main() {
-  final loginDatabase = FirebaseDatabaseMock();
-  final loginRepository = LoginRepositoryMock(datasource: loginDatabase);
-  final operatorDatabase = OperatorDatabaseMock();
-  final operatorRepository = OperatorRepositoryMock(database: operatorDatabase);
-  final newOperator = OperatorModel(
-    operatorId: 'q34u6hu1qeuyoio',
-    operatorNumber: 1,
-    operatorName: 'Josy Kelly',
-    operatorEmail: 'josy@email.com',
-    operatorPassword: '12345678',
-    operatorOppening: 'operatorOppening',
-    operatorClosing: 'operatorClosing',
-    operatorEnabled: false,
-    operatorOcupation: "operator",
-  );
-
-  group(
-    "changeUserEmail Function should",
+  late FirebaseDatabaseMock loginDatabase;
+  late LoginRepoMock loginRepository;
+  late OperatorDatabaseMock operatorDatabase;
+  late OperatorRepoMock operatorRepository;
+  setUp(
     () {
-      test(
-        "Call database function to change operator's email",
-        () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeUserEmail(any, any, any, any))
-              .thenReturn(null);
-          await operatorRepository.changeOperatorEmail(
-              "josy_kelly@email.com",
-              createdOperator?.operatorCode,
-              createdOperator?.operatorPassword,
-              null);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(
-              currenteOperator?.operatorEmail, equals("josy_kelly@email.com"));
-        },
-      );
-      test(
-        "Fail in change operator's e-mail",
-        () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeUserEmail(any, any, any, any))
-              .thenReturn(null);
-          await operatorRepository.changeOperatorEmail("josy_kelly@email.com",
-              "", createdOperator?.operatorPassword, "");
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(currenteOperator?.operatorEmail, equals("josy@email.com"));
-        },
-      );
+      loginDatabase = FirebaseDatabaseMock();
+      operatorDatabase = OperatorDatabaseMock();
+      loginRepository = LoginRepoMock(
+          datasource: loginDatabase, dataVerifier: DataVerifier());
+      operatorRepository = OperatorRepoMock(database: operatorDatabase);
     },
   );
   group(
-    "DeleteOperatorAccount Function should",
+    "OpenOperatorCash Function Should",
     () {
       test(
-        "Call database function to delte operator's account",
+        "Call datasource to open operator cash",
         () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.deleteUserAccount(any, any, any, any))
-              .thenReturn(null);
-          await operatorRepository.deleteOperatorAccount(
-              createdOperator?.operatorCode,
-              createdOperator?.operatorEmail,
-              createdOperator?.operatorPassword,
-              createdOperator?.operatorOcupation);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => null);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(currenteOperator?.operatorId, equals(null));
-        },
-      );
-      test(
-        "Fail to delete account",
-        () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.deleteUserAccount(any, any, any, any))
-              .thenReturn(null);
-          await operatorRepository.deleteOperatorAccount(
-              createdOperator?.operatorCode,
-              "",
-              createdOperator?.operatorPassword,
-              "");
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(currenteOperator == null, equals(false));
-        },
-      );
-    },
-  );
-  group(
-    "ChangeOperatorPassword Function should",
-    () {
-      test(
-        "Call database function to change operator's password",
-        () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeUserPassword(any, any, any, any))
-              .thenReturn(null);
-          await operatorRepository.changeOperatorPassword(
-              "newPassword",
-              createdOperator?.operatorCode,
-              createdOperator?.operatorPassword,
-              createdOperator?.operatorOcupation);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(currenteOperator?.operatorPassword, equals("newPassword"));
-        },
-      );
-      test(
-        "Fail to change operator password",
-        () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeUserPassword(any, any, any, any))
-              .thenReturn(null);
-          await operatorRepository.changeOperatorPassword(
-              "newPassword",
-              createdOperator?.operatorCode,
-              createdOperator?.operatorPassword,
-              createdOperator?.operatorOcupation);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(currenteOperator?.operatorPassword, equals("12345678"));
-        },
-      );
-    },
-  );
-  group(
-    "OpenOperatorCash Function should",
-    () {
-      test(
-        "Call database function to change operator's enabled stated (from false to true)",
-        () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
+          when(loginDatabase.getUserById(any, any, any))
+              .thenAnswer((_) async => LoginTestObjects.modifiedUser);
           when(operatorDatabase.openOperatorCash(any, any, any))
               .thenReturn(null);
           await operatorRepository.openOperatorCash(
-            createdOperator?.operatorId,
-            createdOperator?.operatorOcupation,
-            "cashOppened",
-          );
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(
-              currenteOperator?.operatorOppening, equals("cashOppened"));
+              "operatorId", "collection", "oppeningTime");
+          final currentOperator = await loginRepository.getUserById(
+              "enterpriseId", "operatorId", "collection") as OperatorModel;
+          expect(currentOperator.operatorEnabled, equals(true));
         },
       );
       test(
-        "Fail to change operator enabled state",
+        "Fail to open operator cash",
         () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
+          when(loginDatabase.getUserById(any, any, any))
+              .thenAnswer((_) async => LoginTestObjects.newRepositoryOperator);
           when(operatorDatabase.openOperatorCash(any, any, any))
               .thenReturn(null);
           await operatorRepository.openOperatorCash(
-            "",
-            createdOperator?.operatorOcupation,
-            "cashOppened",
-          );
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(
-              currenteOperator?.operatorOppening, equals("cashOppened"));
+              "operatorId", "collection", "closingTime");
+          final currentOperator = await loginRepository.getUserById(
+              "enterpriseId", "", "collection") as OperatorModel;
+          expect(currentOperator.operatorEnabled, equals(false));
         },
       );
     },
   );
   group(
-    "CloseOperatorCash Function should",
+    "CloseOperatorCash Function Should",
     () {
       test(
-        "Call database function to change operator's enabled state (from true to false)",
+        "Call datasource to close operator cash",
         () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeUserPassword(any, any, any, any))
+          when(loginDatabase.getUserById(any, any, any))
+              .thenAnswer((_) async => LoginTestObjects.newRepositoryOperator);
+          when(operatorDatabase.closeOperatorCash(any, any, any))
               .thenReturn(null);
-          await operatorRepository.changeOperatorPassword(
-              "newPassword",
-              createdOperator?.operatorCode,
-              createdOperator?.operatorPassword,
-              createdOperator?.operatorOcupation);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => modifiedDatabaseOperator);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(currenteOperator?.operatorPassword, equals("newPassword"));
-        },
-      );
-      test(
-        "Fail to change operator enabled state",
-        () async {
-          when(loginDatabase.register(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final createdOperator = await loginRepository.register(
-              newOperator, newOperator.operatorOcupation);
-          expect(createdOperator != null, equals(true));
-          expect(createdOperator?.operatorName, equals("Josy Kelly"));
-          when(operatorDatabase.changeUserPassword(any, any, any, any))
-              .thenReturn(null);
-          await operatorRepository.changeOperatorPassword(
-              "newPassword",
-              createdOperator?.operatorCode,
-              createdOperator?.operatorPassword,
-              createdOperator?.operatorOcupation);
-          when(loginDatabase.getOperatorById(any, any))
-              .thenAnswer((_) async => databaseOperator);
-          final currenteOperator =
-              await loginRepository.getOperatorById("operatorId", "collection");
-          expect(currenteOperator?.operatorPassword, equals("12345678"));
+          await operatorRepository.closeOperatorCash(
+              "operatorId", "collection", "oppeningTime");
+          final currentOperator = await loginRepository.getUserById(
+              "enterpriseId", "operatorId", "collection") as OperatorModel;
+          expect(currentOperator.operatorEnabled, equals(false));
         },
       );
     },
   );
 }
-
-final databaseOperator = <String, dynamic>{
-  'operatorId': 'q34u6hu1qeuyoio',
-  'operatorNumber': 1,
-  'operatorName': 'Josy Kelly',
-  'operatorEmail': 'josy@email.com',
-  'operatorPassword': '12345678',
-  'operatorCode': '123456',
-  'operatorOppening': 'operatorOppening',
-  'operatorClosing': 'operatorClosing',
-  'operatorEnabled': false,
-  'operatorOcupation': "operator",
-};
-final modifiedDatabaseOperator = <String, dynamic>{
-  'operatorId': 'q34u6hu1qeuyoio',
-  'operatorNumber': 1,
-  'operatorName': 'Josy Kelly',
-  'operatorEmail': 'josy_kelly@email.com',
-  'operatorPassword': 'newPassword',
-  'operatorCode': 'newPas',
-  'operatorOppening': 'cashOppened',
-  'operatorClosing': 'operatorClosing',
-  'operatorEnabled': false,
-  'operatorOcupation': "operator",
-};
- */
