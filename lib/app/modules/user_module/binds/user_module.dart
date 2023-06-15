@@ -12,6 +12,8 @@ import '../domain/usecases/change_operator_email/change_operator_email.dart';
 import '../domain/usecases/change_operator_email/ichange_operator_email.dart';
 import '../domain/usecases/change_operator_password/change_operator_password.dart';
 import '../domain/usecases/change_operator_password/ichange_operator_password.dart';
+import '../domain/usecases/close_operator_cash/close_operator_cash.dart';
+import '../domain/usecases/close_operator_cash/iclose_operator_cash.dart';
 import '../domain/usecases/delete_operator_account/delete_operator_account.dart';
 import '../domain/usecases/delete_operator_account/idelete_operator_account.dart';
 import '../domain/usecases/open_operator_cash/open_operator_cash.dart';
@@ -138,6 +140,11 @@ class UserModule extends Module {
         repository: i(),
       ),
     ),
+    Bind<ICloseOperatorCash>(
+      (i) => CloseOperatorCash(
+        repository: i(),
+      ),
+    ),
     Bind<IChangeOperatorEmail>(
       (i) => ChangeOperatorEmail(
         repository: i(),
@@ -159,6 +166,7 @@ class UserModule extends Module {
         changeOperatorPassword: i(),
         deleteOperatorAccount: i(),
         openOperatorCash: i(),
+        closeOperatorCash: i(),
       ),
     ),
     Bind.singleton<PaymentMethodsController>(

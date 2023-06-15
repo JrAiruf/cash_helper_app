@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -6,8 +7,40 @@ class OperatorController {
   final emailField = TextEditingController();
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
+  final operatorStore = Modular.get<OperatorStore>();
 
   bool? loadingOperatorSettings;
+  OperatorEntity? operatorEntity;
+  String? enterpriseId;
+  String? operatorId;
+  String? operatorCode;
+  String? oppeningTime;
+  String? closingTime;
+
+  Future<void> openOperatorCash(BuildContext context) async {
+    if (operatorCode == operatorEntity!.operatorCode) {
+      await operatorStore.openOperatorCash(
+        enterpriseId ?? "",
+        operatorId ?? "",
+        oppeningTime ?? "",
+      );
+    } else {
+      wrongCodeSnackbar(context);
+    }
+  }
+  
+  Future<void> closeOperatorCash(BuildContext context) async {
+    if (operatorCode == operatorEntity!.operatorCode) {
+      await operatorStore.closeOperatorCash(
+        enterpriseId ?? "",
+        operatorId ?? "",
+        closingTime ?? "",
+      );
+    } else {
+      wrongCodeSnackbar(context);
+    }
+  }
+
   bool validOperatorCredentials(OperatorEntity operatorEntity,
       String operatorCode, String currentPassword,
       {String? operatorEmail}) {
@@ -119,6 +152,35 @@ class OperatorController {
                     fontSize: 13),
               ),
               Icon(
+                Icons.warning_rounded,
+                size: 35,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  wrongCodeSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        backgroundColor: Colors.redAccent,
+        elevation: 5,
+        duration: const Duration(seconds: 3),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Operação não realizada. Código inválido',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const Icon(
                 Icons.warning_rounded,
                 size: 35,
                 color: Colors.white,
