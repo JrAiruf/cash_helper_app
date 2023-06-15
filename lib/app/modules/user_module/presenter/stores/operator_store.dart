@@ -1,5 +1,7 @@
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/change_operator_email/ichange_operator_email.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/delete_operator_account/idelete_operator_account.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/usecases/open_operator_cash/iopen_operator_cash.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/usecases/open_operator_cash/open_operator_cash.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store_states.dart';
 import 'package:flutter/cupertino.dart';
 import '../../domain/usecases/change_operator_password/ichange_operator_password.dart';
@@ -7,14 +9,17 @@ import '../../domain/usecases/change_operator_password/ichange_operator_password
 class OperatorStore extends ValueNotifier<OperatorStoreStates> {
   OperatorStore({
     required IChangeOperatorEmail changeOperatorEmail,
+    required IOpenOperatorCash openOperatorCash,
     required IChangeOperatorPassword changeOperatorPassword,
     required IDeleteOperatorAccount deleteOperatorAccount,
   })  : _changeOperatorEmail = changeOperatorEmail,
+        _openOperatorCash = openOperatorCash,
         _changeOperatorPassword = changeOperatorPassword,
         _deleteOperatorAccount = deleteOperatorAccount,
-
         super(OperatorSettingsInitialState());
+
   final IChangeOperatorEmail _changeOperatorEmail;
+  final IOpenOperatorCash _openOperatorCash;
   final IChangeOperatorPassword _changeOperatorPassword;
   final IDeleteOperatorAccount _deleteOperatorAccount;
 
@@ -34,6 +39,13 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
     } else {
       return;
     }
+  }
+
+  Future<void> openOperatorCash(
+      String enterpriseId, String operatorId, String oppeningTime) async {
+    value = LoadingCashState();
+    await _openOperatorCash(enterpriseId, operatorId, oppeningTime);
+    value = OpenedCashState();
   }
 
   Future<void> changeOperatorPassword(String newPassword, String operatorCode,
@@ -58,7 +70,8 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
     if (_validOperatorCredentials(
         operatorCode, operatorEmail, operatorPassword, collection)) {
       value = AccountDeletedState();
-      await _deleteOperatorAccount(operatorCode, operatorEmail, operatorPassword, collection);
+      await _deleteOperatorAccount(
+          operatorCode, operatorEmail, operatorPassword, collection);
     } else {
       value = OperatorSettingsInitialState();
       return;

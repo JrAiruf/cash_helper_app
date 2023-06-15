@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/user_module/domain/usecases/open_operator_cash/iopen_operator_cash.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/operator_database_impl.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
@@ -13,6 +14,7 @@ import '../domain/usecases/change_operator_password/change_operator_password.dar
 import '../domain/usecases/change_operator_password/ichange_operator_password.dart';
 import '../domain/usecases/delete_operator_account/delete_operator_account.dart';
 import '../domain/usecases/delete_operator_account/idelete_operator_account.dart';
+import '../domain/usecases/open_operator_cash/open_operator_cash.dart';
 import '../infra/data/operator_repository.dart';
 import '../infra/repository/operator_repository_impl.dart';
 import '../presenter/pages/manager_section/manager_home_page.dart';
@@ -131,6 +133,11 @@ class UserModule extends Module {
         database: i(),
       ),
     ),
+    Bind<IOpenOperatorCash>(
+      (i) => OpenOperatorCash(
+        repository: i(),
+      ),
+    ),
     Bind<IChangeOperatorEmail>(
       (i) => ChangeOperatorEmail(
         repository: i(),
@@ -151,6 +158,7 @@ class UserModule extends Module {
         changeOperatorEmail: i(),
         changeOperatorPassword: i(),
         deleteOperatorAccount: i(),
+        openOperatorCash: i(),
       ),
     ),
     Bind.singleton<PaymentMethodsController>(
