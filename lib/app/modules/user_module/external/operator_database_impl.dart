@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,7 @@ class OperatorDatabaseImpl implements OperatorDatabase {
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _datasource;
+  final dataVerifier = DataVerifier();
 
   @override
   Future changeUserEmail(String? newEmail, String? operatorCode,
@@ -41,11 +43,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   }
 
   @override
-  Future<void> deleteUserAccount(
-      String? operatorCode,
-      String? operatorEmail,
-      String? operatorPassword,
-      String? collection) async {
+  Future<void> deleteUserAccount(String? operatorCode, String? operatorEmail,
+      String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection ?? "");
     if (_validOperatorData(operatorEmail, operatorCode, operatorPassword)) {
       final operatorsCollectionDocs = await operatorsCollection.get();
@@ -96,18 +95,21 @@ class OperatorDatabaseImpl implements OperatorDatabase {
 
   @override
   Future<void> openOperatorCash(
-      String? operatorId, String? collection, String? oppeningTime) async {
-    final operatorsCollection = _datasource.collection(collection!);
+      String? enterpriseId, String? operatorId, String? oppeningTime) async {
+    final operatorsCollection = _datasource
+        .collection("enterprise")
+        .doc(enterpriseId!)
+        .collection("operator");
     try {
-      if (_validOperatorData(operatorId, collection, oppeningTime)) {
+      if (dataVerifier.validateInputData(inputs: [operatorId, oppeningTime])) {
         await operatorsCollection.doc(operatorId!).update({
           "operatorEnabled": true,
           "operatorOppening": oppeningTime,
         });
       } else {
-        return;
+        throw OppeningCashError(errorMessage: "Operação não concluída");
       }
-    } on FirebaseException catch (e) {
+    } catch (e) {
       throw OppeningCashError(errorMessage: e.toString());
     }
   }
