@@ -24,3 +24,4 @@ class ManagementRepoMock extends Mock implements ManagementRepositoryImpl {}
 class ManagementDatabaseMock extends Mock implements ManagementDatabase {}
 
 class OperatorRepositoryMock extends Mock implements OperatorRepositoryImpl {}
+

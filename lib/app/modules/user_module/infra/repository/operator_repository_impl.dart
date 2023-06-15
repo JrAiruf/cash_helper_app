@@ -41,7 +41,7 @@ class OperatorRepositoryImpl implements OperatorRepository {
   }
 
   @override
-  Future<void> openOperatorCash(
+  Future<void>? openOperatorCash(
       String? operatorId, String? collection, String? oppeningTime) async {
     if (_validOperatorData(operatorId, collection, oppeningTime)) {
       await _database.openOperatorCash(operatorId, collection, oppeningTime);
@@ -51,7 +51,7 @@ class OperatorRepositoryImpl implements OperatorRepository {
   }
 
   @override
-  Future<void> closeOperatorCash(
+  Future<void>? closeOperatorCash(
       String? operatorId, String? collection, String? closingTime) async {
     if (_validOperatorData(operatorId, collection, closingTime)) {
       await _database.closeOperatorCash(operatorId, collection, closingTime);

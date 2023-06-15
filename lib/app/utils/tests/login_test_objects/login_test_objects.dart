@@ -96,6 +96,17 @@ class LoginTestObjects {
     operatorEnabled: false,
     businessPosition: "operator",
   );
+  static final enabledOperatorModel = OperatorModel(
+    operatorId: 'q34u6hu1qeuyoio',
+    operatorNumber: 1,
+    operatorName: 'Josy Kelly',
+    operatorEmail: 'josy@email.com',
+    operatorPassword: '12345678',
+    operatorOppening: 'operatorOppening',
+    operatorClosing: 'operatorClosing',
+    operatorEnabled: true,
+    businessPosition: "operator",
+  );
 
   static final newManagerModel = ManagerModel(
     managerId: 'q34u6hu1qe3h52lhHKH2H5uyoio',
