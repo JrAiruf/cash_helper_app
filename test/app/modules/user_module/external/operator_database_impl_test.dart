@@ -125,16 +125,22 @@ class OperatorDatabaseMock implements OperatorDatabase {
   }
 
   @override
-  Future<void> closeOperatorCash(String? operatorId, String? collection) async {
+  Future<void> closeOperatorCash(
+      String? enterpriseId, String? operatorId, String? closingTime) async {
     try {
-      if (operatorId != null && collection != null) {
-        final operatorsCollection = _datasource.collection(collection);
+      if (dataVerifier
+          .validateInputData(inputs: [enterpriseId, operatorId, closingTime])) {
+        final operatorsCollection = _datasource
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection("operator");
         await operatorsCollection.doc(operatorId).update({
           "operatorEnabled": false,
+          "operatorClosing": closingTime,
           "operatorOppening": "Pendente",
         });
       } else {
-        return;
+        throw OppeningCashError(errorMessage: "Operação não concluída");
       }
     } on FirebaseException catch (e) {
       throw OppeningCashError(errorMessage: e.toString());
@@ -169,7 +175,6 @@ void main() {
       database = OperatorDatabaseMock(auth: authMock, datasource: firebaseMock);
     },
   );
-
   group(
     "OpenOperatorCash should",
     () {
@@ -204,6 +209,48 @@ void main() {
       );
       test(
         'Fail to enable operator status',
+        () async {
+          expect(database.openOperatorCash("enterpriseId", "", "Now"),
+              throwsA(isA<OppeningCashError>()));
+        },
+      );
+    },
+  );
+  group(
+    "CloseOperatorCash should",
+    () {
+      test(
+        "Change operator enabled status from true to false",
+        () async {
+          await enterpriseDatabase
+              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList =
+              await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          final createdOperator = await loginDatabase.register(
+              LoginTestObjects.newOperator,
+              createdEnterprise["enterpriseId"],
+              LoginTestObjects.newOperator["businessPosition"]);
+          await database.closeOperatorCash(createdEnterprise["enterpriseId"],
+              createdOperator?["operatorId"], "Now");
+          final operatorCollection = await firebaseMock
+              .collection("enterprise")
+              .doc(createdEnterprise["enterpriseId"])
+              .collection("operator")
+              .get();
+          final enabledOperator = operatorCollection.docs
+              .firstWhere((element) => element["operatorEnabled"] == false)
+              .data();
+          expect(enabledOperator, isA<Map<String, dynamic>>());
+          expect(enabledOperator["operatorId"],
+              equals(createdOperator?["operatorId"]));
+          expect(enabledOperator["operatorEnabled"], equals(false));
+          expect(enabledOperator["operatorOppening"], equals("Pendente"));
+          expect(enabledOperator["operatorClosing"], equals("Now"));
+        },
+      );
+      test(
+        'Fail to disable operator status',
         () async {
           expect(database.openOperatorCash("enterpriseId", "", "Now"),
               throwsA(isA<OppeningCashError>()));
