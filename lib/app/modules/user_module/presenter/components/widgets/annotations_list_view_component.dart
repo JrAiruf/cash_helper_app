@@ -8,23 +8,23 @@ class AnnoationsListViewComponent extends StatelessWidget {
       this.backgroundColor,
       this.borderColor,
       this.seccundaryColor,
+      this.itemHeight,
       this.itemWidth});
 
   final List<AnnotationEntity?> annotations;
   final Color? backgroundColor;
   final Color? borderColor;
   final Color? seccundaryColor;
-
+  final double? itemHeight;
   final double? itemWidth;
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return ListView.builder(
       itemCount: annotations.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: ((context, index) {
         return Container(
-          height: height * 0.15,
+          height: itemHeight,
           width: itemWidth,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -44,10 +44,10 @@ class AnnoationsListViewComponent extends StatelessWidget {
                     fontSize: 15,
                   ),
                 ),
-                SizedBox(height: height * 0.015),
+                SizedBox(height: itemHeight ?? 180 * 0.1),
                 Container(
                   height: 35,
-                  width: itemWidth! * 0.45,
+                  width: itemWidth! * 0.6,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(35),
                     color: backgroundColor,
@@ -64,7 +64,7 @@ class AnnoationsListViewComponent extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 45),
+                SizedBox(height: itemHeight ?? 180 * 0.1),
                 Text(
                   annotations[index]?.annotationPaymentMethod ?? '',
                   style: TextStyle(
@@ -72,8 +72,8 @@ class AnnoationsListViewComponent extends StatelessWidget {
                       fontSize: 15,
                       fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(
-                  height: 25,
+                SizedBox(
+                  height: itemHeight ?? 180 * 0.07,
                 ),
                 Icon(
                   annotations[index]?.annotationConcluied ?? false

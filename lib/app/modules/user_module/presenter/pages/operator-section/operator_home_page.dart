@@ -42,6 +42,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
     final appThemes = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     return ValueListenableBuilder(
       valueListenable: _loginStore,
       builder: (_, operatorState, __) {
@@ -232,8 +233,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                   borderColor: appThemes.backgroundColor(context),
                   inactiveColor: appThemes.purpleColor(context),
                   operatorEntity: currentOperator,
-                  sidePosition: 25,
-                  topPosition: height * 0.155,
+                  sidePosition: width * 0.025,
+                  topPosition: sizeFrame ? height * 0.148 : height * 0.155,
                 ),
               ],
             ),
