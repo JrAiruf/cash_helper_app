@@ -42,13 +42,13 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final sizeFrame = height <= 800.0;
+    final sizeFrame = height <= 750.0;
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(
         backgroundColor: appTheme.primaryColor(context),
         radius: 20,
-        width: width,
+        width: width * 0.75,
         pagePosition: DrawerPagePosition.profile,
         operator: widget.operatorEntity,
         enterpriseId: _enterpriseId,
@@ -88,7 +88,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
               borderColor: appTheme.backgroundColor(context),
               operatorEntity: widget.operatorEntity,
               sidePosition: sizeFrame ? width * 0.025 : 25,
-              topPosition: sizeFrame ? height * 0.09 : 0.12,
+              topPosition: sizeFrame ? height * 0.09 : height * 0.12,
             ),
             SizedBox(
               height: height * 0.71,

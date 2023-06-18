@@ -1,9 +1,11 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/options_page_menu_component.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import "package:flutter/material.dart";
@@ -27,6 +29,8 @@ class OperatorOptionsPage extends StatefulWidget {
 }
 
 class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
+  final _operatorController = Modular.get<OperatorController>();
+  final _annotationsListStore = Modular.get<AnnotationsListStore>();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -68,9 +72,13 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                       icon: Icons.view_list_outlined,
                       height: height * 0.11,
                       width: width * 0.4,
-                      onTap: () => Modular.to.pushNamed(
-                          "${AnnotationRoutes.annotationsListPage}${widget.enterpriseId}",
-                          arguments: widget.operatorEntity),
+                      onTap: () {
+                        _annotationsListStore.value.isEmpty
+                            ? _operatorController.noAnnotationSnackbar(context)
+                            : Modular.to.pushNamed(
+                                "${AnnotationRoutes.annotationsListPage}${widget.enterpriseId}",
+                                arguments: widget.operatorEntity);
+                      },
                     ),
                     OptionsPageMenuComponent(
                       elevation: 10,

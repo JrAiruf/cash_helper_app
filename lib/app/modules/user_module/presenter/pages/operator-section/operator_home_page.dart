@@ -8,6 +8,7 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -26,6 +27,7 @@ class OperartorHomePage extends StatefulWidget {
 class _OperartorHomePageState extends State<OperartorHomePage> {
   final _loginStore = Modular.get<LoginStore>();
   final _annotationListStore = Modular.get<AnnotationsListStore>();
+  final _operatorController = Modular.get<OperatorController>();
   DrawerPagePosition? drawerPosition;
   final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
@@ -170,10 +172,14 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                           ),
                                     ),
                                   ],
-                                  onPressed: () => Modular.to.navigate(
-                                    "${AnnotationRoutes.annotationsListPage}$_enterpriseId",
-                                    arguments: currentOperator,
-                                  ),
+                                  onPressed: () {
+                                    _annotationListStore.value.isEmpty
+                                        ? _operatorController
+                                            .noAnnotationSnackbar(context)
+                                        : Modular.to.navigate(
+                                            "${AnnotationRoutes.annotationsListPage}$_enterpriseId",
+                                            arguments: currentOperator);
+                                  },
                                 ),
                                 QuickAccessButton(
                                   backgroundColor:

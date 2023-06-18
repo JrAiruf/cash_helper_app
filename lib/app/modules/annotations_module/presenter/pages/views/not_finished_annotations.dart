@@ -13,11 +13,13 @@ class NotFinishedAnnotations extends StatelessWidget {
       {super.key,
       required this.operatorEntity,
       required this.position,
+      required this.controller,
       required this.annotations,
       required this.enterpriseId});
   OperatorEntity operatorEntity;
   List<AnnotationEntity> annotations;
   BottomNavigationBarPosition position;
+  PageController controller;
   String enterpriseId;
   @override
   Widget build(BuildContext context) {

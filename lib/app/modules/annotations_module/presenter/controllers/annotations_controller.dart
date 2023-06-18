@@ -101,6 +101,7 @@ class AnnotationsController {
             enterpriseId, operatorEntity.operatorId!, annotationId);
         annotationLoadingState.value = false;
         annotationDeleted(context);
+        Modular.to.pop();
         Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
             arguments: operatorEntity);
       },

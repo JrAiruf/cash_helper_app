@@ -28,7 +28,7 @@ class OperatorController {
       wrongCodeSnackbar(context);
     }
   }
-  
+
   Future<void> closeOperatorCash(BuildContext context) async {
     if (operatorCode == operatorEntity!.operatorCode) {
       await operatorStore.closeOperatorCash(
@@ -185,6 +185,39 @@ class OperatorController {
                 size: 35,
                 color: Colors.white,
               )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  noAnnotationSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        elevation: 5,
+        duration: const Duration(seconds: 3),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.warning_amber_rounded,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    'Nenhuma anotação no sistema',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
