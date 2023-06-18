@@ -34,6 +34,7 @@ class _ManagementPageState extends State<ManagementPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final detailColor = Theme.of(context).colorScheme.onPrimary;
     final surfaceColor = Theme.of(context).colorScheme.surface;

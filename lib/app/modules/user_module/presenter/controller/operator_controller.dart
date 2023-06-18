@@ -195,7 +195,12 @@ class OperatorController {
   noAnnotationSnackbar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
         backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
         elevation: 5,
         duration: const Duration(seconds: 3),
@@ -205,18 +210,9 @@ class OperatorController {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(
-                    Icons.warning_amber_rounded,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    'Nenhuma anotação no sistema',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
+              Text(
+                'Nenhuma anotação no sistema',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),

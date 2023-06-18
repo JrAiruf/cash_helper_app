@@ -30,7 +30,9 @@ class ManagerSectionDrawer extends StatelessWidget {
     final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final height = MediaQuery.of(context).size.height;
-    final itemSpacingHeight = height * 0.02;
+    final sizeFrame = height <= 800.0;
+    final itemSpacingHeight = sizeFrame ? height * 0.015 : height * 0.02;
+    print(height);
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(radius ?? 5),

@@ -27,6 +27,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 750.0;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final errorColor = Theme.of(context).colorScheme.errorContainer;
     final detailColor = Theme.of(context).colorScheme.onPrimary;
@@ -53,7 +54,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                   ),
                 ),
                 Positioned(
-                  top: 90,
+                  top: height * 0.09,
                   child: Text(
                     "Métodos de Pagamento",
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -133,7 +134,9 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                                   arguments: argObjects);
                                             },
                                             child: Container(
-                                              height: height * 0.11,
+                                              height: sizeFrame
+                                                  ? height * 0.12
+                                                  : height * 0.11,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(20),

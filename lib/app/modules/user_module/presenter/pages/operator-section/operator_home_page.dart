@@ -186,7 +186,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                       appThemes.primaryColor(context),
                                   border: true,
                                   height: height * 0.1,
-                                  width: width * 0.38,
+                                  width: width * 0.4,
                                   radius: 15,
                                   items: [
                                     Icon(
