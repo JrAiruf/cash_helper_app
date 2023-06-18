@@ -38,6 +38,7 @@ class _OperatorArea extends State<OperatorArea> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final surfaceColor = Theme.of(context).colorScheme.surface;
@@ -77,6 +78,7 @@ class _OperatorArea extends State<OperatorArea> {
         ),
       ),
       bottomNavigationBar: Container(
+        height: sizeFrame ? height * 0.07 : height * 0.065,
         decoration: BoxDecoration(color: backgroundColor),
         child: CashHelperBottomNavigationBar(
           itemColor: tertiaryColor,
@@ -85,7 +87,7 @@ class _OperatorArea extends State<OperatorArea> {
           position: widget.position,
           backgroundColor: primaryColor,
           radius: 20,
-          height: height * 0.08,
+          height: sizeFrame ? height * 0.07 : height * 0.065,
           items: [
             CashHelperBottomNavigationItem(
               itemBackgroundColor: primaryColor,

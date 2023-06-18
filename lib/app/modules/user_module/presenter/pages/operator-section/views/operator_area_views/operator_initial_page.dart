@@ -202,7 +202,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
             ),
           ),
           Positioned(
-            top: height * 0.12,
+            top: sizeFrame ? height * 0.11 : height * 0.12,
             left: width * 0.02,
             child: SizedBox(
               width: width * 0.95,

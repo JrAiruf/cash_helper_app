@@ -35,6 +35,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
     return Container(
       height: height,
@@ -125,7 +126,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
             ),
           ),
           Positioned(
-            top: height * 0.12,
+            top: sizeFrame ? height * 0.11 : height * 0.12,
             left: width * 0.02,
             child: SizedBox(
               width: width * 0.95,
