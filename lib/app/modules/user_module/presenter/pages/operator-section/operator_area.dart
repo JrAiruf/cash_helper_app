@@ -47,7 +47,7 @@ class _OperatorArea extends State<OperatorArea> {
     final annotations = _annotationListStore.value;
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
+      body: Container(  
         height: height,
         width: width,
         decoration: BoxDecoration(
@@ -71,7 +71,7 @@ class _OperatorArea extends State<OperatorArea> {
               enterpriseId: _enterpriseId,
             ),
             OperatorOppeningPage(
-                operatorEntity: OperatorEntity(),
+                operatorEntity: widget.operatorEntity,
                 position: BottomNavigationBarPosition.operatorOppening,
                 pageController: _operatorPageController)
           ],
