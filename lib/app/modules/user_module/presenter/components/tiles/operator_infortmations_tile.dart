@@ -12,11 +12,18 @@ class OperatorInformationsTile extends StatelessWidget {
   final IconData? icon;
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).colorScheme.surface;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Icon(icon),
-        Text(content ?? ""),
+        Text(
+          content ?? "",
+          style: Theme.of(context)
+              .textTheme
+              .displaySmall
+              ?.copyWith(color: textColor),
+        ),
       ],
     );
   }

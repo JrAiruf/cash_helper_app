@@ -3,6 +3,8 @@
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/tiles/operator_infortmations_tile.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import '../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
 import '../../../../../domain/entities/operator_entity.dart';
 import '../../../../components/cash_helper_bottom_navigation_bar.dart';
 
@@ -26,6 +28,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     final operatorPageController = PageController();
     final appThemes = CashHelperThemes();
     String oppeningTime = widget.operatorEntity.operatorOppening == "Pendente"
@@ -56,7 +59,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.person,
                     size: 55,
                   ),
@@ -71,7 +74,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
             ),
           ),
           Positioned(
-            top: height * 0.22,
+            top: sizeFrame ? height * 0.23 : height * 0.22,
             child: SizedBox(
               height: height * 0.65,
               width: width,
@@ -83,7 +86,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                   child: Column(
                     children: [
                       Container(
-                        height: height * 0.09,
+                        height: sizeFrame ? height * 0.1 : height * 0.09,
                         decoration: BoxDecoration(
                           color: appThemes.primaryColor(context),
                           borderRadius: BorderRadius.circular(20),
@@ -112,6 +115,44 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                             ],
                           ),
                         ),
+                      ),
+                      SizedBox(
+                          height: sizeFrame ? height * 0.09 : height * 0.08),
+                      Form(
+                        /* key: _loginController.loginFormKey, */
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CashHelperTextFieldComponent(
+                                primaryColor: appThemes.surfaceColor(context),
+                                radius: 15,
+                                /*  validator: (value) =>
+                                    _loginController.emailValidate(value), */
+                                /*  onSaved: (value) => _loginController
+                                    .emailField.text = value ?? "",
+                                controller: _loginController.emailField, */
+                                label: 'Código Ops.',
+                              ),
+                              SizedBox(
+                                  height: sizeFrame
+                                      ? height * 0.05
+                                      : height * 0.04),
+                            ],
+                          ),
+                        ),
+                      ),
+                      CashHelperElevatedButton(
+                        onPressed: () {},
+                        border: true,
+                        radius: 12,
+                        width: width * 0.7,
+                        height: 50,
+                        buttonName: 'Abrir Caixa',
+                        fontSize: 15,
+                        nameColor: appThemes.surfaceColor(context),
+                        backgroundColor: appThemes.greenColor(context),
                       ),
                     ],
                   ),
