@@ -39,6 +39,7 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
+    final sizeFrame = height <= 800.0;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -90,7 +91,7 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
         },
       ),
       bottomNavigationBar: Container(
-        height: height * 0.08,
+        height: sizeFrame ? height * 0.07 : height * 0.065,
         decoration: BoxDecoration(
             color: _annotationsListStore.value.isNotEmpty
                 ? appTheme.backgroundColor(context)
@@ -100,7 +101,7 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
           backgroundColor: appTheme.primaryColor(context),
           pageController: _annotationsController.annotationsListPageController,
           itemColor: appTheme.greenColor(context),
-          height: height * 0.08,
+          height: sizeFrame ? height * 0.07 : height * 0.065,
           position: _annotationsController.position,
           items: [
             CashHelperBottomNavigationItem(

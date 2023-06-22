@@ -1,5 +1,9 @@
 {
     "editor.codeActionsOnSave": {
         
-    }
+    },
+    "editor.rulers": [
+
+    ],
+    "dart.lineLength": 200
 }

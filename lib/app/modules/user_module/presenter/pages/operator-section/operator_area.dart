@@ -105,7 +105,7 @@ class _OperatorArea extends State<OperatorArea> {
                 _operatorPageController.animateToPage(
                     BottomNavigationBarPosition.operatorHome.position,
                     duration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 200,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
@@ -123,7 +123,7 @@ class _OperatorArea extends State<OperatorArea> {
                 _operatorPageController.animateToPage(
                     BottomNavigationBarPosition.operatorOptions.position,
                     duration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 200,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
@@ -141,7 +141,7 @@ class _OperatorArea extends State<OperatorArea> {
                 _operatorPageController.animateToPage(
                     BottomNavigationBarPosition.operatorOppening.position,
                     duration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 200,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {

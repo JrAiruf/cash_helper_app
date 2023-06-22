@@ -1,6 +1,5 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import "package:flutter/material.dart";
-
 import '../../../user_module/presenter/components/cards/annotation_informations_card.dart';
 import '../../domain/entities/annotation_entity.dart';
 

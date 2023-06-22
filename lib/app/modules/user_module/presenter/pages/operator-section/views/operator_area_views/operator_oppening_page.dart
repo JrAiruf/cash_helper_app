@@ -315,9 +315,8 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                                 ),
                               ),
                               SizedBox(
-                                  height: sizeFrame
-                                      ? height * 0.13
-                                      : height * 0.12),
+                                  height:
+                                      sizeFrame ? height * 0.1 : height * 0.09),
                               Center(
                                 child: Text(
                                   "Caixa Aberto!",

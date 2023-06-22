@@ -26,6 +26,7 @@ class NotFinishedAnnotations extends StatelessWidget {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     return annotations.isEmpty
         ? Container(
             decoration: BoxDecoration(
@@ -48,7 +49,7 @@ class NotFinishedAnnotations extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 Positioned(
-                  top: height * 0.05,
+                  top: sizeFrame ? height * 0.065 : height * 0.05,
                   child: Center(
                     child: Text(
                       "Não Finalizadas",
@@ -59,7 +60,7 @@ class NotFinishedAnnotations extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: height * 0.7,
+                  height: sizeFrame ? height * 0.65 : height * 0.7,
                   width: width,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
