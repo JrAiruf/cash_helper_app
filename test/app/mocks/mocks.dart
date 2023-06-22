@@ -2,7 +2,6 @@ import 'package:cash_helper_app/app/modules/annotations_module/infra/repository/
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/data/enterprise_repository.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/infra/data/login_repository.dart';
-import 'package:cash_helper_app/app/modules/login_module/infra/repository/login_repository_impl.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/repositories/management_repository_impl.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/repository/operator_repository_impl.dart';

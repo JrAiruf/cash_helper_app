@@ -10,11 +10,9 @@ class PaymentMethod extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final errorColor = Theme.of(context).colorScheme.errorContainer;
     final detailColor = Theme.of(context).colorScheme.onPrimary;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -28,7 +26,7 @@ class PaymentMethod extends StatelessWidget {
             Container(
               height: height * 0.75,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),

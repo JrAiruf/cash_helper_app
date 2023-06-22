@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 
 class OperatorInformationsTile extends StatelessWidget {
-  OperatorInformationsTile({
-    Key? key,
+  const OperatorInformationsTile({super.key,
     required this.content,
     required this.icon,
   });

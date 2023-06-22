@@ -5,8 +5,6 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/til
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
-import '../../../../login_module/presenter/stores/login_store.dart';
 import '../../controller/manager_controller.dart';
 
 class ManagerSectionDrawer extends StatelessWidget {
@@ -32,7 +30,6 @@ class ManagerSectionDrawer extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final sizeFrame = height <= 800.0;
     final itemSpacingHeight = sizeFrame ? height * 0.015 : height * 0.02;
-    print(height);
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(radius ?? 5),

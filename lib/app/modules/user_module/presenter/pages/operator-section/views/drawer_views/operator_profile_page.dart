@@ -9,7 +9,6 @@ import '../../../../../../login_module/presenter/controllers/login_controller.da
 import '../../../../../../management_module/presenter/controller/management_controller.dart';
 import '../../../../components/cards/operator_card_component.dart';
 import '../../../../components/cards/profile_informations_card.dart';
-import '../../../../components/operator_widgets/operator_status_component.dart';
 import '../../../../components/widgets/cash_helper_drawer.dart';
 
 class OperatorProfilePage extends StatefulWidget {

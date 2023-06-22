@@ -1,14 +1,8 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/search_annotations_by_client_address/isearch_annotations_by_client_address.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
-import '../../../../../mocks/mocks.dart';
-import '../create_annotation/create_new_annotation_test.dart';
-
 
 class SearchMock implements ISearchAnnotationsByClientAddress {
    SearchMock({required AnnotationRepository repository})
@@ -32,9 +26,6 @@ class SearchMock implements ISearchAnnotationsByClientAddress {
   }
 }
 void main() {
-  final repository = AnnotationRepo();
-  final createAnnotation = CreateNewAnnotationMock(repository: repository);
-  final searchAnnotationsByClientAddress = SearchMock(repository: repository);
   group(
     "SearchAnnotationsByClientAddress Function Should",
     () {

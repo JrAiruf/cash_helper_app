@@ -7,7 +7,7 @@ import '../../../../../domain/entities/operator_entity.dart';
 import '../../../../components/tiles/operator_infortmations_tile.dart';
 
 class OperatorClosePage extends StatefulWidget {
-  const OperatorClosePage({required this.operatorEntity});
+  const OperatorClosePage({super.key, required this.operatorEntity});
 
   final OperatorEntity operatorEntity;
 

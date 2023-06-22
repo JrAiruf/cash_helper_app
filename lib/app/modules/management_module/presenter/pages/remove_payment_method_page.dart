@@ -41,11 +41,9 @@ class _RemovePaymentMethodPageState extends State<RemovePaymentMethodPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final errorColor = Theme.of(context).colorScheme.errorContainer;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
