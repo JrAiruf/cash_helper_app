@@ -81,15 +81,6 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                 ),
               ),
             ),
-            OperatorStatusComponent(
-              textColor: appTheme.surfaceColor(context),
-              activeColor: appTheme.greenColor(context),
-              inactiveColor: appTheme.purpleColor(context),
-              borderColor: appTheme.backgroundColor(context),
-              operatorEntity: widget.operatorEntity,
-              sidePosition: sizeFrame ? width * 0.025 : 25,
-              topPosition: sizeFrame ? height * 0.09 : height * 0.12,
-            ),
             SizedBox(
               height: height * 0.71,
               width: width,

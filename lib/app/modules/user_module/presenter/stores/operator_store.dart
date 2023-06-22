@@ -1,7 +1,7 @@
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/change_operator_email/ichange_operator_email.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/delete_operator_account/idelete_operator_account.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/open_operator_cash/iopen_operator_cash.dart';
-import 'package:cash_helper_app/app/modules/user_module/domain/usecases/open_operator_cash/open_operator_cash.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store_states.dart';
 import 'package:flutter/cupertino.dart';
 import '../../domain/usecases/change_operator_password/ichange_operator_password.dart';
@@ -51,11 +51,21 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
     await _openOperatorCash(enterpriseId, operatorId, oppeningTime);
     value = OpenedCashState();
   }
+
   Future<void> closeOperatorCash(
       String enterpriseId, String operatorId, String closingTime) async {
     value = LoadingCashState();
     await _closeOperatorCash(enterpriseId, operatorId, closingTime);
     value = ClosedCashState();
+  }
+
+  void setOperatorState(OperatorEntity operatorEntity) {
+    value = LoadingCashState();
+    if (operatorEntity.operatorEnabled!) {
+      value = OpenedCashState();
+    } else {
+      value = ClosedCashState();
+    }
   }
 
   Future<void> changeOperatorPassword(String newPassword, String operatorCode,

@@ -3,27 +3,30 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operato
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../../routes/app_routes.dart';
+
 class OperatorController {
   final emailField = TextEditingController();
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
   final operatorStore = Modular.get<OperatorStore>();
 
+  final operatorCodeFormKey = GlobalKey<FormState>();
   bool? loadingOperatorSettings;
+
   OperatorEntity? operatorEntity;
   String? enterpriseId;
-  String? operatorId;
   String? operatorCode;
-  String? oppeningTime;
-  String? closingTime;
 
   Future<void> openOperatorCash(BuildContext context) async {
     if (operatorCode == operatorEntity!.operatorCode) {
       await operatorStore.openOperatorCash(
         enterpriseId ?? "",
-        operatorId ?? "",
-        oppeningTime ?? "",
+        operatorEntity?.operatorId ?? "",
+        operatorEntity?.operatorOppening ?? "",
       );
+      Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
+          arguments: operatorEntity);
     } else {
       wrongCodeSnackbar(context);
     }
@@ -33,8 +36,8 @@ class OperatorController {
     if (operatorCode == operatorEntity!.operatorCode) {
       await operatorStore.closeOperatorCash(
         enterpriseId ?? "",
-        operatorId ?? "",
-        closingTime ?? "",
+        operatorEntity?.operatorId ?? "",
+        operatorEntity?.operatorClosing ?? "",
       );
     } else {
       wrongCodeSnackbar(context);

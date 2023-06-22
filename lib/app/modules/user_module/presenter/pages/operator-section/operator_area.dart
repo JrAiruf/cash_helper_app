@@ -7,6 +7,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_options_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../../../routes/app_routes.dart';
 import '../../../../annotations_module/presenter/stores/annotations_list_store.dart';
 import '../../components/cash_helper_bottom_navigation_item.dart';
 
@@ -46,8 +47,15 @@ class _OperatorArea extends State<OperatorArea> {
     final seccondaryColor = Theme.of(context).colorScheme.secondary;
     final annotations = _annotationListStore.value;
     return Scaffold(
-      appBar: AppBar(),
-      body: Container(  
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_sharp),
+          onPressed: () => Modular.to.navigate(
+              "${UserRoutes.operatorHomePage}$_enterpriseId",
+              arguments: widget.operatorEntity),
+        ),
+      ),
+      body: Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
@@ -71,9 +79,11 @@ class _OperatorArea extends State<OperatorArea> {
               enterpriseId: _enterpriseId,
             ),
             OperatorOppeningPage(
-                operatorEntity: widget.operatorEntity,
-                position: BottomNavigationBarPosition.operatorOppening,
-                pageController: _operatorPageController)
+              operatorEntity: widget.operatorEntity,
+              position: BottomNavigationBarPosition.operatorOppening,
+              pageController: _operatorPageController,
+              enterpriseId: _enterpriseId,
+            )
           ],
         ),
       ),

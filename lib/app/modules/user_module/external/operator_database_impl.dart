@@ -18,7 +18,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   Future changeUserEmail(String? newEmail, String? operatorCode,
       String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
-    if (dataVerifier.validateInputData(inputs: [newEmail, operatorCode, operatorPassword])) {
+    if (dataVerifier.validateInputData(
+        inputs: [newEmail, operatorCode, operatorPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
           .map((databaseOperator) => databaseOperator.data())
@@ -45,7 +46,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   Future<void> deleteUserAccount(String? operatorCode, String? operatorEmail,
       String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection ?? "");
-    if (dataVerifier.validateInputData(inputs:[operatorEmail, operatorCode, operatorPassword])) {
+    if (dataVerifier.validateInputData(
+        inputs: [operatorEmail, operatorCode, operatorPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
           .map((databaseOperator) => databaseOperator.data())
@@ -69,7 +71,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   Future<void> changeUserPassword(String? newPassword, String? operatorCode,
       String? currentPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
-    if (dataVerifier.validateInputData(inputs:[newPassword, operatorCode, currentPassword])) {
+    if (dataVerifier.validateInputData(
+        inputs: [newPassword, operatorCode, currentPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
           .map((databaseOperator) => databaseOperator.data())

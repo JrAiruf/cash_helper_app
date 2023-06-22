@@ -222,7 +222,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           height: 50,
                           width: width * 0.7,
                           radius: 12,
-                          onPressed: () => Modular.to.pushNamed(
+                          onPressed: () => Modular.to.navigate(
                               "${UserRoutes.operatorArea}$_enterpriseId",
                               arguments: currentOperator),
                           buttonName: "Área do operador",
