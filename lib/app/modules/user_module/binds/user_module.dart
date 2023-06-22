@@ -1,3 +1,5 @@
+import 'package:cash_helper_app/app/modules/user_module/binds/manager_child_routes.dart';
+import 'package:cash_helper_app/app/modules/user_module/binds/operator_child_routes.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/open_operator_cash/iopen_operator_cash.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/operator_database_impl.dart';
@@ -6,7 +8,6 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/controller/pay
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/admin_options_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/controll_panel_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/management_page.dart';
-import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../domain/usecases/change_operator_email/change_operator_email.dart';
 import '../domain/usecases/change_operator_email/ichange_operator_email.dart';
@@ -49,78 +50,8 @@ class UserModule extends Module {
   List<ModularRoute> get routes => routesList;
 
   final routesList = <ModularRoute>[
-    ChildRoute(
-      "/manager-home-page/:enterpriseId",
-      child: (_, args) => ManagerHomePage(
-        managerEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/management-page/:enterpriseId",
-      child: (_, args) => ManagementPage(
-        managerEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/admin-options-page/:enterpriseId",
-      child: (_, args) => AdminOptionsPage(
-        managerEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/manager-settings-page/:enterpriseId",
-      child: (_, args) => ManagerSettingsPage(
-        managerEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/operator-home-page/:enterpriseId",
-      child: (_, args) => OperartorHomePage(
-        operatorEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/controll-panel-page/:enterpriseId",
-      child: (_, args) => ControllPanelPage(
-        managerEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/operator-profile-page/:enterpriseId",
-      child: (_, args) => OperatorProfilePage(
-        operatorEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/operator-settings-page/:enterpriseId",
-      child: (_, args) => OperatorSettingsPage(
-        operatorEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/change-operator-email",
-      child: (_, args) => ChangeOperatorEmailPage(
-        operatorEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/change-operator-password",
-      child: (_, args) => ChangeOperatorPasswordPage(
-        operatorEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/remove-operator-account",
-      child: (_, args) => RemoveOperatorAccountPage(
-        operatorEntity: args.data,
-      ),
-    ),
-    ChildRoute(
-      "/operator-area/:enterpriseId",
-      child: (_, args) => OperatorArea(
-        operatorEntity: args.data,
-      ),
-    ),
+    ...ManagerChildRoutes.routes,
+    ...OperatorChildRoutes.routes,
   ];
 
   final bindList = <Bind>[

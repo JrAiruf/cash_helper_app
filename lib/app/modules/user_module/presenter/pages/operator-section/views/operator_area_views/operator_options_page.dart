@@ -14,12 +14,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../components/operator_widgets/cash_number_component.dart';
 
 class OperatorOptionsPage extends StatefulWidget {
-  const OperatorOptionsPage(
-      {super.key,
-      required this.operatorEntity,
-      required this.enterpriseId,
-      this.position,
-      required this.pageController});
+  const OperatorOptionsPage({super.key, required this.operatorEntity, required this.enterpriseId, this.position, required this.pageController});
   final OperatorEntity operatorEntity;
   final String enterpriseId;
   final BottomNavigationBarPosition? position;
@@ -76,9 +71,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                       onTap: () {
                         _annotationsListStore.value.isEmpty
                             ? _operatorController.noAnnotationSnackbar(context)
-                            : Modular.to.pushNamed(
-                                "${AnnotationRoutes.annotationsListPage}${widget.enterpriseId}",
-                                arguments: widget.operatorEntity);
+                            : Modular.to.pushNamed("${AnnotationRoutes.annotationsListPage}${widget.enterpriseId}", arguments: widget.operatorEntity);
                       },
                     ),
                     OptionsPageMenuComponent(
@@ -106,9 +99,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                       icon: Icons.library_books_outlined,
                       height: height * 0.11,
                       width: width * 0.4,
-                      onTap: () => Modular.to.pushNamed(
-                          "${AnnotationRoutes.createAnnotationPage}${widget.enterpriseId}",
-                          arguments: widget.operatorEntity),
+                      onTap: () => Modular.to.pushNamed("${AnnotationRoutes.createAnnotationPage}${widget.enterpriseId}", arguments: widget.operatorEntity),
                     ),
                     OptionsPageMenuComponent(
                       elevation: 10,
@@ -119,6 +110,10 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                       icon: Icons.power_settings_new_outlined,
                       height: height * 0.11,
                       width: width * 0.4,
+                      onTap: () => Modular.to.navigate(
+                        "${UserRoutes.operatorClosePage}${widget.enterpriseId}",
+                        arguments: widget.operatorEntity,
+                      ),
                     ),
                   ],
                 ),
@@ -133,10 +128,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CashNumberComponent(
-                      operatorEntity: widget.operatorEntity,
-                      backgroundColor: appThemes.surfaceColor(context),
-                      radius: 16),
+                  CashNumberComponent(operatorEntity: widget.operatorEntity, backgroundColor: appThemes.surfaceColor(context), radius: 16),
                   Text(
                     "${widget.operatorEntity.operatorName}",
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(

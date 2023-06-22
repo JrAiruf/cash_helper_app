@@ -14,12 +14,7 @@ import '../../../../../domain/entities/operator_entity.dart';
 import '../../../../components/cash_helper_bottom_navigation_bar.dart';
 
 class OperatorOppeningPage extends StatefulWidget {
-  const OperatorOppeningPage(
-      {super.key,
-      required this.operatorEntity,
-      required this.position,
-      required this.enterpriseId,
-      required this.pageController});
+  const OperatorOppeningPage({super.key, required this.operatorEntity, required this.position, required this.enterpriseId, required this.pageController});
 
   final OperatorEntity operatorEntity;
   final BottomNavigationBarPosition position;
@@ -50,13 +45,8 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
     final appThemes = CashHelperThemes();
     operatorController.operatorEntity = widget.operatorEntity;
     operatorController.enterpriseId = widget.enterpriseId;
-    String oppeningTime =
-        operatorController.operatorEntity?.operatorOppening == "Pendente"
-            ? "Pendente"
-            : operatorController.operatorEntity?.operatorOppening ?? "";
-    String operatorStatus = operatorController.operatorEntity!.operatorEnabled!
-        ? "Ativo"
-        : "Inativo";
+    String oppeningTime = operatorController.operatorEntity?.operatorOppening == "Pendente" ? "Pendente" : operatorController.operatorEntity?.operatorOppening ?? "";
+    String operatorStatus = operatorController.operatorEntity!.operatorEnabled! ? "Ativo" : "Inativo";
     return ValueListenableBuilder(
         valueListenable: operatorStore,
         builder: (_, storeValue, __) {
@@ -101,10 +91,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                           ),
                           Text(
                             widget.operatorEntity.operatorName ?? "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium
-                                ?.copyWith(
+                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
                                   color: appThemes.surfaceColor(context),
                                 ),
                           ),
@@ -115,7 +102,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                   Positioned(
                     top: sizeFrame ? height * 0.23 : height * 0.22,
                     child: SizedBox(
-                      height: height * 0.65,
+                      height: sizeFrame ? height * 0.65 : height * 0.75,
                       width: width,
                       child: Center(
                         child: Padding(
@@ -125,8 +112,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                           child: Column(
                             children: [
                               Container(
-                                height:
-                                    sizeFrame ? height * 0.1 : height * 0.09,
+                                height: sizeFrame ? height * 0.1 : height * 0.09,
                                 decoration: BoxDecoration(
                                   color: appThemes.primaryColor(context),
                                   borderRadius: BorderRadius.circular(20),
@@ -137,8 +123,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                                     vertical: 10,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       OperatorInformationsTile(
                                         content: operatorStatus,
@@ -149,65 +134,43 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                                         icon: Icons.access_time,
                                       ),
                                       OperatorInformationsTile(
-                                        content:
-                                            "${widget.operatorEntity.operatorNumber}",
+                                        content: "${widget.operatorEntity.operatorNumber}",
                                         icon: Icons.monitor,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                  height: sizeFrame
-                                      ? height * 0.09
-                                      : height * 0.08),
+                              SizedBox(height: sizeFrame ? height * 0.09 : height * 0.08),
                               Form(
                                 key: operatorController.operatorCodeFormKey,
                                 child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  padding: const EdgeInsets.symmetric(horizontal: 5),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       CashHelperTextFieldComponent(
-                                        primaryColor:
-                                            appThemes.surfaceColor(context),
+                                        primaryColor: appThemes.surfaceColor(context),
                                         radius: 15,
-                                        validator: operatorController
-                                            .cashierCodeValidate,
-                                        onSaved: (value) => operatorController
-                                            .operatorCode = value ?? "",
-                                        controller:
-                                            operatorController.cashierCodeField,
+                                        validator: operatorController.cashierCodeValidate,
+                                        onSaved: (value) => operatorController.operatorCode = value ?? "",
+                                        controller: operatorController.cashierCodeField,
                                         label: 'Código Ops.',
                                       ),
-                                      SizedBox(
-                                          height: sizeFrame
-                                              ? height * 0.05
-                                              : height * 0.04),
+                                      SizedBox(height: sizeFrame ? height * 0.05 : height * 0.04),
                                     ],
                                   ),
                                 ),
                               ),
                               CashHelperElevatedButton(
                                 onPressed: () {
-                                  operatorController
-                                      .operatorCodeFormKey.currentState!
-                                      .validate();
-                                  if (operatorController
-                                      .operatorCodeFormKey.currentState!
-                                      .validate()) {
-                                    operatorController
-                                        .operatorCodeFormKey.currentState!
-                                        .save();
-                                    operatorController
-                                            .operatorEntity?.operatorOppening =
-                                        dateValue.operatorOppening;
-                                    operatorController
-                                        .openOperatorCash(context);
+                                  operatorController.operatorCodeFormKey.currentState!.validate();
+                                  if (operatorController.operatorCodeFormKey.currentState!.validate()) {
+                                    operatorController.operatorCodeFormKey.currentState!.save();
+                                    operatorController.operatorEntity?.operatorOppening = dateValue.operatorOppening;
+                                    operatorController.openOperatorCash(context);
                                   } else {
-                                    operatorController
-                                        .wrongCodeSnackbar(context);
+                                    operatorController.wrongCodeSnackbar(context);
                                   }
                                 },
                                 border: true,
@@ -258,10 +221,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                           ),
                           Text(
                             widget.operatorEntity.operatorName ?? "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium
-                                ?.copyWith(
+                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
                                   color: appThemes.surfaceColor(context),
                                 ),
                           ),
@@ -282,8 +242,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                           child: Column(
                             children: [
                               Container(
-                                height:
-                                    sizeFrame ? height * 0.1 : height * 0.09,
+                                height: sizeFrame ? height * 0.1 : height * 0.09,
                                 decoration: BoxDecoration(
                                   color: appThemes.primaryColor(context),
                                   borderRadius: BorderRadius.circular(20),
@@ -294,8 +253,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                                     vertical: 10,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       OperatorInformationsTile(
                                         content: operatorStatus,
@@ -306,24 +264,18 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                                         icon: Icons.access_time,
                                       ),
                                       OperatorInformationsTile(
-                                        content:
-                                            "${widget.operatorEntity.operatorNumber}",
+                                        content: "${widget.operatorEntity.operatorNumber}",
                                         icon: Icons.monitor,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                  height:
-                                      sizeFrame ? height * 0.1 : height * 0.09),
+                              SizedBox(height: sizeFrame ? height * 0.1 : height * 0.09),
                               Center(
                                 child: Text(
                                   "Caixa Aberto!",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                         color: appThemes.surfaceColor(context),
                                       ),
                                 ),

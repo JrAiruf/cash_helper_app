@@ -49,7 +49,7 @@ class _OperatorArea extends State<OperatorArea> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_sharp),
+          icon: const Icon(Icons.arrow_back_ios_new_sharp),
           onPressed: () => Modular.to.navigate(
               "${UserRoutes.operatorHomePage}$_enterpriseId",
               arguments: widget.operatorEntity),

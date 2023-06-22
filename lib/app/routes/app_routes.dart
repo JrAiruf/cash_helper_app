@@ -22,6 +22,7 @@ class UserRoutes {
   static const managerSettingsPage = "/user-module/manager-settings-page/";
   static const operatorHomePage = "/user-module/operator-home-page/";
   static const operatorArea = "/user-module/operator-area/";
+  static const operatorClosePage = "/user-module/operator-close-page/";
   static const operatorProfilePage = "/user-module/operator-profile-page/";
   static const operatorSettingsPage = "/user-module/operator-settings-page/";
 }
