@@ -71,29 +71,23 @@ class CashHelperTextFieldComponent extends StatelessWidget {
       ),
       decoration: InputDecoration(
         enabled: readOnly == true ? false : true,
-        errorStyle:
-            TextStyle(color: primaryColor ?? surfaceColor, fontSize: 12),
+        errorStyle: TextStyle(color: primaryColor ?? surfaceColor, fontSize: 12),
         labelStyle: TextStyle(color: primaryColor ?? surfaceColor),
         hintText: hint ?? '',
         label: Text(
           label ?? '',
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
-              ?.copyWith(color: primaryColor ?? surfaceColor),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: primaryColor ?? surfaceColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius ?? 5),
-          borderSide: BorderSide(
-              color: primaryColor ?? surfaceColor.withOpacity(0.2), width: 0.9),
+          borderSide: BorderSide(color: primaryColor ?? surfaceColor.withOpacity(0.2), width: 0.5),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius ?? 5),
           borderSide: BorderSide(color: primaryColor ?? surfaceColor),
         ),
         errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-              color: primaryColor ?? surfaceColor.withOpacity(0.2), width: 0.9),
+          borderSide: BorderSide(color: primaryColor ?? surfaceColor.withOpacity(0.2), width: 0.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius ?? 5),

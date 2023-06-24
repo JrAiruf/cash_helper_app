@@ -6,6 +6,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/a
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/user_not_found_view.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
@@ -35,22 +36,17 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final surfaceColor = Theme.of(context).colorScheme.onSurface;
-    final surface = Theme.of(context).colorScheme.surface;
-    final secondaryColor = Theme.of(context).colorScheme.secondary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
+    final appThemes = CashHelperThemes();
 
     return ValueListenableBuilder(
-      valueListenable: _loginStore,
+      valueListenable: _loginController.loginStore,
       builder: (_, state, __) {
         if (state is LoginLoadingState) {
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
               child: CircularProgressIndicator(
-                color: indicatorColor,
+                color: appThemes.indicatorColor(context),
               ),
             ),
           );
@@ -61,7 +57,9 @@ class _LoginPageState extends State<LoginPage> {
               child: Container(
                 height: height,
                 width: width,
-                decoration: BoxDecoration(color: primaryColor),
+                decoration: BoxDecoration(
+                  color: appThemes.primaryColor(context),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 15,
@@ -71,8 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(height: height * 0.1),
-                      Text('Cash Helper',
-                          style: Theme.of(context).textTheme.bodyLarge),
+                      Text('Cash Helper', style: Theme.of(context).textTheme.bodyLarge),
                       SizedBox(height: height * 0.2),
                       Row(
                         children: [
@@ -80,15 +77,11 @@ class _LoginPageState extends State<LoginPage> {
                             animation: _loginController.managerUser,
                             builder: (_, __) {
                               return Switch(
-                                activeColor: tertiaryColor,
+                                activeColor: appThemes.greenColor(context),
                                 value: _loginController.userStatus,
                                 onChanged: (value) {
                                   _loginController.userStatus = value;
-                                  _loginController.userBusinessPosition = value
-                                      ? EnterpriseBusinessPosition
-                                          .manager.position
-                                      : EnterpriseBusinessPosition
-                                          .cashOperator.position;
+                                  _loginController.userBusinessPosition = value ? EnterpriseBusinessPosition.manager.position : EnterpriseBusinessPosition.cashOperator.position;
                                 },
                               );
                             },
@@ -99,10 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (_, __) {
                               return Text(
                                 _loginController.userBusinessPosition,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayMedium
-                                    ?.copyWith(color: surface),
+                                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: appThemes.surfaceColor(context)),
                               );
                             },
                           ),
@@ -111,78 +101,49 @@ class _LoginPageState extends State<LoginPage> {
                       Stack(
                         children: [
                           Card(
-                            color: secondaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
+                            color: appThemes.purpleColor(context),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             child: SizedBox(
                               height: height * 0.4,
                               width: width,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 30),
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
                                 child: Form(
                                   key: _loginController.loginFormKey,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5),
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         CashHelperTextFieldComponent(
-                                          primaryColor: surfaceColor,
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
-                                          validator: (value) => _loginController
-                                              .emailValidate(value),
-                                          onSaved: (value) => _loginController
-                                              .emailField.text = value ?? "",
-                                          controller:
-                                              _loginController.emailField,
+                                          validator: (value) => _loginController.emailValidate(value),
+                                          onSaved: (value) => _loginController.emailField.text = value ?? "",
+                                          controller: _loginController.emailField,
                                           label: 'Email',
                                         ),
                                         const SizedBox(
                                           height: 20,
                                         ),
                                         AnimatedBuilder(
-                                            animation: _loginController
-                                                .passwordVisible,
+                                            animation: _loginController.passwordVisible,
                                             builder: (_, __) {
                                               return CashHelperTextFieldComponent(
-                                                primaryColor: surfaceColor,
-                                                suffixIcon:
-                                                    VisibilityIconComponent(
-                                                        iconColor: surfaceColor,
-                                                        onTap: () {
-                                                          _loginController
-                                                                  .passwordVisible
-                                                                  .value =
-                                                              !_loginController
-                                                                  .passwordVisible
-                                                                  .value;
-                                                        },
-                                                        forVisibility:
-                                                            Icons.visibility,
-                                                        forHideContent: Icons
-                                                            .visibility_off,
-                                                        condition:
-                                                            _loginController
-                                                                .passwordVisible
-                                                                .value),
+                                                primaryColor: appThemes.surface(context),
+                                                suffixIcon: VisibilityIconComponent(
+                                                    iconColor: appThemes.surface(context),
+                                                    onTap: () {
+                                                      _loginController.passwordVisible.value = !_loginController.passwordVisible.value;
+                                                    },
+                                                    forVisibility: Icons.visibility,
+                                                    forHideContent: Icons.visibility_off,
+                                                    condition: _loginController.passwordVisible.value),
                                                 radius: 15,
-                                                obscureText: _loginController
-                                                            .passwordVisible
-                                                            .value ==
-                                                        true
-                                                    ? false
-                                                    : true,
-                                                validator: _loginController
-                                                    .passwordValidate,
-                                                onSaved: (value) =>
-                                                    _loginController
-                                                        .passwordField
-                                                        .text = value ?? "",
-                                                controller: _loginController
-                                                    .passwordField,
+                                                obscureText: _loginController.passwordVisible.value == true ? false : true,
+                                                validator: _loginController.passwordValidate,
+                                                onSaved: (value) => _loginController.passwordField.text = value ?? "",
+                                                controller: _loginController.passwordField,
                                                 label: 'Senha',
                                               );
                                             }),
@@ -198,14 +159,10 @@ class _LoginPageState extends State<LoginPage> {
                             child: Center(
                               child: TextButton(
                                 style: TextButton.styleFrom(),
-                                onPressed: () {
-                                  Modular.to.pushNamed("./create-new-operator",
-                                      arguments: widget.enterpriseEntity);
-                                },
+                                onPressed: () => Modular.to.pushNamed("./create-new-operator", arguments: widget.enterpriseEntity),
                                 child: Text(
                                   'Criar conta',
-                                  style:
-                                      Theme.of(context).textTheme.displaySmall,
+                                  style: Theme.of(context).textTheme.displaySmall,
                                 ),
                               ),
                             ),
@@ -219,13 +176,9 @@ class _LoginPageState extends State<LoginPage> {
                                 TextButton(
                                   style: TextButton.styleFrom(),
                                   onPressed: () {
-                                    Modular.to
-                                        .pushNamed("/forgot-password-page");
+                                    Modular.to.pushNamed("/forgot-password-page");
                                   },
-                                  child: Text('Esqueci minha senha',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall),
+                                  child: Text('Esqueci minha senha', style: Theme.of(context).textTheme.displaySmall),
                                 ),
                               ],
                             ),
@@ -241,8 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                           height: 65,
                           buttonName: 'Entrar',
                           fontSize: 20,
-                          nameColor: surfaceColor,
-                          backgroundColor: secondaryColor,
+                          nameColor: appThemes.surface(context),
+                          backgroundColor: appThemes.purpleColor(context),
                         ),
                       ),
                     ],
@@ -254,18 +207,25 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is LoginSuccessState) {
           final enterpriseId = widget.enterpriseEntity.enterpriseId;
           final operatorEntity = state.operatorEntity;
-          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
-              arguments: operatorEntity);
+          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(
+              color: appThemes.primaryColor(context),
+            ),
           );
         } else if (state is ManagerLoginSuccessState) {
           final enterpriseId = widget.enterpriseEntity.enterpriseId;
           final managerEntity = state.managerEntity;
-          Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId",
-              arguments: managerEntity);
+          Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId", arguments: managerEntity);
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(
+              color: appThemes.primaryColor(context),
+            ),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: appThemes.indicatorColor(context),
+              ),
+            ),
           );
         } else if (state is LoginAuthErrorState) {
           return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
@@ -273,7 +233,14 @@ class _LoginPageState extends State<LoginPage> {
           return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
         }
         return Container(
-          decoration: BoxDecoration(color: primaryColor),
+          decoration: BoxDecoration(
+            color: appThemes.primaryColor(context),
+          ),
+          child: Center(
+            child: CircularProgressIndicator(
+              color: appThemes.indicatorColor(context),
+            ),
+          ),
         );
       },
     );

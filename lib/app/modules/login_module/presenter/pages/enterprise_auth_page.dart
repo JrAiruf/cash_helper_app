@@ -85,9 +85,9 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                                         animation: _enterpriseController.codeVisible,
                                         builder: (_, __) {
                                           return CashHelperTextFieldComponent(
-                                            primaryColor: appThemes.surfaceColor(context),
+                                            primaryColor: appThemes.surface(context),
                                             suffixIcon: VisibilityIconComponent(
-                                                iconColor: appThemes.surfaceColor(context),
+                                                iconColor: appThemes.surface(context),
                                                 onTap: () => _enterpriseController.codeVisible.value = !_enterpriseController.codeVisible.value,
                                                 forVisibility: Icons.visibility,
                                                 forHideContent: Icons.visibility_off,
@@ -139,7 +139,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                               height: 65,
                               buttonName: 'Cadastre-se já!',
                               fontSize: 15,
-                              nameColor: appThemes.surfaceColor(context),
+                              nameColor: appThemes.surface(context),
                               backgroundColor: appThemes.purpleColor(context),
                             ),
                           ],
