@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class OperatorController {
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
   final operatorStore = Modular.get<OperatorStore>();
+  final annotationsListStore = Modular.get<AnnotationsListStore>();
 
   final operatorCodeFormKey = GlobalKey<FormState>();
   bool? loadingOperatorSettings;

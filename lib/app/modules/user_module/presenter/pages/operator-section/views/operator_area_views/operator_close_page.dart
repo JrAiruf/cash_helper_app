@@ -1,3 +1,5 @@
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/cards/close_page_informations_component.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -16,8 +18,18 @@ class OperatorClosePage extends StatefulWidget {
 }
 
 final enterpriseId = Modular.args.params["enterpriseId"];
+final operatorController = Modular.get<OperatorController>();
 
 class _OperatorClosePageState extends State<OperatorClosePage> {
+  @override
+  void initState() {
+    super.initState();
+    operatorController.annotationsListStore.getAllAnnotations(
+      enterpriseId,
+      widget.operatorEntity.operatorId,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -116,6 +128,22 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: sizeFrame ? height * 0.05 : height * 0.04,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Anotações:",
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: appThemes.surfaceColor(context),
+                                ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: sizeFrame ? height * 0.05 : height * 0.04,
+                        ),
+                        ClosePageInformationsComponent(annotations: operatorController.annotationsListStore.value)
                       ],
                     ),
                   ),
