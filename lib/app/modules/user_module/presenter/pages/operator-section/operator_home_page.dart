@@ -1,9 +1,8 @@
 // ignore_for_file: must_be_immutable, unnecessary_string_interpolations
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
@@ -25,17 +24,15 @@ class OperartorHomePage extends StatefulWidget {
 }
 
 class _OperartorHomePageState extends State<OperartorHomePage> {
-  final _loginStore = Modular.get<LoginStore>();
-  final _annotationListStore = Modular.get<AnnotationsListStore>();
+  final _loginController = Modular.get<LoginController>();
+  final _annotationsController = Modular.get<AnnotationsController>();
   final _operatorController = Modular.get<OperatorController>();
   DrawerPagePosition? drawerPosition;
   final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
   void initState() {
-    _loginStore.getUserById(_enterpriseId, widget.operatorEntity.operatorId!,
-        widget.operatorEntity.businessPosition!);
-    _annotationListStore.getAllAnnotations(
-        _enterpriseId, widget.operatorEntity.operatorId!);
+    _loginController.loginStore.getUserById(_enterpriseId, widget.operatorEntity.operatorId!, widget.operatorEntity.businessPosition!);
+    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId, widget.operatorEntity.operatorId!);
     super.initState();
   }
 
@@ -46,7 +43,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     return ValueListenableBuilder(
-      valueListenable: _loginStore,
+      valueListenable: _loginController.loginStore,
       builder: (_, operatorState, __) {
         if (operatorState is LoginLoadingState) {
           return Container(
@@ -73,8 +70,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
             body: Stack(
               children: [
                 Container(
-                  decoration:
-                      BoxDecoration(color: appThemes.backgroundColor(context)),
+                  decoration: BoxDecoration(color: appThemes.backgroundColor(context)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -90,14 +86,12 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: appThemes.primaryColor(context),
-                            border: Border.all(
-                              color: appThemes.surfaceColor(context),
-                            ),
+                            border: Border.all(color: appThemes.surfaceColor(context), width: 0.07),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           height: height * 0.2,
                           child: ValueListenableBuilder(
-                            valueListenable: _annotationListStore,
+                            valueListenable: _annotationsController.annotationsListStore,
                             builder: ((context, annotationListState, child) {
                               if (annotationListState.isEmpty) {
                                 return Container(
@@ -108,12 +102,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   child: Center(
                                     child: Text(
                                       "Nenhuma anotação encontrada",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color:
-                                                appThemes.surfaceColor(context),
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: appThemes.surfaceColor(context),
                                           ),
                                     ),
                                   ),
@@ -130,18 +120,14 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 15, vertical: height * 0.05),
+                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: height * 0.05),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Acesso rápido:",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: appThemes.surfaceColor(context),
                                   ),
                             ),
@@ -150,8 +136,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 QuickAccessButton(
-                                  backgroundColor:
-                                      appThemes.primaryColor(context),
+                                  backgroundColor: appThemes.primaryColor(context),
                                   border: true,
                                   height: height * 0.1,
                                   width: width * 0.38,
@@ -163,27 +148,19 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                     ),
                                     Text(
                                       "Anotações",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color:
-                                                appThemes.surfaceColor(context),
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: appThemes.surfaceColor(context),
                                           ),
                                     ),
                                   ],
                                   onPressed: () {
-                                    _annotationListStore.value.isEmpty
-                                        ? _operatorController
-                                            .noAnnotationSnackbar(context)
-                                        : Modular.to.navigate(
-                                            "${AnnotationRoutes.annotationsListPage}$_enterpriseId",
-                                            arguments: currentOperator);
+                                    _annotationsController.annotationsListStore.value.isEmpty
+                                        ? _operatorController.noAnnotationSnackbar(context)
+                                        : Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$_enterpriseId", arguments: currentOperator);
                                   },
                                 ),
                                 QuickAccessButton(
-                                  backgroundColor:
-                                      appThemes.primaryColor(context),
+                                  backgroundColor: appThemes.primaryColor(context),
                                   border: true,
                                   height: height * 0.1,
                                   width: width * 0.4,
@@ -195,18 +172,12 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                     ),
                                     Text(
                                       "Nova Anotação",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color:
-                                                appThemes.surfaceColor(context),
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: appThemes.surfaceColor(context),
                                           ),
                                     )
                                   ],
-                                  onPressed: () => Modular.to.navigate(
-                                      "${AnnotationRoutes.createAnnotationPage}$_enterpriseId",
-                                      arguments: currentOperator),
+                                  onPressed: () => Modular.to.navigate("${AnnotationRoutes.createAnnotationPage}$_enterpriseId", arguments: currentOperator),
                                 ),
                               ],
                             ),
@@ -222,9 +193,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           height: 50,
                           width: width * 0.7,
                           radius: 12,
-                          onPressed: () => Modular.to.navigate(
-                              "${UserRoutes.operatorArea}$_enterpriseId",
-                              arguments: currentOperator),
+                          onPressed: () => Modular.to.navigate("${UserRoutes.operatorArea}$_enterpriseId", arguments: currentOperator),
                           buttonName: "Área do operador",
                           backgroundColor: appThemes.greenColor(context),
                           fontSize: 16,

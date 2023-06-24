@@ -41,7 +41,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final sizeFrame = height <= 750.0;
+    final sizeFrame = height <= 800.0;
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(
@@ -59,7 +59,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              height: height * 0.75,
+              height: sizeFrame ? height * 0.70 : height * 0.75,
               decoration: BoxDecoration(
                 color: appTheme.backgroundColor(context),
                 borderRadius: const BorderRadius.only(
@@ -69,19 +69,16 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
               ),
             ),
             Positioned(
-              top: height * 0.06,
+              top: sizeFrame ? height * 0.05 : height * 0.06,
               child: Center(
                 child: Text(
                   widget.operatorEntity.operatorName ?? "",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(color: appTheme.surfaceColor(context)),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: appTheme.surfaceColor(context)),
                 ),
               ),
             ),
             SizedBox(
-              height: height * 0.71,
+              height: sizeFrame ? height * 0.68 : height * 0.71,
               width: width,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -102,6 +99,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                       backgroundColor: appTheme.primaryColor(context),
                       operatorEntity: widget.operatorEntity,
                       annotationsList: _annotationController.annotationsList,
+                      borderColor: appTheme.surfaceColor(context),
                     ),
                     Text(
                       "Anotações nesta semana:",
@@ -119,8 +117,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                           width: width * 0.2,
                           componentHeight: height * 0.12,
                           componentWidth: width,
-                          paymentMethods:
-                              _managementController.paymentMethods.value,
+                          paymentMethods: _managementController.paymentMethods.value,
                           annotations: _annotationController.annotationsList,
                         );
                       },
@@ -132,12 +129,12 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                           ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 25),
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 25),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ProfileInformationCard(
+                            borderColor: appTheme.surfaceColor(context),
                             backgroundColor: appTheme.primaryColor(context),
                             height: height * 0.165,
                             width: width * 0.35,
@@ -147,18 +144,12 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                                 color: appTheme.surfaceColor(context),
                               ),
                               Text("Abertura:",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displaySmall
-                                      ?.copyWith(
+                                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                         color: appTheme.surfaceColor(context),
                                       )),
                               Text(
                                 widget.operatorEntity.operatorOppening ?? "",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displaySmall
-                                    ?.copyWith(
+                                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                       color: appTheme.surfaceColor(context),
                                     ),
                               ),
@@ -166,25 +157,18 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                           ),
                           const SizedBox(height: 10),
                           ProfileInformationCard(
+                            borderColor: appTheme.surfaceColor(context),
                             height: height * 0.165,
                             width: width * 0.35,
                             backgroundColor: appTheme.primaryColor(context),
                             items: [
                               Text("Código Ops.",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displaySmall
-                                      ?.copyWith(
+                                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                         color: appTheme.surfaceColor(context),
                                       )),
                               Text(
-                                showOperatorCode
-                                    ? widget.operatorEntity.operatorCode!
-                                    : "......",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displaySmall
-                                    ?.copyWith(
+                                showOperatorCode ? widget.operatorEntity.operatorCode! : "......",
+                                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                       color: appTheme.surfaceColor(context),
                                     ),
                               ),
@@ -195,9 +179,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
                                   });
                                 }),
                                 child: Icon(
-                                  showOperatorCode
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
+                                  showOperatorCode ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                                   color: appTheme.surfaceColor(context),
                                 ),
                               ),

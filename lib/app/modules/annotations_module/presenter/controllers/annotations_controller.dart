@@ -19,7 +19,7 @@ class AnnotationsController {
   final annotationSaleTimeField = TextEditingController();
   final dateValue = DateValues();
   final _annotationsStore = Modular.get<AnnotationStore>();
-  final _annotationsListStore = Modular.get<AnnotationsListStore>();
+  final annotationsListStore = Modular.get<AnnotationsListStore>();
   final annotationsPageController = PageController();
   final annotationsListPageController = PageController();
   final appTheme = CashHelperThemes();
@@ -78,7 +78,7 @@ class AnnotationsController {
   }
 
   Future<void> getAllAnnotations() async {
-    annotationsList = _annotationsListStore.value;
+    annotationsList = annotationsListStore.value;
   }
 
   Future<void> finishAnnotation(
