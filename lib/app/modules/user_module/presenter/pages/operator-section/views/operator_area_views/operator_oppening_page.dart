@@ -179,7 +179,6 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                                 height: 50,
                                 buttonName: 'Abrir Caixa',
                                 fontSize: 15,
-                                nameColor: appThemes.surfaceColor(context),
                                 backgroundColor: appThemes.greenColor(context),
                               ),
                             ],

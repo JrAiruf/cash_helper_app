@@ -11,11 +11,7 @@ import '../../domain/entities/annotation_entity.dart';
 import '../components/cash_helper_information_card.dart';
 
 class AnnotationSettings extends StatelessWidget {
-  AnnotationSettings(
-      {super.key,
-      required this.annotationEntity,
-      required this.operatorEntity,
-      required this.enterpriseId});
+  AnnotationSettings({super.key, required this.annotationEntity, required this.operatorEntity, required this.enterpriseId});
 
   AnnotationEntity annotationEntity;
   OperatorEntity operatorEntity;
@@ -74,33 +70,26 @@ class AnnotationSettings extends StatelessWidget {
                             width: width,
                             radius: 15,
                             spacing: 0.15,
-                            backgroundColor: appTheme.violetColor(context),
+                            backgroundColor: appTheme.purpleColor(context),
                             cardIcon: Icons.house_outlined,
                             iconSize: 55,
                             informationTitle: "Endereço:",
-                            information:
-                                "${annotationEntity.annotationClientAddress}",
+                            information: "${annotationEntity.annotationClientAddress}",
                             complementInformationTitle: "Horário:",
-                            complementInformation:
-                                "${annotationEntity.annotationSaleTime}",
+                            complementInformation: "${annotationEntity.annotationSaleTime}",
                           ),
                           CashHelperInformationCard(
                             height: height * 0.15,
                             width: width,
                             radius: 15,
                             spacing: 0.154,
-                            backgroundColor: appTheme
-                                .redColor(context)
-                                .withBlue(90)
-                                .withOpacity(0.7),
+                            backgroundColor: appTheme.redColor(context).withBlue(90).withOpacity(0.7),
                             cardIcon: Icons.monetization_on_outlined,
                             iconSize: 55,
                             informationTitle: "Valor:",
-                            information:
-                                "${annotationEntity.annotationSaleValue}",
+                            information: "${annotationEntity.annotationSaleValue}",
                             complementInformationTitle: "Pagamento:",
-                            complementInformation:
-                                "${annotationEntity.annotationPaymentMethod}",
+                            complementInformation: "${annotationEntity.annotationPaymentMethod}",
                           ),
                           SizedBox(
                             height: height * 0.24,
@@ -110,14 +99,11 @@ class AnnotationSettings extends StatelessWidget {
                                 QuickAccessButton(
                                   border: true,
                                   radius: 20,
-                                  backgroundColor:
-                                      appTheme.primaryColor(context),
+                                  backgroundColor: appTheme.primaryColor(context),
                                   height: height * 0.1,
                                   width: width * 0.42,
                                   itemsColor: appTheme.surfaceColor(context),
-                                  onPressed: () =>
-                                      _annotationsController.finishAnnotation(
-                                          context, operatorEntity),
+                                  onPressed: () => _annotationsController.finishAnnotation(context, operatorEntity),
                                   items: [
                                     Icon(
                                       Icons.done,
@@ -125,12 +111,8 @@ class AnnotationSettings extends StatelessWidget {
                                     ),
                                     Text(
                                       "Finalizar",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color:
-                                                appTheme.surfaceColor(context),
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: appTheme.surfaceColor(context),
                                           ),
                                     ),
                                   ],
@@ -138,14 +120,11 @@ class AnnotationSettings extends StatelessWidget {
                                 QuickAccessButton(
                                   border: true,
                                   radius: 20,
-                                  backgroundColor:
-                                      appTheme.primaryColor(context),
+                                  backgroundColor: appTheme.primaryColor(context),
                                   height: height * 0.1,
                                   width: width * 0.42,
                                   itemsColor: appTheme.surfaceColor(context),
-                                  onPressed: () =>
-                                      _annotationsController.deleteAnnotation(
-                                          context, operatorEntity),
+                                  onPressed: () => _annotationsController.deleteAnnotation(context, operatorEntity),
                                   items: [
                                     Icon(
                                       Icons.delete,
@@ -153,12 +132,8 @@ class AnnotationSettings extends StatelessWidget {
                                     ),
                                     Text(
                                       "Excluir",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color:
-                                                appTheme.surfaceColor(context),
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: appTheme.surfaceColor(context),
                                           ),
                                     ),
                                   ],
