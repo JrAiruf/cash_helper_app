@@ -23,10 +23,7 @@ class OperatorCardComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateValue = DateValues();
-    final fontSize = Theme.of(context)
-        .textTheme
-        .bodySmall
-        ?.copyWith(color: Theme.of(context).colorScheme.surface);
+    final fontSize = Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.surface);
     final dailyAnnotations = annotationsList.where((annotation) {
       return annotation.annotationSaleDate! == dateValue.annotationDayDateTime;
     }).toList();
@@ -35,7 +32,7 @@ class OperatorCardComponent extends StatelessWidget {
       child: Container(
         height: height ?? 10,
         decoration: BoxDecoration(
-          border: Border.all(color: borderColor ?? Colors.white),
+          border: Border.all(color: borderColor ?? Colors.white, width: 0.5),
           color: backgroundColor,
           borderRadius: BorderRadius.circular(15),
         ),

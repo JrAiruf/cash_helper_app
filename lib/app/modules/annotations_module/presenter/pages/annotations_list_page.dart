@@ -38,6 +38,8 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
+    final height = MediaQuery.of(context).size.height;
+    final sizeFrame = height <= 800.0;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -73,11 +75,15 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
               NotFinishedAnnotations(
                   operatorEntity: widget.operatorEntity,
                   annotations: annotations,
+                  controller:
+                      _annotationsController.annotationsListPageController,
                   position: BottomNavigationBarPosition.notFinishedAnnotations,
                   enterpriseId: _annotationsController.enterpriseId),
               FinishedAnnotations(
                   operatorEntity: widget.operatorEntity,
                   annotations: finishedAnnotations,
+                  controller:
+                      _annotationsController.annotationsListPageController,
                   position: BottomNavigationBarPosition.finishedAnnotations,
                   enterpriseId: _annotationsController.enterpriseId),
             ],
@@ -85,13 +91,17 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
         },
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: appTheme.backgroundColor(context)),
+        height: sizeFrame ? height * 0.07 : height * 0.065,
+        decoration: BoxDecoration(
+            color: _annotationsListStore.value.isNotEmpty
+                ? appTheme.backgroundColor(context)
+                : appTheme.primaryColor(context)),
         child: CashHelperBottomNavigationBar(
           radius: 20,
           backgroundColor: appTheme.primaryColor(context),
           pageController: _annotationsController.annotationsListPageController,
           itemColor: appTheme.greenColor(context),
-          height: 60,
+          height: sizeFrame ? height * 0.07 : height * 0.065,
           position: _annotationsController.position,
           items: [
             CashHelperBottomNavigationItem(

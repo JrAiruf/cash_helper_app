@@ -1,15 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_string_interpolations
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../enterprise_module/domain/entities/enterprise_business_position.dart';
 import '../../../enterprise_module/domain/entities/enterprise_entity.dart';
-import '../../../user_module/domain/entities/operator_entity.dart';
 import '../components/cash_helper_text_field.dart';
 import '../components/visibility_icon_component.dart';
 import '../controllers/login_controller.dart';
-import '../stores/login_store.dart';
 
 class CreateOperatorPage extends StatefulWidget {
   const CreateOperatorPage({super.key, required this.enterpriseEntity});

@@ -1,7 +1,7 @@
+import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'errors/operation_errors.dart';
 
 class OperatorDatabaseImpl implements OperatorDatabase {
@@ -12,12 +12,14 @@ class OperatorDatabaseImpl implements OperatorDatabase {
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _datasource;
+  final dataVerifier = DataVerifier();
 
   @override
   Future changeUserEmail(String? newEmail, String? operatorCode,
       String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
-    if (_validOperatorData(newEmail, operatorCode, operatorPassword)) {
+    if (dataVerifier.validateInputData(
+        inputs: [newEmail, operatorCode, operatorPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
           .map((databaseOperator) => databaseOperator.data())
@@ -41,13 +43,11 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   }
 
   @override
-  Future<void> deleteUserAccount(
-      String? operatorCode,
-      String? operatorEmail,
-      String? operatorPassword,
-      String? collection) async {
+  Future<void> deleteUserAccount(String? operatorCode, String? operatorEmail,
+      String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection ?? "");
-    if (_validOperatorData(operatorEmail, operatorCode, operatorPassword)) {
+    if (dataVerifier.validateInputData(
+        inputs: [operatorEmail, operatorCode, operatorPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
           .map((databaseOperator) => databaseOperator.data())
@@ -71,7 +71,8 @@ class OperatorDatabaseImpl implements OperatorDatabase {
   Future<void> changeUserPassword(String? newPassword, String? operatorCode,
       String? currentPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
-    if (_validOperatorData(newPassword, operatorCode, currentPassword)) {
+    if (dataVerifier.validateInputData(
+        inputs: [newPassword, operatorCode, currentPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
       final databaseOperatorsList = operatorsCollectionDocs.docs
           .map((databaseOperator) => databaseOperator.data())
@@ -96,40 +97,45 @@ class OperatorDatabaseImpl implements OperatorDatabase {
 
   @override
   Future<void> openOperatorCash(
-      String? operatorId, String? collection, String? oppeningTime) async {
-    final operatorsCollection = _datasource.collection(collection!);
+      String? enterpriseId, String? operatorId, String? oppeningTime) async {
+    final operatorsCollection = _datasource
+        .collection("enterprise")
+        .doc(enterpriseId!)
+        .collection("operator");
     try {
-      if (_validOperatorData(operatorId, collection, oppeningTime)) {
+      if (dataVerifier.validateInputData(inputs: [operatorId, oppeningTime])) {
         await operatorsCollection.doc(operatorId!).update({
           "operatorEnabled": true,
           "operatorOppening": oppeningTime,
         });
       } else {
-        return;
+        throw OppeningCashError(errorMessage: "Operação não concluída");
       }
-    } on FirebaseException catch (e) {
+    } catch (e) {
       throw OppeningCashError(errorMessage: e.toString());
     }
   }
 
   @override
-  Future<void> closeOperatorCash(String? operatorId, String? collection) async {
+  Future<void> closeOperatorCash(
+      String? enterpriseId, String? operatorId, String? closingTime) async {
     try {
-      if (operatorId != null && collection != null) {
-        final operatorsCollection = _datasource.collection(collection);
+      if (dataVerifier
+          .validateInputData(inputs: [enterpriseId, operatorId, closingTime])) {
+        final operatorsCollection = _datasource
+            .collection("enterprise")
+            .doc(enterpriseId)
+            .collection("operator");
         await operatorsCollection.doc(operatorId).update({
           "operatorEnabled": false,
+          "operatorClosing": closingTime,
           "operatorOppening": "Pendente",
         });
       } else {
-        return;
+        throw OppeningCashError(errorMessage: "Operação não concluída");
       }
     } on FirebaseException catch (e) {
       throw OppeningCashError(errorMessage: e.toString());
     }
   }
-
-  bool _validOperatorData(
-          String? newEmail, String? operatorCode, String? operatorPassword) =>
-      newEmail != null && operatorCode != null && operatorPassword != null;
 }

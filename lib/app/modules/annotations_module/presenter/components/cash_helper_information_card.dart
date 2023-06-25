@@ -33,9 +33,7 @@ class CashHelperInformationCard extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(radius ?? 4)),
+      decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(radius ?? 4)),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 10,
@@ -47,7 +45,7 @@ class CashHelperInformationCard extends StatelessWidget {
             Icon(
               cardIcon,
               size: iconSize,
-              color: appTheme.surfaceColor(context),
+              color: appTheme.surface(context),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -59,13 +57,13 @@ class CashHelperInformationCard extends StatelessWidget {
                   Text(
                     informationTitle ?? "",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: appTheme.surfaceColor(context),
+                          color: appTheme.surface(context),
                         ),
                   ),
                   Text(
                     information ?? "",
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: appTheme.surfaceColor(context),
+                          color: appTheme.surface(context),
                         ),
                   ),
                 ],
@@ -81,13 +79,13 @@ class CashHelperInformationCard extends StatelessWidget {
                   Text(
                     complementInformationTitle ?? "",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: appTheme.surfaceColor(context),
+                          color: appTheme.surface(context),
                         ),
                   ),
                   Text(
                     complementInformation ?? "",
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: appTheme.surfaceColor(context),
+                          color: appTheme.surface(context),
                         ),
                   ),
                 ],

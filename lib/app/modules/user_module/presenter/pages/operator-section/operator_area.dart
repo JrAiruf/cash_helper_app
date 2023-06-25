@@ -1,20 +1,19 @@
 // ignore_for_file: unnecessary_string_interpolations, must_be_immutable
 
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_initial_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_oppening_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_options_page.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../annotations_module/presenter/stores/annotations_list_store.dart';
+import '../../../../../routes/app_routes.dart';
 import '../../components/cash_helper_bottom_navigation_item.dart';
 
 class OperatorArea extends StatefulWidget {
-  OperatorArea(
-      {super.key,
-      required this.operatorEntity,
-      this.position = BottomNavigationBarPosition.operatorHome});
+  OperatorArea({super.key, required this.operatorEntity, this.position = BottomNavigationBarPosition.operatorHome});
 
   final OperatorEntity operatorEntity;
   BottomNavigationBarPosition? position;
@@ -22,7 +21,7 @@ class OperatorArea extends StatefulWidget {
   State<OperatorArea> createState() => _OperatorArea();
 }
 
-final _annotationListStore = Modular.get<AnnotationsListStore>();
+final _annotationsController = Modular.get<AnnotationsController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
 final _operatorPageController = PageController();
 
@@ -30,27 +29,28 @@ class _OperatorArea extends State<OperatorArea> {
   @override
   void initState() {
     super.initState();
-    _annotationListStore.getAllAnnotations(
-        _enterpriseId, widget.operatorEntity.operatorId!);
+    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId, widget.operatorEntity.operatorId!);
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
-    final annotations = _annotationListStore.value;
+    final sizeFrame = height <= 800.0;
+    final appThemes = CashHelperThemes();
+    final annotations = _annotationsController.annotationsListStore.value;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_sharp),
+          onPressed: () => Modular.to.navigate("${UserRoutes.operatorHomePage}$_enterpriseId", arguments: widget.operatorEntity),
+        ),
+      ),
       body: Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
-          color: seccondaryColor,
+          color: appThemes.backgroundColor(context),
         ),
         child: PageView(
           physics: const NeverScrollableScrollPhysics(),
@@ -66,33 +66,36 @@ class _OperatorArea extends State<OperatorArea> {
             OperatorOptionsPage(
               position: BottomNavigationBarPosition.operatorOptions,
               pageController: _operatorPageController,
-              operatorId: '',
+              operatorEntity: widget.operatorEntity,
+              enterpriseId: _enterpriseId,
             ),
             OperatorOppeningPage(
-                operatorEntity: OperatorEntity(),
-                position: BottomNavigationBarPosition.operatorOppening,
-                pageController: _operatorPageController)
+              operatorEntity: widget.operatorEntity,
+              position: BottomNavigationBarPosition.operatorOppening,
+              pageController: _operatorPageController,
+              enterpriseId: _enterpriseId,
+            )
           ],
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: backgroundColor),
+        height: sizeFrame ? height * 0.07 : height * 0.065,
+        decoration: BoxDecoration(color: appThemes.backgroundColor(context)),
         child: CashHelperBottomNavigationBar(
-          itemColor: tertiaryColor,
-          itemContentColor: surfaceColor,
+          itemColor: appThemes.greenColor(context),
+          itemContentColor: appThemes.surfaceColor(context),
           pageController: _operatorPageController,
           position: widget.position,
-          backgroundColor: primaryColor,
+          backgroundColor: appThemes.primaryColor(context),
           radius: 20,
-          height: 55,
+          height: sizeFrame ? height * 0.07 : height * 0.065,
           items: [
             CashHelperBottomNavigationItem(
-              itemBackgroundColor: primaryColor,
+              itemBackgroundColor: appThemes.primaryColor(context),
               onTap: () {
-                _operatorPageController.animateToPage(
-                    BottomNavigationBarPosition.operatorHome.position,
+                _operatorPageController.animateToPage(BottomNavigationBarPosition.operatorHome.position,
                     duration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 200,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
@@ -104,13 +107,12 @@ class _OperatorArea extends State<OperatorArea> {
               position: BottomNavigationBarPosition.operatorHome,
             ),
             CashHelperBottomNavigationItem(
-              itemBackgroundColor: primaryColor,
-              contentColor: seccondaryColor,
+              itemBackgroundColor: appThemes.primaryColor(context),
+              contentColor: appThemes.surfaceColor(context),
               onTap: () {
-                _operatorPageController.animateToPage(
-                    BottomNavigationBarPosition.operatorOptions.position,
+                _operatorPageController.animateToPage(BottomNavigationBarPosition.operatorOptions.position,
                     duration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 200,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
@@ -122,18 +124,16 @@ class _OperatorArea extends State<OperatorArea> {
               position: BottomNavigationBarPosition.operatorOptions,
             ),
             CashHelperBottomNavigationItem(
-              itemBackgroundColor: primaryColor,
-              contentColor: seccondaryColor,
+              itemBackgroundColor: appThemes.primaryColor(context),
+              contentColor: appThemes.surfaceColor(context),
               onTap: () {
-                _operatorPageController.animateToPage(
-                    BottomNavigationBarPosition.operatorOppening.position,
+                _operatorPageController.animateToPage(BottomNavigationBarPosition.operatorOppening.position,
                     duration: const Duration(
-                      milliseconds: 400,
+                      milliseconds: 200,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
-                  widget.position =
-                      BottomNavigationBarPosition.operatorOppening;
+                  widget.position = BottomNavigationBarPosition.operatorOppening;
                 });
               },
               icon: Icons.adf_scanner_outlined,

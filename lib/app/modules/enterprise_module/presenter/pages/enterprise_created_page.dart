@@ -21,7 +21,7 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
     final surfaceColor = Theme.of(context).colorScheme.surface;
-
+    final sizeFrame = height <= 800.0;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(color: primaryColor),
@@ -41,7 +41,7 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
                       .bodyLarge
                       ?.copyWith(color: surfaceColor)),
             ),
-            SizedBox(height: height * 0.12),
+            SizedBox(height: sizeFrame ? height * 0.09 : height * 0.12),
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +54,7 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
                         ?.copyWith(color: surfaceColor),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: height * 0.1),
+                  SizedBox(height: sizeFrame ? height * 0.08 : height * 0.1),
                   Text(
                     widget.enterpriseEntity.enterpriseEmail ?? "",
                     style: Theme.of(context)
@@ -62,7 +62,7 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
                         .displayLarge
                         ?.copyWith(color: surfaceColor),
                   ),
-                  SizedBox(height: height * 0.25),
+                  SizedBox(height: sizeFrame ? height * 0.2 : height * 0.25),
                   Text(
                     "Crie um usuário administrativo \n para gerenciar sua conta",
                     style: Theme.of(context)
@@ -71,26 +71,25 @@ class _EnterpriseCreatedPageState extends State<EnterpriseCreatedPage> {
                         ?.copyWith(color: surfaceColor),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: height * 0.11),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 15),
-                    child: CashHelperElevatedButton(
-                      onPressed: () {
-                        Modular.to.navigate(LoginRoutes.createManager,
-                            arguments: widget.enterpriseEntity);
-                      },
-                      width: width,
-                      height: 65,
-                      buttonName: 'Próximo',
-                      fontSize: 15,
-                      nameColor: Colors.white,
-                      backgroundColor: secondaryColor,
-                    ),
-                  )
                 ],
               ),
             ),
+            SizedBox(height: height * 0.11),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              child: CashHelperElevatedButton(
+                onPressed: () {
+                  Modular.to.navigate(LoginRoutes.createManager,
+                      arguments: widget.enterpriseEntity);
+                },
+                width: width,
+                height: 65,
+                buttonName: 'Próximo',
+                fontSize: 15,
+                nameColor: Colors.white,
+                backgroundColor: secondaryColor,
+              ),
+            )
           ],
         ),
       ),

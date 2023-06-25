@@ -134,6 +134,7 @@ class LoginController {
     loadingData.value = true;
     createOperatorFormKey.currentState!.validate();
     operatorEntity.operatorEnabled = enabledOperator ? true : false;
+    operatorEntity.hasPendencies = false;
     operatorEntity.operatorOppening =
         enabledOperator ? dateValue.operatorOppening : 'Pendente';
     if (createOperatorFormKey.currentState!.validate()) {
@@ -185,6 +186,11 @@ class LoginController {
       loadingData.value = false;
     }
     loadingData.value = false;
+  }
+
+  void signOut() async {
+    await loginStore.signOut();
+    Modular.to.navigate(EnterpriseRoutes.initial);
   }
 
   onFail(BuildContext context) {

@@ -43,6 +43,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
     final appThemes = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final surfaceColor = Theme.of(context).colorScheme.surface;
@@ -109,7 +110,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                                 ),
                           ),
                           SizedBox(
-                            height: height * 0.06,
+                            height: sizeFrame ? height * 0.08 : height * 0.06,
                             width: width * 0.3,
                             child: AnimatedBuilder(
                                 animation: _paymentMethodsStore,
@@ -170,7 +171,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 35),
+                    SizedBox(height: height * 0.035),
                     SizedBox(
                       height: height * 0.25,
                       child: PageView(
@@ -182,7 +183,9 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                               borderColor: appThemes.surfaceColor(context),
                               seccundaryColor: appThemes.surfaceColor(context),
                               backgroundColor: primaryColor,
-                              itemWidth: width * 0.4,
+                              itemWidth: sizeFrame ? width * 0.33 : width * 0.4,
+                              itemHeight:
+                                  sizeFrame ? height * 0.025 : height * 0.033,
                               annotations: finishedAnnotations),
                           AnnoationsListViewComponent(
                               borderColor: appThemes.surfaceColor(context),
@@ -199,7 +202,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
             ),
           ),
           Positioned(
-            top: height * 0.12,
+            top: sizeFrame ? height * 0.11 : height * 0.12,
             left: width * 0.02,
             child: SizedBox(
               width: width * 0.95,

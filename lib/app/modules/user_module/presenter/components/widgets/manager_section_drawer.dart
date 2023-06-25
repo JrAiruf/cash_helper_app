@@ -1,11 +1,10 @@
 // ignore_for_file: must_be_immutable
+import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/tiles/drawer_tile.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
-import '../../../../login_module/presenter/stores/login_store.dart';
 import '../../controller/manager_controller.dart';
 
 class ManagerSectionDrawer extends StatelessWidget {
@@ -22,14 +21,15 @@ class ManagerSectionDrawer extends StatelessWidget {
   ManagerDrawerPage currentPage;
   ManagerEntity managerEntity;
   String? enterpriseId;
-  final loginStore = Modular.get<LoginStore>();
+  final loginController = Modular.get<LoginController>();
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final height = MediaQuery.of(context).size.height;
-    final itemSpacingHeight = height * 0.02;
+    final sizeFrame = height <= 800.0;
+    final itemSpacingHeight = sizeFrame ? height * 0.015 : height * 0.02;
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(radius ?? 5),
@@ -122,9 +122,7 @@ class ManagerSectionDrawer extends StatelessWidget {
               ),
               SizedBox(height: itemSpacingHeight * 10),
               TextButton(
-                onPressed: () {
-                  loginStore.signOut();
-                },
+                onPressed: loginController.signOut,
                 child: Row(
                   children: [
                     Text(

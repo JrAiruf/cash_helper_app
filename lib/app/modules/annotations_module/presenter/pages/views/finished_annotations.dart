@@ -15,11 +15,13 @@ class FinishedAnnotations extends StatelessWidget {
       {super.key,
       required this.operatorEntity,
       required this.annotations,
+      required this.controller,
       required this.position,
       required this.enterpriseId});
   OperatorEntity operatorEntity;
   List<AnnotationEntity> annotations;
   BottomNavigationBarPosition position;
+  PageController controller;
   String enterpriseId;
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,17 @@ class FinishedAnnotations extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return annotations.isEmpty
-        ? Center(
-            child: Text(
-              "Nenhuma Anotação Localizada",
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    color: appTheme.surfaceColor(context),
-                  ),
+        ? Container(
+            decoration: BoxDecoration(
+              color: appTheme.backgroundColor(context),
+            ),
+            child: Center(
+              child: Text(
+                "Nenhuma Anotação Localizada",
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      color: appTheme.surfaceColor(context),
+                    ),
+              ),
             ),
           )
         : Container(

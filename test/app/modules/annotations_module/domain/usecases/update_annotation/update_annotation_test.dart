@@ -4,12 +4,6 @@ import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/u
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
-import '../../../../../mocks/mocks.dart';
-import '../create_annotation/create_new_annotation_test.dart';
-import '../get_annotation_by_id/get_annotation_by_id_test.dart';
-
 
 class UpdateAnnotationMock implements IUpdateAnnotation {
   UpdateAnnotationMock({required AnnotationRepository repository})
@@ -29,10 +23,6 @@ class UpdateAnnotationMock implements IUpdateAnnotation {
   }
 }
 void main() {
-   final repository = AnnotationRepo();
-  final createAnnotation = CreateNewAnnotationMock(repository: repository);
-  final getAnnotationById = GetAnnotationByIdMock(repository: repository);
-  final updateAnnotation = UpdateAnnotationMock(repository: repository);
   group(
     "UpdateAnnotation Function Should",
     () {

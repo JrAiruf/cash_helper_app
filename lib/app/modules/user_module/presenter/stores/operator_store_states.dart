@@ -6,6 +6,12 @@ class ChangeEmailInitialState implements OperatorStoreStates {}
 
 class ChangePasswordInitialState implements OperatorStoreStates {}
 
+class LoadingCashState implements OperatorStoreStates {}
+
+class ClosedCashState implements OperatorStoreStates {}
+
+class OpenedCashState implements OperatorStoreStates {}
+
 class ChangeEmailLoadingState implements OperatorStoreStates {}
 
 class ChangePasswordLoadingState implements OperatorStoreStates {}

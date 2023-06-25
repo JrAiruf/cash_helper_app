@@ -1,14 +1,7 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/delete_annotation/idelete_annotation.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
-import 'package:cash_helper_app/app/utils/tests/annotations_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
-import '../../../../../mocks/mocks.dart';
-import '../create_annotation/create_new_annotation_test.dart';
-import '../get_all_annotations/get_all_annotations_test.dart';
 
 class DeleteAnnotationMock implements IDeleteAnnotation {
   DeleteAnnotationMock({required AnnotationRepository repository})
@@ -27,18 +20,6 @@ class DeleteAnnotationMock implements IDeleteAnnotation {
 }
 
 void main() {
-  final repository = AnnotationRepo();
-  final createAnnotation = CreateNewAnnotationMock(repository: repository);
-  final getAllAnnotations = GetAllAnnotationsMock(repository: repository);
-  final deleteAnnotation = DeleteAnnotationMock(repository: repository);
-  final newAnnotation = AnnotationEntity(
-      annotationClientAddress: "Andorinhas 381",
-      annotationConcluied: false,
-      annotationPaymentMethod: "Dinheiro",
-      annotationReminder: null,
-      annotationSaleDate: "Data Atual",
-      annotationSaleTime: "Hora Atual",
-      annotationSaleValue: "1455,67");
   group(
     "DeleteAnnotation Function Should",
     () {/* 

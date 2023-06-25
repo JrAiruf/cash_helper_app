@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/modules/login_module/external/login_database
 import 'package:cash_helper_app/app/modules/login_module/infra/data/login_repository.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/repositories/management_repository_impl.dart';
+import 'package:cash_helper_app/app/modules/user_module/infra/repository/operator_repository_impl.dart';
 import 'package:mockito/mockito.dart';
 
 import '../modules/enterprise_module/external/enterprise_database_test.dart';
@@ -20,3 +21,6 @@ class AnnotationRepo extends Mock implements AnnotationRepositoryImpl {}
 
 class ManagementRepoMock extends Mock implements ManagementRepositoryImpl {}
 class ManagementDatabaseMock extends Mock implements ManagementDatabase {}
+
+class OperatorRepositoryMock extends Mock implements OperatorRepositoryImpl {}
+

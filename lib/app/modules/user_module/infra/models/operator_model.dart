@@ -12,6 +12,7 @@ class OperatorModel {
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
+  bool? hasPendencies;
   String? businessPosition;
   OperatorModel({
     this.operatorId,
@@ -23,6 +24,7 @@ class OperatorModel {
     this.operatorOppening,
     this.operatorClosing,
     this.operatorEnabled,
+    this.hasPendencies,
     this.businessPosition,
   });
 
@@ -37,6 +39,7 @@ class OperatorModel {
       'operatorOppening': operatorOppening,
       'operatorClosing': operatorClosing,
       'operatorEnabled': operatorEnabled,
+      'hasPendencies': hasPendencies,
       'businessPosition': businessPosition,
     };
   }
@@ -52,6 +55,7 @@ class OperatorModel {
       operatorOppening: map['operatorOppening'],
       operatorClosing: map['operatorClosing'],
       operatorEnabled: map['operatorEnabled'],
+      hasPendencies: map['hasPendencies'],
       businessPosition: map['businessPosition'],
     );
   }
@@ -67,6 +71,7 @@ class OperatorModel {
       operatorOppening: operator.operatorOppening,
       operatorClosing: operator.operatorClosing,
       operatorEnabled: operator.operatorEnabled,
+      hasPendencies: operator.hasPendencies,
       businessPosition: operator.businessPosition,
     );
   }
@@ -82,6 +87,7 @@ class OperatorModel {
       operatorOppening: operator.operatorOppening,
       operatorClosing: operator.operatorClosing,
       operatorEnabled: operator.operatorEnabled,
+      hasPendencies: operator.hasPendencies,
       businessPosition: operator.businessPosition,
     );
   }

@@ -7,9 +7,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/drawer_views/settings_pages/operator_account_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../../../login_module/presenter/stores/login_store.dart';
 import '../../../../../domain/entities/operator_entity.dart';
-import '../../../../components/tiles/drawer_tile.dart';
 import '../../../../components/widgets/cash_helper_drawer.dart';
 
 class OperatorSettingsPage extends StatefulWidget {
@@ -24,8 +22,6 @@ class OperatorSettingsPage extends StatefulWidget {
   State<OperatorSettingsPage> createState() => _OperatorSettingsPageState();
 }
 
-final _loginController = Modular.get<LoginController>();
-final _loginStore = Modular.get<LoginStore>();
 DrawerPagePosition? drawerPosition;
 final _settingsPageController = PageController();
 final _enterpriseId = Modular.args.params["enterpriseId"];
@@ -37,8 +33,6 @@ class _OperatorSettingsPageState extends State<OperatorSettingsPage> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(),
       drawer: CashHelperDrawer(

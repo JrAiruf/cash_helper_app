@@ -26,7 +26,7 @@ class ProfileInformationCard extends StatelessWidget {
       height: height ?? 10,
       width: width,
       decoration: BoxDecoration(
-        border: Border.all(color: borderColor ?? Colors.white),
+        border: Border.all(color: borderColor ?? Colors.white,width: 0.5),
         color: backgroundColor,
         borderRadius: BorderRadius.circular(15),
       ),

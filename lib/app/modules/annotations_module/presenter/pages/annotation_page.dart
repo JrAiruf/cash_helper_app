@@ -19,7 +19,6 @@ class AnnotationPage extends StatefulWidget {
 
 AnnotationEntity? annotationEntity;
 OperatorEntity? operatorEntity;
-String? enterpriseId;
 final _annotationsController = Modular.get<AnnotationsController>();
 
 class _AnnotationPageState extends State<AnnotationPage> {
@@ -27,17 +26,18 @@ class _AnnotationPageState extends State<AnnotationPage> {
   void initState() {
     annotationEntity = Modular.args.data["annotationEntity"];
     operatorEntity = Modular.args.data["operatorEntity"];
-    enterpriseId = Modular.args.params["enterpriseId"];
+    _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
     _annotationsController.getAllAnnotations();
     super.initState();
-    _annotationsController.position =
-        BottomNavigationBarPosition.annotationHome;
+    _annotationsController.position = BottomNavigationBarPosition.annotationHome;
   }
 
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
+    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     return Scaffold(
       appBar: AppBar(),
       body: PageView(
@@ -50,7 +50,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
           AnnotationSettings(
             annotationEntity: annotationEntity!,
             operatorEntity: operatorEntity!,
-            enterpriseId: enterpriseId!,
+            enterpriseId: _annotationsController.enterpriseId,
           ),
         ],
       ),
@@ -66,7 +66,7 @@ class _AnnotationPageState extends State<AnnotationPage> {
           position: _annotationsController.position,
           radius: 20,
           backgroundColor: appTheme.primaryColor(context),
-          height: 60,
+          height: sizeFrame ? height * 0.07 : height * 0.065,
           items: [
             CashHelperBottomNavigationItem(
               icon: Icons.home,
@@ -74,15 +74,13 @@ class _AnnotationPageState extends State<AnnotationPage> {
               itemBackgroundColor: appTheme.backgroundColor(context),
               position: BottomNavigationBarPosition.annotationHome,
               onTap: () {
-                _annotationsController.annotationsPageController.animateToPage(
-                    BottomNavigationBarPosition.annotationHome.position,
+                _annotationsController.annotationsPageController.animateToPage(BottomNavigationBarPosition.annotationHome.position,
                     duration: const Duration(
                       milliseconds: 400,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
-                  _annotationsController.position =
-                      BottomNavigationBarPosition.annotationHome;
+                  _annotationsController.position = BottomNavigationBarPosition.annotationHome;
                 });
               },
             ),
@@ -91,15 +89,13 @@ class _AnnotationPageState extends State<AnnotationPage> {
               itemName: "Opções",
               position: BottomNavigationBarPosition.annotationSettings,
               onTap: () {
-                _annotationsController.annotationsPageController.animateToPage(
-                    BottomNavigationBarPosition.annotationSettings.position,
+                _annotationsController.annotationsPageController.animateToPage(BottomNavigationBarPosition.annotationSettings.position,
                     duration: const Duration(
                       milliseconds: 400,
                     ),
                     curve: Curves.easeInSine);
                 setState(() {
-                  _annotationsController.position =
-                      BottomNavigationBarPosition.annotationSettings;
+                  _annotationsController.position = BottomNavigationBarPosition.annotationSettings;
                 });
               },
             ),

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../buttons/quick_access_button.dart';
-
 class EmptyAnnotationsListComponent extends StatelessWidget {
   const EmptyAnnotationsListComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

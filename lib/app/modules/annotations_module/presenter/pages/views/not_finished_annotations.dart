@@ -1,10 +1,10 @@
+// ignore_for_file: must_be_immutable
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/components/annotation_list_tile.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../../../routes/app_routes.dart';
 
@@ -13,22 +13,30 @@ class NotFinishedAnnotations extends StatelessWidget {
       {super.key,
       required this.operatorEntity,
       required this.position,
+      required this.controller,
       required this.annotations,
       required this.enterpriseId});
   OperatorEntity operatorEntity;
   List<AnnotationEntity> annotations;
   BottomNavigationBarPosition position;
+  PageController controller;
   String enterpriseId;
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     return annotations.isEmpty
-        ? Center(
-            child: Text(
-              "Nenhuma Anotação Localizada",
-              style: Theme.of(context).textTheme.displayMedium,
+        ? Container(
+            decoration: BoxDecoration(
+              color: appTheme.backgroundColor(context),
+            ),
+            child: Center(
+              child: Text(
+                "Nenhuma Anotação Localizada",
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
             ),
           )
         : Container(
@@ -41,7 +49,7 @@ class NotFinishedAnnotations extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 Positioned(
-                  top: height * 0.05,
+                  top: sizeFrame ? height * 0.065 : height * 0.05,
                   child: Center(
                     child: Text(
                       "Não Finalizadas",
@@ -52,7 +60,7 @@ class NotFinishedAnnotations extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: height * 0.7,
+                  height: sizeFrame ? height * 0.65 : height * 0.7,
                   width: width,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(

@@ -4,9 +4,6 @@ import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/g
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import '../../../../../mocks/mocks.dart';
-import '../create_annotation/create_new_annotation_test.dart';
 
 class GetAnnotationByIdMock implements IGetAnnotationById {
   GetAnnotationByIdMock({required AnnotationRepository repository})
@@ -31,9 +28,6 @@ class GetAnnotationByIdMock implements IGetAnnotationById {
 }
 
 void main() {
-  final repository = AnnotationRepo();
-  final createAnnotation = CreateNewAnnotationMock(repository: repository);
-  final getAnnotationById = GetAnnotationByIdMock(repository: repository);
   group(
     "GetAnnotationById Function Should",
     () {

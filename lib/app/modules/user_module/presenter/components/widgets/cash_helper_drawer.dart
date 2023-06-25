@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,7 @@ class CashHelperDrawer extends StatelessWidget {
   final String? enterpriseId;
   final DrawerPagePosition? pagePosition;
   final OperatorEntity? operator;
-  final loginStore = Modular.get<LoginStore>();
+  final loginController = Modular.get<LoginController>();
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
@@ -103,7 +102,7 @@ class CashHelperDrawer extends StatelessWidget {
                   ),
                   SizedBox(height: itemSpacingHeight * 10),
                   TextButton(
-                    onPressed: loginStore.signOut,
+                    onPressed: loginController.signOut,
                     child: Row(
                       children: [
                         Text(

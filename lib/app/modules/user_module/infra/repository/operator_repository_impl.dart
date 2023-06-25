@@ -40,20 +40,29 @@ class OperatorRepositoryImpl implements OperatorRepository {
     }
   }
 
+  @override
+  Future<void>? openOperatorCash(
+      String? operatorId, String? collection, String? oppeningTime) async {
+    if (_validOperatorData(operatorId, collection, oppeningTime)) {
+      await _database.openOperatorCash(operatorId, collection, oppeningTime);
+    } else {
+      return;
+    }
+  }
+
+  @override
+  Future<void>? closeOperatorCash(
+      String? operatorId, String? collection, String? closingTime) async {
+    if (_validOperatorData(operatorId, collection, closingTime)) {
+      await _database.closeOperatorCash(operatorId, collection, closingTime);
+    } else {
+      return;
+    }
+  }
+
   bool _validOperatorData(
           String? newEmail, String? operatorCode, String? operatorPassword) =>
       newEmail!.isNotEmpty &&
       operatorCode!.isNotEmpty &&
       operatorPassword!.isNotEmpty;
-
-  @override
-  Future? closeOperatorCash(String? operatorId, String? collection) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future? openOperatorCash(
-      String? operatorId, String? collection, String? oppeningTime) {
-    throw UnimplementedError();
-  }
 }

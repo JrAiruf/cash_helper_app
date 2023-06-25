@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,7 @@ class AnnotationHome extends StatelessWidget {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     return Container(
       height: height,
       width: width,
@@ -48,45 +51,36 @@ class AnnotationHome extends StatelessWidget {
                     width: width,
                     radius: 15,
                     spacing: 0.15,
-                    backgroundColor: appTheme.violetColor(context),
+                    backgroundColor: appTheme.purpleColor(context),
                     cardIcon: Icons.house_outlined,
                     iconSize: 55,
                     informationTitle: "Endereço:",
                     information: "${annotationEntity.annotationClientAddress}",
                     complementInformationTitle: "Horário:",
-                    complementInformation:
-                        "${annotationEntity.annotationSaleTime}",
+                    complementInformation: "${annotationEntity.annotationSaleTime}",
                   ),
                   CashHelperInformationCard(
                     height: height * 0.15,
                     width: width,
                     radius: 15,
                     spacing: 0.154,
-                    backgroundColor: appTheme
-                        .redColor(context)
-                        .withBlue(90)
-                        .withOpacity(0.7),
+                    backgroundColor: appTheme.redColor(context).withBlue(90).withOpacity(0.7),
                     cardIcon: Icons.monetization_on_outlined,
                     iconSize: 55,
                     informationTitle: "Valor:",
                     information: "${annotationEntity.annotationSaleValue}",
                     complementInformationTitle: "Pagamento:",
-                    complementInformation:
-                        "${annotationEntity.annotationPaymentMethod}",
+                    complementInformation: "${annotationEntity.annotationPaymentMethod}",
                   ),
                   CashHelperInformationCard(
                     height: height * 0.15,
                     width: width,
                     radius: 15,
-                    backgroundColor: annotationEntity.annotationConcluied!
-                        ? appTheme.greenColor(context).withOpacity(0.7)
-                        : appTheme.red(context),
+                    backgroundColor: annotationEntity.annotationConcluied! ? appTheme.greenColor(context).withOpacity(0.7) : appTheme.red(context),
                     cardIcon: Icons.monetization_on_outlined,
                     iconSize: 55,
                     informationTitle: "Status:",
-                    information: annotationEntity.annotationConcluied!
-                        ? "Finalizada"
-                        : "Não Finalizada",
+                    information: annotationEntity.annotationConcluied! ? "Finalizada" : "Não Finalizada",
                   ),
                   SizedBox(
                     height: height * 0.02,
@@ -96,17 +90,11 @@ class AnnotationHome extends StatelessWidget {
                     children: [
                       Text(
                         "Criada em :",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(color: appTheme.surfaceColor(context)),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
                       ),
                       Text(
                         "${annotationEntity.annotationSaleDate}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(color: appTheme.surfaceColor(context)),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
                       ),
                     ],
                   ),
@@ -118,7 +106,7 @@ class AnnotationHome extends StatelessWidget {
             ),
           ),
           Positioned(
-              top: height * 0.1,
+              top: sizeFrame ? height * 0.05 : 0.1,
               left: width * 0.07,
               child: Icon(
                 Icons.library_books_outlined,

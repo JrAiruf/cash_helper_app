@@ -8,13 +8,14 @@ class AnnoationsListViewComponent extends StatelessWidget {
       this.backgroundColor,
       this.borderColor,
       this.seccundaryColor,
+      this.itemHeight,
       this.itemWidth});
 
   final List<AnnotationEntity?> annotations;
   final Color? backgroundColor;
   final Color? borderColor;
   final Color? seccundaryColor;
-
+  final double? itemHeight;
   final double? itemWidth;
   @override
   Widget build(BuildContext context) {
@@ -22,68 +23,65 @@ class AnnoationsListViewComponent extends StatelessWidget {
       itemCount: annotations.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: ((context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Container(
-            width: itemWidth,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: backgroundColor ?? Colors.white,
-              border:
-                  Border.all(color: borderColor ?? Colors.white, width: 0.9),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    annotations[index]?.annotationClientAddress ?? '',
-                    maxLines: 1,
-                    style: TextStyle(
-                      color: seccundaryColor ?? Colors.white,
-                      fontSize: 15,
-                    ),
+        return Container(
+          height: itemHeight,
+          width: itemWidth,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: backgroundColor ?? Colors.white,
+            border: Border.all(color: borderColor ?? Colors.white, width: 0.9),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  annotations[index]?.annotationClientAddress ?? '',
+                  maxLines: 1,
+                  style: TextStyle(
+                    color: seccundaryColor ?? Colors.white,
+                    fontSize: 15,
                   ),
-                  const SizedBox(height: 15),
-                  Container(
-                    height: 35,
-                    width: itemWidth! * 0.45,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
-                      color: backgroundColor,
-                      border: Border.all(
-                          color: borderColor ?? Colors.white, width: 0.9),
-                    ),
-                    child: Center(
-                      child: Text(
-                        annotations[index]?.annotationSaleValue ?? '',
-                        style: TextStyle(
-                          color: seccundaryColor ?? Colors.white,
-                          fontSize: 15,
-                        ),
+                ),
+                SizedBox(height: itemHeight ?? 180 * 0.1),
+                Container(
+                  height: 35,
+                  width: itemWidth! * 0.6,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(35),
+                    color: backgroundColor,
+                    border: Border.all(
+                        color: borderColor ?? Colors.white, width: 0.9),
+                  ),
+                  child: Center(
+                    child: Text(
+                      annotations[index]?.annotationSaleValue ?? '',
+                      style: TextStyle(
+                        color: seccundaryColor ?? Colors.white,
+                        fontSize: 15,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 45),
-                  Text(
-                    annotations[index]?.annotationPaymentMethod ?? '',
-                    style: TextStyle(
-                        color: seccundaryColor ?? Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Icon(
-                    annotations[index]?.annotationConcluied ?? false
-                        ? Icons.verified_outlined
-                        : Icons.warning,
-                    color: seccundaryColor,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(height: itemHeight ?? 180 * 0.1),
+                Text(
+                  annotations[index]?.annotationPaymentMethod ?? '',
+                  style: TextStyle(
+                      color: seccundaryColor ?? Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: itemHeight ?? 180 * 0.07,
+                ),
+                Icon(
+                  annotations[index]?.annotationConcluied ?? false
+                      ? Icons.verified_outlined
+                      : Icons.warning,
+                  color: seccundaryColor,
+                ),
+              ],
             ),
           ),
         );

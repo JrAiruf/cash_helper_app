@@ -8,6 +8,7 @@ class OperatorEntity {
   String? operatorOppening;
   String? operatorClosing;
   bool? operatorEnabled;
+  bool? hasPendencies;
   String? businessPosition;
 
   OperatorEntity({
@@ -20,6 +21,7 @@ class OperatorEntity {
     this.operatorOppening,
     this.operatorClosing,
     this.operatorEnabled,
+    this.hasPendencies,
     this.businessPosition,
   });
 }

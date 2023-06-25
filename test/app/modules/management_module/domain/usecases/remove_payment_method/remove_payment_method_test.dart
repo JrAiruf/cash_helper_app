@@ -1,4 +1,4 @@
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/remove_payment_method/iremove_payment_method.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/remove_payment_method/iremove_payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
