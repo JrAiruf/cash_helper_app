@@ -218,6 +218,35 @@ class OperatorController {
     );
   }
 
+  operatorDisabledSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        elevation: 5,
+        duration: const Duration(seconds: 3),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Seu caixa ainda não foi aberto. Abra o caixa para realizar operações.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   removeAccountWarning(BuildContext context, Color color, void Function()? onPressed) {
     showDialog(
       context: context,

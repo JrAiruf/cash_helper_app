@@ -8,6 +8,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/but
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_close_page.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -177,7 +178,11 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                           ),
                                     )
                                   ],
-                                  onPressed: () => Modular.to.navigate("${AnnotationRoutes.createAnnotationPage}$_enterpriseId", arguments: currentOperator),
+                                  onPressed: () {
+                                    currentOperator.operatorEnabled!
+                                        ? Modular.to.navigate("${AnnotationRoutes.createAnnotationPage}$_enterpriseId", arguments: currentOperator)
+                                        : operatorController.operatorDisabledSnackbar(context);
+                                  },
                                 ),
                               ],
                             ),
