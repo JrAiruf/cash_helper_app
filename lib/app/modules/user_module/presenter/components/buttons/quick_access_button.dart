@@ -28,7 +28,7 @@ class QuickAccessButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: border ? itemsColor ?? surfaceColor : Colors.transparent, width: 0.5),
+          side: BorderSide(color: border ? itemsColor ?? surfaceColor : Colors.transparent, width: 0.1),
           borderRadius: BorderRadius.circular(
             radius ?? 5,
           ),

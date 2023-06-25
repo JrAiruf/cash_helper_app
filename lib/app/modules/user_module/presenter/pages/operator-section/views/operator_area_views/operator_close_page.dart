@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cards/close_page_informations_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../../routes/app_routes.dart';
+import '../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../../../domain/entities/operator_entity.dart';
 import '../../../../components/tiles/operator_infortmations_tile.dart';
 
@@ -19,6 +21,7 @@ class OperatorClosePage extends StatefulWidget {
 
 final enterpriseId = Modular.args.params["enterpriseId"];
 final operatorController = Modular.get<OperatorController>();
+final dateValues = DateValues();
 
 class _OperatorClosePageState extends State<OperatorClosePage> {
   @override
@@ -28,6 +31,9 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
       enterpriseId,
       widget.operatorEntity.operatorId,
     );
+    operatorController.enterpriseId = enterpriseId;
+    operatorController.operatorEntity = widget.operatorEntity;
+    operatorController.operatorEntity?.operatorClosing = dateValues.operatorClosing;
   }
 
   @override
@@ -36,15 +42,16 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    String oppeningTime = widget.operatorEntity.operatorOppening == "Pendente" ? "Pendente" : widget.operatorEntity.operatorOppening ?? "";
-    String operatorStatus = widget.operatorEntity.operatorEnabled! ? "Ativo" : "Inativo";
+    String oppeningTime = operatorController.operatorEntity?.operatorOppening == "Pendente" ? "Pendente" : operatorController.operatorEntity?.operatorOppening ?? "";
+    String operatorStatus = operatorController.operatorEntity!.operatorEnabled! ? "Ativo" : "Inativo";
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_sharp),
           onPressed: () => Modular.to.navigate(
             "${UserRoutes.operatorHomePage}$enterpriseId",
-            arguments: widget.operatorEntity,
+            arguments: operatorController.operatorEntity!,
           ),
         ),
       ),
@@ -77,7 +84,7 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                       size: 55,
                     ),
                     Text(
-                      widget.operatorEntity.operatorName ?? "",
+                      operatorController.operatorEntity?.operatorName ?? "",
                       style: Theme.of(context).textTheme.displayMedium?.copyWith(
                             color: appThemes.surfaceColor(context),
                           ),
@@ -121,7 +128,7 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                                   icon: Icons.access_time,
                                 ),
                                 OperatorInformationsTile(
-                                  content: "${widget.operatorEntity.operatorNumber}",
+                                  content: "${operatorController.operatorEntity?.operatorNumber}",
                                   icon: Icons.monitor,
                                 ),
                               ],
@@ -141,9 +148,26 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                           ),
                         ),
                         SizedBox(
-                          height: sizeFrame ? height * 0.05 : height * 0.04,
+                          height: sizeFrame ? height * 0.035 : height * 0.025,
                         ),
-                        ClosePageInformationsComponent(annotations: operatorController.annotationsListStore.value)
+                        ClosePageInformationsComponent(
+                          annotations: operatorController.annotationsListStore.value,
+                        ),
+                        SizedBox(
+                          height: sizeFrame ? height * 0.045 : height * 0.035,
+                        ),
+                        Center(
+                          child: CashHelperElevatedButton(
+                            border: true,
+                            height: 50,
+                            width: width * 0.7,
+                            radius: 12,
+                            onPressed: () => operatorController.closeOperatorCash(context, appThemes.surfaceColor(context)),
+                            buttonName: "Fechar Caixa",
+                            backgroundColor: appThemes.greenColor(context),
+                            fontSize: 16,
+                          ),
+                        ),
                       ],
                     ),
                   ),

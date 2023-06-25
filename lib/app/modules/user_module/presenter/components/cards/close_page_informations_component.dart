@@ -15,133 +15,127 @@ class ClosePageInformationsComponent extends StatelessWidget {
     final appThemes = CashHelperThemes();
     final finishedAnnotations = annotations.where((element) => element.annotationConcluied == true).toList();
     final pendingAnnotations = annotations.where((element) => element.annotationConcluied == false).toList();
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 10,
-      ),
-      child: SizedBox(
-        height: sizeFrame ? height * 0.27 : height * 0.26,
-        width: width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              height: height * 0.065,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  width: 0.5,
-                  color: appThemes.surfaceColor(context),
-                ),
+    return SizedBox(
+      height: sizeFrame ? height * 0.24 : height * 0.26,
+      width: width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            height: height * 0.065,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                width: 0.5,
+                color: appThemes.surfaceColor(context),
               ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Finalizadas:",
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Finalizadas:",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: appThemes.surfaceColor(context),
+                          ),
+                    ),
+                    CircleAvatar(
+                      backgroundColor: appThemes.purpleColor(context),
+                      radius: 20,
+                      child: Text(
+                        "${finishedAnnotations.length}",
                         style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                              color: appThemes.surfaceColor(context),
+                              color: appThemes.surface(context),
                             ),
                       ),
-                      CircleAvatar(
-                        backgroundColor: appThemes.purpleColor(context),
-                        radius: 20,
-                        child: Text(
-                          "${finishedAnnotations.length}",
-                          style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                                color: appThemes.surfaceColor(context),
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Container(
-              height: height * 0.065,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  width: 0.5,
-                  color: appThemes.surfaceColor(context),
-                ),
+          ),
+          Container(
+            height: height * 0.065,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                width: 0.5,
+                color: appThemes.surfaceColor(context),
               ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Pendentes:",
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Pendentes:",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: appThemes.surfaceColor(context),
+                          ),
+                    ),
+                    CircleAvatar(
+                      backgroundColor: appThemes.purpleColor(context),
+                      radius: 20,
+                      child: Text(
+                        "${pendingAnnotations.length}",
                         style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                              color: appThemes.surfaceColor(context),
+                              color: appThemes.surface(context),
                             ),
                       ),
-                      CircleAvatar(
-                        backgroundColor: appThemes.purpleColor(context),
-                        radius: 20,
-                        child: Text(
-                          "${pendingAnnotations.length}",
-                          style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                                color: appThemes.surfaceColor(context),
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Container(
-              height: height * 0.065,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  width: 0.5,
-                  color: appThemes.surfaceColor(context),
-                ),
+          ),
+          Container(
+            height: height * 0.065,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                width: 0.5,
+                color: appThemes.surfaceColor(context),
               ),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Total:",
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Total:",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            color: appThemes.surfaceColor(context),
+                          ),
+                    ),
+                    CircleAvatar(
+                      backgroundColor: appThemes.purpleColor(context),
+                      radius: 20,
+                      child: Text(
+                        "${annotations.length}",
                         style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                              color: appThemes.surfaceColor(context),
+                              color: appThemes.surface(context),
                             ),
                       ),
-                      CircleAvatar(
-                        backgroundColor: appThemes.purpleColor(context),
-                        radius: 20,
-                        child: Text(
-                          "${annotations.length}",
-                          style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                                color: appThemes.surfaceColor(context),
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
