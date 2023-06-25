@@ -4,6 +4,9 @@ import 'package:cash_helper_app/app/modules/management_module/infra/data/managem
 
 import '../../../../helpers/data_verifier.dart';
 import '../../../user_module/infra/models/operator_model.dart';
+import '../../domain/entities/pendency_entity.dart';
+import '../../external/errors/pendency_error.dart';
+import '../adapters/pendency_adapter.dart';
 
 class ManagementRepositoryImpl implements ManagementRepository {
   ManagementRepositoryImpl({
@@ -15,13 +18,11 @@ class ManagementRepositoryImpl implements ManagementRepository {
   final DataVerifier _dataVerifier;
 
   @override
-  Future<List<OperatorModel>>? getOperatorsInformations(
-      String? enterpriseId) async {
+  Future<List<OperatorModel>>? getOperatorsInformations(String? enterpriseId) async {
     final operatorsModelList = <OperatorModel>[];
     try {
       if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
-        final databaseOperatorsMapsList =
-            await _database.getOperatorInformations(enterpriseId) ?? [];
+        final databaseOperatorsMapsList = await _database.getOperatorInformations(enterpriseId) ?? [];
         for (var operatorMap in databaseOperatorsMapsList) {
           final operatorModel = OperatorModel.fromMap(operatorMap);
           operatorsModelList.add(operatorModel);
@@ -34,11 +35,9 @@ class ManagementRepositoryImpl implements ManagementRepository {
   }
 
   @override
-  Future<PaymentMethodModel>? createNewPaymentMethod(
-      String? enterpriseId, PaymentMethodModel? paymentMethod) async {
+  Future<PaymentMethodModel>? createNewPaymentMethod(String? enterpriseId, PaymentMethodModel? paymentMethod) async {
     if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
-      final newPaymentMethod = await _database.createNewPaymentMethod(
-          enterpriseId, paymentMethod?.toMap());
+      final newPaymentMethod = await _database.createNewPaymentMethod(enterpriseId, paymentMethod?.toMap());
       return PaymentMethodModel.fromMap(newPaymentMethod ?? {});
     } else {
       return PaymentMethodModel();
@@ -46,15 +45,10 @@ class ManagementRepositoryImpl implements ManagementRepository {
   }
 
   @override
-  Future<List<PaymentMethodModel>>? getAllPaymentMethods(
-      String? enterpriseId) async {
+  Future<List<PaymentMethodModel>>? getAllPaymentMethods(String? enterpriseId) async {
     if (_dataVerifier.validateInputData(inputs: [enterpriseId])) {
-      final paymentMethodMapList =
-          await _database.getAllPaymentMethods(enterpriseId) as List;
-      final paymentMethods = paymentMethodMapList
-          .map((paymentMethodMap) =>
-              PaymentMethodModel.fromMap(paymentMethodMap))
-          .toList();
+      final paymentMethodMapList = await _database.getAllPaymentMethods(enterpriseId) as List;
+      final paymentMethods = paymentMethodMapList.map((paymentMethodMap) => PaymentMethodModel.fromMap(paymentMethodMap)).toList();
       return paymentMethods;
     } else {
       return [];
@@ -62,8 +56,7 @@ class ManagementRepositoryImpl implements ManagementRepository {
   }
 
   @override
-  Future<void>? removePaymentMethod(
-      String? enterpriseId, String? paymentMethodId) async {
+  Future<void>? removePaymentMethod(String? enterpriseId, String? paymentMethodId) async {
     if (_dataVerifier.validateInputData(inputs: [
       enterpriseId,
       paymentMethodId,
@@ -73,10 +66,18 @@ class ManagementRepositoryImpl implements ManagementRepository {
       return;
     }
   }
-  
+
   @override
-  Future? generatePendency(String enterpriseId, String operatorId, String annotationId) {
-    // TODO: implement generatePendency
-    throw UnimplementedError();
+  Future<PendencyEntity?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
+    try {
+      final pendencyMap = await _database.generatePendency(enterpriseId, operatorId, annotationId);
+      if (pendencyMap != null) {
+        return PendencyAdapter.fromMap(pendencyMap);
+      } else {
+        throw PendencyError(errorMessage: "Pendência não criada");
+      }
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
   }
 }

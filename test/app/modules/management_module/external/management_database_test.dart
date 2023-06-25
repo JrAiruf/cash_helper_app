@@ -114,6 +114,12 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       );
     }
   }
+  
+  @override
+  Future? generatePendency(String enterpriseId, String operatorId, String annotationId) {
+    // TODO: implement generatePendency
+    throw UnimplementedError();
+  }
 }
 
 void main() {

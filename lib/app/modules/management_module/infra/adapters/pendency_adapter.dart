@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/modules/management_module/domain/entities/pe
 class PendencyAdapter {
   static PendencyEntity fromMap(Map data) {
     return PendencyEntity(
+      pendencyId: data["pendencyId"],
       annotationId: data["annotationId"],
       pendencyPeriod: data["pendencyPeriod"],
       operatorId: data["operatorId"],

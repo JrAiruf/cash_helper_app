@@ -3,4 +3,5 @@ abstract class ApplicationManagementDatabase {
   Future<dynamic>? createNewPaymentMethod(String enterpriseId,Map<String, dynamic> paymentMethod);
   Future<dynamic>? getAllPaymentMethods(String enterpriseId);
   Future<dynamic>? removePaymentMethod(String enterpriseId,String paymentMethodId);
+   Future<dynamic>? generatePendency(String enterpriseId, String operatorId, String annotationId);
 }
