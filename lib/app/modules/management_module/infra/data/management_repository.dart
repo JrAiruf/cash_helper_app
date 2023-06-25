@@ -5,4 +5,5 @@ abstract class ManagementRepository {
   Future<dynamic>? createNewPaymentMethod(String enterpriseId, PaymentMethodModel paymentMethod);
   Future<dynamic>? getAllPaymentMethods(String enterpriseId);
   Future<dynamic>? removePaymentMethod(String enterpriseId, String paymentMethodId);
+  Future<dynamic>? generatePendency(String enterpriseId, String operatorId, String annotationId);
 }

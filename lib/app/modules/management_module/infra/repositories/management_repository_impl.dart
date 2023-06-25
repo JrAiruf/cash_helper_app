@@ -73,4 +73,10 @@ class ManagementRepositoryImpl implements ManagementRepository {
       return;
     }
   }
+  
+  @override
+  Future? generatePendency(String enterpriseId, String operatorId, String annotationId) {
+    // TODO: implement generatePendency
+    throw UnimplementedError();
+  }
 }

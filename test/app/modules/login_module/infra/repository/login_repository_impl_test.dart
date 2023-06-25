@@ -144,7 +144,7 @@ void main() {
         "Convert data coming from database and authentitcate operator user successfully",
         () async {
           when(datasource.login(any, any, any, any))
-              .thenAnswer((_) async => LoginTestObjects.newOperator);
+              .thenAnswer((_) async => LoginTestObjects.newRepositoryOperator);
           final loggedUser = await repository.login(
               "email", "password", "enterpriseId", "collection");
           expect(loggedUser, isA<OperatorModel>());
@@ -155,7 +155,7 @@ void main() {
         "Convert data coming from database and authentitcate a manager successfully",
         () async {
           when(datasource.login(any, any, any, any))
-              .thenAnswer((_) async => LoginTestObjects.newManager);
+              .thenAnswer((_) async => LoginTestObjects.newRepositoryManager);
           final loggedUser = await repository.login(
               "email", "password", "enterpriseId", "collection");
           expect(loggedUser, isA<ManagerModel>());
@@ -168,7 +168,7 @@ void main() {
           when(datasource.login(any, any, any, any))
               .thenAnswer((_) async => {});
           final loginOperator =
-              await repository.login("email", null, null, "collection");
+              await repository.login("email", "", "", "collection");
           expect(loginOperator, equals(null));
         },
       );
@@ -182,7 +182,7 @@ void main() {
         "Convert data coming from database and return an OperatorModel object",
         () async {
           when(datasource.getUserById(any, any, any))
-              .thenAnswer((_) async => LoginTestObjects.newOperator);
+              .thenAnswer((_) async => LoginTestObjects.newRepositoryOperator);
           final retrivedUser = await repository.getUserById(
               "enterpriseId", "operatorId", "collection");
           expect(retrivedUser, isA<OperatorModel>());
@@ -193,7 +193,7 @@ void main() {
         "Convert data coming from database and return an ManagerModel object",
         () async {
           when(datasource.getUserById(any, any, any))
-              .thenAnswer((_) async => LoginTestObjects.newManager);
+              .thenAnswer((_) async => LoginTestObjects.newRepositoryManager);
           final retrivedUser = await repository.getUserById(
               "enterpriseId", "managerId", "collection");
           expect(retrivedUser, isA<ManagerModel>());
@@ -206,7 +206,7 @@ void main() {
           when(datasource.getUserById(any, any, any))
               .thenAnswer((_) async => {});
           final retriviedOperator =
-              await repository.getUserById(null, "", "collection");
+              await repository.getUserById("", "", "collection");
           expect(retriviedOperator?.operatorId == null, equals(true));
         },
       );
