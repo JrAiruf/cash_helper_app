@@ -10,7 +10,6 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
-import '../../../../annotations_module/presenter/stores/annotations_list_store.dart';
 import '../../components/cash_helper_bottom_navigation_item.dart';
 
 class OperatorArea extends StatefulWidget {

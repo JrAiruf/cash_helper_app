@@ -125,7 +125,6 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                         operatorController.operatorEntity!.operatorEnabled!
                             ? Modular.to.navigate("${UserRoutes.operatorClosePage}${operatorController.enterpriseId}", arguments: operatorController.operatorEntity)
                             : operatorController.operatorDisabledSnackbar(context);
-                        ;
                       },
                     ),
                   ],
