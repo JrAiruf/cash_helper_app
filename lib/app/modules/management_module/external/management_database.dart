@@ -1,16 +1,21 @@
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../annotations_module/external/data/application_annotations_database.dart';
 import 'errors/payment_method_not_created.dart';
 import 'errors/payment_methods_list_unnavailable.dart';
+import 'errors/pendency_error.dart';
 import 'errors/remove_payment_method_error.dart';
 import 'errors/users_unavailable_error.dart';
 
 class ManagementDatabase implements ApplicationManagementDatabase {
   ManagementDatabase({
     required FirebaseFirestore database,
-  }) : _database = database;
+    required ApplicationAnnotationDatabase annotationsDatabase,
+  })  : _database = database,
+        _annotationsDatabase = annotationsDatabase;
 
   final FirebaseFirestore _database;
+  final ApplicationAnnotationDatabase _annotationsDatabase;
   var databaseOperatorsMapList = <Map<String, dynamic>>[];
   @override
   Future<List<Map<String, dynamic>>>? getOperatorInformations(String? enterpriseId) async {
@@ -79,10 +84,43 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
 
   @override
-  Future? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
-    final pendenciesCollection = _database.collection("enterprise").doc(enterpriseId).collection("pendencies");
-    await pendenciesCollection.add({});
+  Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
+    Map<String, dynamic> pendencyMap = {};
+    try {
+      final pendenciesCollection = _database.collection("enterprise").doc(enterpriseId).collection("pendencies");
+      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId!, operatorId!, annotationId!);
+      await pendenciesCollection.add({
+        "annotationId": annotationId,
+        "pendencySaleTime": pendingAnnotation?["annotationSaleTime"],
+        "pendencySaleDate": pendingAnnotation?["annotationSaleDate"],
+        "pendencyPeriod": _getPendencyPeriod(pendingAnnotation?["annotationSaleTime"]),
+        "operatorId": operatorId,
+      }).then(
+        (value) async {
+          pendencyMap["pendencyId"] = value.id;
+          final pendencyDocument = await value.get();
+          pendencyMap.addAll(pendencyDocument.data() ?? {});
+        },
+      );
+      if (pendencyMap.isNotEmpty) {
+        return pendencyMap;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
   }
 
-  
+  String _getPendencyPeriod(String annotationSaleTime) {
+    final annotationPeriod = annotationSaleTime.split(":").first;
+    final timeValue = int.tryParse(annotationPeriod) ?? 0;
+    if (timeValue >= 18) {
+      return "Noite";
+    } else if (timeValue >= 12 && timeValue < 18) {
+      return "Tarde";
+    } else {
+      return "Manhã";
+    }
+  }
 }

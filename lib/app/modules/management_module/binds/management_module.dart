@@ -62,6 +62,7 @@ class ManagementModule extends Module {
     Bind<ApplicationManagementDatabase>(
       (i) => ManagementDatabase(
         database: i(),
+        annotationsDatabase: i()
       ),
     ),
     Bind<ManagementRepository>(

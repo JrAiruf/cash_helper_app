@@ -108,7 +108,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
         "annotationId": annotationId,
         "pendencySaleTime": pendingAnnotation?["annotationSaleTime"],
         "pendencySaleDate": pendingAnnotation?["annotationSaleDate"],
-        "pendencyPeriod": getPendencyPeriod(pendingAnnotation?["annotationSaleTime"]),
+        "pendencyPeriod": _getPendencyPeriod(pendingAnnotation?["annotationSaleTime"]),
         "operatorId": operatorId,
       }).then(
         (value) async {
@@ -127,7 +127,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
     }
   }
 
-  String getPendencyPeriod(String annotationSaleTime) {
+  String _getPendencyPeriod(String annotationSaleTime) {
     final annotationPeriod = annotationSaleTime.split(":").first;
     final timeValue = int.tryParse(annotationPeriod) ?? 0;
     if (timeValue >= 18) {
@@ -296,7 +296,8 @@ void main() {
       test(
         "Fail to create pendencies",
         () async {
-          expect(() async => database.generatePendency("", "", "annotationId"), throwsA(isA<PendencyError>()));
+          expect(() async => database.generatePendency("", "", "annotationId"),
+           throwsA(isA<PendencyError>()));
         },
       );
     },
@@ -304,7 +305,7 @@ void main() {
   test(
     "Get Pendency day Period",
     () async {
-      final result = database.getPendencyPeriod("11:45");
+      final result = database._getPendencyPeriod("11:45");
       expect(result, isA<String>());
       expect(result, equals("Manhã"));
     },
