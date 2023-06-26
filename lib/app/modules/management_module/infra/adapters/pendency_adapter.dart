@@ -5,6 +5,8 @@ class PendencyAdapter {
     return PendencyEntity(
       pendencyId: data["pendencyId"],
       annotationId: data["annotationId"],
+      pendencySaleTime: data["pendencySaleTime"],
+      pendencySaleDate: data["pendencySaleDate"],
       pendencyPeriod: data["pendencyPeriod"],
       operatorId: data["operatorId"],
     );
