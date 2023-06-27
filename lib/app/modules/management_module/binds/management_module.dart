@@ -16,6 +16,8 @@ import '../domain/usecases/payment_methods/get_all_payment_methods/get_all_payme
 import '../domain/usecases/operators/get_operator_informations/get_operators_informations.dart';
 import '../domain/usecases/payment_methods/remove_payment_method/iremove_payment_method.dart';
 import '../domain/usecases/payment_methods/remove_payment_method/remove_payment_method.dart';
+import '../domain/usecases/pendencies/generate_pendency/generate_pendency.dart';
+import '../domain/usecases/pendencies/generate_pendency/igenerate_pendency.dart';
 import '../presenter/pages/create_payment_methods_page.dart';
 import '../presenter/stores/payment_methods_list_store.dart';
 
@@ -91,6 +93,11 @@ class ManagementModule extends Module {
         repository: i(),
       ),
     ),
+    Bind<IGeneratePendency>(
+      (i) => GeneratePendency(
+        repository: i(),
+      ),
+    ),
     Bind.factory<PaymentMethodsListStore>(
       (i) => PaymentMethodsListStore(
         getAllPaymentMethods: i(),
@@ -102,6 +109,7 @@ class ManagementModule extends Module {
         createNewPaymentMethod: i(),
         getAllPaymentMethods: i(),
         removePaymentMethod: i(),
+        generatePendency: i(),
       ),
     ),
     Bind<ManagementController>(
