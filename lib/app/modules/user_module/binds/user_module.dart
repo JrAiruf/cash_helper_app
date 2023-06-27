@@ -95,6 +95,6 @@ class UserModule extends Module {
     ),
     Bind.singleton<OperatorController>(
       (i) => OperatorController(),
-    )
+    ),
   ];
 }

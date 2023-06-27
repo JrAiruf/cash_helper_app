@@ -3,7 +3,6 @@ import 'package:cash_helper_app/app/modules/management_module/domain/usecases/pa
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/get_all_payment_methods/iget_all_payment_methods.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/operators/get_operator_informations/iget_operators_informations.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/remove_payment_method/iremove_payment_method.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/usecases/pendencies/generate_pendency/igenerate_pendency.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,19 +13,16 @@ class ManagementStore extends ValueNotifier<ManagementStates> {
     required ICreateNewpaymentMethod createNewPaymentMethod,
     required IGetAllPaymentMethods getAllPaymentMethods,
     required IRemovePaymentMethod removePaymentMethod,
-    required IGeneratePendency generatePendency,
   })  : _getOperatorsInformations = getOperatorsInformations,
         _createNewPaymentMethod = createNewPaymentMethod,
         _getAllPaymentMethods = getAllPaymentMethods,
         _removePaymentMethod = removePaymentMethod,
-        _generatePendency = generatePendency,
         super(ManagementInitialState());
 
   final IGetOperatorsInformations _getOperatorsInformations;
   final ICreateNewpaymentMethod _createNewPaymentMethod;
   final IGetAllPaymentMethods _getAllPaymentMethods;
   final IRemovePaymentMethod _removePaymentMethod;
-  final IGeneratePendency _generatePendency;
 
   var paymentMethods$ = ValueNotifier(<PaymentMethodEntity>[]);
   List<PaymentMethodEntity> get paymentMethods => paymentMethods$.value;
@@ -70,9 +66,5 @@ class ManagementStore extends ValueNotifier<ManagementStates> {
     value = ManagementLoadingState();
     await _removePaymentMethod(enterpriseId, paymentMethodId);
     value = ManagementInitialState();
-  }
-
-  Future<void> generatePendency(String enterpriseId, String operatorId, String annotationId) async {
-    await _generatePendency(enterpriseId, operatorId, annotationId);
   }
 }

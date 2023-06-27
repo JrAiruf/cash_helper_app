@@ -3,6 +3,8 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/stores/p
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../stores/pendency_store.dart';
+
 class ManagementController {
   ManagementController();
   final paymentMethodNameField = TextEditingController();
@@ -10,7 +12,9 @@ class ManagementController {
   final managerCodeField = TextEditingController();
 
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
-  final _payementMethodsStore = Modular.get<PaymentMethodsListStore>();
+  final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
+  final pendencyStore = Modular.get<PendencyStore>();
+  
   String? paymentMethodNameValidate(String? value) {
     return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
   }
@@ -26,8 +30,8 @@ class ManagementController {
   }
 
   Future<void> getAllPaymentMethods(String enterpriseId) async {
-    await _payementMethodsStore.getAllPaymentMethods(enterpriseId);
-    paymentMethods.value = _payementMethodsStore.value ?? [];
+    await paymentMethodsListStore.getAllPaymentMethods(enterpriseId);
+    paymentMethods.value = paymentMethodsListStore.value ?? [];
   }
 
   noMatchingCodes(BuildContext context, {required String message}) {

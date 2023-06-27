@@ -8,6 +8,7 @@ import 'package:cash_helper_app/app/modules/management_module/infra/repositories
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods_page.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/pages/pendencies_list_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/remove_payment_method_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -20,6 +21,7 @@ import '../domain/usecases/pendencies/generate_pendency/generate_pendency.dart';
 import '../domain/usecases/pendencies/generate_pendency/igenerate_pendency.dart';
 import '../presenter/pages/create_payment_methods_page.dart';
 import '../presenter/stores/payment_methods_list_store.dart';
+import '../presenter/stores/pendency_store.dart';
 
 abstract class AppManagementModule {
   static routes() => ModuleRoute(
@@ -56,16 +58,16 @@ class ManagementModule extends Module {
     ),
     ChildRoute(
       "/payment-method/:enterpriseId",
-      child: (_, args) =>
-          PaymentMethod(paymentMethod: args.data["paymentMethodEntity"]),
+      child: (_, args) => PaymentMethod(paymentMethod: args.data["paymentMethodEntity"]),
+    ),
+    ChildRoute(
+      "/pendencies-list-page/:enterpriseId",
+      child: (_, args) => const PendenciesListPage(),
     ),
   ];
   final bindsList = <Bind>[
     Bind<ApplicationManagementDatabase>(
-      (i) => ManagementDatabase(
-        database: i(),
-        annotationsDatabase: i()
-      ),
+      (i) => ManagementDatabase(database: i(), annotationsDatabase: i()),
     ),
     Bind<ManagementRepository>(
       (i) => ManagementRepositoryImpl(
@@ -109,6 +111,10 @@ class ManagementModule extends Module {
         createNewPaymentMethod: i(),
         getAllPaymentMethods: i(),
         removePaymentMethod: i(),
+      ),
+    ),
+    Bind<PendencyStore>(
+      (i) => PendencyStore(
         generatePendency: i(),
       ),
     ),
