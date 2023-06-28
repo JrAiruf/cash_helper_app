@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 class GetPendencyByIdMock implements IGetPendencyById {
   GetPendencyByIdMock({required ManagementRepository repository}) : _repository = repository;
-  ManagementRepository _repository;
+ final ManagementRepository _repository;
 
   @override
   Future<PendencyEntity> call(String enterpriseId, String pendencyId) async {

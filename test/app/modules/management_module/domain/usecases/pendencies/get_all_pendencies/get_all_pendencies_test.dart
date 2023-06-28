@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 class GetAllPendenciesMock implements IGetAllPendencies {
   GetAllPendenciesMock({required ManagementRepository repository}) : _repository = repository;
-  ManagementRepository _repository;
+ final ManagementRepository _repository;
   @override
   Future<List<PendencyEntity>> call(String enterpriseId) async {
     // TODO: implement call

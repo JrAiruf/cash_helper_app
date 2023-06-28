@@ -4,7 +4,7 @@ import 'iget_all_pendencies.dart';
 
 class GetAllPendencies implements IGetAllPendencies {
   GetAllPendencies({required ManagementRepository repository}) : _repository = repository;
-  ManagementRepository _repository;
+ final ManagementRepository _repository;
   @override
   Future<List<PendencyEntity>> call(String enterpriseId) async {
     // TODO: implement call

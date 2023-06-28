@@ -1,5 +1,4 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/external/annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
@@ -14,11 +13,9 @@ import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_ob
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:uuid/uuid.dart';
 import '../../annotations_module/external/annotations_database_test.dart';
-import '../../annotations_module/infra/repository/annotation_repository_impl_test.dart';
 import '../../enterprise_module/external/enterprise_database_test.dart';
 import '../../login_module/external/login_database_test.dart';
 
@@ -289,7 +286,6 @@ void main() {
           final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));
-          print(result?["pendencyId"]);
         },
       );
 
