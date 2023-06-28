@@ -162,7 +162,12 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                             height: 50,
                             width: width * 0.7,
                             radius: 12,
-                            onPressed: () => operatorController.closeOperatorCash(context, appThemes.surface(context)),
+                            onPressed: () {
+                              operatorController.closeOperatorCash(
+                                context,
+                                appThemes.surface(context),
+                              );
+                            },
                             buttonName: "Fechar Caixa",
                             backgroundColor: appThemes.greenColor(context),
                             fontSize: 16,

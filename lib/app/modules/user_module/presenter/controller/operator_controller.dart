@@ -42,14 +42,14 @@ class OperatorController {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();
         cashClosingConfirmationDialog(context, color, () async {
-          unfinishedAnnotations.map(
-            (e) async => await pendencyStore.generatePendency(
+          for (var annotation in unfinishedAnnotations) {
+            pendencyStore.generatePendency(
               enterpriseId ?? "",
               operatorEntity?.operatorId ?? "",
-              e.annotationId ?? "",
-            ),
-          ).toList();
-          await operatorStore.closeOperatorCash(
+              annotation.annotationId!,
+            );
+          }
+          operatorStore.closeOperatorCash(
             enterpriseId ?? "",
             operatorEntity?.operatorId ?? "",
             operatorEntity?.operatorClosing ?? "",
@@ -320,7 +320,7 @@ class OperatorController {
     showDialog(
       context: context,
       builder: (_) {
-        final surfaceColor = Theme.of(context).colorScheme.onSurface;
+        final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           backgroundColor: color,
@@ -376,7 +376,7 @@ class OperatorController {
     showDialog(
       context: context,
       builder: (_) {
-        final surfaceColor = Theme.of(context).colorScheme.onSurface;
+        final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           backgroundColor: color,

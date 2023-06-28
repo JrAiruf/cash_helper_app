@@ -113,8 +113,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       }).then(
         (value) async {
           pendencyMap["pendencyId"] = value.id;
-          final pendencyDocument = await value.get();
-          pendencyMap.addAll(pendencyDocument.data() ?? {});
+          value.update({"pendencyId": pendencyMap["pendencyId"]});
         },
       );
       if (pendencyMap.isNotEmpty) {
@@ -290,14 +289,14 @@ void main() {
           final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));
+          print(result?["pendencyId"]);
         },
       );
 
       test(
         "Fail to create pendencies",
         () async {
-          expect(() async => database.generatePendency("", "", "annotationId"),
-           throwsA(isA<PendencyError>()));
+          expect(() async => database.generatePendency("", "", "annotationId"), throwsA(isA<PendencyError>()));
         },
       );
     },

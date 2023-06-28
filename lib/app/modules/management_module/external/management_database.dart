@@ -98,8 +98,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       }).then(
         (value) async {
           pendencyMap["pendencyId"] = value.id;
-          final pendencyDocument = await value.get();
-          pendencyMap.addAll(pendencyDocument.data() ?? {});
+          value.update({"pendencyId": pendencyMap["pendencyId"]});
         },
       );
       if (pendencyMap.isNotEmpty) {
