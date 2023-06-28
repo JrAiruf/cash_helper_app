@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../routes/app_routes.dart';
+import '../../../management_module/presenter/stores/pendency_store.dart';
 
 class OperatorController {
   final emailField = TextEditingController();
@@ -12,6 +13,7 @@ class OperatorController {
   final cashierCodeField = TextEditingController();
   final operatorStore = Modular.get<OperatorStore>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
+  final pendencyStore = Modular.get<PendencyStore>();
 
   final operatorCodeFormKey = GlobalKey<FormState>();
   bool? loadingOperatorSettings;
@@ -19,6 +21,7 @@ class OperatorController {
   OperatorEntity? operatorEntity;
   String? enterpriseId;
   String? operatorCode;
+  String? annotationId;
 
   Future<void> openOperatorCash(BuildContext context) async {
     if (operatorCode == operatorEntity!.operatorCode) {
@@ -39,6 +42,13 @@ class OperatorController {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();
         cashClosingConfirmationDialog(context, color, () async {
+          unfinishedAnnotations.map(
+            (e) async => await pendencyStore.generatePendency(
+              enterpriseId ?? "",
+              operatorEntity?.operatorId ?? "",
+              e.annotationId ?? "",
+            ),
+          ).toList();
           await operatorStore.closeOperatorCash(
             enterpriseId ?? "",
             operatorEntity?.operatorId ?? "",

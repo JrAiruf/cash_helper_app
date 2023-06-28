@@ -21,6 +21,7 @@ import '../domain/usecases/pendencies/generate_pendency/generate_pendency.dart';
 import '../domain/usecases/pendencies/generate_pendency/igenerate_pendency.dart';
 import '../presenter/pages/create_payment_methods_page.dart';
 import '../presenter/stores/payment_methods_list_store.dart';
+import '../presenter/stores/pendencies_list_store.dart';
 import '../presenter/stores/pendency_store.dart';
 
 abstract class AppManagementModule {
