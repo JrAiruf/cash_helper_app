@@ -111,6 +111,18 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
       return;
     }
   }
+  
+  @override
+  Future<void>? createPendingAnnotation(String? enterpriseId, String? operatorId, String? annotationId) {
+    // TODO: implement createPendingAnnotation
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<AnnotationModel>?>? getAllPendingAnnotations(String? enterpriseId) {
+    // TODO: implement getAllPendingAnnotations
+    throw UnimplementedError();
+  }
 }
 
 void main() {

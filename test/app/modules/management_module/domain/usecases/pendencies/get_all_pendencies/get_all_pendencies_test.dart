@@ -9,7 +9,6 @@ class GetAllPendenciesMock implements IGetAllPendencies {
  final ManagementRepository _repository;
   @override
   Future<List<PendencyEntity>> call(String enterpriseId) async {
-    // TODO: implement call
     throw UnimplementedError();
   }
 }
@@ -17,6 +16,5 @@ class GetAllPendenciesMock implements IGetAllPendencies {
 
 void main() {
   test("GetAllPendencies Usecase should return a List<PendencyEntity>", () async {
-    // TODO: Implement test
   });
 }

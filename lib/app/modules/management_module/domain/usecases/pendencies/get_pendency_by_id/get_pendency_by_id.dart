@@ -8,7 +8,6 @@ class GetPendencyById implements IGetPendencyById {
 
   @override
   Future<PendencyEntity> call(String enterpriseId, String pendencyId) async {
-    // TODO: implement call
     throw UnimplementedError();
   }
 }
