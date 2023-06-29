@@ -55,7 +55,7 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   @override
   Future<void>? updateAnnotation(String? enterpriseId, String? operatorId, String? annotationId, AnnotationModel? annotation) async {
     if (annotationId!.isNotEmpty && !annotation!.toMap().values.contains(null)) {
-      await _datasource.updateAnnotation(operatorId!, annotationId, annotation.toMap());
+      await _datasource.updateAnnotation(enterpriseId!,operatorId!, annotationId, annotation.toMap());
     } else {
       return;
     }

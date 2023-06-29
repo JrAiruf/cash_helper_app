@@ -79,7 +79,7 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
       String? annotationId, AnnotationModel? annotation) async {
     if (annotationId!.isNotEmpty &&
         !annotation!.toMap().values.contains(null)) {
-      await _datasource.updateAnnotation(
+      await _datasource.updateAnnotation(enterpriseId!,
           operatorId!, annotationId, annotation.toMap());
     } else {
       return;

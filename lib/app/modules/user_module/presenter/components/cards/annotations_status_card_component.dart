@@ -23,13 +23,6 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
   final Color? borderColor;
   final List<Widget>? items;
 
-  final List<AnnotationEntity>? annotationsList = [
-    AnnotationEntity(),
-    AnnotationEntity(),
-    AnnotationEntity(),
-    AnnotationEntity(),
-    AnnotationEntity(),
-  ];
   @override
   Widget build(BuildContext context) {
     final fontSize = Theme.of(context).textTheme.bodySmall;
@@ -50,7 +43,7 @@ class AnnotationsStatusCardComponent extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                "${annotationsList?.length}",
+                "0",
                 style: fontSize,
               ),
             ),

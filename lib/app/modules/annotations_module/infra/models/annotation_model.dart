@@ -12,6 +12,7 @@ class AnnotationModel {
   String? annotationPaymentMethod;
   String? annotationReminder;
   bool? annotationConcluied;
+  bool? annotationWithPendency;
 
   AnnotationModel({
     this.annotationId,
@@ -22,6 +23,7 @@ class AnnotationModel {
     this.annotationPaymentMethod,
     this.annotationReminder,
     this.annotationConcluied,
+    this.annotationWithPendency,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,6 +36,7 @@ class AnnotationModel {
       'annotationPaymentMethod': annotationPaymentMethod,
       'annotationReminder': annotationReminder,
       'annotationConcluied': annotationConcluied,
+      'annotationWithPendency': annotationWithPendency,
     };
   }
 
@@ -47,6 +50,7 @@ class AnnotationModel {
       annotationPaymentMethod: map['annotationPaymentMethod'],
       annotationReminder: map['annotationReminder'],
       annotationConcluied: map['annotationConcluied'],
+      annotationWithPendency: map['annotationWithPendency'],
     );
   }
   static AnnotationEntity toEntityData(AnnotationModel annotationModel) {
@@ -59,6 +63,7 @@ class AnnotationModel {
       annotationPaymentMethod: annotationModel.annotationPaymentMethod,
       annotationReminder: annotationModel.annotationReminder,
       annotationConcluied: annotationModel.annotationConcluied,
+      annotationWithPendency: annotationModel.annotationWithPendency,
     );
   }
 
@@ -72,22 +77,24 @@ class AnnotationModel {
       annotationPaymentMethod: annotationEntity.annotationPaymentMethod,
       annotationReminder: annotationEntity.annotationReminder,
       annotationConcluied: annotationEntity.annotationConcluied,
+      annotationWithPendency: annotationEntity.annotationWithPendency,
     );
   }
 
   static AnnotationEntity copyWith(AnnotationEntity annotationEntity) {
     return AnnotationEntity(
-        annotationSaleTime: annotationEntity.annotationSaleTime,
-        annotationSaleDate: annotationEntity.annotationSaleDate,
-        annotationSaleValue: annotationEntity.annotationSaleValue,
-        annotationPaymentMethod: annotationEntity.annotationPaymentMethod,
-        annotationReminder: annotationEntity.annotationReminder,
-        annotationClientAddress: annotationEntity.annotationClientAddress,
-        annotationConcluied: annotationEntity.annotationConcluied);
+      annotationSaleTime: annotationEntity.annotationSaleTime,
+      annotationSaleDate: annotationEntity.annotationSaleDate,
+      annotationSaleValue: annotationEntity.annotationSaleValue,
+      annotationPaymentMethod: annotationEntity.annotationPaymentMethod,
+      annotationReminder: annotationEntity.annotationReminder,
+      annotationClientAddress: annotationEntity.annotationClientAddress,
+      annotationConcluied: annotationEntity.annotationConcluied,
+      annotationWithPendency: annotationEntity.annotationWithPendency,
+    );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory AnnotationModel.fromJson(String source) =>
-      AnnotationModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory AnnotationModel.fromJson(String source) => AnnotationModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

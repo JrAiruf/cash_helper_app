@@ -60,6 +60,7 @@ class AnnotationsController {
       final newAnnotation = AnnotationEntity(
           annotationClientAddress: annotationClientAddress,
           annotationConcluied: false,
+          annotationWithPendency: false,
           annotationReminder: "AnnotationReminder",
           annotationSaleDate: dateValue.annotationDayDateTime,
           annotationSaleTime: annotationSaleTime,

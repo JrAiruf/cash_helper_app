@@ -5,6 +5,7 @@ class AnnotationsTestObjects {
   static final newAnnotation = AnnotationEntity(
       annotationClientAddress: "Andorinhas 381",
       annotationConcluied: false,
+      annotationWithPendency: false,
       annotationPaymentMethod: "Dinheiro",
       annotationReminder: "No Reminder",
       annotationSaleDate: "Data Atual",
@@ -48,6 +49,18 @@ class AnnotationsTestObjects {
     'annotationPaymentMethod': "Dinheiro",
     'annotationReminder': null,
     'annotationConcluied': false,
+    'annotationWithPendency': false,
+  };
+  static final newPendingAnnotationMap = <String, dynamic>{
+    'annotationId': "al235hpassfq9efalsdlgepriaiur",
+    'annotationClientAddress': "Andorinhas 381",
+    'annotationSaleValue': "500,56",
+    'annotationSaleTime': "12:45",
+    'annotationSaleDate': "07/04",
+    'annotationPaymentMethod': "Dinheiro",
+    'annotationReminder': null,
+    'annotationConcluied': false,
+    'annotationWithPendency': true,
   };
   static final databaseAnnotation = <String, dynamic>{
     'annotationId': "askjdfhlakjsdhkajshdgkjahlskjdghla",
