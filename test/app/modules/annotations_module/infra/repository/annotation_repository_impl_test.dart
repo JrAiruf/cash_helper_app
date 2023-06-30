@@ -10,20 +10,15 @@ import 'package:mockito/mockito.dart';
 class AnnotationsDatabaseMock extends Mock implements AnnotationsDatabase {}
 
 class AnnotationsRepositoryMock implements AnnotationRepository {
-  AnnotationsRepositoryMock(
-      {required ApplicationAnnotationDatabase datasource,
-      required DataVerifier dataVerifier})
+  AnnotationsRepositoryMock({required ApplicationAnnotationDatabase datasource, required DataVerifier dataVerifier})
       : _datasource = datasource,
         _dataVerifier = dataVerifier;
   final ApplicationAnnotationDatabase _datasource;
   final DataVerifier _dataVerifier;
   @override
-  Future<AnnotationModel?>? createAnnotation(String? enterpriseId,
-      String? operatorId, AnnotationModel? annotation) async {
-    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId]) &&
-        _dataVerifier.objectVerifier(object: annotation!.toMap())) {
-      final datasourceAnnotation = await _datasource.createAnnotation(
-          enterpriseId!, operatorId!, annotation.toMap());
+  Future<AnnotationModel?>? createAnnotation(String? enterpriseId, String? operatorId, AnnotationModel? annotation) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId]) && _dataVerifier.objectVerifier(object: annotation!.toMap())) {
+      final datasourceAnnotation = await _datasource.createAnnotation(enterpriseId!, operatorId!, annotation.toMap());
       return AnnotationModel.fromMap(datasourceAnnotation!);
     } else {
       return null;
@@ -31,13 +26,9 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
   }
 
   @override
-  Future<AnnotationModel?>? getAnnotationById(
-      String? enterpriseId, String? operatorId, String? annotationId) async {
-    if (enterpriseId!.isNotEmpty &&
-        operatorId!.isNotEmpty &&
-        annotationId!.isNotEmpty) {
-      final datasourceAnnotation = await _datasource.getAnnotationById(
-          enterpriseId, operatorId, annotationId);
+  Future<AnnotationModel?>? getAnnotationById(String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
+      final datasourceAnnotation = await _datasource.getAnnotationById(enterpriseId, operatorId, annotationId);
       return AnnotationModel.fromMap(datasourceAnnotation ?? {});
     } else {
       return null;
@@ -45,14 +36,10 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
   }
 
   @override
-  Future<List<AnnotationModel>?>? getAllAnnotations(
-      String? enterpriseId, String? operatorId) async {
-    final datasoourceAnnotationsList =
-        await _datasource.getAllAnnotations(enterpriseId!, operatorId!);
+  Future<List<AnnotationModel>?>? getAllAnnotations(String? enterpriseId, String? operatorId) async {
+    final datasoourceAnnotationsList = await _datasource.getAllAnnotations(enterpriseId!, operatorId!);
     if (enterpriseId.isNotEmpty && operatorId.isNotEmpty) {
-      final annotationsModelList = datasoourceAnnotationsList
-          ?.map((annotationMap) => AnnotationModel.fromMap(annotationMap))
-          .toList();
+      final annotationsModelList = datasoourceAnnotationsList?.map((annotationMap) => AnnotationModel.fromMap(annotationMap)).toList();
       return annotationsModelList;
     } else {
       return [];
@@ -60,14 +47,10 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
   }
 
   @override
-  Future<List<AnnotationModel>?>? searchAnnotationsByClientAddress(
-      String? operatorId, String? clientAddress) async {
-    final datasourceSugestedMaps = await _datasource
-        .searchAnnotationsByClientAddress(operatorId!, clientAddress!);
+  Future<List<AnnotationModel>?>? searchAnnotationsByClientAddress(String? operatorId, String? clientAddress) async {
+    final datasourceSugestedMaps = await _datasource.searchAnnotationsByClientAddress(operatorId!, clientAddress!);
     if (operatorId.isNotEmpty && clientAddress.isNotEmpty) {
-      final repositorySugestedAnnotations = datasourceSugestedMaps
-          ?.map((annotationMap) => AnnotationModel.fromMap(annotationMap))
-          .toList();
+      final repositorySugestedAnnotations = datasourceSugestedMaps?.map((annotationMap) => AnnotationModel.fromMap(annotationMap)).toList();
       return repositorySugestedAnnotations;
     } else {
       return [];
@@ -75,49 +58,38 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
   }
 
   @override
-  Future<void>? updateAnnotation(String? enterpriseId, String? operatorId,
-      String? annotationId, AnnotationModel? annotation) async {
-    if (annotationId!.isNotEmpty &&
-        !annotation!.toMap().values.contains(null)) {
-      await _datasource.updateAnnotation(enterpriseId!,
-          operatorId!, annotationId, annotation.toMap());
+  Future<void>? updateAnnotation(String? enterpriseId, String? operatorId, String? annotationId, AnnotationModel? annotation) async {
+    if (annotationId!.isNotEmpty && !annotation!.toMap().values.contains(null)) {
+      await _datasource.updateAnnotation(enterpriseId!, operatorId!, annotationId, annotation.toMap());
     } else {
       return;
     }
   }
 
   @override
-  Future<void>? finishAnnotation(
-      String? enterpriseId, String? operatorId, String? annotationId) async {
-    if (enterpriseId!.isNotEmpty &&
-        operatorId!.isNotEmpty &&
-        annotationId!.isNotEmpty) {
-      await _datasource.finishAnnotation(
-          enterpriseId, operatorId, annotationId);
+  Future<void>? finishAnnotation(String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
+      await _datasource.finishAnnotation(enterpriseId, operatorId, annotationId);
     } else {
       return;
     }
   }
 
   @override
-  Future<void>? deleteAnnotation(
-      String? enterpriseId, String? operatorId, String? annotationId) async {
-    if (enterpriseId!.isNotEmpty &&
-        operatorId!.isNotEmpty &&
-        annotationId!.isNotEmpty) {
-      await _datasource.deleteAnnotation(
-          enterpriseId, operatorId, annotationId);
+  Future<void>? deleteAnnotation(String? enterpriseId, String? operatorId, String? annotationId) async {
+    if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
+      await _datasource.deleteAnnotation(enterpriseId, operatorId, annotationId);
     } else {
       return;
     }
   }
-  
+
   @override
   Future<void>? createPendingAnnotation(String? enterpriseId, String? operatorId, String? annotationId) {
     // TODO: implement createPendingAnnotation
     throw UnimplementedError();
   }
-  
+
   @override
   Future<List<AnnotationModel>?>? getAllPendingAnnotations(String? enterpriseId) {
     // TODO: implement getAllPendingAnnotations
@@ -127,8 +99,7 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
 
 void main() {
   final datasource = AnnotationsDatabaseMock();
-  final repository = AnnotationsRepositoryMock(
-      datasource: datasource, dataVerifier: DataVerifier());
+  final repository = AnnotationsRepositoryMock(datasource: datasource, dataVerifier: DataVerifier());
 
   group(
     "CreateAnnotation Function Should",
@@ -136,12 +107,8 @@ void main() {
       test(
         "Call database to create an annotation and return an AnnotationModel object",
         () async {
-          when(datasource.createAnnotation(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.databaseAnnotation);
-          final createdAnnotation = await repository.createAnnotation(
-              "enterpriseId",
-              "operatorId",
-              AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
           expect(createdAnnotation, isA<AnnotationModel>());
           expect(createdAnnotation?.annotationId != null, equals(true));
         },
@@ -149,10 +116,8 @@ void main() {
       test(
         "Fail creating an annotation and returning an AnnotationModel object(returns Null)",
         () async {
-          when(datasource.createAnnotation(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.databaseAnnotation);
-          final createdAnnotation = await repository.createAnnotation(
-              "", "", AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("", "", AnnotationsTestObjects.newAnnotationModel);
           expect(createdAnnotation == null, equals(true));
         },
       );
@@ -168,8 +133,7 @@ void main() {
           when(datasource.getAllAnnotations(any, any)).thenAnswer((_) async => [
                 AnnotationsTestObjects.databaseAnnotation,
               ]);
-          final annotationsList =
-              await repository.getAllAnnotations("enterpriseId", "operatorId");
+          final annotationsList = await repository.getAllAnnotations("enterpriseId", "operatorId");
           expect(annotationsList, isA<List<AnnotationModel>>());
           expect(annotationsList?.isNotEmpty, equals(true));
         },
@@ -192,30 +156,21 @@ void main() {
       test(
         "Return an AnnotationModel by his id from datasource",
         () async {
-          when(datasource.getAnnotationById(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.databaseAnnotation);
-          final obtainedAnnotation = await repository.getAnnotationById(
-              "enterpriseId", "operatorId", "annotationId");
-          expect(
-              obtainedAnnotation?.annotationPaymentMethod, equals("Dinheiro"));
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final obtainedAnnotation = await repository.getAnnotationById("enterpriseId", "operatorId", "annotationId");
+          expect(obtainedAnnotation?.annotationPaymentMethod, equals("Dinheiro"));
           expect(obtainedAnnotation?.annotationConcluied, equals(false));
         },
       );
       test(
         "Fail returning AnnotationModel object from datasource",
         () async {
-          when(datasource.createAnnotation(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.databaseAnnotation);
-          final createdAnnotation = await repository.createAnnotation(
-              "enterpriseId",
-              "operatorId",
-              AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
           expect(createdAnnotation, isA<AnnotationModel>());
           expect(createdAnnotation?.annotationId != null, equals(true));
-          when(datasource.getAnnotationById(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.databaseAnnotation);
-          final obtainedAnnotation = await repository.getAnnotationById(
-              "", "", createdAnnotation?.annotationId);
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final obtainedAnnotation = await repository.getAnnotationById("", "", createdAnnotation?.annotationId);
           expect(obtainedAnnotation, equals(null));
         },
       );
@@ -227,47 +182,27 @@ void main() {
       test(
         "Change the state of annotation(false to true)",
         () async {
-          when(datasource.createAnnotation(any, any, any)).thenAnswer(
-              (realInvocation) async =>
-                  AnnotationsTestObjects.databaseAnnotation);
-          final createdAnnotation = await repository.createAnnotation(
-              "enterpriseId",
-              "operatorId",
-              AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((realInvocation) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
           expect(createdAnnotation, isA<AnnotationModel>());
           when(datasource.finishAnnotation(any, any, any)).thenReturn(null);
-          await repository.finishAnnotation(
-              "enterpriseId", "operatorId", createdAnnotation?.annotationId);
-          when(datasource.getAnnotationById(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.finishedAnnotation);
-          final repositoryFinishedAnnotation =
-              await repository.getAnnotationById("enterpriseId", "operatorId",
-                  createdAnnotation?.annotationId);
-          expect(
-              repositoryFinishedAnnotation?.annotationConcluied, equals(true));
+          await repository.finishAnnotation("enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.finishedAnnotation);
+          final repositoryFinishedAnnotation = await repository.getAnnotationById("enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          expect(repositoryFinishedAnnotation?.annotationConcluied, equals(true));
         },
       );
       test(
         "Fail Finishing the annotation",
         () async {
-          when(datasource.createAnnotation(any, any, any)).thenAnswer(
-              (realInvocation) async =>
-                  AnnotationsTestObjects.databaseAnnotation);
-          final createdAnnotation = await repository.createAnnotation(
-              "enterpriseId",
-              "operatorId",
-              AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((realInvocation) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
           expect(createdAnnotation, isA<AnnotationModel>());
           when(datasource.finishAnnotation(any, any, any)).thenReturn(null);
-          await repository.finishAnnotation(
-              "", "", createdAnnotation?.annotationId);
-          when(datasource.getAnnotationById(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.databaseAnnotation);
-          final repositoryFinishedAnnotation =
-              await repository.getAnnotationById("enterpriseId", "operatorId",
-                  createdAnnotation?.annotationId);
-          expect(
-              repositoryFinishedAnnotation?.annotationConcluied, equals(false));
+          await repository.finishAnnotation("", "", createdAnnotation?.annotationId);
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final repositoryFinishedAnnotation = await repository.getAnnotationById("enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          expect(repositoryFinishedAnnotation?.annotationConcluied, equals(false));
         },
       );
     },
@@ -278,44 +213,59 @@ void main() {
       test(
         "Remove annotation",
         () async {
-          when(datasource.createAnnotation(any, any, any)).thenAnswer(
-              (realInvocation) async =>
-                  AnnotationsTestObjects.databaseAnnotation);
-          final createdAnnotation = await repository.createAnnotation(
-              "enterpriseId",
-              "operatorId",
-              AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((realInvocation) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
           when(datasource.deleteAnnotation(any, any, any)).thenReturn(null);
-          await repository.deleteAnnotation(
-              "enterpriseId", "operatorId", createdAnnotation?.annotationId);
-          when(datasource.getAnnotationById(any, any, any))
-              .thenAnswer((realInvocation) async => null);
-          final repositoryFinishedAnnotation =
-              await repository.getAnnotationById("enterpriseId", "operatorId",
-                  createdAnnotation?.annotationId);
+          await repository.deleteAnnotation("enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((realInvocation) async => null);
+          final repositoryFinishedAnnotation = await repository.getAnnotationById("enterpriseId", "operatorId", createdAnnotation?.annotationId);
           expect(repositoryFinishedAnnotation?.annotationId, equals(null));
         },
       );
       test(
         "Fail removing annotation",
         () async {
-           when(datasource.createAnnotation(any, any, any)).thenAnswer(
-              (realInvocation) async =>
-                  AnnotationsTestObjects.databaseAnnotation);
-          final createdAnnotation = await repository.createAnnotation(
-              "enterpriseId",
-              "operatorId",
-              AnnotationsTestObjects.newAnnotationModel);
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((realInvocation) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
           when(datasource.deleteAnnotation(any, any, any)).thenReturn(null);
-          await repository.deleteAnnotation(
-              "enterpriseId", "", createdAnnotation?.annotationId);
-          when(datasource.getAnnotationById(any, any, any))
-              .thenAnswer((realInvocation) async => AnnotationsTestObjects.databaseAnnotation);
-          final repositoryFinishedAnnotation =
-              await repository.getAnnotationById("enterpriseId", "operatorId",
-                  createdAnnotation?.annotationId);
-           expect(repositoryFinishedAnnotation, isA<AnnotationModel>());
+          await repository.deleteAnnotation("enterpriseId", "", createdAnnotation?.annotationId);
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((realInvocation) async => AnnotationsTestObjects.databaseAnnotation);
+          final repositoryFinishedAnnotation = await repository.getAnnotationById("enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          expect(repositoryFinishedAnnotation, isA<AnnotationModel>());
           expect(repositoryFinishedAnnotation?.annotationId != null, equals(true));
+        },
+      );
+    },
+  );
+  group(
+    "UpdateAnnotation Function Should",
+    () {
+      test(
+        "Update the respective property passed in object",
+        () async {
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
+          expect(createdAnnotation, isA<AnnotationModel>());
+          when(datasource.updateAnnotation(any, any, any, any)).thenReturn(null);
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          await repository.updateAnnotation("enterpriseId", "operatorId", createdAnnotation?.annotationId, createdAnnotation);
+          final updatedAnnotation = await repository.getAnnotationById("enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          expect(updatedAnnotation, isA<AnnotationModel>());
+          expect(updatedAnnotation?.annotationReminder, equals(null));
+          expect(updatedAnnotation?.annotationConcluied, equals(equals(false)));
+        },
+      );
+      test(
+        "Fail update properties",
+        () async {
+          when(datasource.createAnnotation(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.databaseAnnotation);
+          final createdAnnotation = await repository.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationModel);
+          expect(createdAnnotation, isA<AnnotationModel>());
+          when(datasource.updateAnnotation(any, any, any, any)).thenReturn(null);
+          when(datasource.getAnnotationById(any, any, any)).thenAnswer((_) async => databaseAnnotationWithNullValue);
+          await repository.updateAnnotation("enterpriseId", "operatorId", createdAnnotation?.annotationId, AnnotationsTestObjects.modifiedAnnotationModel);
+          final updatedAnnotation = await repository.getAnnotationById("enterpriseId", "operatorId", createdAnnotation?.annotationId);
+          expect(updatedAnnotation?.annotationPaymentMethod, equals(null));
         },
       );
     },
@@ -362,49 +312,7 @@ void main() {
       );
     },
   );
-  group(
-    "UpdateAnnotation Function Should",
-    () {
-      test(
-        "Update the respective property passed in object",
-        () async {
-          when(datasource.createAnnotation(any, any))
-              .thenAnswer((_) async => databaseAnnotation);
-          final createdAnnotation =
-              await repository.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationModel>());
-          when(datasource.updateAnnotation(any, any, any)).thenReturn(null);
-          when(datasource.getAnnotationById(any, any))
-              .thenAnswer((_) async => databaseAnnotation);
-          await repository.updateAnnotation(
-              "operatorId", createdAnnotation?.annotationId, createdAnnotation);
-          final updatedAnnotation = await repository.getAnnotationById(
-              "operatorId", createdAnnotation?.annotationId);
-          expect(updatedAnnotation, isA<AnnotationModel>());
-          expect(updatedAnnotation?.annotationReminder, equals(null));
-          expect(updatedAnnotation?.annotationConcluied, equals(equals(false)));
-        },
-      );
-      test(
-        "Fail update properties",
-        () async {
-          when(datasource.createAnnotation(any, any))
-              .thenAnswer((_) async => databaseAnnotation);
-          final createdAnnotation =
-              await repository.createAnnotation("operatorId", newAnnotation);
-          expect(createdAnnotation, isA<AnnotationModel>());
-          when(datasource.updateAnnotation(any, any, any)).thenReturn(null);
-          when(datasource.getAnnotationById(any, any))
-              .thenAnswer((_) async => databaseAnnotationWithNullValue);
-          await repository.updateAnnotation("operatorId",
-              createdAnnotation?.annotationId, modifiedAnnotation);
-          final updatedAnnotation = await repository.getAnnotationById(
-              "operatorId", createdAnnotation?.annotationId);
-          expect(updatedAnnotation?.annotationPaymentMethod, equals(null));
-        },
-      );
-    },
-  );
+  
    */
 }
 

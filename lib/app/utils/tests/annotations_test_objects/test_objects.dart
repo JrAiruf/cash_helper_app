@@ -71,6 +71,7 @@ class AnnotationsTestObjects {
     'annotationPaymentMethod': "Dinheiro",
     'annotationReminder': null,
     'annotationConcluied': false,
+    'annotationWithPendency': false,
   };
   static final finishedAnnotation = <String, dynamic>{
     'annotationId': "askjdfhlakjsdhkajshdgkjahlskjdghla",
