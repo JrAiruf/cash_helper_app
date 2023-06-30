@@ -6,19 +6,17 @@ import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annota
 import '../../../infra/models/annotation_model.dart';
 
 class UpdateAnnotation implements IUpdateAnnotation {
-  UpdateAnnotation({required AnnotationRepository repository})
-      : _repository = repository;
+  UpdateAnnotation({required AnnotationRepository repository}) : _repository = repository;
 
   final AnnotationRepository _repository;
   final _dataVerifier = DataVerifier();
-   @override
-  Future<void>? call(String? enterpriseId,String? operatorId, String? annotationId, AnnotationEntity? annotation) async {
-     if(_dataVerifier.validateInputData(inputs:[enterpriseId, operatorId,annotationId])&& annotation != null){
-    final annotationModel = AnnotationModel.fromEntityData(annotation);
-    await _repository.updateAnnotation(enterpriseId!,
-        operatorId!, annotationId!, annotationModel);
-        } else {
-          return;
-        }
+  @override
+  Future<void>? call(String? enterpriseId, String? operatorId, String? annotationId, AnnotationEntity? annotation) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId, annotationId]) && annotation != null) {
+      final annotationModel = AnnotationModel.fromEntityData(annotation);
+      await _repository.updateAnnotation(enterpriseId!, operatorId!, annotationId!, annotationModel);
+    } else {
+      return;
+    }
   }
 }
