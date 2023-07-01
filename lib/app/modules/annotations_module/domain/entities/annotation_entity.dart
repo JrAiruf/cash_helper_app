@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AnnotationEntity {
- final String? annotationId;
- final String? annotationSaleTime;
- final String? annotationSaleDate;
- final String? annotationSaleValue;
- final String? annotationPaymentMethod;
- final String? annotationReminder;
- final String? annotationClientAddress;
- final bool? annotationConcluied;
- final bool? annotationWithPendency;
+ String? annotationId;
+ String? annotationSaleTime;
+ String? annotationSaleDate;
+ String? annotationSaleValue;
+ String? annotationPaymentMethod;
+ String? annotationReminder;
+ String? annotationClientAddress;
+ bool? annotationConcluied;
+ bool? annotationWithPendency;
   
   AnnotationEntity({
    this.annotationId,

@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../routes/app_routes.dart';
+import '../../../annotations_module/presenter/stores/annotations_store.dart';
 import '../../../management_module/presenter/stores/pendency_store.dart';
 
 class OperatorController {
   final emailField = TextEditingController();
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
+
   final operatorStore = Modular.get<OperatorStore>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
+  final annotationStore = Modular.get<AnnotationStore>();
   final pendencyStore = Modular.get<PendencyStore>();
 
   final operatorCodeFormKey = GlobalKey<FormState>();
@@ -46,8 +49,12 @@ class OperatorController {
             pendencyStore.generatePendency(
               enterpriseId ?? "",
               operatorEntity?.operatorId ?? "",
-              annotation.annotationId!,
+              annotation.annotationId ?? "",
             );
+            annotation.annotationWithPendency = true;
+            annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
+            annotationStore.createNewAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation);
+            annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
           }
           operatorStore.closeOperatorCash(
             enterpriseId ?? "",
@@ -320,7 +327,7 @@ class OperatorController {
     showDialog(
       context: context,
       builder: (_) {
-        final surfaceColor = Theme.of(context).colorScheme.surface;
+        final surfaceColor = Theme.of(context).colorScheme.onSurface;
         return SimpleDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           backgroundColor: color,
@@ -376,7 +383,7 @@ class OperatorController {
     showDialog(
       context: context,
       builder: (_) {
-        final surfaceColor = Theme.of(context).colorScheme.surface;
+        final surfaceColor = Theme.of(context).colorScheme.onSurface;
         return SimpleDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           backgroundColor: color,
