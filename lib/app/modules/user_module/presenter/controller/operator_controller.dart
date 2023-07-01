@@ -46,15 +46,15 @@ class OperatorController {
         Modular.to.pop();
         cashClosingConfirmationDialog(context, color, () async {
           for (var annotation in unfinishedAnnotations) {
-            pendencyStore.generatePendency(
+            await pendencyStore.generatePendency(
               enterpriseId ?? "",
               operatorEntity?.operatorId ?? "",
               annotation.annotationId ?? "",
             );
             annotation.annotationWithPendency = true;
-            annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
-            annotationStore.createNewAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation);
-            annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
+           await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
+           await annotationStore.createNewAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation);
+           await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
           }
           operatorStore.closeOperatorCash(
             enterpriseId ?? "",
