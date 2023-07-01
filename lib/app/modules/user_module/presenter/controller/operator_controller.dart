@@ -41,6 +41,7 @@ class OperatorController {
 
   Future<void> closeOperatorCash(BuildContext context, Color color) async {
     final unfinishedAnnotations = annotationsListStore.value.where((element) => element.annotationConcluied == false).toList();
+    final finishedAnnotations = annotationsListStore.value.where((element) => element.annotationConcluied == true).toList();
     cashClosingDialog(context, color, () async {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();
@@ -64,6 +65,9 @@ class OperatorController {
           Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
         });
       } else {
+      for (var annotation in finishedAnnotations) {
+        await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
+      }
         await operatorStore.closeOperatorCash(
           enterpriseId ?? "",
           operatorEntity?.operatorId ?? "",
