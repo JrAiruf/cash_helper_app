@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../../domain/entities/manager_entity.dart';
+import '../../components/cards/payment_methods_information_card.dart';
 
 class ManagementPage extends StatefulWidget {
   const ManagementPage({super.key, required this.managerEntity});
@@ -92,62 +93,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-                      AnimatedBuilder(
-                          animation: _managementController.paymentMethodsListStore,
-                          builder: (context, _) {
-                            final paymentMethodsTotal = _managementController.paymentMethodsListStore.value?.length;
-                            return Container(
-                              height: height * 0.15,
-                              decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Todos:",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                        Text(
-                                          "$paymentMethodsTotal",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Mais Frequente:",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                        Text(
-                                          "Crédito",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Frequência:",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                        Text(
-                                          "35/hora",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
+                      PaymentMethodsInformationCard(enterpriseId: _enterpriseId),
                       const SizedBox(
                         height: 15,
                       ),
