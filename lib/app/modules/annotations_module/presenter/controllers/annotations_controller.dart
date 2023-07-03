@@ -41,15 +41,11 @@ class AnnotationsController {
   String annotationId = "";
   List<AnnotationEntity> annotationsList = [];
   String? annotationAddressValidate(String? value) {
-    return value!.isNotEmpty && value != ''
-        ? null
-        : 'Endereço Inválido! Informe o rua e número.';
+    return value!.isNotEmpty && value != '' ? null : 'Endereço Inválido! Informe o rua e número.';
   }
 
   String? annotationValueValidate(String? value) {
-    return value!.isNotEmpty && value != ''
-        ? null
-        : 'Valor Inválido! Insira o valor da compra feita.';
+    return value!.isNotEmpty && value != '' ? null : 'Valor Inválido! Insira o valor da compra feita.';
   }
 
   Future<void> createAnnotation(OperatorEntity operatorEntity) async {
@@ -58,6 +54,7 @@ class AnnotationsController {
       annotationLoadingState.value = true;
       newAnnotationFormKey.currentState?.save();
       final newAnnotation = AnnotationEntity(
+          annotationCreatorId: operatorId,
           annotationClientAddress: annotationClientAddress,
           annotationConcluied: false,
           annotationWithPendency: false,
@@ -67,12 +64,9 @@ class AnnotationsController {
           annotationPaymentMethod: annotationPaymentMethod,
           annotationId: "AnnotationId",
           annotationSaleValue: annotationValue);
-      await _annotationsStore.createNewAnnotation(
-          enterpriseId, operatorId, newAnnotation);
+      await _annotationsStore.createNewAnnotation(enterpriseId, operatorId, newAnnotation);
       annotationLoadingState.value = false;
-      Modular.to.navigate(
-          "${AnnotationRoutes.annotationsListPage}$enterpriseId",
-          arguments: operatorEntity);
+      Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$enterpriseId", arguments: operatorEntity);
     } else {
       return;
     }
@@ -82,29 +76,23 @@ class AnnotationsController {
     annotationsList = annotationsListStore.value;
   }
 
-  Future<void> finishAnnotation(
-      BuildContext context, OperatorEntity operatorEntity) async {
-    await _annotationsStore.finishAnnotation(
-        enterpriseId, operatorEntity.operatorId!, annotationId);
+  Future<void> finishAnnotation(BuildContext context, OperatorEntity operatorEntity) async {
+    await _annotationsStore.finishAnnotation(enterpriseId, operatorEntity.operatorId!, annotationId);
     annotationLoadingState.value = false;
     annotationFinished(context);
-    Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
-        arguments: operatorEntity);
+    Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
   }
 
-  Future<void> deleteAnnotation(
-      BuildContext context, OperatorEntity operatorEntity) async {
+  Future<void> deleteAnnotation(BuildContext context, OperatorEntity operatorEntity) async {
     showRemoveDialog(
       context,
       appTheme.backgroundColor(context),
       () async {
-        await _annotationsStore.deleteAnnotation(
-            enterpriseId, operatorEntity.operatorId!, annotationId);
+        await _annotationsStore.deleteAnnotation(enterpriseId, operatorEntity.operatorId!, annotationId);
         annotationLoadingState.value = false;
         annotationDeleted(context);
         Modular.to.pop();
-        Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
-            arguments: operatorEntity);
+        Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
       },
     );
   }
@@ -161,15 +149,13 @@ class AnnotationsController {
     );
   }
 
-  showRemoveDialog(
-      BuildContext context, Color color, void Function()? onPressed) {
+  showRemoveDialog(BuildContext context, Color color, void Function()? onPressed) {
     showDialog(
       context: context,
       builder: (_) {
         final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           backgroundColor: color,
           alignment: Alignment.center,
           children: [
@@ -177,39 +163,27 @@ class AnnotationsController {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('Deseja Excluir anotação?',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: surfaceColor)),
+                Text('Deseja Excluir anotação?', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: surfaceColor)),
                 const SizedBox(height: 80),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
                       onPressed: onPressed,
-                      style: TextButton.styleFrom(
-                          side: BorderSide(color: surfaceColor)),
+                      style: TextButton.styleFrom(side: BorderSide(color: surfaceColor)),
                       child: Text(
                         'Sim',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: surfaceColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: surfaceColor),
                       ),
                     ),
                     TextButton(
                       onPressed: () {
                         Modular.to.pop();
                       },
-                      style: TextButton.styleFrom(
-                          side: BorderSide(color: surfaceColor)),
+                      style: TextButton.styleFrom(side: BorderSide(color: surfaceColor)),
                       child: Text(
                         'Não',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: surfaceColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: surfaceColor),
                       ),
                     ),
                   ],

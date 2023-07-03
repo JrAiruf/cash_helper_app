@@ -8,6 +8,7 @@ class CashHelperThemes {
   Color Function(BuildContext context) get surface => (BuildContext context) => Theme.of(context).colorScheme.onSurface;
   Color Function(BuildContext context) get purpleColor => (BuildContext context) => Theme.of(context).colorScheme.secondary;
   Color Function(BuildContext context) get greenColor => (BuildContext context) => Theme.of(context).colorScheme.tertiaryContainer;
+  Color Function(BuildContext context) get blueColor => (BuildContext context) => Theme.of(context).colorScheme.surfaceVariant;
   Color Function(BuildContext context) get redColor => (BuildContext context) => Theme.of(context).colorScheme.errorContainer;
   Color Function(BuildContext context) get violetColor => (BuildContext context) => Theme.of(context).colorScheme.tertiary;
   Color Function(BuildContext context) get red => (BuildContext context) => Theme.of(context).colorScheme.onError;

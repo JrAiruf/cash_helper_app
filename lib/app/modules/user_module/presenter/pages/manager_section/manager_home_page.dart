@@ -6,6 +6,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/components/hom
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/operator_info_list_view_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
@@ -29,8 +30,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
-    _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!,
-        widget.managerEntity.businessPosition!);
+    _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
     _managementStore.getOperatorsInformations(_enterpriseId);
   }
 
@@ -38,21 +38,16 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
-    final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
-
+    final appThemes = CashHelperThemes();
     return ValueListenableBuilder(
       valueListenable: _loginStore,
       builder: (_, state, __) {
         if (state is LoginLoadingState) {
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
               child: CircularProgressIndicator(
-                color: indicatorColor,
+                color: appThemes.indicatorColor(context),
               ),
             ),
           );
@@ -71,7 +66,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             body: Stack(
               children: [
                 Container(
-                  decoration: BoxDecoration(color: backgroundColor),
+                  decoration: BoxDecoration(color: appThemes.backgroundColor(context)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -79,7 +74,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         manager: manager,
                         height: height * 0.19,
                         width: width,
-                        color: primaryColor,
+                        color: appThemes.primaryColor(context),
                       ),
                       SizedBox(
                         height: height * 0.07,
@@ -88,10 +83,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
                           "Atividades recentes:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall
-                              ?.copyWith(color: surfaceColor),
+                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: appThemes.surfaceColor(context)),
                         ),
                       ),
                       SizedBox(
@@ -104,10 +96,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                           builder: (_, state, __) {
                             if (state is ManagementLoadingState) {
                               return Container(
-                                decoration: BoxDecoration(color: primaryColor),
+                                decoration: BoxDecoration(color: appThemes.primaryColor(context)),
                                 child: Center(
                                   child: CircularProgressIndicator(
-                                    color: indicatorColor,
+                                    color: appThemes.indicatorColor(context),
                                   ),
                                 ),
                               );
@@ -116,19 +108,15 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               return Center(
                                 child: Text(
                                   "Nenhum Operador Encontrado",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: surfaceColor,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: appThemes.surfaceColor(context),
                                       ),
                                 ),
                               );
                             }
                             if (state is GetUsersListState) {
                               final operatorsList = state.operators;
-                              return OperatorInfoListViewComponent(
-                                  operators: operatorsList);
+                              return OperatorInfoListViewComponent(operators: operatorsList);
                             } else {
                               return Container();
                             }
@@ -144,11 +132,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         ),
                         child: Text(
                           "Acesso rápido:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall
-                              ?.copyWith(
-                                color: surfaceColor,
+                          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                color: appThemes.surfaceColor(context),
                               ),
                         ),
                       ),
@@ -163,7 +148,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             QuickAccessButton(
-                              backgroundColor: primaryColor,
+                              backgroundColor: appThemes.primaryColor(context),
                               onPressed: () {},
                               border: true,
                               height: height * 0.1,
@@ -172,19 +157,16 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               items: [
                                 Icon(
                                   Icons.person,
-                                  color: surfaceColor,
+                                  color: appThemes.surfaceColor(context),
                                 ),
                                 Text(
                                   "Operadores",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(color: surfaceColor),
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appThemes.surfaceColor(context)),
                                 ),
                               ],
                             ),
                             QuickAccessButton(
-                              backgroundColor: primaryColor,
+                              backgroundColor: appThemes.primaryColor(context),
                               onPressed: () {},
                               border: true,
                               height: height * 0.1,
@@ -193,14 +175,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               items: [
                                 Icon(
                                   Icons.list_alt_rounded,
-                                  color: surfaceColor,
+                                  color: appThemes.surfaceColor(context),
                                 ),
                                 Text(
                                   "Anotações",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(color: surfaceColor),
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appThemes.surfaceColor(context)),
                                 )
                               ],
                             ),
@@ -223,7 +202,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             );
                           },
                           buttonName: "Painel de controle",
-                          backgroundColor: variantColor,
+                          backgroundColor: appThemes.blueColor(context),
                           fontSize: 16,
                         ),
                       ),
@@ -236,11 +215,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary,
                         maxRadius: 30,
                         child: CircleAvatar(
-                          backgroundColor: variantColor,
+                          backgroundColor: appThemes.blueColor(context),
                           maxRadius: 29,
                           child: const Icon(
                             color: Colors.white,
@@ -252,10 +230,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       const SizedBox(width: 25),
                       Text(
                         "Gerente",
-                        style:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  color: surfaceColor,
-                                ),
+                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                              color: appThemes.surfaceColor(context),
+                            ),
                       ),
                     ],
                   ),
@@ -267,11 +244,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         if (state is LoginSignOutState) {
           Modular.to.navigate(EnterpriseRoutes.initial);
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
           );
         } else {
           return Container(
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
           );
         }
       },

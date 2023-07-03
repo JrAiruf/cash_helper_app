@@ -5,7 +5,7 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 
 class AnnotationListTile extends StatelessWidget {
-  AnnotationListTile({super.key,required this.onTap, required this.annotationEntity});
+  AnnotationListTile({super.key, required this.onTap, required this.annotationEntity});
 
   AnnotationEntity annotationEntity;
   Function() onTap;
@@ -19,9 +19,7 @@ class AnnotationListTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-            color: appTheme.surfaceColor(context),
-          ),
+          border: Border.all(color: appTheme.surfaceColor(context), width: 0.5),
         ),
         height: tileHeight,
         width: tileWidth,
@@ -35,13 +33,13 @@ class AnnotationListTile extends StatelessWidget {
                 children: [
                   Text(
                     "Endereço:",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: appTheme.surfaceColor(context),
                         ),
                   ),
                   Text(
                     annotationEntity.annotationClientAddress ?? "",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: appTheme.surfaceColor(context),
                         ),
                   ),
@@ -52,13 +50,13 @@ class AnnotationListTile extends StatelessWidget {
                 children: [
                   Text(
                     "Valor:",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: appTheme.surfaceColor(context),
                         ),
                   ),
                   Text(
                     annotationEntity.annotationSaleValue ?? "",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: appTheme.surfaceColor(context),
                         ),
                   ),
@@ -69,13 +67,13 @@ class AnnotationListTile extends StatelessWidget {
                 children: [
                   Text(
                     "Pagamento:",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: appTheme.surfaceColor(context),
                         ),
                   ),
                   Text(
                     annotationEntity.annotationPaymentMethod ?? "",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: appTheme.surfaceColor(context),
                         ),
                   ),

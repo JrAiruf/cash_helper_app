@@ -5,6 +5,7 @@ import '../../domain/entities/annotation_entity.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AnnotationModel {
   String? annotationId;
+  String? annotationCreatorId;
   String? annotationClientAddress;
   String? annotationSaleValue;
   String? annotationSaleTime;
@@ -16,6 +17,7 @@ class AnnotationModel {
 
   AnnotationModel({
     this.annotationId,
+    this.annotationCreatorId,
     this.annotationClientAddress,
     this.annotationSaleValue,
     this.annotationSaleTime,
@@ -29,6 +31,7 @@ class AnnotationModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'annotationId': annotationId,
+      'annotationCreatorId': annotationCreatorId,
       'annotationClientAddress': annotationClientAddress,
       'annotationSaleValue': annotationSaleValue,
       'annotationSaleTime': annotationSaleTime,
@@ -43,6 +46,7 @@ class AnnotationModel {
   factory AnnotationModel.fromMap(Map<String, dynamic> map) {
     return AnnotationModel(
       annotationId: map['annotationId'],
+      annotationCreatorId: map['annotationCreatorId'],
       annotationClientAddress: map['annotationClientAddress'],
       annotationSaleValue: map['annotationSaleValue'],
       annotationSaleTime: map['annotationSaleTime'],
@@ -56,6 +60,7 @@ class AnnotationModel {
   static AnnotationEntity toEntityData(AnnotationModel annotationModel) {
     return AnnotationEntity(
       annotationId: annotationModel.annotationId,
+      annotationCreatorId: annotationModel.annotationCreatorId,
       annotationClientAddress: annotationModel.annotationClientAddress,
       annotationSaleValue: annotationModel.annotationSaleValue,
       annotationSaleTime: annotationModel.annotationSaleTime,
@@ -83,6 +88,7 @@ class AnnotationModel {
 
   static AnnotationEntity copyWith(AnnotationEntity annotationEntity) {
     return AnnotationEntity(
+      annotationCreatorId: annotationEntity.annotationCreatorId,
       annotationSaleTime: annotationEntity.annotationSaleTime,
       annotationSaleDate: annotationEntity.annotationSaleDate,
       annotationSaleValue: annotationEntity.annotationSaleValue,

@@ -3,6 +3,7 @@ import '../../../modules/annotations_module/infra/models/annotation_model.dart';
 
 class AnnotationsTestObjects {
   static final newAnnotation = AnnotationEntity(
+      annotationCreatorId: "sakdjfkajsekjksajdhfkajsdhf",
       annotationClientAddress: "Andorinhas 381",
       annotationConcluied: false,
       annotationWithPendency: false,

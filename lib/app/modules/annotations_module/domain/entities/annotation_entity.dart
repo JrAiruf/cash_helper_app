@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class AnnotationEntity {
  String? annotationId;
+ String? annotationCreatorId;
  String? annotationSaleTime;
  String? annotationSaleDate;
  String? annotationSaleValue;
@@ -13,6 +14,7 @@ class AnnotationEntity {
   AnnotationEntity({
    this.annotationId,
    required this.annotationSaleTime,
+   required this.annotationCreatorId,
    required this.annotationSaleDate,
    required this.annotationSaleValue,
    required this.annotationPaymentMethod,
