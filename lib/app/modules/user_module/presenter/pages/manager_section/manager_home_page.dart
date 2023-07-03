@@ -29,8 +29,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
-    _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!,
-        widget.managerEntity.businessPosition!);
+    _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
     _managementStore.getOperatorsInformations(_enterpriseId);
   }
 
@@ -43,6 +42,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
     final variantColor = Theme.of(context).colorScheme.surfaceVariant;
+    final sizeFrame = height <= 800;
 
     return ValueListenableBuilder(
       valueListenable: _loginStore,
@@ -88,10 +88,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
                           "Atividades recentes:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall
-                              ?.copyWith(color: surfaceColor),
+                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
                         ),
                       ),
                       SizedBox(
@@ -116,10 +113,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               return Center(
                                 child: Text(
                                   "Nenhum Operador Encontrado",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                         color: surfaceColor,
                                       ),
                                 ),
@@ -127,8 +121,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             }
                             if (state is GetUsersListState) {
                               final operatorsList = state.operators;
-                              return OperatorInfoListViewComponent(
-                                  operators: operatorsList);
+                              return OperatorInfoListViewComponent(operators: operatorsList);
                             } else {
                               return Container();
                             }
@@ -144,10 +137,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         ),
                         child: Text(
                           "Acesso rápido:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .displaySmall
-                              ?.copyWith(
+                          style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                 color: surfaceColor,
                               ),
                         ),
@@ -176,10 +166,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 ),
                                 Text(
                                   "Operadores",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(color: surfaceColor),
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                 ),
                               ],
                             ),
@@ -197,10 +184,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 ),
                                 Text(
                                   "Anotações",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(color: surfaceColor),
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                 )
                               ],
                             ),
@@ -231,13 +215,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   ),
                 ),
                 Positioned(
-                  top: height * 0.145,
+                  top: sizeFrame ? height * 0.149 : height * 0.153,
                   left: width * 0.07,
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary,
                         maxRadius: 30,
                         child: CircleAvatar(
                           backgroundColor: variantColor,
@@ -252,10 +235,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       const SizedBox(width: 25),
                       Text(
                         "Gerente",
-                        style:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  color: surfaceColor,
-                                ),
+                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                              color: surfaceColor,
+                            ),
                       ),
                     ],
                   ),

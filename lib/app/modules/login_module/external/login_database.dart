@@ -80,6 +80,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   @override
   Future<Map<String, dynamic>>? login(String? email, String? password,
       String? enterpriseId, String? collection) async {
+        await Future.delayed(const Duration(seconds:3));
     try {
       _authUser = await _auth
           .signInWithEmailAndPassword(
@@ -116,6 +117,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   @override
   Future<Map<String, dynamic>>? getUserById(
       String? enterpriseId, String? operatorId, String? collection) async {
+        await Future.delayed(const Duration(seconds:3));
     try {
       final databaseCollection = await _database
           .collection("enterprise")
