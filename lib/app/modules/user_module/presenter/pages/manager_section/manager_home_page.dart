@@ -38,6 +38,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
     return ValueListenableBuilder(
       valueListenable: _loginStore,
@@ -210,7 +211,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   ),
                 ),
                 Positioned(
-                  top: height * 0.145,
+                  top: sizeFrame ? height * 0.149 : height * 0.153,
                   left: width * 0.07,
                   child: Row(
                     children: [
