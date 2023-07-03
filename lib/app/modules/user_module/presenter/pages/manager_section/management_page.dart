@@ -98,7 +98,7 @@ class _ManagementPageState extends State<ManagementPage> {
                             final paymentMethodsTotal = _managementController.paymentMethodsListStore.value?.length;
                             return Container(
                               height: height * 0.15,
-                              decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.9), color: primaryColor, borderRadius: BorderRadius.circular(20)),
+                              decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 child: Column(
@@ -109,11 +109,11 @@ class _ManagementPageState extends State<ManagementPage> {
                                       children: [
                                         Text(
                                           "Todos:",
-                                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                         ),
                                         Text(
                                           "$paymentMethodsTotal",
-                                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                         ),
                                       ],
                                     ),
@@ -122,11 +122,11 @@ class _ManagementPageState extends State<ManagementPage> {
                                       children: [
                                         Text(
                                           "Mais Frequente:",
-                                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                         ),
                                         Text(
                                           "Crédito",
-                                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                         ),
                                       ],
                                     ),
@@ -135,11 +135,11 @@ class _ManagementPageState extends State<ManagementPage> {
                                       children: [
                                         Text(
                                           "Frequência:",
-                                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                         ),
                                         Text(
                                           "35/hora",
-                                          style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                         ),
                                       ],
                                     ),
@@ -182,7 +182,7 @@ class _ManagementPageState extends State<ManagementPage> {
                           },
                           child: Text(
                             "Visualizar",
-                            style: Theme.of(context).textTheme.displaySmall,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
                       ),
@@ -198,7 +198,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       ),
                       Container(
                         height: height * 0.15,
-                        decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.9), color: primaryColor, borderRadius: BorderRadius.circular(20)),
+                        decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                           child: Column(
@@ -209,11 +209,11 @@ class _ManagementPageState extends State<ManagementPage> {
                                 children: [
                                   Text(
                                     "Todas:",
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                   ),
                                   Text(
                                     "4",
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                   ),
                                 ],
                               ),
@@ -222,11 +222,11 @@ class _ManagementPageState extends State<ManagementPage> {
                                 children: [
                                   Text(
                                     "Período:",
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                   ),
                                   Text(
                                     "Manhã",
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                   ),
                                 ],
                               ),
@@ -235,11 +235,11 @@ class _ManagementPageState extends State<ManagementPage> {
                                 children: [
                                   Text(
                                     "Operadores:",
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                   ),
                                   Text(
                                     "3",
-                                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                   ),
                                 ],
                               ),

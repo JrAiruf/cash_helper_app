@@ -103,10 +103,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                   ),
                                   Text(
                                     "Métodos Cadastrados:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(color: surfaceColor),
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
                                   ),
                                   SizedBox(
                                     height: height * 0.02,
@@ -124,53 +121,37 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                           child: GestureDetector(
                                             onTap: () {
                                               final argObjects = {
-                                                "paymentMethodEntity":
-                                                    paymentMethod,
-                                                "managerEntity":
-                                                    widget.managerEntity,
+                                                "paymentMethodEntity": paymentMethod,
+                                                "managerEntity": widget.managerEntity,
                                               };
-                                              Modular.to.pushNamed(
-                                                  "${ManagementRoutes.paymentMethod}$_enterpriseId",
-                                                  arguments: argObjects);
+                                              Modular.to.pushNamed("${ManagementRoutes.paymentMethod}$_enterpriseId", arguments: argObjects);
                                             },
                                             child: Container(
-                                              height: sizeFrame
-                                                  ? height * 0.12
-                                                  : height * 0.11,
+                                              height: sizeFrame ? height * 0.12 : height * 0.11,
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
+                                                borderRadius: BorderRadius.circular(20),
                                                 color: primaryColor,
                                                 border: Border.all(
                                                   color: detailColor,
+                                                  width: 0.5,
                                                 ),
                                               ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                              padding: const EdgeInsets.symmetric(
                                                 horizontal: 15,
                                                 vertical: 15,
                                               ),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "${paymentMethod.paymentMethodName}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium
-                                                        ?.copyWith(
-                                                            color:
-                                                                surfaceColor),
+                                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
                                                   ),
                                                   Row(
                                                     children: [
                                                       Icon(
-                                                        Icons
-                                                            .analytics_outlined,
+                                                        Icons.analytics_outlined,
                                                         color: surfaceColor,
                                                       ),
                                                       SizedBox(
@@ -178,12 +159,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                                       ),
                                                       Text(
                                                         "${paymentMethod.paymentMethodUsingRate} - hora",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .displaySmall
-                                                            ?.copyWith(
-                                                                color:
-                                                                    surfaceColor),
+                                                        style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
                                                       ),
                                                     ],
                                                   ),
@@ -199,8 +175,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                     height: height * 0.04,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         height: height * 0.05,
@@ -218,8 +193,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
                                             side: BorderSide(
                                               color: detailColor,
@@ -227,16 +201,11 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                             backgroundColor: variantColor,
                                           ),
                                           onPressed: () {
-                                            Modular.to.navigate(
-                                                "${ManagementRoutes.createPaymentMethodPage}$_enterpriseId",
-                                                arguments:
-                                                    widget.managerEntity);
+                                            Modular.to.navigate("${ManagementRoutes.createPaymentMethodPage}$_enterpriseId", arguments: widget.managerEntity);
                                           },
                                           child: Text(
                                             "Criar",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall,
+                                            style: Theme.of(context).textTheme.displaySmall,
                                           ),
                                         ),
                                       ),
@@ -256,8 +225,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
                                             side: BorderSide(
                                               color: detailColor,
@@ -272,9 +240,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                           },
                                           child: Text(
                                             "Remover",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall,
+                                            style: Theme.of(context).textTheme.displaySmall,
                                           ),
                                         ),
                                       ),
@@ -302,10 +268,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                   ),
                                   Text(
                                     "Métodos Cadastrados:",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                           color: surfaceColor,
                                         ),
                                   ),
@@ -314,10 +277,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                     child: Center(
                                       child: Text(
                                         "Nenhum método de pagamento encontrado",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
+                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                               color: surfaceColor,
                                             ),
                                       ),
@@ -327,8 +287,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                     height: height * 0.04,
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
                                         height: height * 0.05,
@@ -346,8 +305,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
                                             side: BorderSide(
                                               color: detailColor,
@@ -355,16 +313,11 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                             backgroundColor: variantColor,
                                           ),
                                           onPressed: () {
-                                            Modular.to.pushReplacementNamed(
-                                                "${ManagementRoutes.createPaymentMethodPage}$_enterpriseId",
-                                                arguments:
-                                                    widget.managerEntity);
+                                            Modular.to.pushReplacementNamed("${ManagementRoutes.createPaymentMethodPage}$_enterpriseId", arguments: widget.managerEntity);
                                           },
                                           child: Text(
                                             "Criar",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall,
+                                            style: Theme.of(context).textTheme.displaySmall,
                                           ),
                                         ),
                                       ),
@@ -384,8 +337,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
                                             side: BorderSide(
                                               color: detailColor,
@@ -395,9 +347,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                           onPressed: () {},
                                           child: Text(
                                             "Remover",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displaySmall,
+                                            style: Theme.of(context).textTheme.displaySmall,
                                           ),
                                         ),
                                       ),
