@@ -33,40 +33,20 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>>? register(Map<String, dynamic>? newUserMap,
-      String? enterpriseId, String? collection) async {
+  Future<Map<String, dynamic>>? register(Map<String, dynamic>? newUserMap, String? enterpriseId, String? collection) async {
     late String newUserId;
     final userCode = _createUserCode(_uuid.v1(), 6);
     try {
-      _authUser = await _auth
-          .createUserWithEmailAndPassword(
-              email: newUserMap!['${collection}Email'],
-              password: newUserMap['${collection}Password'])
-          .then((value) => value.user);
+      _authUser = await _auth.createUserWithEmailAndPassword(email: newUserMap!['${collection}Email'], password: newUserMap['${collection}Password']).then((value) => value.user);
       newUserId = _authUser!.uid;
       newUserMap["${collection}Id"] = newUserId;
       newUserMap["${collection}Code"] = userCode;
-      newUserMap['${collection}Password'] =
-          _encryptService.generateHash(newUserMap['${collection}Password']);
-      newUserMap.isNotEmpty &&
-              enterpriseId!.isNotEmpty &&
-              _authUser!.uid.isNotEmpty
-          ? await _database
-              .collection("enterprise")
-              .doc(enterpriseId)
-              .collection(newUserMap["businessPosition"])
-              .doc(newUserId)
-              .set(newUserMap)
+      newUserMap['${collection}Password'] = _encryptService.generateHash(newUserMap['${collection}Password']);
+      newUserMap.isNotEmpty && enterpriseId!.isNotEmpty && _authUser!.uid.isNotEmpty
+          ? await _database.collection("enterprise").doc(enterpriseId).collection(newUserMap["businessPosition"]).doc(newUserId).set(newUserMap)
           : null;
-      final registeredUsersList = await _database
-          .collection("enterprise")
-          .doc(enterpriseId)
-          .collection(newUserMap["businessPosition"])
-          .get();
-      userData = registeredUsersList.docs
-          .firstWhere(
-              (element) => element.data()["${collection}Id"] == newUserId)
-          .data();
+      final registeredUsersList = await _database.collection("enterprise").doc(enterpriseId).collection(newUserMap["businessPosition"]).get();
+      userData = registeredUsersList.docs.firstWhere((element) => element.data()["${collection}Id"] == newUserId).data();
       return userData;
     } catch (e) {
       if (userData.isEmpty) {
@@ -78,28 +58,15 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>>? login(String? email, String? password,
-      String? enterpriseId, String? collection) async {
-        await Future.delayed(const Duration(seconds:3));
+  Future<Map<String, dynamic>>? login(String? email, String? password, String? enterpriseId, String? collection) async {
+    await Future.delayed(const Duration(seconds: 5));
     try {
-      _authUser = await _auth
-          .signInWithEmailAndPassword(
-              email: email ?? "", password: password ?? "")
-          .then((value) => value.user);
-      final usersMapList = await _database
-          .collection("enterprise")
-          .doc(enterpriseId)
-          .collection(collection!)
-          .get();
+      _authUser = await _auth.signInWithEmailAndPassword(email: email ?? "", password: password ?? "").then((value) => value.user);
+      final usersMapList = await _database.collection("enterprise").doc(enterpriseId).collection(collection!).get();
       userBusinessPosition = usersMapList.docs.isNotEmpty ? collection : "";
-      final databaseUsersCollection = await _database
-          .collection("enterprise")
-          .doc(enterpriseId)
-          .collection(userBusinessPosition)
-          .get();
+      final databaseUsersCollection = await _database.collection("enterprise").doc(enterpriseId).collection(userBusinessPosition).get();
       userData = databaseUsersCollection.docs.firstWhere((element) {
-        final verifiedHashCode = _encryptService.checkHashCode(
-            password!, element["${collection}Password"]);
+        final verifiedHashCode = _encryptService.checkHashCode(password!, element["${collection}Password"]);
         return element["${collection}Email"] == email && verifiedHashCode;
       }).data();
       return userData;
@@ -115,18 +82,11 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>>? getUserById(
-      String? enterpriseId, String? operatorId, String? collection) async {
-        await Future.delayed(const Duration(seconds:3));
+  Future<Map<String, dynamic>>? getUserById(String? enterpriseId, String? operatorId, String? collection) async {
+    await Future.delayed(const Duration(seconds: 1));
     try {
-      final databaseCollection = await _database
-          .collection("enterprise")
-          .doc(enterpriseId)
-          .collection(collection!)
-          .get();
-      userData = databaseCollection.docs
-          .firstWhere((element) => element["${collection}Id"] == operatorId)
-          .data();
+      final databaseCollection = await _database.collection("enterprise").doc(enterpriseId).collection(collection!).get();
+      userData = databaseCollection.docs.firstWhere((element) => element["${collection}Id"] == operatorId).data();
       return userData;
     } catch (e) {
       throw UserNotFound(message: e.toString());
@@ -134,14 +94,12 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(String? email,
-      String? operatorCode, String? enterpriseId, String? collection) {
+  Future<bool>? checkOperatorDataForResetPassword(String? email, String? operatorCode, String? enterpriseId, String? collection) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, String? operatorCode,
-      String? enterpriseId, String? newPassword) {
+  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? enterpriseId, String? newPassword) {
     throw UnimplementedError();
   }
 

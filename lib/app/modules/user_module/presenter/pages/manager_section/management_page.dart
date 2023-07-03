@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../../domain/entities/manager_entity.dart';
+import '../../components/buttons/manager_view_button.dart';
 import '../../components/cards/payment_methods_information_card.dart';
 
 class ManagementPage extends StatefulWidget {
@@ -97,39 +98,10 @@ class _ManagementPageState extends State<ManagementPage> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Container(
-                        height: height * 0.05,
-                        width: width * 0.4,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 3,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: variantColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            side: BorderSide(
-                              color: detailColor,
-                            ),
-                            backgroundColor: variantColor,
-                          ),
-                          onPressed: () {
-                            Modular.to.pushNamed(
-                              "${ManagementRoutes.paymentMethodsPage}$_enterpriseId",
-                              arguments: widget.managerEntity,
-                            );
-                          },
-                          child: Text(
-                            "Visualizar",
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
+                      ManagerViewButton(
+                        onPressed: () => Modular.to.pushNamed(
+                          "${ManagementRoutes.paymentMethodsPage}$_enterpriseId",
+                          arguments: widget.managerEntity,
                         ),
                       ),
                       SizedBox(
@@ -196,39 +168,10 @@ class _ManagementPageState extends State<ManagementPage> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Container(
-                        height: height * 0.05,
-                        width: width * 0.4,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 3,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: variantColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                        ),
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            side: BorderSide(
-                              color: detailColor,
-                            ),
-                            backgroundColor: variantColor,
-                          ),
-                          onPressed: () {
-                            Modular.to.pushNamed(
-                              "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
-                              arguments: widget.managerEntity,
-                            );
-                          },
-                          child: Text(
-                            "Visualizar",
-                            style: Theme.of(context).textTheme.displaySmall,
-                          ),
+                      ManagerViewButton(
+                        onPressed: () => Modular.to.pushNamed(
+                          "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
+                          arguments: widget.managerEntity,
                         ),
                       ),
                     ],
