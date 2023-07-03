@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
@@ -15,8 +17,7 @@ class CreatePaymentMethodPage extends StatefulWidget {
 
   final ManagerEntity managerEntity;
   @override
-  State<CreatePaymentMethodPage> createState() =>
-      _CreatePaymentMethodPageState();
+  State<CreatePaymentMethodPage> createState() => _CreatePaymentMethodPageState();
 }
 
 final _enterpriseId = Modular.args.params["enterpriseId"];
@@ -81,10 +82,7 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                       ),
                       Text(
                         "Criar novo método:",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: surfaceColor),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
                       ),
                       SizedBox(
                         height: height * 0.05,
@@ -98,27 +96,21 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                             children: [
                               CashHelperTextFieldComponent(
                                 label: "Nome",
-                                controller: _managementController
-                                    .paymentMethodNameField,
-                                validator: _managementController
-                                    .paymentMethodNameValidate,
-                                onSaved: (value) =>
-                                    _newPaymentMethod.paymentMethodName = value,
+                                controller: _managementController.paymentMethodNameField,
+                                validator: _managementController.paymentMethodNameValidate,
+                                onSaved: (value) => _newPaymentMethod.paymentMethodName = value,
                               ),
                               CashHelperTextFieldComponent(
                                 label: "Descrição",
-                                controller: _managementController
-                                    .paymentMethodNameField,
-                                onSaved: (value) => _newPaymentMethod
-                                    .paymentMethodDescription = value,
+                                controller: _managementController.paymentMethodNameField,
+                                onSaved: (value) => _newPaymentMethod.paymentMethodDescription = value,
                               ),
                               CashHelperTextFieldComponent(
                                 suffixIcon: VisibilityIconComponent(
                                   onTap: () {
                                     setState(
                                       () {
-                                        _managementCodeVisible =
-                                            !_managementCodeVisible;
+                                        _managementCodeVisible = !_managementCodeVisible;
                                       },
                                     );
                                   },
@@ -127,13 +119,10 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                                   forHideContent: Icons.visibility_off,
                                   condition: _managementCodeVisible,
                                 ),
-                                obscureText:
-                                    _managementCodeVisible ? false : true,
+                                obscureText: _managementCodeVisible ? false : true,
                                 label: "Código Administrativo",
-                                controller: _managementController
-                                    .paymentMethodNameField,
-                                validator: _managementController
-                                    .paymentMethodNameValidate,
+                                controller: _managementController.paymentMethodNameField,
+                                validator: _managementController.paymentMethodNameValidate,
                                 onSaved: (value) => _managerCode = value,
                               ),
                             ],
@@ -148,22 +137,16 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                           children: [
                             CashHelperElevatedButton(
                               radius: 10,
-                              onPressed: () {
+                              onPressed: () async {
                                 _paymentMethodFormKey.currentState?.validate();
                                 _paymentMethodFormKey.currentState?.save();
-                                if (_paymentMethodFormKey.currentState!
-                                    .validate()) {
-                                  if (_managerCode ==
-                                      widget.managerEntity.managerCode) {
-                                    _newPaymentMethod.paymentMethodUsingRate =
-                                        0;
-                                    _managementStore.createNewPaymentMethod(
-                                        _enterpriseId, _newPaymentMethod);
-                                    _managementController
-                                        .paymentMethodAddedSnackBar(
+                                if (_paymentMethodFormKey.currentState!.validate()) {
+                                  if (_managerCode == widget.managerEntity.managerCode) {
+                                    _newPaymentMethod.paymentMethodUsingRate = 0;
+                                    await _managementStore.createNewPaymentMethod(_enterpriseId, _newPaymentMethod);
+                                    _managementController.paymentMethodAddedSnackBar(
                                       context,
-                                      message:
-                                          "Novo método de pagamento adicionado!",
+                                      message: "Novo método de pagamento adicionado!",
                                     );
                                     Modular.to.navigate(
                                       "${UserRoutes.managerHomePage}$_enterpriseId",
@@ -172,8 +155,7 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                                   } else {
                                     _managementController.noMatchingCodes(
                                       context,
-                                      message:
-                                          "Código Administrativo Inválido!",
+                                      message: "Código Administrativo Inválido!",
                                     );
                                   }
                                 }
@@ -190,9 +172,7 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                             CashHelperElevatedButton(
                               radius: 10,
                               onPressed: () {
-                                Modular.to.navigate(
-                                    "${UserRoutes.managementPage}$_enterpriseId",
-                                    arguments: widget.managerEntity);
+                                Modular.to.navigate("${UserRoutes.managementPage}$_enterpriseId", arguments: widget.managerEntity);
                               },
                               border: true,
                               backgroundColor: primaryColor,

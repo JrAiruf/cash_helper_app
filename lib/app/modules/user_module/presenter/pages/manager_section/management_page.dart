@@ -32,10 +32,8 @@ class _ManagementPageState extends State<ManagementPage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final detailColor = Theme.of(context).colorScheme.onPrimary;
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final backgroundColor = Theme.of(context).colorScheme.onBackground;
-    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     return Scaffold(
       appBar: AppBar(),
       drawer: ManagerSectionDrawer(
@@ -105,7 +103,7 @@ class _ManagementPageState extends State<ManagementPage> {
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.09,
+                        height: height * 0.035,
                       ),
                       Text(
                         "Pendências:",

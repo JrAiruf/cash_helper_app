@@ -54,7 +54,7 @@ class AnnotationsController {
       annotationLoadingState.value = true;
       newAnnotationFormKey.currentState?.save();
       final newAnnotation = AnnotationEntity(
-          annotationCreatorId: operatorId,
+          annotationCreatorId: operatorEntity.operatorId,
           annotationClientAddress: annotationClientAddress,
           annotationConcluied: false,
           annotationWithPendency: false,

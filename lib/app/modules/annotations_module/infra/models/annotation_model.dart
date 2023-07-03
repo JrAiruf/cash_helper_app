@@ -75,6 +75,7 @@ class AnnotationModel {
   static AnnotationModel fromEntityData(AnnotationEntity annotationEntity) {
     return AnnotationModel(
       annotationId: annotationEntity.annotationId,
+      annotationCreatorId: annotationEntity.annotationCreatorId,
       annotationClientAddress: annotationEntity.annotationClientAddress,
       annotationSaleValue: annotationEntity.annotationSaleValue,
       annotationSaleTime: annotationEntity.annotationSaleTime,
