@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -13,6 +14,7 @@ class ManagementController {
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
   final pendencyStore = Modular.get<PendencyStore>();
+  final pendenciesListStore = Modular.get<PendenciesListStore>();
   
   String? paymentMethodNameValidate(String? value) {
     return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
