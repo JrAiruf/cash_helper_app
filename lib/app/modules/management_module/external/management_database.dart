@@ -4,6 +4,7 @@ import '../../annotations_module/external/data/application_annotations_database.
 import 'errors/payment_method_not_created.dart';
 import 'errors/payment_methods_list_unnavailable.dart';
 import 'errors/pendency_error.dart';
+import 'errors/pendency_list_error.dart';
 import 'errors/remove_payment_method_error.dart';
 import 'errors/users_unavailable_error.dart';
 
@@ -123,9 +124,18 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
   
   @override
-  Future? getAllPendencies(String enterpriseId) {
-    // TODO: implement getAllPendencies
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>?>? getAllPendencies(String enterpriseId) async {
+    try {
+      final pendenciesCollection = await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").get();
+      final pendenciesList = pendenciesCollection.docs.map((e) => e.data()).toList();
+      if (pendenciesList.isNotEmpty) {
+        return pendenciesList;
+      } else {
+        throw PendencyListError(errorMessage: "Não existem pendências no momento");
+      }
+    } catch (e) {
+      throw PendencyListError(errorMessage: e.toString());
+    }
   }
   
   @override
