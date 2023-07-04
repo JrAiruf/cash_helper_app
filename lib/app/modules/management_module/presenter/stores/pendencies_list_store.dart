@@ -9,12 +9,7 @@ class PendenciesListStore extends ValueNotifier<List<PendencyEntity>> {
         super([]);
   final IGetAllPendencies _getAllPendencies;
 
-  final List<PendencyEntity> _pendencies = [];
-
-  List<PendencyEntity> get pendencies => value;
-
-  Future<void> getALlPendencies(String enterpriseId) async {
-    final pendency = await _getAllPendencies(enterpriseId);
-    value = _pendencies..addAll(pendency);
+  Future<void> getAllPendencies(String enterpriseId) async {
+    value = await _getAllPendencies(enterpriseId);
   }
 }

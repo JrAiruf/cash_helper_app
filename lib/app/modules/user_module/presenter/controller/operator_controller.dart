@@ -53,9 +53,9 @@ class OperatorController {
               annotation.annotationId ?? "",
             );
             annotation.annotationWithPendency = true;
-           await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
-           await annotationStore.createNewAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation);
-           await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
+            await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
+            await annotationStore.createNewAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation);
+            await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
           }
           operatorStore.closeOperatorCash(
             enterpriseId ?? "",
@@ -65,9 +65,9 @@ class OperatorController {
           Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
         });
       } else {
-      for (var annotation in finishedAnnotations) {
-        await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
-      }
+        for (var annotation in finishedAnnotations) {
+          await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
+        }
         await operatorStore.closeOperatorCash(
           enterpriseId ?? "",
           operatorEntity?.operatorId ?? "",

@@ -18,12 +18,13 @@ class ManagementPage extends StatefulWidget {
 
 final _managementController = Modular.get<ManagementController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
+final List<String> operatorsWithPendencies = [];
 
 class _ManagementPageState extends State<ManagementPage> {
   @override
   void initState() {
     super.initState();
-    _managementController.paymentMethodsListStore.getAllPaymentMethods(_enterpriseId);
+    _managementController.getAllPendencies(_enterpriseId);
   }
 
   @override
@@ -112,108 +113,121 @@ class _ManagementPageState extends State<ManagementPage> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-                      Container(
-                        height: sizeFrame ? height * 0.21 : height * 0.23,
-                        decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SizedBox(
-                                height: height * 0.15,
+                      AnimatedBuilder(
+                          animation: _managementController.pendenciesListStore,
+                          builder: (_, __) {
+                            final pendencies = _managementController.pendencies.value;
+                            final operatorIdList = pendencies.map((e) => e.operatorId).toList();
+                            for (var id in operatorIdList) {
+                              if (!operatorsWithPendencies.contains(id)) {
+                                setState(() {
+                                  operatorsWithPendencies.add(id!);
+                                });
+                              }
+                            }
+                            return Container(
+                              height: sizeFrame ? height * 0.21 : height * 0.23,
+                              decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Todas:",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                        Text(
-                                          "4",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      height: height * 0.15,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Todas:",
+                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                              ),
+                                              Text(
+                                                "${pendencies.length}",
+                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Operadores:",
+                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                              ),
+                                              Text(
+                                                "${operatorsWithPendencies.length}",
+                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Período:",
+                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Operadores:",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                        Container(
+                                          height: height * 0.04,
+                                          width: width * 0.2,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: surfaceColor, width: 0.5),
+                                            color: primaryColor,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Center(
+                                            child: Text("Hello"),
+                                          ),
                                         ),
-                                        Text(
-                                          "3",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                        SizedBox(
+                                          width: width * 0.03,
+                                        ),
+                                        Container(
+                                          height: height * 0.04,
+                                          width: width * 0.2,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: surfaceColor, width: 0.5),
+                                            color: primaryColor,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Center(
+                                            child: Text("Hello"),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: width * 0.03,
+                                        ),
+                                        Container(
+                                          height: height * 0.04,
+                                          width: width * 0.2,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: surfaceColor, width: 0.5),
+                                            color: primaryColor,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Center(
+                                            child: Text("Hello"),
+                                          ),
                                         ),
                                       ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Período:",
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                        ),
-                                      ],
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: height * 0.04,
-                                    width: width * 0.2,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: surfaceColor, width: 0.5),
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text("Hello"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.03,
-                                  ),
-                                  Container(
-                                    height: height * 0.04,
-                                    width: width * 0.2,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: surfaceColor, width: 0.5),
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text("Hello"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.03,
-                                  ),
-                                  Container(
-                                    height: height * 0.04,
-                                    width: width * 0.2,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: surfaceColor, width: 0.5),
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text("Hello"),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                            );
+                          }),
                       const SizedBox(
                         height: 15,
                       ),

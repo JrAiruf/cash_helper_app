@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
@@ -12,18 +13,17 @@ class ManagementController {
   final managerCodeField = TextEditingController();
 
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
+  var pendencies = ValueNotifier(<PendencyEntity>[]);
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
   final pendencyStore = Modular.get<PendencyStore>();
   final pendenciesListStore = Modular.get<PendenciesListStore>();
-  
+
   String? paymentMethodNameValidate(String? value) {
     return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
   }
 
   String? managerCodeValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length == 6
-        ? null
-        : 'Código Inválido! Insira o código administrativo.';
+    return value!.isNotEmpty && value != '' && value.length == 6 ? null : 'Código Inválido! Insira o código administrativo.';
   }
 
   String? paymentMethodValidate(PaymentMethodEntity? value) {
@@ -33,6 +33,11 @@ class ManagementController {
   Future<void> getAllPaymentMethods(String enterpriseId) async {
     await paymentMethodsListStore.getAllPaymentMethods(enterpriseId);
     paymentMethods.value = paymentMethodsListStore.value ?? [];
+  }
+
+  Future<void> getAllPendencies(String enterpriseId) async {
+    await pendenciesListStore.getAllPendencies(enterpriseId);
+    pendencies.value = pendenciesListStore.value;
   }
 
   noMatchingCodes(BuildContext context, {required String message}) {
@@ -69,8 +74,7 @@ class ManagementController {
     );
   }
 
-  paymentMethodRemovedSnackBar(BuildContext context,
-      {required String message}) {
+  paymentMethodRemovedSnackBar(BuildContext context, {required String message}) {
     final variantColor = Theme.of(context).colorScheme.surfaceVariant;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
