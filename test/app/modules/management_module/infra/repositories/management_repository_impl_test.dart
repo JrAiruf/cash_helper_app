@@ -85,7 +85,7 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
   }
 
   @override
-  Future? getAllPendencies(String enterpriseId) async {
+  Future? getAllPendencies(String? enterpriseId) async {
     try {
       final pendenciesMapsList = await _database.getAllPendencies(enterpriseId);
       if (pendenciesMapsList != null) {
