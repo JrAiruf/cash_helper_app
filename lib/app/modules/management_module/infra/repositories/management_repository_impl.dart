@@ -1,11 +1,11 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/payment_method_model.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
-
 import '../../../../helpers/data_verifier.dart';
 import '../../../user_module/infra/models/operator_model.dart';
 import '../../domain/entities/pendency_entity.dart';
 import '../../external/errors/pendency_error.dart';
+import '../../external/errors/pendency_list_error.dart';
 import '../adapters/pendency_adapter.dart';
 
 class ManagementRepositoryImpl implements ManagementRepository {
@@ -79,5 +79,25 @@ class ManagementRepositoryImpl implements ManagementRepository {
     } catch (e) {
       throw PendencyError(errorMessage: e.toString());
     }
+  }
+  
+  @override
+  Future? getAllPendencies(String enterpriseId) async {
+    try {
+      final pendenciesMapsList = await _database.getAllPendencies(enterpriseId);
+      if (pendenciesMapsList != null) {
+        return pendenciesMapsList.map((pendency) => PendencyAdapter.fromMap(pendency)).toList();
+      } else {
+        throw PendencyListError(errorMessage: "Sem Pendências No Sistema");
+      }
+    } catch (e) {
+      throw PendencyListError(errorMessage: e.toString());
+    }
+  }
+  
+  @override
+  Future? getGeneralAnnotations(String enterpriseId) {
+    // TODO: implement getGeneralAnnotations
+    throw UnimplementedError();
   }
 }

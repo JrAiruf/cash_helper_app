@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/infra/models/payment_method_model.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/pendency_error.dart';
+import 'package:cash_helper_app/app/modules/management_module/external/errors/pendency_list_error.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/adapters/pendency_adapter.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
@@ -81,6 +82,26 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
     } catch (e) {
       throw PendencyError(errorMessage: e.toString());
     }
+  }
+
+  @override
+  Future? getAllPendencies(String enterpriseId) async {
+    try {
+      final pendenciesMapsList = await _database.getAllPendencies(enterpriseId);
+      if (pendenciesMapsList != null) {
+        return pendenciesMapsList.map((pendency) => PendencyAdapter.fromMap(pendency)).toList();
+      } else {
+        throw PendencyListError(errorMessage: "Sem Pendências No Sistema");
+      }
+    } catch (e) {
+      throw PendencyListError(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future? getGeneralAnnotations(String enterpriseId) async {
+    // TODO: implement getGeneralAnnotations
+    throw UnimplementedError();
   }
 }
 
@@ -247,6 +268,30 @@ void main() {
         "Fail to to create pendency (throws PendencyFailure)",
         () async {
           expect(() async => repository.generatePendency("", null, "annotationId"), throwsA(isA<PendencyError>()));
+        },
+      );
+    },
+  );
+  group(
+    'GetAllPendencies Function should',
+    () {
+      test(
+        "Call database to get a list of pendencies (returns a List<PendencyEntity>)",
+        () async {
+          when(database.getAllPendencies(any)).thenAnswer(
+            (_) async => [
+              PendencyTestObjects.pendencyMap,
+              PendencyTestObjects.pendencyMap,
+            ],
+          );
+          final pendenciesList = await repository.getAllPendencies("enterpriseId");
+          expect(pendenciesList, isA<List<PendencyEntity>>());
+        },
+      );
+      test(
+        "Fail to to create pendency (throws PendencyFailure)",
+        () async {
+          expect(() async => repository.getAllPendencies(""), throwsA(isA<PendencyListError>()));
         },
       );
     },

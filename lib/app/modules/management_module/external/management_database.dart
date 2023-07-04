@@ -124,7 +124,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
   
   @override
-  Future<List<Map<String, dynamic>>?>? getAllPendencies(String enterpriseId) async {
+  Future<List<Map<String, dynamic>>?>? getAllPendencies(String? enterpriseId) async {
     try {
       final pendenciesCollection = await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").get();
       final pendenciesList = pendenciesCollection.docs.map((e) => e.data()).toList();
