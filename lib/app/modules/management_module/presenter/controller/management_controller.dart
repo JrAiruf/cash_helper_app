@@ -15,6 +15,7 @@ class ManagementController {
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
   var pendencies = ValueNotifier(<PendencyEntity>[]);
   final operatorsWithPendencies = ValueNotifier(<String>[]);
+  final periodList = ValueNotifier(<String>[]);
 
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
   final pendencyStore = Modular.get<PendencyStore>();
@@ -41,10 +42,17 @@ class ManagementController {
     await pendenciesListStore.getAllPendencies(enterpriseId);
     pendencies.value = pendenciesListStore.value;
     final operatorIdList = pendencies.value.map((e) => e.operatorId).toList();
+    final pendenciesPeriodList = pendencies.value.map((e) => e.pendencyPeriod).toList();
     operatorsWithPendencies.value.clear();
+    periodList.value.clear();
     for (var id in operatorIdList) {
       if (!operatorsWithPendencies.value.contains(id)) {
         operatorsWithPendencies.value.add(id!);
+      }
+    }
+    for (var period in pendenciesPeriodList) {
+      if (!periodList.value.contains(period)) {
+        periodList.value.add(period!);
       }
     }
   }

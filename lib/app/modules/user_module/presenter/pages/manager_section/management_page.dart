@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/controller/man
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
+import '../../../../management_module/presenter/components/pendencies_information_card.dart.dart';
 import '../../../domain/entities/manager_entity.dart';
 import '../../components/buttons/manager_view_button.dart';
 import '../../../../management_module/presenter/components/payment_methods_information_card.dart';
@@ -112,118 +113,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-                      AnimatedBuilder(
-                          animation: _managementController.pendenciesListStore,
-                          builder: (_, __) {
-                            final pendencies = _managementController.pendencies.value.length;
-                            return Container(
-                              height: sizeFrame ? height * 0.22 : height * 0.23,
-                              decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    SizedBox(
-                                      height: height * 0.15,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Todas:",
-                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                              ),
-                                              Text(
-                                                "$pendencies",
-                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Operadores:",
-                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                              ),
-                                              AnimatedBuilder(
-                                                  animation: _managementController.operatorsWithPendencies,
-                                                  builder: (_, __) {
-                                                    final operatorsWithPendencies = _managementController.operatorsWithPendencies.value.length;
-                                                    return Text(
-                                                      "$operatorsWithPendencies",
-                                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                                    );
-                                                  }),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Período:",
-                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: height * 0.04,
-                                          width: width * 0.2,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: surfaceColor, width: 0.5),
-                                            color: primaryColor,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Center(
-                                            child: Text("Hello"),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: width * 0.03,
-                                        ),
-                                        Container(
-                                          height: height * 0.04,
-                                          width: width * 0.2,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: surfaceColor, width: 0.5),
-                                            color: primaryColor,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Center(
-                                            child: Text("Hello"),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: width * 0.03,
-                                        ),
-                                        Container(
-                                          height: height * 0.04,
-                                          width: width * 0.2,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(color: surfaceColor, width: 0.5),
-                                            color: primaryColor,
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Center(
-                                            child: Text("Hello"),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
+                      PendenciesInformationCard(height: height, enterpriseId: _enterpriseId),
                       const SizedBox(
                         height: 15,
                       ),
@@ -236,7 +126,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
