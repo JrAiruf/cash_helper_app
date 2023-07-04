@@ -6,7 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../../domain/entities/manager_entity.dart';
 import '../../components/buttons/manager_view_button.dart';
-import '../../components/cards/payment_methods_information_card.dart';
+import '../../../../management_module/presenter/components/payment_methods_information_card.dart';
 
 class ManagementPage extends StatefulWidget {
   const ManagementPage({super.key, required this.managerEntity});
@@ -113,52 +113,103 @@ class _ManagementPageState extends State<ManagementPage> {
                         height: height * 0.02,
                       ),
                       Container(
-                        height: height * 0.15,
+                        height: sizeFrame ? height * 0.21 : height * 0.23,
                         decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Todas:",
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                  ),
-                                  Text(
-                                    "4",
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                  ),
-                                ],
+                              SizedBox(
+                                height: height * 0.15,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Todas:",
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                        ),
+                                        Text(
+                                          "4",
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Operadores:",
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                        ),
+                                        Text(
+                                          "3",
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Período:",
+                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Período:",
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                  Container(
+                                    height: height * 0.04,
+                                    width: width * 0.2,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: surfaceColor, width: 0.5),
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text("Hello"),
+                                    ),
                                   ),
-                                  Text(
-                                    "Manhã",
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                  SizedBox(
+                                    width: width * 0.03,
+                                  ),
+                                  Container(
+                                    height: height * 0.04,
+                                    width: width * 0.2,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: surfaceColor, width: 0.5),
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text("Hello"),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.03,
+                                  ),
+                                  Container(
+                                    height: height * 0.04,
+                                    width: width * 0.2,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: surfaceColor, width: 0.5),
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text("Hello"),
+                                    ),
                                   ),
                                 ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Operadores:",
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                  ),
-                                  Text(
-                                    "3",
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                  ),
-                                ],
-                              ),
+                              )
                             ],
                           ),
                         ),

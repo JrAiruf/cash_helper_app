@@ -2,7 +2,7 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../management_module/presenter/controller/management_controller.dart';
+import '../controller/management_controller.dart';
 
 class PaymentMethodsInformationCard extends StatelessWidget {
   PaymentMethodsInformationCard({required this.enterpriseId, super.key}) {
@@ -22,7 +22,7 @@ class PaymentMethodsInformationCard extends StatelessWidget {
           height: height * 0.15,
           decoration: BoxDecoration(border: Border.all(color: appThemes.surfaceColor(context), width: 0.5), color: appThemes.primaryColor(context), borderRadius: BorderRadius.circular(20)),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

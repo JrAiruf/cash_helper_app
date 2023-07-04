@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/modules/management_module/external/data/appl
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_methods_list_unnavailable.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/pendency_error.dart';
+import 'package:cash_helper_app/app/modules/management_module/external/errors/pendency_list_error.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/remove_payment_method_error.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/users_unavailable_error.dart';
 import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
@@ -121,8 +122,20 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       throw PendencyError(errorMessage: e.toString());
     }
   }
+ 
+  @override
+  Future<List<Map<String,dynamic>>>? getAllPendencies(String enterpriseId) async {
+    // TODO: implement getAllPendencies
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<Map<String,dynamic>>>? getGeneralAnnotations(String enterpriseId) async {
+    // TODO: implement getGeneralAnnotations
+    throw UnimplementedError();
+  }
 
-  String _getPendencyPeriod(String annotationSaleTime) {
+    String _getPendencyPeriod(String annotationSaleTime) {
     final annotationPeriod = annotationSaleTime.split(":").first;
     final timeValue = int.tryParse(annotationPeriod) ?? 0;
     if (timeValue >= 18) {
@@ -292,6 +305,30 @@ void main() {
         "Fail to create pendencies",
         () async {
           expect(() async => database.generatePendency("", "", "annotationId"), throwsA(isA<PendencyError>()));
+        },
+      );
+    },
+  );
+  group(
+    'GetAllPendencies Function should',
+    () {
+      test(
+        "Get a List of Pendencies in Database",
+        () async {
+          final createdEnterprise = await enterpriseDb.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], AnnotationsTestObjects.databaseAnnotation);
+          final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
+          expect(result, isA<Map<String, dynamic>>());
+          expect(result?["pendencyId"] != null, equals(true));
+
+        },
+      );
+
+      test(
+        "Fail to Get a List of Pendencies",
+        () async {
+          expect(() async => database.generatePendency("", "", "annotationId"), throwsA(isA<PendencyListError>()));
         },
       );
     },

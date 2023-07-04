@@ -121,4 +121,16 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       return "Manhã";
     }
   }
+  
+  @override
+  Future? getAllPendencies(String enterpriseId) {
+    // TODO: implement getAllPendencies
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future? getGeneralAnnotations(String enterpriseId) {
+    // TODO: implement getGeneralAnnotations
+    throw UnimplementedError();
+  }
 }
