@@ -10,6 +10,7 @@ class PendenciesListStore extends ValueNotifier<List<PendencyEntity>> {
   final IGetAllPendencies _getAllPendencies;
 
   Future<void> getAllPendencies(String enterpriseId) async {
+    value.clear();
     value = await _getAllPendencies(enterpriseId);
   }
 }

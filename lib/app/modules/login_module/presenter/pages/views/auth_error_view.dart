@@ -17,8 +17,6 @@ class AuthErrorView extends StatefulWidget {
   State<AuthErrorView> createState() => _AuthErrorViewState();
 }
 
-final _loginFormKey = GlobalKey<FormState>();
-final _loginStore = Modular.get<LoginStore>();
 final _loginController = Modular.get<LoginController>();
 bool _passwordVisible = false;
 bool _managerUser = false;
@@ -52,8 +50,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: height * 0.1),
-                Text('Cash Helper',
-                    style: Theme.of(context).textTheme.bodyLarge),
+                Text('Cash Helper', style: Theme.of(context).textTheme.bodyLarge),
                 SizedBox(height: height * 0.16),
                 Row(
                   children: [
@@ -63,18 +60,13 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                         onChanged: (value) {
                           _managerUser = !_managerUser;
                           setState(() {
-                            businessPosition = _managerUser
-                                ? EnterpriseBusinessPosition.manager
-                                : EnterpriseBusinessPosition.cashOperator;
+                            businessPosition = _managerUser ? EnterpriseBusinessPosition.manager : EnterpriseBusinessPosition.cashOperator;
                           });
                         }),
                     const SizedBox(width: 25),
                     Text(
                       userBusinessPosition,
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium
-                          ?.copyWith(color: surface),
+                      style: Theme.of(context).textTheme.displayMedium?.copyWith(color: surface),
                     ),
                     const SizedBox(width: 35),
                   ],
@@ -83,29 +75,24 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                   children: [
                     Card(
                       color: secondaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       child: SizedBox(
                         height: height * 0.4,
                         width: width,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 30),
+                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
                           child: Form(
-                            key: _loginFormKey,
+                            key: _loginController.loginFormKey,
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   CashHelperTextFieldComponent(
                                     primaryColor: surfaceColor,
                                     radius: 15,
-                                    validator: (value) =>
-                                        _loginController.emailValidate(value),
-                                    onSaved: (value) => _loginController
-                                        .emailField.text = value ?? "",
+                                    validator: (value) => _loginController.emailValidate(value),
+                                    onSaved: (value) => _loginController.emailField.text = value ?? "",
                                     controller: _loginController.emailField,
                                     label: 'Email',
                                   ),
@@ -118,20 +105,16 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                                         iconColor: surfaceColor,
                                         onTap: () {
                                           setState(() {
-                                            _passwordVisible =
-                                                !_passwordVisible;
+                                            _passwordVisible = !_passwordVisible;
                                           });
                                         },
                                         forVisibility: Icons.visibility,
                                         forHideContent: Icons.visibility_off,
                                         condition: _passwordVisible),
                                     radius: 15,
-                                    obscureText:
-                                        _passwordVisible == true ? false : true,
-                                    validator: (value) => _loginController
-                                        .passwordValidate(value),
-                                    onSaved: (value) => _loginController
-                                        .passwordField.text = value ?? "",
+                                    obscureText: _passwordVisible == true ? false : true,
+                                    validator: (value) => _loginController.passwordValidate(value),
+                                    onSaved: (value) => _loginController.passwordField.text = value ?? "",
                                     controller: _loginController.passwordField,
                                     label: 'Senha',
                                   ),
@@ -148,7 +131,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                         child: TextButton(
                           style: TextButton.styleFrom(),
                           onPressed: () {
-                            Modular.to.pushNamed("./create-new-operator");
+                            Modular.to.pushNamed("./create-new-operator", arguments: widget.enterpriseEntity);
                           },
                           child: Text(
                             'Criar conta',
@@ -168,9 +151,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                             onPressed: () {
                               Modular.to.pushNamed("/forgot-password-page");
                             },
-                            child: Text('Esqueci minha senha',
-                                style:
-                                    Theme.of(context).textTheme.displaySmall),
+                            child: Text('Esqueci minha senha', style: Theme.of(context).textTheme.displaySmall),
                           ),
                         ],
                       ),
@@ -187,27 +168,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                       ),
                     ),
                     child: CashHelperElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          businessPosition = _managerUser
-                              ? EnterpriseBusinessPosition.manager
-                              : EnterpriseBusinessPosition.cashOperator;
-                        });
-                        _loginFormKey.currentState!.validate();
-                        _loginFormKey.currentState!.save();
-
-                        if (_loginFormKey.currentState!.validate()) {
-                          _loginStore
-                              .login(
-                                  _loginController.emailField.text,
-                                  _loginController.passwordField.text,
-                                  widget.enterpriseEntity.enterpriseId,
-                                  businessPosition.position)
-                              ?.catchError((e) {
-                            _loginController.onFail(context);
-                          });
-                        }
-                      },
+                      onPressed: _loginController.login,
                       radius: 12,
                       width: width,
                       height: 65,
@@ -222,10 +183,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                 Center(
                   child: Text(
                     "E-mail ou senha inválidos. Login não realizado!",
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall
-                        ?.copyWith(color: surface),
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surface),
                   ),
                 ),
               ],

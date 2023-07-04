@@ -14,6 +14,8 @@ class ManagementController {
 
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
   var pendencies = ValueNotifier(<PendencyEntity>[]);
+  final operatorsWithPendencies = ValueNotifier(<String>[]);
+
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
   final pendencyStore = Modular.get<PendencyStore>();
   final pendenciesListStore = Modular.get<PendenciesListStore>();
@@ -38,6 +40,13 @@ class ManagementController {
   Future<void> getAllPendencies(String enterpriseId) async {
     await pendenciesListStore.getAllPendencies(enterpriseId);
     pendencies.value = pendenciesListStore.value;
+    final operatorIdList = pendencies.value.map((e) => e.operatorId).toList();
+    operatorsWithPendencies.value.clear();
+    for (var id in operatorIdList) {
+      if (!operatorsWithPendencies.value.contains(id)) {
+        operatorsWithPendencies.value.add(id!);
+      }
+    }
   }
 
   noMatchingCodes(BuildContext context, {required String message}) {

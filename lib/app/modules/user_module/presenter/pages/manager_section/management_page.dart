@@ -18,7 +18,6 @@ class ManagementPage extends StatefulWidget {
 
 final _managementController = Modular.get<ManagementController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
-final List<String> operatorsWithPendencies = [];
 
 class _ManagementPageState extends State<ManagementPage> {
   @override
@@ -116,17 +115,9 @@ class _ManagementPageState extends State<ManagementPage> {
                       AnimatedBuilder(
                           animation: _managementController.pendenciesListStore,
                           builder: (_, __) {
-                            final pendencies = _managementController.pendencies.value;
-                            final operatorIdList = pendencies.map((e) => e.operatorId).toList();
-                            for (var id in operatorIdList) {
-                              if (!operatorsWithPendencies.contains(id)) {
-                                setState(() {
-                                  operatorsWithPendencies.add(id!);
-                                });
-                              }
-                            }
+                            final pendencies = _managementController.pendencies.value.length;
                             return Container(
-                              height: sizeFrame ? height * 0.21 : height * 0.23,
+                              height: sizeFrame ? height * 0.22 : height * 0.23,
                               decoration: BoxDecoration(border: Border.all(color: surfaceColor, width: 0.5), color: primaryColor, borderRadius: BorderRadius.circular(20)),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -146,7 +137,7 @@ class _ManagementPageState extends State<ManagementPage> {
                                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                               ),
                                               Text(
-                                                "${pendencies.length}",
+                                                "$pendencies",
                                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                               ),
                                             ],
@@ -158,10 +149,15 @@ class _ManagementPageState extends State<ManagementPage> {
                                                 "Operadores:",
                                                 style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
                                               ),
-                                              Text(
-                                                "${operatorsWithPendencies.length}",
-                                                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
-                                              ),
+                                              AnimatedBuilder(
+                                                  animation: _managementController.operatorsWithPendencies,
+                                                  builder: (_, __) {
+                                                    final operatorsWithPendencies = _managementController.operatorsWithPendencies.value.length;
+                                                    return Text(
+                                                      "$operatorsWithPendencies",
+                                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: surfaceColor),
+                                                    );
+                                                  }),
                                             ],
                                           ),
                                           Row(
