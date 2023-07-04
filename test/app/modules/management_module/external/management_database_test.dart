@@ -122,20 +122,29 @@ class ManagementDBMock implements ApplicationManagementDatabase {
       throw PendencyError(errorMessage: e.toString());
     }
   }
- 
+
   @override
-  Future<List<Map<String,dynamic>>>? getAllPendencies(String enterpriseId) async {
-    // TODO: implement getAllPendencies
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>?>? getAllPendencies(String enterpriseId) async {
+    try {
+      final pendenciesCollection = await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").get();
+      final pendenciesList = pendenciesCollection.docs.map((e) => e.data()).toList();
+      if (pendenciesList.isNotEmpty) {
+        return pendenciesList;
+      } else {
+        throw PendencyListError(errorMessage: "Não existem pendências no momento");
+      }
+    } catch (e) {
+      throw PendencyListError(errorMessage: e.toString());
+    }
   }
-  
+
   @override
-  Future<List<Map<String,dynamic>>>? getGeneralAnnotations(String enterpriseId) async {
+  Future<List<Map<String, dynamic>>>? getGeneralAnnotations(String enterpriseId) async {
     // TODO: implement getGeneralAnnotations
     throw UnimplementedError();
   }
 
-    String _getPendencyPeriod(String annotationSaleTime) {
+  String _getPendencyPeriod(String annotationSaleTime) {
     final annotationPeriod = annotationSaleTime.split(":").first;
     final timeValue = int.tryParse(annotationPeriod) ?? 0;
     if (timeValue >= 18) {
@@ -321,14 +330,16 @@ void main() {
           final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));
-
+          final pendencyList = await database.getAllPendencies(createdEnterprise?["enterpriseId"]);
+          expect(pendencyList, isA<List<Map<String, dynamic>>>());
+          expect(pendencyList?.isNotEmpty, equals(true));
         },
       );
 
       test(
         "Fail to Get a List of Pendencies",
         () async {
-          expect(() async => database.generatePendency("", "", "annotationId"), throwsA(isA<PendencyListError>()));
+          expect(() async => database.getAllPendencies(""), throwsA(isA<PendencyListError>()));
         },
       );
     },
