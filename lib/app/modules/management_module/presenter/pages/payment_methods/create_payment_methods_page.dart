@@ -8,9 +8,9 @@ import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../login_module/presenter/components/visibility_icon_component.dart';
-import '../controller/management_controller.dart';
-import '../stores/management_store.dart';
+import '../../../../login_module/presenter/components/visibility_icon_component.dart';
+import '../../controller/management_controller.dart';
+import '../../stores/management_store.dart';
 
 class CreatePaymentMethodPage extends StatefulWidget {
   const CreatePaymentMethodPage({super.key, required this.managerEntity});

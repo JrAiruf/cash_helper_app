@@ -3,13 +3,13 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/components/vi
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../routes/app_routes.dart';
-import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../../login_module/presenter/components/cash_helper_text_field.dart';
-import '../../../user_module/domain/entities/manager_entity.dart';
-import '../../../user_module/presenter/controller/payment_methods_controller.dart';
-import '../controller/management_controller.dart';
-import '../stores/management_store.dart';
+import '../../../../../routes/app_routes.dart';
+import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../../../login_module/presenter/components/cash_helper_text_field.dart';
+import '../../../../user_module/domain/entities/manager_entity.dart';
+import '../../../../user_module/presenter/controller/payment_methods_controller.dart';
+import '../../controller/management_controller.dart';
+import '../../stores/management_store.dart';
 
 class RemovePaymentMethodPage extends StatefulWidget {
   const RemovePaymentMethodPage({super.key, required this.managerEntity});

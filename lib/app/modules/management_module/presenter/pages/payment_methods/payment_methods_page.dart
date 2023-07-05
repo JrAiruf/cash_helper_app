@@ -3,7 +3,7 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/stores/m
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../routes/app_routes.dart';
+import '../../../../../routes/app_routes.dart';
 
 class PaymentMethodsPage extends StatefulWidget {
   const PaymentMethodsPage({super.key, required this.managerEntity});

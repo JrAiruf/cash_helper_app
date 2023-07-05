@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/manager_section_drawer.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
@@ -32,9 +33,7 @@ class _ManagementPageState extends State<ManagementPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final backgroundColor = Theme.of(context).colorScheme.onBackground;
+    final appThemes = CashHelperThemes();
     return Scaffold(
       appBar: AppBar(),
       drawer: ManagerSectionDrawer(
@@ -47,7 +46,7 @@ class _ManagementPageState extends State<ManagementPage> {
         child: Container(
           height: height,
           decoration: BoxDecoration(
-            color: backgroundColor,
+            color: appThemes.backgroundColor(context),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -56,9 +55,9 @@ class _ManagementPageState extends State<ManagementPage> {
                 alignment: Alignment.topCenter,
                 children: [
                   Container(
-                    height: height * 0.15,
+                    height: sizeFrame ? height * 0.16 :height * 0.15,
                     decoration: BoxDecoration(
-                      color: primaryColor,
+                      color: appThemes.primaryColor(context),
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20),
@@ -88,7 +87,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       ),
                       Text(
                         "Métodos de Pagamento:",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
                       ),
                       SizedBox(
                         height: height * 0.02,
@@ -108,7 +107,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       ),
                       Text(
                         "Pendências:",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
                       ),
                       SizedBox(
                         height: height * 0.02,
