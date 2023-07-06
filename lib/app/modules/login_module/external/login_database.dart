@@ -112,7 +112,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
   
   @override
-  Future<List<Map<String, dynamic>>>? getAllOperators(String enterpriseId) async {
+  Future<List<Map<String, dynamic>>>? getAllOperators(String? enterpriseId) async {
     try {
       final operatorsCollection = await _database.collection("enterprise").doc(enterpriseId).collection("operator").get();
       final operatorsList = operatorsCollection.docs.map((operatorDocument) => operatorDocument.data()).toList();

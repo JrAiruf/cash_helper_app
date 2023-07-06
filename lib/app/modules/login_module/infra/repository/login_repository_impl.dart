@@ -15,17 +15,13 @@ class LoginRepositoryImpl implements LoginRepository {
   final DataVerifier _dataVerifier;
 
   @override
-  Future<dynamic>? register(
-      dynamic newUser, String? enterpriseId, String? collection) async {
-    if (_dataVerifier.objectVerifier(object: newUser?.toMap() ?? {}) &&
-        _dataVerifier.validateInputData(inputs: [enterpriseId, collection])) {
+  Future<dynamic>? register(dynamic newUser, String? enterpriseId, String? collection) async {
+    if (_dataVerifier.objectVerifier(object: newUser?.toMap() ?? {}) && _dataVerifier.validateInputData(inputs: [enterpriseId, collection])) {
       if (_dataVerifier.operatorModelVerifier(model: newUser)) {
-        final opertatorMap = await _datasource.register(
-            newUser.toMap(), enterpriseId!, collection!);
+        final opertatorMap = await _datasource.register(newUser.toMap(), enterpriseId!, collection!);
         return OperatorModel.fromMap(opertatorMap);
       } else if (_dataVerifier.managerModelVerifier(model: newUser)) {
-        final managerMap = await _datasource.register(
-            newUser.toMap(), enterpriseId!, collection!);
+        final managerMap = await _datasource.register(newUser.toMap(), enterpriseId!, collection!);
         return ManagerModel.fromMap(managerMap);
       }
     } else {
@@ -34,12 +30,9 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<dynamic>? login(String? email, String? password, String? enterpriseId,
-      String? collection) async {
-    if (_dataVerifier.validateInputData(
-        inputs: [email, password, enterpriseId, collection])) {
-      final databaseMap =
-          await _datasource.login(email!, password!, enterpriseId!, collection!);
+  Future<dynamic>? login(String? email, String? password, String? enterpriseId, String? collection) async {
+    if (_dataVerifier.validateInputData(inputs: [email, password, enterpriseId, collection])) {
+      final databaseMap = await _datasource.login(email!, password!, enterpriseId!, collection!);
       if (_dataVerifier.operatorMapVerifier(map: databaseMap)) {
         return OperatorModel.fromMap(databaseMap);
       } else if (_dataVerifier.managerMapVerifier(map: databaseMap)) {
@@ -50,13 +43,10 @@ class LoginRepositoryImpl implements LoginRepository {
     }
   }
 
- @override
-  Future<dynamic>? getUserById(
-      String? enterpriseId, String? operatorId, String? collection) async {
-    if (_dataVerifier
-        .validateInputData(inputs: [enterpriseId, operatorId, collection])) {
-      final databaseMap =
-          await _datasource.getUserById(enterpriseId!, operatorId!, collection!);
+  @override
+  Future<dynamic>? getUserById(String? enterpriseId, String? operatorId, String? collection) async {
+    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId, collection])) {
+      final databaseMap = await _datasource.getUserById(enterpriseId!, operatorId!, collection!);
       if (_dataVerifier.operatorMapVerifier(map: databaseMap ?? {})) {
         return OperatorModel.fromMap(databaseMap);
       } else if (_dataVerifier.managerMapVerifier(map: databaseMap ?? {})) {
@@ -68,19 +58,18 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(
-      String? email, String? operatorCode, String? collection) async {
-        if(email!.isNotEmpty && collection!.isNotEmpty){
-          return await _datasource.checkOperatorDataForResetPassword(email, operatorCode,"", collection)!;
-        } else {
-        return false;
-        }
+  Future<bool>? checkOperatorDataForResetPassword(String? email, String? operatorCode, String? collection) async {
+    if (email!.isNotEmpty && collection!.isNotEmpty) {
+      return await _datasource.checkOperatorDataForResetPassword(email, operatorCode, "", collection)!;
+    } else {
+      return false;
+    }
   }
 
   @override
   Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? newPassword) async {
-    if(email!.isNotEmpty && operatorCode!.isNotEmpty && newPassword!.isNotEmpty){
-  return await _datasource.resetOperatorPassword(email, operatorCode,"", newPassword);
+    if (email!.isNotEmpty && operatorCode!.isNotEmpty && newPassword!.isNotEmpty) {
+      return await _datasource.resetOperatorPassword(email, operatorCode, "", newPassword);
     } else {
       return;
     }
@@ -89,5 +78,11 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<void>? signOut() async {
     await _datasource.signOut();
+  }
+
+  @override
+  Future<List<OperatorModel>>? getAllOperators(String? enterpriseId) async {
+    final datasourceOperatorList = await _datasource.getAllOperators(enterpriseId!) as List;
+    return datasourceOperatorList.isNotEmpty ? datasourceOperatorList.map((datasourceOperator) => OperatorModel.fromMap(datasourceOperator)).toList() : [];
   }
 }
