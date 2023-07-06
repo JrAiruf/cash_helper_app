@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/database_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/operators_unavailable.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/registration_error.dart';
 import 'package:cash_helper_app/app/services/crypt_serivce.dart';
@@ -134,6 +135,21 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   Future<void>? signOut() async {
     await _auth.signOut();
     userData.clear();
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>>? getAllOperators(String enterpriseId) async {
+    try {
+      final operatorsCollection = await _database.collection("enterprise").doc(enterpriseId).collection("operator").get();
+      final operatorsList = operatorsCollection.docs.map((operatorDocument) => operatorDocument.data()).toList();
+      if (operatorsList.isNotEmpty) {
+        return operatorsList;
+      } else {
+        throw OperatorsUnavailable(message: "Nenhum Usuário encontrado");
+      }
+    } catch (e) {
+        throw OperatorsUnavailable(message: e.toString());
+    }
   }
 }
 
@@ -293,6 +309,29 @@ void main() {
         "Fail returning operator data",
         () async {
           expect(() async => database.getUserById("", "", LoginTestObjects.newOperator["businessPosition"]), throwsA(isA<UserNotFound>()));
+        },
+      );
+    },
+  );
+  group(
+    "GetAllOperators function should",
+    () {
+      test(
+        "Return a List from firebase containing data of all operators",
+        () async {
+          await enterpriseDatabase.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList = await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          await database.register(LoginTestObjects.newOperator, createdEnterprise["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          final operatorsList = await database.getAllOperators(createdEnterprise["enterpriseId"]);
+          expect(operatorsList, isA<List<Map<String, dynamic>>>());
+          expect(operatorsList?.isNotEmpty, equals(true));
+        },
+      );
+      test(
+        "Fail returning operators List (throws OperatorsUnavailable)",
+        () async {
+          expect(() async => database.getAllOperators(""), throwsA(isA<OperatorsUnavailable>()));
         },
       );
     },

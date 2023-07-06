@@ -72,10 +72,26 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                       SizedBox(
                         height: height * 0.03,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: ListView(
-                          children: [],
+                      SizedBox(
+                        height: sizeFrame ? height * 0.65 : height * 0.7,
+                        child: ListView.builder(
+                          itemBuilder: (_, i) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                              child: Container(
+                                height: height * 0.3,
+                                width: width,
+                                decoration: BoxDecoration(
+                                  color: appThemes.primaryColor(context),
+                                  border: Border.all(
+                                    color: appThemes.surfaceColor(context),
+                                    width: 0.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],

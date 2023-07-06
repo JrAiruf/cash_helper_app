@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import '../../../services/crypt_serivce.dart';
 import 'errors/authentication_error.dart';
 import 'errors/database_error.dart';
+import 'errors/operators_unavailable.dart';
 import 'errors/user_not_found_error.dart';
 import 'errors/registration_error.dart';
 
@@ -108,5 +109,20 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   Future<void>? signOut() async {
     await _auth.signOut();
     userData.clear();
+  }
+  
+  @override
+  Future<List<Map<String, dynamic>>>? getAllOperators(String enterpriseId) async {
+    try {
+      final operatorsCollection = await _database.collection("enterprise").doc(enterpriseId).collection("operator").get();
+      final operatorsList = operatorsCollection.docs.map((operatorDocument) => operatorDocument.data()).toList();
+      if (operatorsList.isNotEmpty) {
+        return operatorsList;
+      } else {
+        throw OperatorsUnavailable(message: "Nenhum Usuário encontrado");
+      }
+    } catch (e) {
+        throw OperatorsUnavailable(message: e.toString());
+    }
   }
 }
