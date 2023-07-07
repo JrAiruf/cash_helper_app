@@ -37,12 +37,12 @@ class LoginController {
   final createManagerFormKey = GlobalKey<FormState>();
   final createOperatorFormKey = GlobalKey<FormState>();
 
-  final managerEntity = ManagerEntity(
-      businessPosition: EnterpriseBusinessPosition.manager.position);
+  final managerEntity = ManagerEntity(businessPosition: EnterpriseBusinessPosition.manager.position);
   final operatorEntity = OperatorEntity(
     operatorClosing: 'Pendente',
     businessPosition: EnterpriseBusinessPosition.cashOperator.position,
   );
+
   final loadingData = ValueNotifier(false);
   final operatorPasswordVisible = ValueNotifier(false);
   final operatorConfirmationPasswordVisible = ValueNotifier(false);
@@ -51,6 +51,7 @@ class LoginController {
   final passwordVisible = ValueNotifier(false);
   final managerUser = ValueNotifier(false);
   final businessPosition = ValueNotifier("Operador");
+  List<OperatorEntity> operatorsList = [];
   String enterpriseId = "";
   String? confirmartionPassword;
   String? operatorConfirmationPassword;
@@ -58,75 +59,53 @@ class LoginController {
   bool get userStatus => managerUser.value;
   set userStatus(bool manager) => managerUser.value = manager;
   String get userBusinessPosition => businessPosition.value;
-  set userBusinessPosition(String position) =>
-      businessPosition.value = managerUser.value ? "Gerente" : "Operador";
+  set userBusinessPosition(String position) => businessPosition.value = managerUser.value ? "Gerente" : "Operador";
 
   String? emailValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.contains('@')
-        ? null
-        : 'E-mail Inválido! Insira o email do caixa.';
+    return value!.isNotEmpty && value != '' && value.contains('@') ? null : 'E-mail Inválido! Insira o email do caixa.';
   }
 
   String? cpfValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length == 11
-        ? null
-        : 'Insira seu CPF';
+    return value!.isNotEmpty && value != '' && value.length == 11 ? null : 'Insira seu CPF';
   }
 
   String? rgValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length == 9
-        ? null
-        : 'Insira seu RG';
+    return value!.isNotEmpty && value != '' && value.length == 9 ? null : 'Insira seu RG';
   }
 
   String? phoneValidate(String? value) {
-    return value!.isNotEmpty && value != ''
-        ? null
-        : 'Insira um número de Telefone/Celular';
+    return value!.isNotEmpty && value != '' ? null : 'Insira um número de Telefone/Celular';
   }
 
   String? passwordValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length >= 8
-        ? null
-        : 'Senha Inválida! Sua Senha deve ter pelo menos 8 dígitos.';
+    return value!.isNotEmpty && value != '' && value.length >= 8 ? null : 'Senha Inválida! Sua Senha deve ter pelo menos 8 dígitos.';
   }
 
   String? confirmationPasswordValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length >= 8
-        ? null
-        : 'Senha inválida! Sua Senha deve ter pelo menos 8 dígitos.';
+    return value!.isNotEmpty && value != '' && value.length >= 8 ? null : 'Senha inválida! Sua Senha deve ter pelo menos 8 dígitos.';
   }
 
   String? cashierNameValidate(String? value) {
-    return value!.isNotEmpty && value != ''
-        ? null
-        : 'Nome Inválido! Insira o nome do caixa.';
+    return value!.isNotEmpty && value != '' ? null : 'Nome Inválido! Insira o nome do caixa.';
   }
 
   String? cashierCodeValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length == 6
-        ? null
-        : 'Código Inválido! Insira seu código Ops.';
+    return value!.isNotEmpty && value != '' && value.length == 6 ? null : 'Código Inválido! Insira seu código Ops.';
   }
 
   String? enterpriseCodeValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length == 8
-        ? null
-        : 'Código Inválido! Insira o código da Empresa';
+    return value!.isNotEmpty && value != '' && value.length == 8 ? null : 'Código Inválido! Insira o código da Empresa';
   }
 
   String? cashierNumberValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value != ' '
-        ? null
-        : 'Informe o número do caixa.';
+    return value!.isNotEmpty && value != '' && value != ' ' ? null : 'Informe o número do caixa.';
   }
 
   registerManager() async {
     createManagerFormKey.currentState?.validate();
     if (createManagerFormKey.currentState!.validate()) {
       createManagerFormKey.currentState?.save();
-      await loginStore.registerManager(
-          managerEntity, enterpriseId, managerEntity.businessPosition!);
+      await loginStore.registerManager(managerEntity, enterpriseId, managerEntity.businessPosition!);
     }
   }
 
@@ -135,8 +114,7 @@ class LoginController {
     createOperatorFormKey.currentState!.validate();
     operatorEntity.operatorEnabled = enabledOperator ? true : false;
     operatorEntity.hasPendencies = false;
-    operatorEntity.operatorOppening =
-        enabledOperator ? dateValue.operatorOppening : 'Pendente';
+    operatorEntity.operatorOppening = enabledOperator ? dateValue.operatorOppening : 'Pendente';
     if (createOperatorFormKey.currentState!.validate()) {
       createOperatorFormKey.currentState!.save();
       if (operatorEntity.operatorPassword == operatorConfirmationPassword) {
@@ -157,8 +135,7 @@ class LoginController {
         });
         if (newOperator != null) {
           operatorCreatedSucessfully(context);
-          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId",
-              arguments: newOperator);
+          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: newOperator);
           loadingData.value = false;
         } else {
           onFail(context);
@@ -174,15 +151,11 @@ class LoginController {
 
   void login() async {
     loadingData.value = true;
-    managerUser.value
-        ? userEnterpriseBusinessPosition = EnterpriseBusinessPosition.manager
-        : userEnterpriseBusinessPosition =
-            EnterpriseBusinessPosition.cashOperator;
+    managerUser.value ? userEnterpriseBusinessPosition = EnterpriseBusinessPosition.manager : userEnterpriseBusinessPosition = EnterpriseBusinessPosition.cashOperator;
     loginFormKey.currentState!.validate();
     if (loginFormKey.currentState!.validate()) {
       loginFormKey.currentState!.save();
-      await loginStore.login(emailField.text, passwordField.text, enterpriseId,
-          userEnterpriseBusinessPosition.position);
+      await loginStore.login(emailField.text, passwordField.text, enterpriseId, userEnterpriseBusinessPosition.position);
       loadingData.value = false;
     }
     loadingData.value = false;
@@ -225,6 +198,10 @@ class LoginController {
         ),
       ),
     );
+  }
+
+  Future<void> getAllOperators() async {
+   operatorsList = await loginStore.getAllOperators(enterpriseId) ?? [];
   }
 
   registrationFail(BuildContext context, {required String message}) {
@@ -376,15 +353,13 @@ class LoginController {
     );
   }
 
-  showSignOutDialog(
-      BuildContext context, Color color, void Function()? onPressed) {
+  showSignOutDialog(BuildContext context, Color color, void Function()? onPressed) {
     showDialog(
       context: context,
       builder: (_) {
         final surfaceColor = Theme.of(context).colorScheme.surface;
         return SimpleDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           backgroundColor: color,
           alignment: Alignment.center,
           children: [
@@ -392,39 +367,27 @@ class LoginController {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('Deseja Sair?',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: surfaceColor)),
+                Text('Deseja Sair?', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: surfaceColor)),
                 const SizedBox(height: 80),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
                       onPressed: onPressed,
-                      style: TextButton.styleFrom(
-                          side: BorderSide(color: surfaceColor)),
+                      style: TextButton.styleFrom(side: BorderSide(color: surfaceColor)),
                       child: Text(
                         'Sim',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: surfaceColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: surfaceColor),
                       ),
                     ),
                     TextButton(
                       onPressed: () {
                         Modular.to.pop();
                       },
-                      style: TextButton.styleFrom(
-                          side: BorderSide(color: surfaceColor)),
+                      style: TextButton.styleFrom(side: BorderSide(color: surfaceColor)),
                       child: Text(
                         'Não',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: surfaceColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: surfaceColor),
                       ),
                     ),
                   ],

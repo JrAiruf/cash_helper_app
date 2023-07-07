@@ -21,8 +21,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     required IRegisterOperator registerOperator,
     required ILogin login,
     required IGetUserById getUserById,
-    required ICheckOperatorDataForResetPassword
-        checkOperatorDataForResetPassword,
+    required ICheckOperatorDataForResetPassword checkOperatorDataForResetPassword,
     required IResetOperatorPassword resetOperatorPassword,
     required ISignOut signOut,
     required IGetAllOperators getAllOperators,
@@ -53,32 +52,22 @@ class LoginStore extends ValueNotifier<LoginStates?> {
     value = LoginInitialState();
   }
 
-  Future<OperatorEntity?>? register(OperatorEntity newOperator,
-      String enterpriseId, String collection) async {
+  Future<OperatorEntity?>? register(OperatorEntity newOperator, String enterpriseId, String collection) async {
     value = LoginLoadingState();
-    final operatorEntity =
-        await _registerOperator(newOperator, enterpriseId, collection);
-    operatorEntity != null
-        ? value = LoginSuccessState(operatorEntity: operatorEntity)
-        : value = LoginErrorState();
+    final operatorEntity = await _registerOperator(newOperator, enterpriseId, collection);
+    operatorEntity != null ? value = LoginSuccessState(operatorEntity: operatorEntity) : value = LoginErrorState();
     return operatorEntity;
   }
 
-  Future<void>? registerManager(
-      ManagerEntity newManager, String enterpriseId, String collection) async {
+  Future<void>? registerManager(ManagerEntity newManager, String enterpriseId, String collection) async {
     value = LoginLoadingState();
-    final managerEntity =
-        await _registerManager(newManager, enterpriseId, collection);
-    managerEntity != null
-        ? value = ManagerLoginSuccessState(managerEntity: managerEntity)
-        : value = LoginErrorState();
+    final managerEntity = await _registerManager(newManager, enterpriseId, collection);
+    managerEntity != null ? value = ManagerLoginSuccessState(managerEntity: managerEntity) : value = LoginErrorState();
   }
 
-  Future<void>? login(String? email, String? password, String? enterpriseId,
-      String? collection) async {
+  Future<void>? login(String? email, String? password, String? enterpriseId, String? collection) async {
     value = LoginLoadingState();
-    final loginEntity =
-        await _login(email, password, enterpriseId, collection).catchError((e) {
+    final loginEntity = await _login(email, password, enterpriseId, collection).catchError((e) {
       if (e.runtimeType == AuthenticationError) {
         value = LoginAuthErrorState();
       }
@@ -87,40 +76,34 @@ class LoginStore extends ValueNotifier<LoginStates?> {
       }
       return;
     });
-    if (_dataVerifier.operatorEntityVerifier(entity: loginEntity) &&
-        loginEntity != null) {
+    if (_dataVerifier.operatorEntityVerifier(entity: loginEntity) && loginEntity != null) {
       value = LoginSuccessState(operatorEntity: loginEntity);
-    } else if (_dataVerifier.managerEntityVerifier(entity: loginEntity) &&
-        loginEntity != null) {
+    } else if (_dataVerifier.managerEntityVerifier(entity: loginEntity) && loginEntity != null) {
       value = ManagerLoginSuccessState(managerEntity: loginEntity);
     }
   }
 
-  Future<void>? getUserById(
-      String enterpriseId, String operatorId, String collection) async {
+  Future<void>? getUserById(String enterpriseId, String operatorId, String collection) async {
     value = LoginLoadingState();
     final userEntity = await _getUserById(enterpriseId, operatorId, collection);
-    if (_dataVerifier.operatorEntityVerifier(entity: userEntity) &&
-        userEntity != null) {
+    if (_dataVerifier.operatorEntityVerifier(entity: userEntity) && userEntity != null) {
       value = LoginSuccessState(operatorEntity: userEntity);
-    } else if (_dataVerifier.managerEntityVerifier(entity: userEntity) &&
-        userEntity != null) {
+    } else if (_dataVerifier.managerEntityVerifier(entity: userEntity) && userEntity != null) {
       value = ManagerLoginSuccessState(managerEntity: userEntity);
     } else {
       value = LoginErrorState();
     }
   }
 
-  Future<bool>? checkOperatorDataForResetPassword(
-      String email, String operatorCode, String collection) async {
-    return await _checkOperatorDataForResetPassword(
-        email, operatorCode, collection);
+  Future<bool>? checkOperatorDataForResetPassword(String email, String operatorCode, String collection) async {
+    return await _checkOperatorDataForResetPassword(email, operatorCode, collection);
   }
 
-  Future<void>? resetOperatorPassword(
-      String email, String operatorCode, String newPassword) async {
+  Future<void>? resetOperatorPassword(String email, String operatorCode, String newPassword) async {
     await _resetOperatorPassword(email, operatorCode, newPassword);
   }
+
+  Future<List<OperatorEntity>>? getAllOperators(String enterpriseId) async => await _getAllOperators(enterpriseId) ?? [];
 
   Future<void> signOut() async {
     value = LoginLoadingState();
