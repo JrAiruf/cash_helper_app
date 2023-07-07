@@ -15,6 +15,7 @@ class LoginPresentationBinds {
         resetOperatorPassword: i(),
         signOut: i(),
         dataVerifier: i(),
+        getAllOperators: i(),
       ),
     ),
     Bind<LoginController>(

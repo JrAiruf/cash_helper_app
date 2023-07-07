@@ -2,6 +2,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../usecases/check_operator_data_for_reset_password/check_operator_data_for_reset_password.dart';
 import '../usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
+import '../usecases/get_all_operators/get_all_operators.dart';
+import '../usecases/get_all_operators/iget_all_operators.dart';
 import '../usecases/get_user_by_id/get_user_by_id.dart';
 import '../usecases/get_user_by_id/iget_user_by_id.dart';
 import '../usecases/login/ilogin.dart';
@@ -52,6 +54,11 @@ class LoginUsecasesBinds {
     ),
     Bind<ISignOut>(
       (i) => SignOut(
+        repository: i(),
+      ),
+    ),
+    Bind<IGetAllOperators>(
+      (i) => GetAllOperators(
         repository: i(),
       ),
     ),

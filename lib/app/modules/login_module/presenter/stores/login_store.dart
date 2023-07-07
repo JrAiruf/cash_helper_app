@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_all_operators/iget_all_operators.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_manager/iregister_manager.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
@@ -24,6 +25,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         checkOperatorDataForResetPassword,
     required IResetOperatorPassword resetOperatorPassword,
     required ISignOut signOut,
+    required IGetAllOperators getAllOperators,
     required DataVerifier dataVerifier,
   })  : _registerOperator = registerOperator,
         _registerManager = registerManager,
@@ -32,6 +34,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
         _checkOperatorDataForResetPassword = checkOperatorDataForResetPassword,
         _resetOperatorPassword = resetOperatorPassword,
         _signOut = signOut,
+        _getAllOperators = getAllOperators,
         _dataVerifier = dataVerifier,
         super(LoginInitialState());
 
@@ -42,6 +45,7 @@ class LoginStore extends ValueNotifier<LoginStates?> {
   final ICheckOperatorDataForResetPassword _checkOperatorDataForResetPassword;
   final IResetOperatorPassword _resetOperatorPassword;
   final ISignOut _signOut;
+  final IGetAllOperators _getAllOperators;
   final DataVerifier _dataVerifier;
   bool loadingData = false;
 
