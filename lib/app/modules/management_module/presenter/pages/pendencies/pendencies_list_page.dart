@@ -1,4 +1,8 @@
+import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../domain/entities/pendency_entity.dart';
@@ -11,8 +15,20 @@ class PendenciesListPage extends StatefulWidget {
 }
 
 List<PendencyEntity> pendencies = [];
+List<OperatorEntity> operatorsWithPendency = [];
+final _loginController = Modular.get<LoginController>();
+final _managementController = Modular.get<ManagementController>();
 
 class _PendenciesListPageState extends State<PendenciesListPage> {
+  @override
+  void initState() {
+    super.initState();
+    _loginController.enterpriseId = Modular.args.params["enterpriseId"];
+    _loginController.getAllOperators();
+    _managementController.getAllPendencies(_loginController.enterpriseId);
+    _managementController.getAllOperatorsWithPendencies(_loginController.enterpriseId);
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -55,7 +71,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
+                  horizontal: 10,
                 ),
                 child: SizedBox(
                   width: width,
@@ -70,30 +86,71 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
                       ),
                       SizedBox(
-                        height: height * 0.03,
+                        height: height * 0.02,
                       ),
-                      SizedBox(
-                        height: sizeFrame ? height * 0.65 : height * 0.7,
-                        child: ListView.builder(
-                          itemBuilder: (_, i) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                              child: Container(
-                                height: height * 0.3,
-                                width: width,
-                                decoration: BoxDecoration(
-                                  color: appThemes.primaryColor(context),
-                                  border: Border.all(
-                                    color: appThemes.surfaceColor(context),
-                                    width: 0.5,
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
+                      AnimatedBuilder(
+                          animation: _managementController.pendencies,
+                          builder: (_, __) {
+                            return SizedBox(
+                              height: sizeFrame ? height * 0.63 : height * 0.67,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child: ListView.builder(
+                                  itemCount: _managementController.operatorsList.length,
+                                  itemBuilder: (_, i) {
+                                    final pendingOperator =
+                                        _managementController.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == _managementController.operatorsList[i].operatorId);
+                                    _managementController.getAnnotationsByOperator(_loginController.enterpriseId, pendingOperator.operatorId!);
+                                    _managementController.getPendingAnnotationsByOperator(pendingOperator.operatorId!);
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 3),
+                                      child: Container(
+                                        height: height * 0.28,
+                                        width: width,
+                                        decoration: BoxDecoration(
+                                          color: appThemes.primaryColor(context),
+                                          border: Border.all(
+                                            color: appThemes.surfaceColor(context),
+                                            width: 0.5,
+                                          ),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "${pendingOperator.operatorName}",
+                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                    color: appThemes.surfaceColor(context),
+                                                  ),
+                                            ),
+                                            Text(
+                                              "${pendingOperator.operatorNumber}",
+                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                    color: appThemes.surfaceColor(context),
+                                                  ),
+                                            ),
+                                            Text(
+                                              "${_managementController.operatorAnnotations.value.length}",
+                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                    color: appThemes.surfaceColor(context),
+                                                  ),
+                                            ),
+                                            Text(
+                                              "${_managementController.operatorsPendencies.value.length}",
+                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                    color: appThemes.surfaceColor(context),
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             );
-                          },
-                        ),
-                      ),
+                          }),
                     ],
                   ),
                 ),

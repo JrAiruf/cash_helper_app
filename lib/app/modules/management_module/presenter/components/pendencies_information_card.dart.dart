@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class PendenciesInformationCard extends StatelessWidget {
-  PendenciesInformationCard({super.key, required this.enterpriseId,required this.height}){
+  PendenciesInformationCard({super.key, required this.enterpriseId, required this.height}) {
     _managementController.getAllPendencies(enterpriseId);
   }
 
@@ -19,7 +19,6 @@ class PendenciesInformationCard extends StatelessWidget {
       animation: _managementController.pendenciesListStore,
       builder: (_, __) {
         final pendencies = _managementController.pendencies.value.length;
-        final periodList = _managementController.pendencies.value.map((e) => e.pendencyPeriod).toList();
         return Container(
           height: sizeFrame ? height * 0.22 : height * 0.23,
           decoration: BoxDecoration(border: Border.all(color: appTheme.surfaceColor(context), width: 0.5), color: appTheme.primaryColor(context), borderRadius: BorderRadius.circular(20)),
@@ -76,7 +75,8 @@ class PendenciesInformationCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(
+                SizedBox(
+                  height: height * 0.04,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: _managementController.periodList.value.length,
@@ -85,7 +85,6 @@ class PendenciesInformationCard extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 7),
                         child: Container(
-                          height: height * 0.04,
                           decoration: BoxDecoration(
                             border: Border.all(color: appTheme.surfaceColor(context), width: 0.5),
                             color: appTheme.primaryColor(context),

@@ -11,41 +11,44 @@ class OperatorInfoListViewComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final annotationsController = Modular.get<AnnotationsController>();
     final surfaceColor = Theme.of(context).colorScheme.surface;
-    final operatorAnnotations = annotationsController.annotationsListStore.value.where((element) => false).toList();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: ListView.builder(
         itemCount: operators.length,
         scrollDirection: Axis.horizontal,
-        itemBuilder: ((context, index) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    operators[index].operatorName ?? "",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
-                  ),
-                  Text(
-                    "23 Anotações",
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                  ),
-                  Text(
-                    "Sem pendências",
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                  ),
-                  Text(
-                    "Fechamento:",
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                  ),
-                  Text(
-                    operators[index].operatorClosing ?? "",
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                  ),
-                ],
-              ),
-            )),
+        itemBuilder: ((context, index) {
+          final operatorAnnotations = annotationsController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operators[index].operatorId).toList();
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  operators[index].operatorName ?? "",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
+                ),
+                Text(
+                  "${operatorAnnotations.length}",
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                ),
+                Text(
+                  "Sem pendências",
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                ),
+                Text(
+                  "Fechamento:",
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                ),
+                Text(
+                  operators[index].operatorClosing ?? "",
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

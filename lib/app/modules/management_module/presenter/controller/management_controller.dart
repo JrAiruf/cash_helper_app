@@ -1,25 +1,36 @@
+import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../annotations_module/presenter/stores/annotations_list_store.dart';
+import '../../../login_module/presenter/stores/login_store.dart';
+
 class ManagementController {
-  ManagementController();
   final paymentMethodNameField = TextEditingController();
   final paymentMethodDescriptionField = TextEditingController();
   final managerCodeField = TextEditingController();
 
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
   var pendencies = ValueNotifier(<PendencyEntity>[]);
+  var operatorsList = <OperatorEntity>[];
+  var operatorAnnotations = ValueNotifier(<AnnotationEntity>[]);
+  var operatorsPendencies = ValueNotifier(<PendencyEntity>[]);
   final operatorsWithPendencies = ValueNotifier(<String>[]);
   final periodList = ValueNotifier(<String>[]);
 
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
+  final _loginStore = Modular.get<LoginStore>();
+  final managementStore = Modular.get<ManagementStore>();
   final pendencyStore = Modular.get<PendencyStore>();
   final pendenciesListStore = Modular.get<PendenciesListStore>();
+  final annotationsListStore = Modular.get<AnnotationsListStore>();
 
   String? paymentMethodNameValidate(String? value) {
     return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
@@ -53,6 +64,29 @@ class ManagementController {
     for (var period in pendenciesPeriodList) {
       if (!periodList.value.contains(period)) {
         periodList.value.add(period!);
+      }
+    }
+  }
+
+  Future<void>? getAnnotationsByOperator(String enterpriseId, String operatorId) async {
+    await annotationsListStore.getAllAnnotations(enterpriseId, operatorId);
+    operatorAnnotations.value.clear();
+    operatorAnnotations.value.addAll(annotationsListStore.value);
+  }
+
+  Future<void>? getPendingAnnotationsByOperator(String operatorId) async {
+    final matchingPendencies = pendencies.value.where((pendency) => pendency.operatorId == operatorId).toList();
+    operatorsPendencies.value.clear();
+    operatorsPendencies.value.addAll(matchingPendencies);
+  }
+
+  Future<void>? getAllOperatorsWithPendencies(String enterpriseId) async {
+    final operators = await _loginStore.getAllOperators(enterpriseId);
+    final operatorWithPendenciesList = operators?.where((operatorEntity) => operatorsWithPendencies.value.contains(operatorEntity.operatorId)).toList();
+    operatorsList.clear();
+    for (var operatorEntity in operatorWithPendenciesList!) {
+      if (!operatorsList.contains(operatorEntity)) {
+        operatorsList.add(operatorEntity);
       }
     }
   }

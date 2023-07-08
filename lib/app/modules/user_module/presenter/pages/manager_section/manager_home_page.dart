@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
@@ -23,7 +24,7 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 final _loginStore = Modular.get<LoginStore>();
-final _managementStore = Modular.get<ManagementStore>();
+final _managementController = Modular.get<ManagementController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
@@ -31,7 +32,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   void initState() {
     super.initState();
     _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
-    _managementStore.getOperatorsInformations(_enterpriseId);
+    _managementController.managementStore.getOperatorsInformations(_enterpriseId);
   }
 
   @override
@@ -93,7 +94,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       SizedBox(
                         height: height * 0.18,
                         child: ValueListenableBuilder(
-                          valueListenable: _managementStore,
+                          valueListenable: _managementController.managementStore,
                           builder: (_, state, __) {
                             if (state is ManagementLoadingState) {
                               return Container(

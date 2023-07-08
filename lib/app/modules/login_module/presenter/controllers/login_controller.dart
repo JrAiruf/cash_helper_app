@@ -166,6 +166,10 @@ class LoginController {
     Modular.to.navigate(EnterpriseRoutes.initial);
   }
 
+  void getOperatorById(String enterpriseId, String operatorId) async {
+    await loginStore.getUserById(enterpriseId, operatorId, "operator");
+  }
+
   onFail(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -201,7 +205,7 @@ class LoginController {
   }
 
   Future<void> getAllOperators() async {
-   operatorsList = await loginStore.getAllOperators(enterpriseId) ?? [];
+    operatorsList = await loginStore.getAllOperators(enterpriseId) ?? [];
   }
 
   registrationFail(BuildContext context, {required String message}) {
