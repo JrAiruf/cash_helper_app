@@ -21,14 +21,13 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-final _loginStore = Modular.get<LoginStore>();
 final _loginController = Modular.get<LoginController>();
 
 class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _loginStore.restartLoginStoreState();
+    _loginController.loginStore.restartLoginStoreState();
     _loginController.enterpriseId = widget.enterpriseEntity.enterpriseId!;
   }
 
@@ -37,7 +36,6 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-
     return ValueListenableBuilder(
       valueListenable: _loginController.loginStore,
       builder: (_, state, __) {

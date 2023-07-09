@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/manager_view_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -98,6 +99,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                 child: ListView.builder(
                                   itemCount: _managementController.operatorsList.length,
                                   itemBuilder: (_, i) {
+                                    _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId, _managementController.operatorsList[i].operatorId);
                                     final pendingOperator =
                                         _managementController.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == _managementController.operatorsList[i].operatorId);
                                     _managementController.getAnnotationsByOperator(_loginController.enterpriseId, pendingOperator.operatorId!);
@@ -115,34 +117,85 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                           ),
                                           borderRadius: BorderRadius.circular(20),
                                         ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "${pendingOperator.operatorName}",
-                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                    color: appThemes.surfaceColor(context),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "${pendingOperator.operatorName}",
+                                                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                                          color: appThemes.surfaceColor(context),
+                                                        ),
                                                   ),
-                                            ),
-                                            Text(
-                                              "${pendingOperator.operatorNumber}",
-                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                    color: appThemes.surfaceColor(context),
+                                                  CircleAvatar(
+                                                    backgroundColor: appThemes.surfaceColor(context),
+                                                    radius: height * 0.02,
+                                                    child: Text(
+                                                      "${pendingOperator.operatorNumber}",
+                                                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                                            color: appThemes.primaryColor(context),
+                                                          ),
+                                                    ),
                                                   ),
-                                            ),
-                                            Text(
-                                              "${_managementController.operatorAnnotations.value.length}",
-                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                    color: appThemes.surfaceColor(context),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "Total de anotações",
+                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                          color: appThemes.surfaceColor(context),
+                                                        ),
                                                   ),
-                                            ),
-                                            Text(
-                                              "${_managementController.operatorsPendencies.value.length}",
-                                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                    color: appThemes.surfaceColor(context),
+                                                  CircleAvatar(
+                                                    backgroundColor: appThemes.surfaceColor(context),
+                                                    radius: height * 0.02,
+                                                    child: Text(
+                                                      "${_managementController.operatorAnnotations.value.length}",
+                                                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                                            color: appThemes.primaryColor(context),
+                                                          ),
+                                                    ),
                                                   ),
-                                            ),
-                                          ],
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "Total de pendências",
+                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                          color: appThemes.surfaceColor(context),
+                                                        ),
+                                                  ),
+                                                  CircleAvatar(
+                                                    backgroundColor: appThemes.surfaceColor(context),
+                                                    radius: height * 0.02,
+                                                    child: Text(
+                                                      "${_managementController.operatorsPendencies.value.length}",
+                                                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                                            color: appThemes.primaryColor(context),
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Align(
+                                                alignment: Alignment.topLeft,
+                                                child: ManagerViewButton(
+                                                  onPressed: () {},
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: height * 0.005,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );

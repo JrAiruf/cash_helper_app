@@ -118,7 +118,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             }
                             if (state is GetUsersListState) {
                               final operatorsList = state.operators;
-                              return OperatorInfoListViewComponent(operators: operatorsList);
+                              return OperatorInfoListViewComponent(
+                                operators: operatorsList,
+                                enterpriseId: _enterpriseId,
+                              );
                             } else {
                               return Container();
                             }

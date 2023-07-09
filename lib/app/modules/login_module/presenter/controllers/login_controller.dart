@@ -150,15 +150,12 @@ class LoginController {
   }
 
   void login() async {
-    loadingData.value = true;
     managerUser.value ? userEnterpriseBusinessPosition = EnterpriseBusinessPosition.manager : userEnterpriseBusinessPosition = EnterpriseBusinessPosition.cashOperator;
-    loginFormKey.currentState!.validate();
+    loginFormKey.currentState?.validate();
     if (loginFormKey.currentState!.validate()) {
       loginFormKey.currentState!.save();
       await loginStore.login(emailField.text, passwordField.text, enterpriseId, userEnterpriseBusinessPosition.position);
-      loadingData.value = false;
     }
-    loadingData.value = false;
   }
 
   void signOut() async {

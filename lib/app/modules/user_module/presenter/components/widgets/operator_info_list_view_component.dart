@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class OperatorInfoListViewComponent extends StatelessWidget {
-  const OperatorInfoListViewComponent({super.key, required this.operators});
+  OperatorInfoListViewComponent({super.key, required this.enterpriseId, required this.operators}) {}
 
   final List<OperatorEntity> operators;
+  final String enterpriseId;
+  final annotationsController = Modular.get<AnnotationsController>();
   @override
   Widget build(BuildContext context) {
-    final annotationsController = Modular.get<AnnotationsController>();
     final surfaceColor = Theme.of(context).colorScheme.surface;
 
     return Padding(
@@ -18,6 +19,7 @@ class OperatorInfoListViewComponent extends StatelessWidget {
         itemCount: operators.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: ((context, index) {
+          annotationsController.annotationsListStore.getAllAnnotations(enterpriseId, operators[index].operatorId);
           final operatorAnnotations = annotationsController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operators[index].operatorId).toList();
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
