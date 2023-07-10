@@ -29,10 +29,8 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
   void initState() {
     super.initState();
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
-    _annotationsListStore.getAllAnnotations(
-        _annotationsController.enterpriseId);
-    _annotationsController.position =
-        BottomNavigationBarPosition.notFinishedAnnotations;
+    _annotationsListStore.getAllAnnotations(_annotationsController.enterpriseId);
+    _annotationsController.position = BottomNavigationBarPosition.notFinishedAnnotations;
   }
 
   @override
@@ -43,9 +41,7 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Modular.to.navigate(
-              "${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}",
-              arguments: widget.operatorEntity),
+          onPressed: () => Modular.to.navigate("${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}", arguments: widget.operatorEntity),
           icon: const Icon(
             Icons.arrow_back,
           ),
@@ -54,12 +50,9 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
       body: AnimatedBuilder(
         animation: _annotationsListStore,
         builder: (context, _) {
-          final annotations = _annotationsListStore.value
-              .where((element) => element.annotationConcluied == false)
-              .toList();
-          final finishedAnnotations = _annotationsListStore.value
-              .where((element) => element.annotationConcluied == true)
-              .toList();
+          final annotations = _annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId && annotation.annotationConcluied == false).toList();
+          final finishedAnnotations =
+              _annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId && annotation.annotationConcluied == true).toList();
           if (_annotationsListStore.value.isEmpty) {
             return Center(
               child: Text(
@@ -75,15 +68,13 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
               NotFinishedAnnotations(
                   operatorEntity: widget.operatorEntity,
                   annotations: annotations,
-                  controller:
-                      _annotationsController.annotationsListPageController,
+                  controller: _annotationsController.annotationsListPageController,
                   position: BottomNavigationBarPosition.notFinishedAnnotations,
                   enterpriseId: _annotationsController.enterpriseId),
               FinishedAnnotations(
                   operatorEntity: widget.operatorEntity,
                   annotations: finishedAnnotations,
-                  controller:
-                      _annotationsController.annotationsListPageController,
+                  controller: _annotationsController.annotationsListPageController,
                   position: BottomNavigationBarPosition.finishedAnnotations,
                   enterpriseId: _annotationsController.enterpriseId),
             ],
@@ -92,10 +83,7 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
       ),
       bottomNavigationBar: Container(
         height: sizeFrame ? height * 0.07 : height * 0.065,
-        decoration: BoxDecoration(
-            color: _annotationsListStore.value.isNotEmpty
-                ? appTheme.backgroundColor(context)
-                : appTheme.primaryColor(context)),
+        decoration: BoxDecoration(color: _annotationsListStore.value.isNotEmpty ? appTheme.backgroundColor(context) : appTheme.primaryColor(context)),
         child: CashHelperBottomNavigationBar(
           radius: 20,
           backgroundColor: appTheme.primaryColor(context),
@@ -106,17 +94,13 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
           items: [
             CashHelperBottomNavigationItem(
               onTap: () {
-                _annotationsController.annotationsListPageController
-                    .animateToPage(
-                        BottomNavigationBarPosition
-                            .notFinishedAnnotations.position,
-                        duration: const Duration(
-                          milliseconds: 400,
-                        ),
-                        curve: Curves.easeInSine);
+                _annotationsController.annotationsListPageController.animateToPage(BottomNavigationBarPosition.notFinishedAnnotations.position,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    curve: Curves.easeInSine);
                 setState(() {
-                  _annotationsController.position =
-                      BottomNavigationBarPosition.notFinishedAnnotations;
+                  _annotationsController.position = BottomNavigationBarPosition.notFinishedAnnotations;
                 });
               },
               position: BottomNavigationBarPosition.notFinishedAnnotations,
@@ -127,17 +111,13 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
             ),
             CashHelperBottomNavigationItem(
               onTap: () {
-                _annotationsController.annotationsListPageController
-                    .animateToPage(
-                        BottomNavigationBarPosition
-                            .finishedAnnotations.position,
-                        duration: const Duration(
-                          milliseconds: 400,
-                        ),
-                        curve: Curves.easeInSine);
+                _annotationsController.annotationsListPageController.animateToPage(BottomNavigationBarPosition.finishedAnnotations.position,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    curve: Curves.easeInSine);
                 setState(() {
-                  _annotationsController.position =
-                      BottomNavigationBarPosition.finishedAnnotations;
+                  _annotationsController.position = BottomNavigationBarPosition.finishedAnnotations;
                 });
               },
               position: BottomNavigationBarPosition.finishedAnnotations,

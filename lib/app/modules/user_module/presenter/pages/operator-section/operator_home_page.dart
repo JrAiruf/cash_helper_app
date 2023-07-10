@@ -110,8 +110,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   ),
                                 );
                               } else if (annotationListState.isNotEmpty) {
+                                final annotations =
+                                    annotationListState.where((annotation) => annotation.annotationCreatorId == currentOperator.operatorId && !annotation.annotationWithPendency!).toList();
                                 return AnnotationInfoListViewComponent(
-                                  annotations: annotationListState,
+                                  annotations: annotations,
                                 );
                               } else {
                                 return Container();
