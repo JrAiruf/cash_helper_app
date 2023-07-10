@@ -24,8 +24,8 @@ class OperatorInformationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final surfaceColor = Theme.of(context).colorScheme.surface;
-    final operatorAnnotations = _managementController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operatorEntity.operatorId);
-    final operatorPendencies = _managementController.pendencies.value.where((pendecy) => pendecy.operatorId == operatorEntity.operatorId);
+    final operatorAnnotations = annotations.where((annotation) => annotation.annotationCreatorId == operatorEntity.operatorId);
+    final operatorPendencies = pendencies.where((pendecy) => pendecy.operatorId == operatorEntity.operatorId);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -37,11 +37,11 @@ class OperatorInformationTile extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
           ),
           Text(
-            "${annotations.length}",
+            operatorAnnotations.isNotEmpty ? "${operatorAnnotations.length}" : "Sem anotações",
             style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
           ),
           Text(
-            pendencies.isNotEmpty ? "${pendencies.length}" : "Sem pendências",
+            operatorPendencies.isNotEmpty ? "${operatorPendencies.length}" : "Sem pendências",
             style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
           ),
           Text(

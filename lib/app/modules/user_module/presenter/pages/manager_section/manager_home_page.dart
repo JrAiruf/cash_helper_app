@@ -11,7 +11,6 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../../../management_module/presenter/stores/management_store.dart';
 import '../../components/buttons/quick_access_button.dart';
 import '../../components/widgets/manager_section_drawer.dart';
 
@@ -33,6 +32,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
+    _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
   }
 
   @override
@@ -119,8 +119,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             if (state is GetUsersListState) {
                               final operatorsList = state.operators;
                               return OperatorInfoListViewComponent(
-                                operators: operatorsList,
                                 enterpriseId: _enterpriseId,
+                                operators: operatorsList,
+                                annotations: _managementController.annotationsListStore.value,
                               );
                             } else {
                               return Container();
