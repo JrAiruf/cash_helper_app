@@ -122,7 +122,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       return "Manhã";
     }
   }
-  
+
   @override
   Future<List<Map<String, dynamic>>?>? getAllPendencies(String? enterpriseId) async {
     try {
@@ -137,7 +137,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
       throw PendencyListError(errorMessage: e.toString());
     }
   }
-  
+
   @override
   Future? getGeneralAnnotations(String enterpriseId) {
     // TODO: implement getGeneralAnnotations

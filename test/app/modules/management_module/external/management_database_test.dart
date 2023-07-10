@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_methods_list_unnavailable.dart';
@@ -24,11 +25,15 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   ManagementDBMock({
     required FirebaseFirestore database,
     required ApplicationAnnotationDatabase annotationsDatabase,
+    required ApplicationLoginDatabase loginDatabase,
   })  : _database = database,
-        _annotationsDatabase = annotationsDatabase;
+        _annotationsDatabase = annotationsDatabase,
+        _loginDatabase = loginDatabase;
 
   final FirebaseFirestore _database;
   final ApplicationAnnotationDatabase _annotationsDatabase;
+  final ApplicationLoginDatabase _loginDatabase;
+
   var databaseOperatorsMapList = <Map<String, dynamic>>[];
   @override
   Future<List<Map<String, dynamic>>>? getOperatorInformations(String? enterpriseId) async {
@@ -100,7 +105,8 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
     Map<String, dynamic> pendencyMap = {};
     try {
-      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId!, operatorId!, annotationId!);
+      final operatorMap = await _loginDatabase.getUserById(enterpriseId!, operatorId!, "operator");
+      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId, operatorId, annotationId!);
       await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").add({
         "annotationId": annotationId,
         "pendencySaleTime": pendingAnnotation?["annotationSaleTime"],
@@ -113,6 +119,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
           value.update({"pendencyId": pendencyMap["pendencyId"]});
         },
       );
+      await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorMap["operatorId"]).update({"hasPendencies": true});
       if (pendencyMap.isNotEmpty) {
         return pendencyMap;
       } else {
@@ -189,7 +196,7 @@ void main() {
         dataVerifier: DataVerifier(),
         uuid: const Uuid(),
       );
-      database = ManagementDBMock(database: firebaseMock, annotationsDatabase: annotationsDatabase);
+      database = ManagementDBMock(database: firebaseMock, annotationsDatabase: annotationsDatabase, loginDatabase: loginDb);
     },
   );
   group(
@@ -333,6 +340,7 @@ void main() {
           final pendencyList = await database.getAllPendencies(createdEnterprise?["enterpriseId"]);
           expect(pendencyList, isA<List<Map<String, dynamic>>>());
           expect(pendencyList?.isNotEmpty, equals(true));
+          expect(newOperator?["hasPendencies"], equals(true));
         },
       );
 
