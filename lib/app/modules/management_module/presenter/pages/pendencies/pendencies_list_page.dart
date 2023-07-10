@@ -99,7 +99,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                 child: ListView.builder(
                                   itemCount: _managementController.operatorsList.length,
                                   itemBuilder: (_, i) {
-                                    _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId, _managementController.operatorsList[i].operatorId);
+                                    _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId);
                                     final pendingOperator =
                                         _managementController.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == _managementController.operatorsList[i].operatorId);
                                     _managementController.getAnnotationsByOperator(pendingOperator.operatorId!);

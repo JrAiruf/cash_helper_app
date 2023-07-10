@@ -29,7 +29,6 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
     super.initState();
     operatorController.annotationsListStore.getAllAnnotations(
       enterpriseId,
-      widget.operatorEntity.operatorId,
     );
     operatorController.enterpriseId = enterpriseId;
     operatorController.operatorEntity = widget.operatorEntity;

@@ -15,10 +15,10 @@ class GetAllAnnotationsMock implements IGetAllAnnotations {
   final AnnotationRepository _repository;
   @override
   Future<List<AnnotationEntity>?>? call(
-      String? enterpriseId, String? operatorId) async {
-    if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty) {
+      String? enterpriseId) async {
+    if (enterpriseId!.isNotEmpty) {
       final annotationModelList =
-          await _repository.getAllAnnotations(enterpriseId,operatorId);
+          await _repository.getAllAnnotations(enterpriseId);
       final annotationEntityList = annotationModelList
           ?.map((annotationModel) =>
               AnnotationModel.toEntityData(annotationModel))
@@ -39,12 +39,12 @@ void main() {
       test(
         "Return a List<AnnotationEntity>",
         () async {
-          when(repository.getAllAnnotations(any, any)).thenAnswer((_) async => [
+          when(repository.getAllAnnotations(any)).thenAnswer((_) async => [
             AnnotationsTestObjects.newAnnotationModel,
             AnnotationsTestObjects.newAnnotationModel,
               ]);
           final annotationsList =
-              await getAllAnnotations("enterpriseId", "operatorId");
+              await getAllAnnotations("enterpriseId");
           expect(annotationsList, isA<List<AnnotationEntity>>());
           expect(annotationsList?.isNotEmpty, equals(true));
         },

@@ -29,7 +29,7 @@ class _OperatorArea extends State<OperatorArea> {
   @override
   void initState() {
     super.initState();
-    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId, widget.operatorEntity.operatorId!);
+    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId);
   }
 
   @override

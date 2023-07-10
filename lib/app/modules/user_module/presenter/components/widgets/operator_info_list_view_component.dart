@@ -22,7 +22,7 @@ class OperatorInfoListViewComponent extends StatelessWidget {
         itemCount: operators.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: ((context, index) {
-          _managementController.annotationsListStore.getAllAnnotations(enterpriseId, operators[index].operatorId);
+          _managementController.annotationsListStore.getAllAnnotations(enterpriseId);
           _managementController.getAllPendencies(enterpriseId);
           final pendencies = _managementController.pendenciesListStore.value.where((pendency) => pendency.operatorId == operators[index].operatorId).toList();
           return OperatorInformationTile(

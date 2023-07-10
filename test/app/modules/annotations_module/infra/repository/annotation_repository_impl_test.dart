@@ -36,9 +36,9 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
   }
 
   @override
-  Future<List<AnnotationModel>?>? getAllAnnotations(String? enterpriseId, String? operatorId) async {
-    final datasoourceAnnotationsList = await _datasource.getAllAnnotations(enterpriseId!, operatorId!);
-    if (enterpriseId.isNotEmpty && operatorId.isNotEmpty) {
+  Future<List<AnnotationModel>?>? getAllAnnotations(String? enterpriseId) async {
+    final datasoourceAnnotationsList = await _datasource.getAllAnnotations(enterpriseId!);
+    if (enterpriseId.isNotEmpty) {
       final annotationsModelList = datasoourceAnnotationsList?.map((annotationMap) => AnnotationModel.fromMap(annotationMap)).toList();
       return annotationsModelList;
     } else {
@@ -130,10 +130,10 @@ void main() {
       test(
         "Return a List<AnnotationModel>",
         () async {
-          when(datasource.getAllAnnotations(any, any)).thenAnswer((_) async => [
+          when(datasource.getAllAnnotations(any)).thenAnswer((_) async => [
                 AnnotationsTestObjects.databaseAnnotation,
               ]);
-          final annotationsList = await repository.getAllAnnotations("enterpriseId", "operatorId");
+          final annotationsList = await repository.getAllAnnotations("enterpriseId");
           expect(annotationsList, isA<List<AnnotationModel>>());
           expect(annotationsList?.isNotEmpty, equals(true));
         },
@@ -141,10 +141,10 @@ void main() {
       test(
         "Fail returning a List<AnnotationModel>(returns [])",
         () async {
-          when(datasource.getAllAnnotations(any, any)).thenAnswer((_) async => [
+          when(datasource.getAllAnnotations(any)).thenAnswer((_) async => [
                 AnnotationsTestObjects.databaseAnnotation,
               ]);
-          final annotationsList = await repository.getAllAnnotations("", "");
+          final annotationsList = await repository.getAllAnnotations("");
           expect(annotationsList?.isNotEmpty, equals(false));
         },
       );

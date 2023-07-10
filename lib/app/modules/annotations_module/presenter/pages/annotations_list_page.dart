@@ -30,7 +30,7 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
     super.initState();
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
     _annotationsListStore.getAllAnnotations(
-        _annotationsController.enterpriseId, widget.operatorEntity.operatorId!);
+        _annotationsController.enterpriseId);
     _annotationsController.position =
         BottomNavigationBarPosition.notFinishedAnnotations;
   }

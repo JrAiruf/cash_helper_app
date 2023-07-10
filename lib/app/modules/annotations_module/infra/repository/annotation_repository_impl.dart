@@ -31,9 +31,9 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
-  Future<List<AnnotationModel>?>? getAllAnnotations(String? enterpriseId, String? operatorId) async {
-    final datasoourceAnnotationsList = await _datasource.getAllAnnotations(enterpriseId!, operatorId!);
-    if (enterpriseId.isNotEmpty && operatorId.isNotEmpty) {
+  Future<List<AnnotationModel>?>? getAllAnnotations(String? enterpriseId) async {
+    final datasoourceAnnotationsList = await _datasource.getAllAnnotations(enterpriseId!);
+    if (enterpriseId.isNotEmpty) {
       final annotationsModelList = datasoourceAnnotationsList?.map((annotationMap) => AnnotationModel.fromMap(annotationMap)).toList();
       return annotationsModelList;
     } else {

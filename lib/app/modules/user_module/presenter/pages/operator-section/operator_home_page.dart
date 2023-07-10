@@ -33,7 +33,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   @override
   void initState() {
     _loginController.loginStore.getUserById(_enterpriseId, widget.operatorEntity.operatorId!, widget.operatorEntity.businessPosition!);
-    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId, widget.operatorEntity.operatorId!);
+    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId);
     super.initState();
   }
 
