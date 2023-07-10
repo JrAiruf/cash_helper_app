@@ -15,10 +15,11 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   Future<Map<String, dynamic>?>? createAnnotation(String? enterpriseId, String? operatorId, Map<String, dynamic>? annotation) async {
     final annotationsCollection = _getCollection(enterpriseId, operatorId);
     if (operatorId != null && annotation != null && annotation.isNotEmpty) {
-      annotation["annotationWithPendency"] ? await _createGeneralAnnotation(enterpriseId!, annotation) : await _createNewAnnotation(annotationsCollection, enterpriseId!, annotation);
+      annotation["annotationWithPendency"] ? await _createPendingAnnotation(enterpriseId!, annotation) : await _createNewAnnotation(annotationsCollection, enterpriseId!, annotation);
       annotationData = annotation["annotationWithPendency"]
-          ? await _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations").doc(annotation["annotationId"]).get().then((value) => value.data())
-          : await annotationsCollection.doc(annotation["annotationId"]).get().then((value) => value.data());
+          ? await _getPendingAnnotation(enterpriseId, annotation["annotationId"])
+          : await _getNewAnnotation(enterpriseId, operatorId, annotation["annotationId"]);
+      await _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations").doc(annotationData!["annotationId"]).set(annotationData!);
       return annotationData!.isEmpty ? null : annotationData;
     } else {
       return null;
@@ -83,13 +84,23 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   CollectionReference<Map<String, dynamic>> _getCollection(String? enterpriseId, String? operatorId) =>
       _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).collection("annotations");
 
-  Future<void> _createGeneralAnnotation(String enterpriseId, Map<String, dynamic> annotation) async {
-    await _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations").doc(annotation["annotationId"]).set(annotation);
+  Future<void> _createPendingAnnotation(String enterpriseId, Map<String, dynamic> annotation) async {
+    await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").doc(annotation["annotationId"]).set(annotation);
   }
 
   Future<void> _createNewAnnotation(CollectionReference annotationsCollection, String enterpriseId, Map<String, dynamic> annotation) async {
     annotation["annotationId"] = uuidGenertor.v1();
     await annotationsCollection.doc(annotation["annotationId"]).set(annotation);
+  }
+
+  Future<Map<String, dynamic>> _getPendingAnnotation(String enterpriseId, String annotationId) async {
+    final pendingAnnotation = await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").doc(annotationId).get().then((value) => value.data());
+    return pendingAnnotation ?? {};
+  }
+
+  Future<Map<String, dynamic>> _getNewAnnotation( String enterpriseId, String operatorId,String annotationId) async {
+    final newAnnotation = await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).collection("annotations").doc(annotationId).get();
+    return newAnnotation.data() ?? {};
   }
 }
 
@@ -110,9 +121,12 @@ void main() {
         "Create an annotation in the current user",
         () async {
           final result = await database.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationMap);
-          final annotationsCollection = await firebaseMock.collection("enterprise").doc("enterpriseId").collection("operator").doc("operatorId").collection("annotations").get();
-          expect(annotationsCollection.docs.isNotEmpty, equals(true));
+          final operatorAnnotationsCollection = await firebaseMock.collection("enterprise").doc("enterpriseId").collection("operator").doc("operatorId").collection("annotations").get();
+          final generalAnnotationsCollection = await firebaseMock.collection("enterprise").doc("enterpriseId").collection("generalAnnotations").get();
+          expect(operatorAnnotationsCollection.docs.isNotEmpty, equals(true));
+          expect(generalAnnotationsCollection.docs.isNotEmpty, equals(true));
           expect(result, isA<Map<String, dynamic>>());
+          expect(result?["annotationId"] != null, equals(true));
           expect(result?["annotationId"] != null, equals(true));
         },
       );
@@ -120,7 +134,7 @@ void main() {
         "Create a pending annotation in the current user",
         () async {
           final result = await database.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newPendingAnnotationMap);
-          final annotationsCollection = await firebaseMock.collection("enterprise").doc("enterpriseId").collection("generalAnnotations").get();
+          final annotationsCollection = await firebaseMock.collection("enterprise").doc("enterpriseId").collection("pendingAnnotations").get();
           final pendingAnnotation = annotationsCollection.docs.first;
           expect(annotationsCollection.docs.isNotEmpty, equals(true));
           expect(pendingAnnotation["annotationSaleValue"], equals("500,56"));

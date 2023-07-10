@@ -11,14 +11,15 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   final Uuid uuidGenertor;
   Map<String, dynamic>? annotationData = {};
 
-  @override
+   @override
   Future<Map<String, dynamic>?>? createAnnotation(String? enterpriseId, String? operatorId, Map<String, dynamic>? annotation) async {
     final annotationsCollection = _getCollection(enterpriseId, operatorId);
     if (operatorId != null && annotation != null && annotation.isNotEmpty) {
-      annotation["annotationWithPendency"] ? await _createGeneralAnnotation(enterpriseId!, annotation) : await _createNewAnnotation(annotationsCollection, enterpriseId!, annotation);
+      annotation["annotationWithPendency"] ? await _createPendingAnnotation(enterpriseId!, annotation) : await _createNewAnnotation(annotationsCollection, enterpriseId!, annotation);
       annotationData = annotation["annotationWithPendency"]
-          ? await _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations").doc(annotation["annotationId"]).get().then((value) => value.data())
-          : await annotationsCollection.doc(annotation["annotationId"]).get().then((value) => value.data());
+          ? await _getPendingAnnotation(enterpriseId, annotation["annotationId"])
+          : await _getNewAnnotation(enterpriseId, operatorId, annotation["annotationId"]);
+      await _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations").doc(annotationData!["annotationId"]).set(annotationData!);
       return annotationData!.isEmpty ? null : annotationData;
     } else {
       return null;
@@ -80,27 +81,25 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
     }
   }
 
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> _filterSearchClientAddress({required String operatorId, required String clientAddress}) async {
-    final dividedSearchText = clientAddress.split(' ');
-    final simpleSearchText = dividedSearchText[0];
-    final databaseAnnotationsCollection = await _getCollection("", operatorId).get();
-    final databaseSearchList = databaseAnnotationsCollection.docs.where((annotation) {
-      final clientAddress = annotation.data()["annotationClientAddress"] as String;
-      final splitedClientAddress = clientAddress.contains(simpleSearchText);
-      return splitedClientAddress;
-    }).toList();
-    return databaseSearchList;
-  }
-
   CollectionReference<Map<String, dynamic>> _getCollection(String? enterpriseId, String? operatorId) =>
       _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).collection("annotations");
 
-  Future<void> _createGeneralAnnotation(String enterpriseId, Map<String, dynamic> annotation) async {
-    await _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations").doc(annotation["annotationId"]).set(annotation);
+  Future<void> _createPendingAnnotation(String enterpriseId, Map<String, dynamic> annotation) async {
+    await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").doc(annotation["annotationId"]).set(annotation);
   }
 
   Future<void> _createNewAnnotation(CollectionReference annotationsCollection, String enterpriseId, Map<String, dynamic> annotation) async {
     annotation["annotationId"] = uuidGenertor.v1();
     await annotationsCollection.doc(annotation["annotationId"]).set(annotation);
+  }
+
+  Future<Map<String, dynamic>> _getPendingAnnotation(String enterpriseId, String annotationId) async {
+    final pendingAnnotation = await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").doc(annotationId).get().then((value) => value.data());
+    return pendingAnnotation ?? {};
+  }
+
+  Future<Map<String, dynamic>> _getNewAnnotation( String enterpriseId, String operatorId,String annotationId) async {
+    final newAnnotation = await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).collection("annotations").doc(annotationId).get();
+    return newAnnotation.data() ?? {};
   }
 }

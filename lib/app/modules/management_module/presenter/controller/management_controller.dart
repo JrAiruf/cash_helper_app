@@ -68,7 +68,7 @@ class ManagementController {
     }
   }
 
-  Future<void>? getAnnotationsByOperator(String enterpriseId, String operatorId) async {
+  Future<void>? getAnnotationsByOperator(String operatorId) async {
     final operatorAnnotationsList = annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operatorId).toList();
     operatorAnnotations.value.clear();
     operatorAnnotations.value.addAll(operatorAnnotationsList);

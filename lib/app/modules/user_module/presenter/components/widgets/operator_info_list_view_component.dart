@@ -1,14 +1,17 @@
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class OperatorInfoListViewComponent extends StatelessWidget {
-  OperatorInfoListViewComponent({super.key, required this.enterpriseId, required this.operators}) {}
+import '../../../../management_module/presenter/controller/management_controller.dart';
+import '../operator_widgets/operator_information_tile.dart';
 
-  final List<OperatorEntity> operators;
+class OperatorInfoListViewComponent extends StatelessWidget {
+  OperatorInfoListViewComponent({super.key, required this.enterpriseId, required this.operators});
+
   final String enterpriseId;
-  final annotationsController = Modular.get<AnnotationsController>();
+  final List<OperatorEntity> operators;
+
+  final _managementController = Modular.get<ManagementController>();
   @override
   Widget build(BuildContext context) {
     final surfaceColor = Theme.of(context).colorScheme.surface;
@@ -19,36 +22,14 @@ class OperatorInfoListViewComponent extends StatelessWidget {
         itemCount: operators.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: ((context, index) {
-          annotationsController.annotationsListStore.getAllAnnotations(enterpriseId, operators[index].operatorId);
-          final operatorAnnotations = annotationsController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operators[index].operatorId).toList();
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  operators[index].operatorName ?? "",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
-                ),
-                Text(
-                  "${operatorAnnotations.length}",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                ),
-                Text(
-                  "Sem pendências",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                ),
-                Text(
-                  "Fechamento:",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                ),
-                Text(
-                  operators[index].operatorClosing ?? "",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
-                ),
-              ],
-            ),
+          _managementController.annotationsListStore.getAllAnnotations(enterpriseId, operators[index].operatorId);
+          _managementController.getAllPendencies(enterpriseId);
+          final pendencies = _managementController.pendenciesListStore.value.where((pendency) => pendency.operatorId == operators[index].operatorId).toList();
+          return OperatorInformationTile(
+            enterpriseId: enterpriseId,
+            operatorEntity: operators[index],
+            annotations: _managementController.annotationsListStore.value,
+            pendencies: pendencies,
           );
         }),
       ),

@@ -102,7 +102,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                     _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId, _managementController.operatorsList[i].operatorId);
                                     final pendingOperator =
                                         _managementController.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == _managementController.operatorsList[i].operatorId);
-                                    _managementController.getAnnotationsByOperator(_loginController.enterpriseId, pendingOperator.operatorId!);
+                                    _managementController.getAnnotationsByOperator(pendingOperator.operatorId!);
                                     _managementController.getPendingAnnotationsByOperator(pendingOperator.operatorId!);
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 3),
