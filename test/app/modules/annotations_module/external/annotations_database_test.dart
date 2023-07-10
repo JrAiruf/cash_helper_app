@@ -16,9 +16,8 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
     final annotationsCollection = _getCollection(enterpriseId, operatorId);
     if (operatorId != null && annotation != null && annotation.isNotEmpty) {
       annotation["annotationWithPendency"] ? await _createPendingAnnotation(enterpriseId!, annotation) : await _createNewAnnotation(annotationsCollection, enterpriseId!, annotation);
-      annotationData = annotation["annotationWithPendency"]
-          ? await _getPendingAnnotation(enterpriseId, annotation["annotationId"])
-          : await _getNewAnnotation(enterpriseId, operatorId, annotation["annotationId"]);
+      annotationData =
+          annotation["annotationWithPendency"] ? await _getPendingAnnotation(enterpriseId, annotation["annotationId"]) : await _getNewAnnotation(enterpriseId, operatorId, annotation["annotationId"]);
       await _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations").doc(annotationData!["annotationId"]).set(annotationData!);
       return annotationData!.isEmpty ? null : annotationData;
     } else {
@@ -27,9 +26,9 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<List<Map<String, dynamic>>?>? getAllAnnotations(String? enterpriseId, String? operatorId) async {
-    final annotationsCollection = _getCollection(enterpriseId, operatorId);
-    if (enterpriseId != null && operatorId != null) {
+  Future<List<Map<String, dynamic>>?>? getAllAnnotations(String? enterpriseId) async {
+    final annotationsCollection = _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations");
+    if (enterpriseId != null) {
       final annotationsList = await annotationsCollection.get();
       return annotationsList.docs.map((annotation) => annotation.data()).toList();
     } else {
@@ -75,9 +74,11 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
 
   @override
   Future<void>? deleteAnnotation(String? enterpriseId, String? operatorId, String? annotationId) async {
-    final annotationsCollection = _getCollection(enterpriseId, operatorId);
+    final operatorAnnotationsCollection = _getCollection(enterpriseId, operatorId);
+    final generalAnnotationsCollection = _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations");
     if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
-      await annotationsCollection.doc(annotationId).delete();
+      await operatorAnnotationsCollection.doc(annotationId).delete();
+      generalAnnotationsCollection.doc(annotationId).delete();
     }
   }
 
@@ -98,7 +99,7 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
     return pendingAnnotation ?? {};
   }
 
-  Future<Map<String, dynamic>> _getNewAnnotation( String enterpriseId, String operatorId,String annotationId) async {
+  Future<Map<String, dynamic>> _getNewAnnotation(String enterpriseId, String operatorId, String annotationId) async {
     final newAnnotation = await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).collection("annotations").doc(annotationId).get();
     return newAnnotation.data() ?? {};
   }
@@ -160,7 +161,7 @@ void main() {
           final createdAnnotation = await database.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
-          final result = await database.getAllAnnotations("enterpriseId", "operatorId");
+          final result = await database.getAllAnnotations("enterpriseId");
           expect(result, isA<List<Map<String, dynamic>>>());
           expect(result?.first != null, equals(true));
         },
@@ -171,7 +172,7 @@ void main() {
           final result = await database.createAnnotation("", "operatorId", AnnotationsTestObjects.newAnnotationMap);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["annotationId"] != null, equals(true));
-          final createdAnnotation = await database.getAllAnnotations("", null);
+          final createdAnnotation = await database.getAllAnnotations(null);
           expect(createdAnnotation, equals(null));
         },
       );
@@ -238,10 +239,10 @@ void main() {
         () async {
           final createdAnnotation = await database.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation?["annotationId"] != null, equals(true));
-          final annotationsList = await database.getAllAnnotations("enterpriseId", "operatorId");
+          final annotationsList = await database.getAllAnnotations("enterpriseId");
           expect(annotationsList?.isNotEmpty, equals(true));
           await database.deleteAnnotation("enterpriseId", "operatorId", createdAnnotation?["annotationId"]);
-          final currentAnnotationsList = await database.getAllAnnotations("enterpriseId", "operatorId");
+          final currentAnnotationsList = await database.getAllAnnotations("enterpriseId");
           expect(currentAnnotationsList?.isEmpty, equals(true));
         },
       );
@@ -250,10 +251,10 @@ void main() {
         () async {
           final createdAnnotation = await database.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation?["annotationId"] != null, equals(true));
-          final annotationsList = await database.getAllAnnotations("enterpriseId", "operatorId");
+          final annotationsList = await database.getAllAnnotations("enterpriseId");
           expect(annotationsList?.isNotEmpty, equals(true));
           await database.deleteAnnotation("enterpriseId", "operatorId", "");
-          final currentAnnotationsList = await database.getAllAnnotations("enterpriseId", "operatorId");
+          final currentAnnotationsList = await database.getAllAnnotations("enterpriseId");
           expect(currentAnnotationsList?.isEmpty, equals(false));
         },
       );
