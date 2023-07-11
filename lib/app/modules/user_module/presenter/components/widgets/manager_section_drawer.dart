@@ -8,13 +8,14 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../controller/manager_controller.dart';
 
 class ManagerSectionDrawer extends StatelessWidget {
-  ManagerSectionDrawer(
-      {super.key,
-      this.radius,
-      this.width,
-      this.enterpriseId,
-      required this.currentPage,
-      required this.managerEntity});
+  ManagerSectionDrawer({
+    super.key,
+    this.radius,
+    this.width,
+    this.enterpriseId,
+    required this.currentPage,
+    required this.managerEntity,
+  });
 
   double? radius;
   double? width;
@@ -52,9 +53,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: height * 0.12,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.home
-                    ? variantColor
-                    : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.home ? variantColor : surfaceColor,
                 icon: Icons.home,
                 title: "Início",
                 width: width,
@@ -70,9 +69,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.management
-                    ? variantColor
-                    : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.management ? variantColor : surfaceColor,
                 icon: Icons.manage_accounts,
                 title: "Gerenciamento",
                 width: width,
@@ -88,9 +85,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.adminOptions
-                    ? variantColor
-                    : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.adminOptions ? variantColor : surfaceColor,
                 icon: Icons.screen_search_desktop_outlined,
                 title: "Opções Administrativas",
                 width: width,
@@ -106,9 +101,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.settings
-                    ? variantColor
-                    : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.settings ? variantColor : surfaceColor,
                 icon: Icons.settings,
                 title: "Configurações",
                 width: width,
@@ -122,15 +115,14 @@ class ManagerSectionDrawer extends StatelessWidget {
               ),
               SizedBox(height: itemSpacingHeight * 10),
               TextButton(
-                onPressed: loginController.signOut,
+                onPressed: () {
+                  loginController.signOut(context);
+                },
                 child: Row(
                   children: [
                     Text(
                       "Sair",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: surfaceColor),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
                     ),
                     const SizedBox(
                       width: 20,

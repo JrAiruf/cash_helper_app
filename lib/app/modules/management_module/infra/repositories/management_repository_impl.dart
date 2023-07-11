@@ -80,7 +80,7 @@ class ManagementRepositoryImpl implements ManagementRepository {
       throw PendencyError(errorMessage: e.toString());
     }
   }
-  
+
   @override
   Future? getAllPendencies(String? enterpriseId) async {
     try {
@@ -94,7 +94,7 @@ class ManagementRepositoryImpl implements ManagementRepository {
       throw PendencyListError(errorMessage: e.toString());
     }
   }
-  
+
   @override
   Future? getGeneralAnnotations(String enterpriseId) {
     // TODO: implement getGeneralAnnotations

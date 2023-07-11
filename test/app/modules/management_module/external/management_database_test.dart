@@ -25,14 +25,11 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   ManagementDBMock({
     required FirebaseFirestore database,
     required ApplicationAnnotationDatabase annotationsDatabase,
-    required ApplicationLoginDatabase loginDatabase,
   })  : _database = database,
-        _annotationsDatabase = annotationsDatabase,
-        _loginDatabase = loginDatabase;
+        _annotationsDatabase = annotationsDatabase;
 
   final FirebaseFirestore _database;
   final ApplicationAnnotationDatabase _annotationsDatabase;
-  final ApplicationLoginDatabase _loginDatabase;
 
   var databaseOperatorsMapList = <Map<String, dynamic>>[];
   @override
@@ -105,8 +102,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
     Map<String, dynamic> pendencyMap = {};
     try {
-      final operatorMap = await _loginDatabase.getUserById(enterpriseId!, operatorId!, "operator");
-      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId, operatorId, annotationId!);
+      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId!, operatorId!, annotationId!);
       await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").add({
         "annotationId": annotationId,
         "pendencySaleTime": pendingAnnotation?["annotationSaleTime"],
@@ -119,7 +115,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
           value.update({"pendencyId": pendencyMap["pendencyId"]});
         },
       );
-      await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorMap["operatorId"]).update({"hasPendencies": true});
+      await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).update({"hasPendencies": true});
       if (pendencyMap.isNotEmpty) {
         return pendencyMap;
       } else {
@@ -196,7 +192,7 @@ void main() {
         dataVerifier: DataVerifier(),
         uuid: const Uuid(),
       );
-      database = ManagementDBMock(database: firebaseMock, annotationsDatabase: annotationsDatabase, loginDatabase: loginDb);
+      database = ManagementDBMock(database: firebaseMock, annotationsDatabase: annotationsDatabase);
     },
   );
   group(
@@ -312,8 +308,10 @@ void main() {
           final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
           final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], AnnotationsTestObjects.databaseAnnotation);
           final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
+          final currentUser = await loginDb.getUserById(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], "operator");
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));
+          expect(currentUser?["hasPendencies"], equals(true));
         },
       );
 
@@ -338,9 +336,9 @@ void main() {
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));
           final pendencyList = await database.getAllPendencies(createdEnterprise?["enterpriseId"]);
+
           expect(pendencyList, isA<List<Map<String, dynamic>>>());
           expect(pendencyList?.isNotEmpty, equals(true));
-          expect(newOperator?["hasPendencies"], equals(true));
         },
       );
 

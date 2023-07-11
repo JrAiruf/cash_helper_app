@@ -65,7 +65,7 @@ class ManagementModule extends Module {
     ),
     ChildRoute(
       "/pendencies-list-page/:enterpriseId",
-      child: (_, args) => const PendenciesListPage(),
+      child: (_, args) => PendenciesListPage(pendencies: args.data),
     ),
   ];
   final bindsList = <Bind>[

@@ -18,15 +18,9 @@ class ManagementPage extends StatefulWidget {
   State<ManagementPage> createState() => _ManagementPageState();
 }
 
-final _managementController = Modular.get<ManagementController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
 
 class _ManagementPageState extends State<ManagementPage> {
-  @override
-  void initState() {
-    super.initState();
-    _managementController.getAllPendencies(_enterpriseId);
-  }
 
   @override
   Widget build(BuildContext context) {

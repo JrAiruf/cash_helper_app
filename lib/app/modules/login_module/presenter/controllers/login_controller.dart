@@ -2,6 +2,7 @@
 
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -158,9 +159,18 @@ class LoginController {
     }
   }
 
-  void signOut() async {
-    await loginStore.signOut();
-    Modular.to.navigate(EnterpriseRoutes.initial);
+  void signOut(
+    BuildContext context,
+  ) async {
+    final appThemes = CashHelperThemes();
+    showSignOutDialog(
+      context,
+      appThemes.surface(context),
+      () async {
+        await loginStore.signOut();
+        Modular.to.navigate(EnterpriseRoutes.initial);
+      },
+    );
   }
 
   void getOperatorById(String enterpriseId, String operatorId) async {

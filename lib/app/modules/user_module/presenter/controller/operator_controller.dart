@@ -40,8 +40,8 @@ class OperatorController {
   }
 
   Future<void> closeOperatorCash(BuildContext context, Color color) async {
-    final unfinishedAnnotations = annotationsListStore.value.where((element) => element.annotationConcluied == false).toList();
-    final finishedAnnotations = annotationsListStore.value.where((element) => element.annotationConcluied == true).toList();
+    final unfinishedAnnotations = annotationsListStore.value.where((annotation) => annotation.annotationConcluied == false && annotation.annotationCreatorId == operatorEntity?.operatorId).toList();
+    final finishedAnnotations = annotationsListStore.value.where((annotation) => annotation.annotationConcluied == true && annotation.annotationCreatorId == operatorEntity?.operatorId).toList();
     cashClosingDialog(context, color, () async {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();

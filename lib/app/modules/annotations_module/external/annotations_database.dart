@@ -73,11 +73,11 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
 
   @override
   Future<void>? deleteAnnotation(String? enterpriseId, String? operatorId, String? annotationId) async {
-    final operatorAnnotationsCollection = _getCollection(enterpriseId);
-    final generalAnnotationsCollection = _database.collection("enterprise").doc(enterpriseId).collection("generalAnnotations");
+    final generalAnnotationsCollection = _getCollection(enterpriseId);
+    final operatorAnnotationsCollection = _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).collection("annotations");
     if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
       await operatorAnnotationsCollection.doc(annotationId).delete();
-      generalAnnotationsCollection.doc(annotationId).delete();
+      await generalAnnotationsCollection.doc(annotationId).delete();
     }
   }
 

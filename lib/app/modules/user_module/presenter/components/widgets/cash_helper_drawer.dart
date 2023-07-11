@@ -60,14 +60,10 @@ class CashHelperDrawer extends StatelessWidget {
                     width: width,
                     title: "Início",
                     icon: Icons.home,
-                    itemColor: pagePosition == DrawerPagePosition.home
-                        ? tertiaryColor
-                        : surfaceColor,
+                    itemColor: pagePosition == DrawerPagePosition.home ? tertiaryColor : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.navigate(
-                          "${UserRoutes.operatorHomePage}$enterpriseId",
-                          arguments: operator);
+                      Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operator);
                     },
                   ),
                   SizedBox(height: itemSpacingHeight),
@@ -75,14 +71,10 @@ class CashHelperDrawer extends StatelessWidget {
                     width: width,
                     title: "Meu Perfil",
                     icon: Icons.person,
-                    itemColor: pagePosition == DrawerPagePosition.profile
-                        ? tertiaryColor
-                        : surfaceColor,
+                    itemColor: pagePosition == DrawerPagePosition.profile ? tertiaryColor : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.navigate(
-                          "${UserRoutes.operatorProfilePage}$enterpriseId",
-                          arguments: operator);
+                      Modular.to.navigate("${UserRoutes.operatorProfilePage}$enterpriseId", arguments: operator);
                     },
                   ),
                   SizedBox(height: itemSpacingHeight),
@@ -90,27 +82,24 @@ class CashHelperDrawer extends StatelessWidget {
                     width: width,
                     title: "Configurações",
                     icon: Icons.settings,
-                    itemColor: pagePosition == DrawerPagePosition.settings
-                        ? tertiaryColor
-                        : surfaceColor,
+                    itemColor: pagePosition == DrawerPagePosition.settings ? tertiaryColor : surfaceColor,
                     onTap: () {
                       Modular.to.pop();
-                      Modular.to.navigate(
-                          "${UserRoutes.operatorSettingsPage}$enterpriseId",
-                          arguments: operator);
+                      Modular.to.navigate("${UserRoutes.operatorSettingsPage}$enterpriseId", arguments: operator);
                     },
                   ),
                   SizedBox(height: itemSpacingHeight * 10),
                   TextButton(
-                    onPressed: loginController.signOut,
+                    onPressed: () {
+                      loginController.signOut(context);
+                    },
                     child: Row(
                       children: [
                         Text(
                           "Sair",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: surfaceColor,
-                                  ),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: surfaceColor,
+                              ),
                         ),
                         const SizedBox(
                           width: 20,

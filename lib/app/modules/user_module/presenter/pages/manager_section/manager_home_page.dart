@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
@@ -33,6 +34,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
+    _managementController.getAllPendencies(_enterpriseId);
   }
 
   @override
@@ -122,6 +124,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 enterpriseId: _enterpriseId,
                                 operators: operatorsList,
                                 annotations: _managementController.annotationsListStore.value,
+                                pendencies: _managementController.pendencies.value,
                               );
                             } else {
                               return Container();

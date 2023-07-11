@@ -43,7 +43,7 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
     final appThemes = CashHelperThemes();
     String oppeningTime = operatorController.operatorEntity?.operatorOppening == "Pendente" ? "Pendente" : operatorController.operatorEntity?.operatorOppening ?? "";
     String operatorStatus = operatorController.operatorEntity!.operatorEnabled! ? "Ativo" : "Inativo";
-
+    final annotations = operatorController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId).toList();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -150,7 +150,7 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                           height: sizeFrame ? height * 0.035 : height * 0.025,
                         ),
                         ClosePageInformationsComponent(
-                          annotations: operatorController.annotationsListStore.value,
+                          annotations: annotations,
                         ),
                         SizedBox(
                           height: sizeFrame ? height * 0.045 : height * 0.035,

@@ -101,6 +101,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
           value.update({"pendencyId": pendencyMap["pendencyId"]});
         },
       );
+      await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).update({"hasPendencies": true});
       if (pendencyMap.isNotEmpty) {
         return pendencyMap;
       } else {

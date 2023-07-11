@@ -1,12 +1,10 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class OperatorInformationTile extends StatelessWidget {
-  OperatorInformationTile({
+ const OperatorInformationTile({
     required this.enterpriseId,
     required this.operatorEntity,
     super.key,
@@ -18,8 +16,6 @@ class OperatorInformationTile extends StatelessWidget {
   final OperatorEntity operatorEntity;
   final List<AnnotationEntity> annotations;
   final List<PendencyEntity> pendencies;
-
-  final _managementController = Modular.get<ManagementController>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +33,11 @@ class OperatorInformationTile extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
           ),
           Text(
-            operatorAnnotations.isNotEmpty ? "${operatorAnnotations.length}" : "Sem anotações",
+            operatorAnnotations.isNotEmpty ? "Anotações: ${operatorAnnotations.length}" : "Sem anotações",
             style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
           ),
           Text(
-            operatorPendencies.isNotEmpty ? "${operatorPendencies.length}" : "Sem pendências",
+            operatorPendencies.isNotEmpty ? "Pendências: ${operatorPendencies.length}" : "Sem pendências",
             style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surfaceColor),
           ),
           Text(
