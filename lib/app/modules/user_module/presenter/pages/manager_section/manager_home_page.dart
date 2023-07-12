@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/l
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/operator_info_list_view_component.dart';
@@ -31,10 +32,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   void initState() {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
+    _managementController.enterpriseId = _enterpriseId;
     _loginController.loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
-    _managementController.getAllPendencies(_enterpriseId);
   }
 
   @override
@@ -98,6 +99,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         child: ValueListenableBuilder(
                           valueListenable: _managementController.managementStore,
                           builder: (_, state, __) {
+                            _managementController.getAllPendencies();
                             if (state is ManagementLoadingState) {
                               return Container(
                                 decoration: BoxDecoration(color: appThemes.primaryColor(context)),
@@ -120,11 +122,40 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             }
                             if (state is GetUsersListState) {
                               final operatorsList = state.operators;
-                              return OperatorInfoListViewComponent(
-                                enterpriseId: _enterpriseId,
-                                operators: operatorsList,
-                                annotations: _managementController.annotationsListStore.value,
-                                pendencies: _managementController.pendencies.value,
+                              return SizedBox(
+                                child: ValueListenableBuilder(
+                                  valueListenable: _managementController.pendenciesListStore,
+                                  builder: (_, state, __) {
+                                    if (state is LoadingPendenciesState) {
+                                      return Container(
+                                        decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: appThemes.indicatorColor(context),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    if (state is NoPendenciesState) {
+                                      return Center(
+                                        child: Text(
+                                          "Sem pendências no momento",
+                                          style: Theme.of(context).textTheme.bodySmall,
+                                        ),
+                                      );
+                                    }
+                                    if (state is PendenciesListState) {
+                                      return OperatorInfoListViewComponent(
+                                        enterpriseId: _enterpriseId,
+                                        operators: operatorsList,
+                                        annotations: _managementController.annotationsListStore.value,
+                                        pendencies: state.pendencies,
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
+                                ),
                               );
                             } else {
                               return Container();

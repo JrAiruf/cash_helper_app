@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 abstract class PendencyStates {}
 
 class PendenciesInitialState extends PendencyStates {}
+
 class LoadingPendenciesState extends PendencyStates {}
 
 class NoPendenciesState extends PendencyStates {}

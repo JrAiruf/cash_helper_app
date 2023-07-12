@@ -1,3 +1,5 @@
+import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/manager_section_drawer.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -18,114 +20,160 @@ class ManagementPage extends StatefulWidget {
 }
 
 final _enterpriseId = Modular.args.params["enterpriseId"];
+final _managementController = Modular.get<ManagementController>();
 
 class _ManagementPageState extends State<ManagementPage> {
+  @override
+  void initState() {
+    super.initState();
+    _managementController.enterpriseId = _enterpriseId;
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    return Scaffold(
-      appBar: AppBar(),
-      drawer: ManagerSectionDrawer(
-        currentPage: ManagerDrawerPage.management,
-        managerEntity: widget.managerEntity,
-        enterpriseId: _enterpriseId,
-      ),
-      body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: Container(
-          height: height,
-          decoration: BoxDecoration(
-            color: appThemes.backgroundColor(context),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Container(
-                    height: sizeFrame ? height * 0.16 : height * 0.15,
-                    decoration: BoxDecoration(
-                      color: appThemes.primaryColor(context),
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: height * 0.09,
-                    child: Text(
-                      "Gerenciamento",
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
+    return ValueListenableBuilder(
+        valueListenable: _managementController.pendenciesListStore,
+        builder: (_, state, __) {
+          if (state is LoadingPendenciesState) {
+            _managementController.getAllPendencies();
+            return Container(
+              height: height,
+              decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: appThemes.indicatorColor(context),
                 ),
-                child: SizedBox(
-                  width: width,
+              ),
+            );
+          }
+          if (state is NoPendenciesState) {
+            return Container(
+              decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+              child: Center(
+                child: Text(
+                  "Sem pendências no momento",
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            );
+          }
+          if (state is PendenciesListState) {
+            final dataMap = {
+              "operatorsList": state.operators,
+              "pendenciesList": state.pendencies,
+            };
+            return Scaffold(
+              appBar: AppBar(),
+              drawer: ManagerSectionDrawer(
+                currentPage: ManagerDrawerPage.management,
+                managerEntity: widget.managerEntity,
+                enterpriseId: _enterpriseId,
+              ),
+              body: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Container(
+                  height: height,
+                  decoration: BoxDecoration(
+                    color: appThemes.backgroundColor(context),
+                  ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: height * 0.05,
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Container(
+                            height: sizeFrame ? height * 0.16 : height * 0.15,
+                            decoration: BoxDecoration(
+                              color: appThemes.primaryColor(context),
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: height * 0.09,
+                            child: Text(
+                              "Gerenciamento",
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          )
+                        ],
                       ),
-                      Text(
-                        "Métodos de Pagamento:",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      PaymentMethodsInformationCard(enterpriseId: _enterpriseId),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      ManagerViewButton(
-                        onPressed: () => Modular.to.pushNamed(
-                          "${ManagementRoutes.paymentMethodsPage}$_enterpriseId",
-                          arguments: widget.managerEntity,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
                         ),
-                      ),
-                      SizedBox(
-                        height: height * 0.035,
-                      ),
-                      Text(
-                        "Pendências:",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      PendenciesInformationCard(
-                        height: height,
-                        enterpriseId: _enterpriseId,
-                        pendencies: [],
-                        operators: [],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      ManagerViewButton(
-                        onPressed: () => Modular.to.pushNamed(
-                          "${ManagementRoutes.pendenciesListPage}$_enterpriseId"
+                        child: SizedBox(
+                          width: width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: height * 0.05,
+                              ),
+                              Text(
+                                "Métodos de Pagamento:",
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              PaymentMethodsInformationCard(enterpriseId: _enterpriseId),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              ManagerViewButton(
+                                onPressed: () => Modular.to.pushNamed(
+                                  "${ManagementRoutes.paymentMethodsPage}$_enterpriseId",
+                                  arguments: widget.managerEntity,
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.035,
+                              ),
+                              Text(
+                                "Pendências:",
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              PendenciesInformationCard(
+                                height: height,
+                                enterpriseId: _enterpriseId,
+                                pendencies: state.pendencies,
+                                operators: state.operators,
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              ManagerViewButton(
+                                onPressed: () => Modular.to.pushNamed(
+                                  "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
+                                  arguments: {
+                                    "pendenciesList": state.pendencies,
+                                    "operatorsList": state.operators,
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }

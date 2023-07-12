@@ -65,7 +65,7 @@ class ManagementModule extends Module {
     ),
     ChildRoute(
       "/pendencies-list-page/:enterpriseId",
-      child: (_, args) => PendenciesListPage(pendencies: args.data, operatorsList: args.data),
+      child: (_, args) => PendenciesListPage(pendencies: args.data["pendenciesList"], operatorsList: args.data["operatorsList"]),
     ),
   ];
   final bindsList = <Bind>[
@@ -129,6 +129,7 @@ class ManagementModule extends Module {
     Bind<PendenciesListStore>(
       (i) => PendenciesListStore(
         getAllPendencies: i(),
+        getAllOperators: i(),
       ),
     ),
     Bind<ManagementController>(

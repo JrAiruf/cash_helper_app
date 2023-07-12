@@ -171,7 +171,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                               backgroundColor: appThemes.surfaceColor(context),
                                               radius: height * 0.02,
                                               child: Text(
-                                                "${_managementController.operatorsPendencies.value.length}",
+                                                "${widget.pendencies.length}",
                                                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                                       color: appThemes.primaryColor(context),
                                                     ),

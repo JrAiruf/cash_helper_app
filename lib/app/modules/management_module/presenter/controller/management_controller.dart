@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/modules/management_module/domain/entities/pe
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class ManagementController {
   final pendencyStore = Modular.get<PendencyStore>();
   final pendenciesListStore = Modular.get<PendenciesListStore>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
+  String enterpriseId = "";
 
   String? paymentMethodNameValidate(String? value) {
     return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
@@ -49,22 +51,25 @@ class ManagementController {
     paymentMethods.value = paymentMethodsListStore.value ?? [];
   }
 
-  Future<void> getAllPendencies(String enterpriseId) async {
+  Future<void> getAllPendencies() async {
     await pendenciesListStore.getAllPendencies(enterpriseId);
-    pendencies.value = pendenciesListStore.value;
-    final operatorIdList = pendencies.value.map((e) => e.operatorId).toList();
-    final pendenciesPeriodList = pendencies.value.map((e) => e.pendencyPeriod).toList();
-    operatorsWithPendencies.value.clear();
-    periodList.value.clear();
-    for (var id in operatorIdList) {
-      if (!operatorsWithPendencies.value.contains(id)) {
-        operatorsWithPendencies.value.add(id!);
+    if (pendencies.value.isNotEmpty) {
+      final operatorIdList = pendencies.value.map((e) => e.operatorId).toList();
+      final pendenciesPeriodList = pendencies.value.map((e) => e.pendencyPeriod).toList();
+      operatorsWithPendencies.value.clear();
+      periodList.value.clear();
+      for (var id in operatorIdList) {
+        if (!operatorsWithPendencies.value.contains(id)) {
+          operatorsWithPendencies.value.add(id!);
+        }
       }
-    }
-    for (var period in pendenciesPeriodList) {
-      if (!periodList.value.contains(period)) {
-        periodList.value.add(period!);
+      for (var period in pendenciesPeriodList) {
+        if (!periodList.value.contains(period)) {
+          periodList.value.add(period!);
+        }
       }
+    } else {
+      return;
     }
   }
 
