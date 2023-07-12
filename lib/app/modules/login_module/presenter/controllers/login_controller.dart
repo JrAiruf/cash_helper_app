@@ -165,8 +165,9 @@ class LoginController {
     final appThemes = CashHelperThemes();
     showSignOutDialog(
       context,
-      appThemes.surface(context),
+      appThemes.primaryColor(context),
       () async {
+        Modular.to.pop();
         await loginStore.signOut();
         Modular.to.navigate(EnterpriseRoutes.initial);
       },
@@ -212,6 +213,7 @@ class LoginController {
   }
 
   Future<void> getAllOperators() async {
+    operatorsList.clear();
     operatorsList = await loginStore.getAllOperators(enterpriseId) ?? [];
   }
 

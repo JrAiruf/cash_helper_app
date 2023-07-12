@@ -32,11 +32,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
+    _loginController.enterpriseId = _enterpriseId;
     _loginController.loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
     _managementController.getAllPendencies(_enterpriseId);
-    _loginController.loginStore.getAllOperators(_enterpriseId);
+    _loginController.getAllOperators();
   }
 
   @override
@@ -65,6 +66,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             drawer: ManagerSectionDrawer(
               managerEntity: manager,
               enterpriseId: _enterpriseId,
+              operatorsWithPendency: _loginController.operatorsList,
+              pendencies: _managementController.pendencies.value,
               currentPage: ManagerDrawerPage.home,
               radius: 20,
               width: width * 0.75,

@@ -9,24 +9,22 @@ import '../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../domain/entities/pendency_entity.dart';
 
 class PendenciesListPage extends StatefulWidget {
-  const PendenciesListPage({required this.pendencies, super.key});
+  const PendenciesListPage({required this.operatorsList, required this.pendencies, super.key});
+
+  final List<OperatorEntity> operatorsList;
   final List<PendencyEntity> pendencies;
   @override
   State<PendenciesListPage> createState() => _PendenciesListPageState();
 }
 
-List<OperatorEntity> operatorsWithPendency = [];
-final _loginController = Modular.get<LoginController>();
 final _managementController = Modular.get<ManagementController>();
+final _loginController = Modular.get<LoginController>();
 
 class _PendenciesListPageState extends State<PendenciesListPage> {
   @override
   void initState() {
     super.initState();
     _loginController.enterpriseId = Modular.args.params["enterpriseId"];
-    _loginController.getAllOperators();
-    _managementController.getAllPendencies(_loginController.enterpriseId);
-    _managementController.getAllOperatorsWithPendencies(_loginController.enterpriseId);
   }
 
   @override
@@ -35,6 +33,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
+    final operatorsWithPendencies = widget.operatorsList.where((operatorEntity) => operatorEntity.hasPendencies!).toList();
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -93,11 +92,10 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: ListView.builder(
-                            itemCount: _managementController.operatorsList.length,
+                            itemCount: operatorsWithPendencies.length,
                             itemBuilder: (_, i) {
                               _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId);
-                              final pendingOperator =
-                                  _managementController.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == _managementController.operatorsList[i].operatorId);
+                              final pendingOperator = operatorsWithPendencies.firstWhere((operatorEntity) => operatorEntity.operatorId == operatorsWithPendencies[i].operatorId);
                               _managementController.getAnnotationsByOperator(pendingOperator.operatorId!);
                               _managementController.getPendingAnnotationsByOperator(pendingOperator.operatorId!);
                               return Padding(

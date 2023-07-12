@@ -19,9 +19,14 @@ class ManagementPage extends StatefulWidget {
 }
 
 final _enterpriseId = Modular.args.params["enterpriseId"];
+final _pendencies = Modular.args.data["pendenciesList"];
+final _operators = Modular.args.data["operatorsList"];
+final listObjects = {
+  "pendenciesList": _pendencies,
+  "operatorsList": _operators,
+};
 
 class _ManagementPageState extends State<ManagementPage> {
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -49,7 +54,7 @@ class _ManagementPageState extends State<ManagementPage> {
                 alignment: Alignment.topCenter,
                 children: [
                   Container(
-                    height: sizeFrame ? height * 0.16 :height * 0.15,
+                    height: sizeFrame ? height * 0.16 : height * 0.15,
                     decoration: BoxDecoration(
                       color: appThemes.primaryColor(context),
                       borderRadius: const BorderRadius.only(
@@ -106,14 +111,19 @@ class _ManagementPageState extends State<ManagementPage> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-                      PendenciesInformationCard(height: height, enterpriseId: _enterpriseId),
+                      PendenciesInformationCard(
+                        height: height,
+                        enterpriseId: _enterpriseId,
+                        pendencies: _pendencies,
+                        operators: _operators,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
                       ManagerViewButton(
                         onPressed: () => Modular.to.pushNamed(
                           "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
-                          arguments: widget.managerEntity,
+                          arguments: listObjects,
                         ),
                       ),
                     ],

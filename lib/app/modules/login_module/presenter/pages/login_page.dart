@@ -75,7 +75,9 @@ class _LoginPageState extends State<LoginPage> {
                             animation: _loginController.managerUser,
                             builder: (_, __) {
                               return Switch(
-                                activeColor: appThemes.greenColor(context),
+                                inactiveThumbColor: appThemes.greenColor(context),
+                                inactiveTrackColor: appThemes.greenColor(context),
+                                activeColor: appThemes.blueColor(context),
                                 value: _loginController.userStatus,
                                 onChanged: (value) {
                                   _loginController.userStatus = value;

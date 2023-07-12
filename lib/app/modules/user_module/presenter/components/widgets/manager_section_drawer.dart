@@ -3,8 +3,11 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/l
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/tiles/drawer_tile.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../../management_module/domain/entities/pendency_entity.dart';
+import '../../../domain/entities/operator_entity.dart';
 import '../../controller/manager_controller.dart';
 
 class ManagerSectionDrawer extends StatelessWidget {
@@ -13,10 +16,14 @@ class ManagerSectionDrawer extends StatelessWidget {
     this.radius,
     this.width,
     this.enterpriseId,
+    this.operatorsWithPendency,
+    this.pendencies,
     required this.currentPage,
     required this.managerEntity,
   });
-  
+
+  List<OperatorEntity>? operatorsWithPendency;
+  List<PendencyEntity>? pendencies;
   double? radius;
   double? width;
   ManagerDrawerPage currentPage;
@@ -25,19 +32,22 @@ class ManagerSectionDrawer extends StatelessWidget {
   final loginController = Modular.get<LoginController>();
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final variantColor = Theme.of(context).colorScheme.surfaceVariant;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
+    final appThemes = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final sizeFrame = height <= 800.0;
     final itemSpacingHeight = sizeFrame ? height * 0.015 : height * 0.02;
+    final managementSectionObjects = {
+      "manager": managerEntity,
+      "operatorsList": operatorsWithPendency,
+      "pendenciesList": pendencies,
+    };
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(radius ?? 5),
         bottomRight: Radius.circular(radius ?? 5),
       ),
       child: Drawer(
-        backgroundColor: primaryColor,
+        backgroundColor: appThemes.primaryColor(context),
         width: width,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -53,7 +63,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: height * 0.12,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.home ? variantColor : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.home ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.home,
                 title: "Início",
                 width: width,
@@ -69,7 +79,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.management ? variantColor : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.management ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.manage_accounts,
                 title: "Gerenciamento",
                 width: width,
@@ -77,7 +87,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                   Modular.to.pop();
                   Modular.to.navigate(
                     "${UserRoutes.managementPage}$enterpriseId",
-                    arguments: managerEntity,
+                    arguments: managementSectionObjects,
                   );
                 },
               ),
@@ -85,7 +95,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.adminOptions ? variantColor : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.adminOptions ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.screen_search_desktop_outlined,
                 title: "Opções Administrativas",
                 width: width,
@@ -101,7 +111,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.settings ? variantColor : surfaceColor,
+                itemColor: currentPage == ManagerDrawerPage.settings ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.settings,
                 title: "Configurações",
                 width: width,
@@ -122,14 +132,14 @@ class ManagerSectionDrawer extends StatelessWidget {
                   children: [
                     Text(
                       "Sair",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surfaceColor),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
                     ),
                     const SizedBox(
                       width: 20,
                     ),
                     Icon(
                       Icons.keyboard_arrow_right_rounded,
-                      color: surfaceColor,
+                      color: appThemes.surfaceColor(context),
                     )
                   ],
                 ),
