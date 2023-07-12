@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
@@ -23,7 +24,7 @@ class ManagerHomePage extends StatefulWidget {
   State<ManagerHomePage> createState() => _ManagerHomePageState();
 }
 
-final _loginStore = Modular.get<LoginStore>();
+final _loginController = Modular.get<LoginController>();
 final _managementController = Modular.get<ManagementController>();
 final _enterpriseId = Modular.args.params["enterpriseId"];
 
@@ -31,10 +32,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
-    _loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
+    _loginController.loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
     _managementController.getAllPendencies(_enterpriseId);
+    _loginController.loginStore.getAllOperators(_enterpriseId);
   }
 
   @override
@@ -44,7 +46,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
     return ValueListenableBuilder(
-      valueListenable: _loginStore,
+      valueListenable: _loginController.loginStore,
       builder: (_, state, __) {
         if (state is LoginLoadingState) {
           return Container(

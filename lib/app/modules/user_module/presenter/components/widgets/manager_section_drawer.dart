@@ -16,7 +16,7 @@ class ManagerSectionDrawer extends StatelessWidget {
     required this.currentPage,
     required this.managerEntity,
   });
-
+  
   double? radius;
   double? width;
   ManagerDrawerPage currentPage;
