@@ -62,10 +62,6 @@ class _ManagementPageState extends State<ManagementPage> {
             );
           }
           if (state is PendenciesListState) {
-            final dataMap = {
-              "operatorsList": state.operators,
-              "pendenciesList": state.pendencies,
-            };
             return Scaffold(
               appBar: AppBar(),
               drawer: ManagerSectionDrawer(

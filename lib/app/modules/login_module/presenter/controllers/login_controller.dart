@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class LoginController {
     operatorClosing: 'Pendente',
     businessPosition: EnterpriseBusinessPosition.cashOperator.position,
   );
+  EnterpriseEntity entepriseEntity = EnterpriseEntity();
 
   final loadingData = ValueNotifier(false);
   final operatorPasswordVisible = ValueNotifier(false);
@@ -401,6 +403,68 @@ class LoginController {
                       child: Text(
                         'Não',
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: surfaceColor),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  showUserOptionsDialog(BuildContext context, Color color) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        final surfaceColor = Theme.of(context).colorScheme.surface;
+        final appThemes = CashHelperThemes();
+        return SimpleDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          backgroundColor: color,
+          alignment: Alignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Criar conta para:', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 17, color: surfaceColor)),
+                const SizedBox(height: 80),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {
+                        Modular.to.pop();
+                        Modular.to.pushNamed("./${LoginRoutes.createOperator}", arguments: entepriseEntity);
+                      },
+                      style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(35),
+                          ),
+                          backgroundColor: appThemes.greenColor(context),
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
+                        'Operador',
+                        style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16, color: surfaceColor),
+                      ),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        Modular.to.pop();
+                        Modular.to.pushNamed("./${LoginRoutes.createManager}", arguments: entepriseEntity);
+                      },
+                      style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(35),
+                          ),
+                          backgroundColor: appThemes.blueColor(context),
+                          side: BorderSide(color: surfaceColor)),
+                      child: Text(
+                        'Gerente',
+                        style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16, color: surfaceColor),
                       ),
                     ),
                   ],

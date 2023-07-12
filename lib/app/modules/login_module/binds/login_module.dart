@@ -37,11 +37,11 @@ class LoginModule extends Module {
 
   final routesList = <ModularRoute>[
     ChildRoute(
-      LoginRoutes.createManager,
+      "/create-new-manager",
       child: (_, args) => CreateManagerPage(enterpriseEntity: args.data),
     ),
     ChildRoute(
-      LoginRoutes.createOperator,
+      "/create-new-operator",
       child: (_, args) => CreateOperatorPage(enterpriseEntity: args.data),
     ),
     ChildRoute(

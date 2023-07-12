@@ -51,7 +51,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: height * 0.12,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.home ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
+                itemColor: currentPage == ManagerDrawerPage.home ? appThemes.blueColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.home,
                 title: "Início",
                 width: width,
@@ -67,7 +67,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.management ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
+                itemColor: currentPage == ManagerDrawerPage.management ? appThemes.blueColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.manage_accounts,
                 title: "Gerenciamento",
                 width: width,
@@ -83,7 +83,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.adminOptions ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
+                itemColor: currentPage == ManagerDrawerPage.adminOptions ? appThemes.blueColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.screen_search_desktop_outlined,
                 title: "Opções Administrativas",
                 width: width,
@@ -99,7 +99,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                 height: itemSpacingHeight,
               ),
               DrawerTile(
-                itemColor: currentPage == ManagerDrawerPage.settings ? appThemes.greenColor(context) : appThemes.surfaceColor(context),
+                itemColor: currentPage == ManagerDrawerPage.settings ? appThemes.blueColor(context) : appThemes.surfaceColor(context),
                 icon: Icons.settings,
                 title: "Configurações",
                 width: width,

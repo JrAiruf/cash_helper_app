@@ -27,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _loginController.loginStore.restartLoginStoreState();
+    _loginController.entepriseEntity = widget.enterpriseEntity;
     _loginController.enterpriseId = widget.enterpriseEntity.enterpriseId!;
   }
 
@@ -158,7 +159,9 @@ class _LoginPageState extends State<LoginPage> {
                             child: Center(
                               child: TextButton(
                                 style: TextButton.styleFrom(),
-                                onPressed: () => Modular.to.pushNamed("./create-new-operator", arguments: widget.enterpriseEntity),
+                                onPressed: () {
+                                  _loginController.showUserOptionsDialog(context, appThemes.purpleColor(context));
+                                },
                                 child: Text(
                                   'Criar conta',
                                   style: Theme.of(context).textTheme.displaySmall,
