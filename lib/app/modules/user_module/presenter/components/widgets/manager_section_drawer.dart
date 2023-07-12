@@ -6,8 +6,6 @@ import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../management_module/domain/entities/pendency_entity.dart';
-import '../../../domain/entities/operator_entity.dart';
 import '../../controller/manager_controller.dart';
 
 class ManagerSectionDrawer extends StatelessWidget {
@@ -16,14 +14,9 @@ class ManagerSectionDrawer extends StatelessWidget {
     this.radius,
     this.width,
     this.enterpriseId,
-    this.operatorsWithPendency,
-    this.pendencies,
     required this.currentPage,
     required this.managerEntity,
   });
-
-  List<OperatorEntity>? operatorsWithPendency;
-  List<PendencyEntity>? pendencies;
   double? radius;
   double? width;
   ManagerDrawerPage currentPage;
@@ -36,11 +29,6 @@ class ManagerSectionDrawer extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final sizeFrame = height <= 800.0;
     final itemSpacingHeight = sizeFrame ? height * 0.015 : height * 0.02;
-    final managementSectionObjects = {
-      "manager": managerEntity,
-      "operatorsList": operatorsWithPendency,
-      "pendenciesList": pendencies,
-    };
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(radius ?? 5),
@@ -87,7 +75,7 @@ class ManagerSectionDrawer extends StatelessWidget {
                   Modular.to.pop();
                   Modular.to.navigate(
                     "${UserRoutes.managementPage}$enterpriseId",
-                    arguments: managementSectionObjects,
+                    arguments: managerEntity,
                   );
                 },
               ),

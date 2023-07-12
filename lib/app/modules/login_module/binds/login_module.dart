@@ -13,7 +13,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 import '../infra/data/login_repository.dart';
 import '../infra/repository/login_repository_impl.dart';
-import '../presenter/login_prensentation_binds/login_presentation_binds.dart';
+import 'login_prensentation_binds/login_presentation_binds.dart';
 import '../presenter/pages/enterprise_auth_page.dart';
 import '../presenter/pages/recovery_password_page.dart';
 

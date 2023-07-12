@@ -5,7 +5,6 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/l
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/auth_error_view.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/user_not_found_view.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';

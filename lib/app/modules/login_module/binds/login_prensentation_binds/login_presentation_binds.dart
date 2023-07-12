@@ -1,7 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../controllers/login_controller.dart';
-import '../stores/login_store.dart';
+import '../../presenter/controllers/login_controller.dart';
+import '../../presenter/stores/login_store.dart';
 
 class LoginPresentationBinds {
   static final binds = <Bind>[

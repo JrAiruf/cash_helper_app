@@ -1,7 +1,5 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
-import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
@@ -37,7 +35,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
     _managementController.getAllPendencies(_enterpriseId);
-    _loginController.getAllOperators();
   }
 
   @override
@@ -66,8 +63,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             drawer: ManagerSectionDrawer(
               managerEntity: manager,
               enterpriseId: _enterpriseId,
-              operatorsWithPendency: _loginController.operatorsList,
-              pendencies: _managementController.pendencies.value,
               currentPage: ManagerDrawerPage.home,
               radius: 20,
               width: width * 0.75,

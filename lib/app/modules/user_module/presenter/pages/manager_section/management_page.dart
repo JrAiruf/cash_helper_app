@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/manager_section_drawer.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -19,12 +18,6 @@ class ManagementPage extends StatefulWidget {
 }
 
 final _enterpriseId = Modular.args.params["enterpriseId"];
-final _pendencies = Modular.args.data["pendenciesList"];
-final _operators = Modular.args.data["operatorsList"];
-final listObjects = {
-  "pendenciesList": _pendencies,
-  "operatorsList": _operators,
-};
 
 class _ManagementPageState extends State<ManagementPage> {
   @override
@@ -114,16 +107,15 @@ class _ManagementPageState extends State<ManagementPage> {
                       PendenciesInformationCard(
                         height: height,
                         enterpriseId: _enterpriseId,
-                        pendencies: _pendencies,
-                        operators: _operators,
+                        pendencies: [],
+                        operators: [],
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       ManagerViewButton(
                         onPressed: () => Modular.to.pushNamed(
-                          "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
-                          arguments: listObjects,
+                          "${ManagementRoutes.pendenciesListPage}$_enterpriseId"
                         ),
                       ),
                     ],

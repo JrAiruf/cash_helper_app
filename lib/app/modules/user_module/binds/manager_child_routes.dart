@@ -17,7 +17,7 @@ class ManagerChildRoutes {
     ChildRoute(
       "/management-page/:enterpriseId",
       child: (_, args) => ManagementPage(
-        managerEntity: args.data["manager"],
+        managerEntity: args.data,
       ),
     ),
     ChildRoute(
