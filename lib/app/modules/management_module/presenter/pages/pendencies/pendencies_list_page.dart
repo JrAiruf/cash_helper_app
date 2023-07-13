@@ -33,7 +33,6 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    final operatorsWithPendencies = widget.operatorsList.where((operatorEntity) => operatorEntity.hasPendencies!).toList();
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -92,10 +91,10 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: ListView.builder(
-                            itemCount: operatorsWithPendencies.length,
+                            itemCount: widget.operatorsList.length,
                             itemBuilder: (_, i) {
                               _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId);
-                              final pendingOperator = operatorsWithPendencies.firstWhere((operatorEntity) => operatorEntity.operatorId == operatorsWithPendencies[i].operatorId);
+                              final pendingOperator = widget.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == widget.operatorsList[i].operatorId);
                               _managementController.getAnnotationsByOperator(pendingOperator.operatorId!);
                               _managementController.getPendingAnnotationsByOperator(pendingOperator.operatorId!);
                               return Padding(

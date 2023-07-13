@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/manager_section_drawer.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -29,6 +30,7 @@ class _ManagementPageState extends State<ManagementPage> {
     _managementController.enterpriseId = _enterpriseId;
   }
 
+  List<OperatorEntity> operators = [];
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -62,6 +64,13 @@ class _ManagementPageState extends State<ManagementPage> {
             );
           }
           if (state is PendenciesListState) {
+            state.operators.map((op) {
+              final operatorsPendenciesIdList = state.pendencies.map((e) => e.operatorId).toList();
+              if (operatorsPendenciesIdList.contains(op.operatorId)) {
+                operators.clear();
+                operators.add(op);
+              }
+            }).toList();
             return Scaffold(
               appBar: AppBar(),
               drawer: ManagerSectionDrawer(
@@ -144,7 +153,7 @@ class _ManagementPageState extends State<ManagementPage> {
                                 height: height,
                                 enterpriseId: _enterpriseId,
                                 pendencies: state.pendencies,
-                                operators: state.operators,
+                                operators: operators,
                               ),
                               const SizedBox(
                                 height: 15,
@@ -154,7 +163,7 @@ class _ManagementPageState extends State<ManagementPage> {
                                   "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
                                   arguments: {
                                     "pendenciesList": state.pendencies,
-                                    "operatorsList": state.operators,
+                                    "operatorsList": operators,
                                   },
                                 ),
                               ),
