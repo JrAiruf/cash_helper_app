@@ -145,11 +145,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                       );
                                     }
                                     if (state is PendenciesListState) {
+                                      final pendenciesList = state.pendencies;
                                       return OperatorInfoListViewComponent(
                                         enterpriseId: _enterpriseId,
                                         operators: operatorsList,
                                         annotations: _managementController.annotationsListStore.value,
-                                        pendencies: state.pendencies,
+                                        pendencies: pendenciesList,
                                       );
                                     } else {
                                       return Container();

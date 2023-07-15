@@ -95,8 +95,9 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                             itemBuilder: (_, i) {
                               _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId);
                               final pendingOperator = widget.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == widget.operatorsList[i].operatorId);
+                              final operatorAnnotations = _managementController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == pendingOperator.operatorId).toList();
+                              final operatorPendencies = widget.pendencies.where((pendency) => pendency.operatorId == pendingOperator.operatorId).toList();
                               _managementController.getAnnotationsByOperator(pendingOperator.operatorId!);
-                              _managementController.getPendingAnnotationsByOperator(pendingOperator.operatorId!);
                               return Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 3),
                                 child: Container(
@@ -149,7 +150,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                               backgroundColor: appThemes.surfaceColor(context),
                                               radius: height * 0.02,
                                               child: Text(
-                                                "${_managementController.operatorAnnotations.value.length}",
+                                                "${operatorAnnotations.length}",
                                                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                                       color: appThemes.primaryColor(context),
                                                     ),
@@ -170,7 +171,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                               backgroundColor: appThemes.surfaceColor(context),
                                               radius: height * 0.02,
                                               child: Text(
-                                                "${widget.pendencies.length}",
+                                                "${operatorPendencies.length}",
                                                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                                       color: appThemes.primaryColor(context),
                                                     ),

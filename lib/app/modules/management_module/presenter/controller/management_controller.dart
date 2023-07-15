@@ -79,11 +79,6 @@ class ManagementController {
     operatorAnnotations.value.addAll(operatorAnnotationsList);
   }
 
-  Future<void>? getPendingAnnotationsByOperator(String operatorId) async {
-    final matchingPendencies = pendencies.value.where((pendency) => pendency.operatorId == operatorId).toList();
-    operatorsPendencies.value.clear();
-    operatorsPendencies.value.addAll(matchingPendencies);
-  }
 
   Future<void>? getAllOperatorsWithPendencies(String enterpriseId) async {
     final operators = await _loginStore.getAllOperators(enterpriseId);

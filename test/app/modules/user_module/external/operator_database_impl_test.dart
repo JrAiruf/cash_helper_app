@@ -16,8 +16,7 @@ import '../../enterprise_module/external/enterprise_database_test.dart';
 import '../../login_module/external/login_database_test.dart';
 
 class OperatorDatabaseMock implements OperatorDatabase {
-  OperatorDatabaseMock(
-      {required FirebaseAuth auth, required FirebaseFirestore datasource})
+  OperatorDatabaseMock({required FirebaseAuth auth, required FirebaseFirestore datasource})
       : _auth = auth,
         _datasource = datasource;
 
@@ -25,49 +24,34 @@ class OperatorDatabaseMock implements OperatorDatabase {
   final FirebaseFirestore _datasource;
   final dataVerifier = DataVerifier();
   @override
-  Future<void> changeUserEmail(String? newEmail, String? operatorCode,
-      String? operatorPassword, String? collection) async {
+  Future<void> changeUserEmail(String? newEmail, String? operatorCode, String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
-    if (dataVerifier.validateInputData(
-        inputs: [newEmail, operatorCode, operatorPassword])) {
+    if (dataVerifier.validateInputData(inputs: [newEmail, operatorCode, operatorPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
-      final databaseOperatorsList = operatorsCollectionDocs.docs
-          .map((databaseOperator) => databaseOperator.data())
-          .toList();
+      final databaseOperatorsList = operatorsCollectionDocs.docs.map((databaseOperator) => databaseOperator.data()).toList();
       final operatorToBeDeleted = databaseOperatorsList.firstWhere(
         (operatorMap) {
-          return operatorMap["operatorPassword"] == operatorPassword &&
-              operatorMap["operatorCode"] == operatorCode;
+          return operatorMap["operatorPassword"] == operatorPassword && operatorMap["operatorCode"] == operatorCode;
         },
       );
-      await operatorsCollection
-          .doc(operatorToBeDeleted["operatorId"])
-          .update({"operatorEmail": newEmail});
+      await operatorsCollection.doc(operatorToBeDeleted["operatorId"]).update({"operatorEmail": newEmail});
     } else {
       return;
     }
   }
 
   @override
-  Future<void> deleteUserAccount(String? operatorCode, String? operatorEmail,
-      String? operatorPassword, String? collection) async {
+  Future<void> deleteUserAccount(String? operatorCode, String? operatorEmail, String? operatorPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection ?? "");
-    if (dataVerifier.validateInputData(
-        inputs: [operatorEmail, operatorCode, operatorPassword, collection])) {
+    if (dataVerifier.validateInputData(inputs: [operatorEmail, operatorCode, operatorPassword, collection])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
-      final databaseOperatorsList = operatorsCollectionDocs.docs
-          .map((databaseOperator) => databaseOperator.data())
-          .toList();
+      final databaseOperatorsList = operatorsCollectionDocs.docs.map((databaseOperator) => databaseOperator.data()).toList();
       final operatorToBeDeleted = databaseOperatorsList.firstWhere(
         (operatorMap) {
-          return operatorMap["operatorPassword"] == operatorPassword &&
-              operatorMap["operatorEmail"] == operatorEmail &&
-              operatorMap["operatorCode"] == operatorCode;
+          return operatorMap["operatorPassword"] == operatorPassword && operatorMap["operatorEmail"] == operatorEmail && operatorMap["operatorCode"] == operatorCode;
         },
       );
-      await _auth.signInWithEmailAndPassword(
-          email: operatorToBeDeleted["operatorEmail"],
-          password: operatorToBeDeleted["operatorPassword"]);
+      await _auth.signInWithEmailAndPassword(email: operatorToBeDeleted["operatorEmail"], password: operatorToBeDeleted["operatorPassword"]);
       await _auth.currentUser?.delete();
       await operatorsCollection.doc(operatorToBeDeleted["operatorId"]).delete();
     } else {
@@ -76,45 +60,33 @@ class OperatorDatabaseMock implements OperatorDatabase {
   }
 
   @override
-  Future<void> changeUserPassword(String? newPassword, String? operatorCode,
-      String? currentPassword, String? collection) async {
+  Future<void> changeUserPassword(String? newPassword, String? operatorCode, String? currentPassword, String? collection) async {
     final operatorsCollection = _datasource.collection(collection!);
-    if (dataVerifier.validateInputData(
-        inputs: [newPassword, operatorCode, currentPassword])) {
+    if (dataVerifier.validateInputData(inputs: [newPassword, operatorCode, currentPassword])) {
       final operatorsCollectionDocs = await operatorsCollection.get();
-      final databaseOperatorsList = operatorsCollectionDocs.docs
-          .map((databaseOperator) => databaseOperator.data())
-          .toList();
+      final databaseOperatorsList = operatorsCollectionDocs.docs.map((databaseOperator) => databaseOperator.data()).toList();
       final operatorToBeModified = databaseOperatorsList.firstWhere(
         (operatorMap) {
-          return operatorMap["operatorPassword"] == currentPassword &&
-              operatorMap["operatorCode"] == operatorCode;
+          return operatorMap["operatorPassword"] == currentPassword && operatorMap["operatorCode"] == operatorCode;
         },
       );
-      await _auth.signInWithEmailAndPassword(
-          email: operatorToBeModified["operatorEmail"],
-          password: operatorToBeModified["operatorPassword"]);
+      await _auth.signInWithEmailAndPassword(email: operatorToBeModified["operatorEmail"], password: operatorToBeModified["operatorPassword"]);
       await _auth.currentUser?.updatePassword(newPassword!);
-      await operatorsCollection
-          .doc(operatorToBeModified["operatorId"])
-          .update({"operatorPassword": newPassword});
+      await operatorsCollection.doc(operatorToBeModified["operatorId"]).update({"operatorPassword": newPassword});
     } else {
       return;
     }
   }
 
   @override
-  Future<void> openOperatorCash(
-      String? enterpriseId, String? operatorId, String? oppeningTime) async {
-    final operatorsCollection = _datasource
-        .collection("enterprise")
-        .doc(enterpriseId!)
-        .collection("operator");
+  Future<void> openOperatorCash(String? enterpriseId, String? operatorId, String? oppeningTime) async {
+    final operatorsCollection = _datasource.collection("enterprise").doc(enterpriseId!).collection("operator");
     try {
       if (dataVerifier.validateInputData(inputs: [operatorId, oppeningTime])) {
         await operatorsCollection.doc(operatorId!).update({
           "operatorEnabled": true,
           "operatorOppening": oppeningTime,
+          "operatorClosing": "Pendente",
         });
       } else {
         throw OppeningCashError(errorMessage: "Operação não concluída");
@@ -125,15 +97,10 @@ class OperatorDatabaseMock implements OperatorDatabase {
   }
 
   @override
-  Future<void> closeOperatorCash(
-      String? enterpriseId, String? operatorId, String? closingTime) async {
+  Future<void> closeOperatorCash(String? enterpriseId, String? operatorId, String? closingTime) async {
     try {
-      if (dataVerifier
-          .validateInputData(inputs: [enterpriseId, operatorId, closingTime])) {
-        final operatorsCollection = _datasource
-            .collection("enterprise")
-            .doc(enterpriseId)
-            .collection("operator");
+      if (dataVerifier.validateInputData(inputs: [enterpriseId, operatorId, closingTime])) {
+        final operatorsCollection = _datasource.collection("enterprise").doc(enterpriseId).collection("operator");
         await operatorsCollection.doc(operatorId).update({
           "operatorEnabled": false,
           "operatorClosing": closingTime,
@@ -164,14 +131,8 @@ void main() {
     () {
       authMock = MockFirebaseAuth(mockUser: user);
       firebaseMock = FakeFirebaseFirestore();
-      loginDatabase = FirebaseDatabaseMock(
-          database: firebaseMock,
-          auth: authMock,
-          encryptService: EncryptService(),
-          uuid: const Uuid(),
-          dataVerifier: DataVerifier());
-      enterpriseDatabase = EnterpriseDatabaseMock(
-          database: firebaseMock, auth: authMock, uuid: const Uuid());
+      loginDatabase = FirebaseDatabaseMock(database: firebaseMock, auth: authMock, encryptService: EncryptService(), uuid: const Uuid(), dataVerifier: DataVerifier());
+      enterpriseDatabase = EnterpriseDatabaseMock(database: firebaseMock, auth: authMock, uuid: const Uuid());
       database = OperatorDatabaseMock(auth: authMock, datasource: firebaseMock);
     },
   );
@@ -181,28 +142,15 @@ void main() {
       test(
         "Change operator enabled status from false to true",
         () async {
-          await enterpriseDatabase
-              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final enterprisesList =
-              await firebaseMock.collection("enterprise").get();
+          await enterpriseDatabase.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList = await firebaseMock.collection("enterprise").get();
           final createdEnterprise = enterprisesList.docs.first.data();
-          final createdOperator = await loginDatabase.register(
-              LoginTestObjects.newOperator,
-              createdEnterprise["enterpriseId"],
-              LoginTestObjects.newOperator["businessPosition"]);
-          await database.openOperatorCash(createdEnterprise["enterpriseId"],
-              createdOperator?["operatorId"], "Now");
-          final operatorCollection = await firebaseMock
-              .collection("enterprise")
-              .doc(createdEnterprise["enterpriseId"])
-              .collection("operator")
-              .get();
-          final enabledOperator = operatorCollection.docs
-              .firstWhere((element) => element["operatorEnabled"] == true)
-              .data();
+          final createdOperator = await loginDatabase.register(LoginTestObjects.newOperator, createdEnterprise["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          await database.openOperatorCash(createdEnterprise["enterpriseId"], createdOperator?["operatorId"], "Now");
+          final operatorCollection = await firebaseMock.collection("enterprise").doc(createdEnterprise["enterpriseId"]).collection("operator").get();
+          final enabledOperator = operatorCollection.docs.firstWhere((element) => element["operatorEnabled"] == true).data();
           expect(enabledOperator, isA<Map<String, dynamic>>());
-          expect(enabledOperator["operatorId"],
-              equals(createdOperator?["operatorId"]));
+          expect(enabledOperator["operatorId"], equals(createdOperator?["operatorId"]));
           expect(enabledOperator["operatorEnabled"], equals(true));
           expect(enabledOperator["operatorOppening"], equals("Now"));
         },
@@ -210,8 +158,7 @@ void main() {
       test(
         'Fail to enable operator status',
         () async {
-          expect(database.openOperatorCash("enterpriseId", "", "Now"),
-              throwsA(isA<OppeningCashError>()));
+          expect(database.openOperatorCash("enterpriseId", "", "Now"), throwsA(isA<OppeningCashError>()));
         },
       );
     },
@@ -222,28 +169,15 @@ void main() {
       test(
         "Change operator enabled status from true to false",
         () async {
-          await enterpriseDatabase
-              .createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final enterprisesList =
-              await firebaseMock.collection("enterprise").get();
+          await enterpriseDatabase.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList = await firebaseMock.collection("enterprise").get();
           final createdEnterprise = enterprisesList.docs.first.data();
-          final createdOperator = await loginDatabase.register(
-              LoginTestObjects.newOperator,
-              createdEnterprise["enterpriseId"],
-              LoginTestObjects.newOperator["businessPosition"]);
-          await database.closeOperatorCash(createdEnterprise["enterpriseId"],
-              createdOperator?["operatorId"], "Now");
-          final operatorCollection = await firebaseMock
-              .collection("enterprise")
-              .doc(createdEnterprise["enterpriseId"])
-              .collection("operator")
-              .get();
-          final enabledOperator = operatorCollection.docs
-              .firstWhere((element) => element["operatorEnabled"] == false)
-              .data();
+          final createdOperator = await loginDatabase.register(LoginTestObjects.newOperator, createdEnterprise["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          await database.closeOperatorCash(createdEnterprise["enterpriseId"], createdOperator?["operatorId"], "Now");
+          final operatorCollection = await firebaseMock.collection("enterprise").doc(createdEnterprise["enterpriseId"]).collection("operator").get();
+          final enabledOperator = operatorCollection.docs.firstWhere((element) => element["operatorEnabled"] == false).data();
           expect(enabledOperator, isA<Map<String, dynamic>>());
-          expect(enabledOperator["operatorId"],
-              equals(createdOperator?["operatorId"]));
+          expect(enabledOperator["operatorId"], equals(createdOperator?["operatorId"]));
           expect(enabledOperator["operatorEnabled"], equals(false));
           expect(enabledOperator["operatorOppening"], equals("Pendente"));
           expect(enabledOperator["operatorClosing"], equals("Now"));
@@ -252,8 +186,7 @@ void main() {
       test(
         'Fail to disable operator status',
         () async {
-          expect(database.openOperatorCash("enterpriseId", "", "Now"),
-              throwsA(isA<OppeningCashError>()));
+          expect(database.openOperatorCash("enterpriseId", "", "Now"), throwsA(isA<OppeningCashError>()));
         },
       );
     },

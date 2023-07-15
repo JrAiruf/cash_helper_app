@@ -7,7 +7,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../user_module/domain/entities/operator_entity.dart';
 
 class PendenciesInformationCard extends StatefulWidget {
-  PendenciesInformationCard({super.key, required this.enterpriseId, required this.height, required this.operators, required this.pendencies});
+  const PendenciesInformationCard({super.key, required this.enterpriseId, required this.height, required this.operators, required this.pendencies});
 
   final double height;
   final List<PendencyEntity> pendencies;
@@ -20,22 +20,17 @@ class PendenciesInformationCard extends StatefulWidget {
 
 class _PendenciesInformationCardState extends State<PendenciesInformationCard> {
   final _managementController = Modular.get<ManagementController>();
-
-  final operatorPendencies = ValueNotifier(<PendencyEntity>[]);
-  final operatorsList = ValueNotifier(<OperatorEntity>[]);
-  @override
-  void initState() {
-    super.initState();
-    operatorPendencies.value.clear();
-    operatorPendencies.value.addAll(widget.pendencies);
-    operatorsList.value.clear();
-    operatorsList.value.addAll(widget.operators);
-  }
-
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
     final sizeFrame = widget.height <= 800;
+    final periodList = widget.pendencies.map((pendency) => pendency.pendencyPeriod).toList();
+    List<String> periods = [];
+    for (var period in periodList) {
+      if (!periods.contains(period)) {
+        periods.add(period!);
+      }
+    }
     return Container(
       height: sizeFrame ? widget.height * 0.22 : widget.height * 0.23,
       decoration: BoxDecoration(border: Border.all(color: appTheme.surfaceColor(context), width: 0.5), color: appTheme.primaryColor(context), borderRadius: BorderRadius.circular(20)),
@@ -56,14 +51,10 @@ class _PendenciesInformationCardState extends State<PendenciesInformationCard> {
                         "Todas:",
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
                       ),
-                      AnimatedBuilder(
-                          animation: operatorPendencies,
-                          builder: (_, __) {
-                            return Text(
-                              "${operatorPendencies.value.length}",
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
-                            );
-                          }),
+                      Text(
+                        "${widget.pendencies.length}",
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
+                      ),
                     ],
                   ),
                   Row(
@@ -73,14 +64,10 @@ class _PendenciesInformationCardState extends State<PendenciesInformationCard> {
                         "Operadores:",
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
                       ),
-                      AnimatedBuilder(
-                          animation: operatorsList,
-                          builder: (_, __) {
-                            return Text(
-                              "${operatorsList.value.length}",
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
-                            );
-                          }),
+                      Text(
+                        "${widget.operators.length}",
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appTheme.surfaceColor(context)),
+                      ),
                     ],
                   ),
                   Row(
@@ -99,9 +86,9 @@ class _PendenciesInformationCardState extends State<PendenciesInformationCard> {
               height: widget.height * 0.04,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: _managementController.periodList.value.length,
+                itemCount: periods.length,
                 itemBuilder: (_, i) {
-                  final period = _managementController.periodList.value[i];
+                  final period = periods[i];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 7),
                     child: Container(
