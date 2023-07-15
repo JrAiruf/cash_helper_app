@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../domain/entities/manager_entity.dart';
-import '../../components/widgets/manager_section_drawer.dart';
-import '../../controller/manager_controller.dart';
+import '../../../../domain/entities/manager_entity.dart';
+import '../../../components/widgets/manager_section_drawer.dart';
+import '../../../controller/manager_controller.dart';
 
 class ManagerSettingsPage extends StatefulWidget {
   const ManagerSettingsPage({super.key, required this.managerEntity});

@@ -2,8 +2,8 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../components/widgets/manager_section_drawer.dart';
-import '../../controller/manager_controller.dart';
+import '../../../components/widgets/manager_section_drawer.dart';
+import '../../../controller/manager_controller.dart';
 
 class AdminOptionsPage extends StatefulWidget {
   const AdminOptionsPage({super.key, required this.managerEntity});

@@ -155,6 +155,7 @@ class _ManagementPageState extends State<ManagementPage> {
                                 onPressed: () => Modular.to.pushNamed(
                                   "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
                                   arguments: {
+                                    "manager": widget.managerEntity,
                                     "pendenciesList": state.pendencies,
                                     "operatorsList": pendingOperators,
                                   },

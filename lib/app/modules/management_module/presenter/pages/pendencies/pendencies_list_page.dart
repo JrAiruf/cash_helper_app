@@ -1,7 +1,10 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/manager_view_button.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_close_page.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -9,8 +12,9 @@ import '../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../domain/entities/pendency_entity.dart';
 
 class PendenciesListPage extends StatefulWidget {
-  const PendenciesListPage({required this.operatorsList, required this.pendencies, super.key});
+  const PendenciesListPage({required this.managerEntity,required this.operatorsList, required this.pendencies, super.key});
 
+  final ManagerEntity managerEntity;
   final List<OperatorEntity> operatorsList;
   final List<PendencyEntity> pendencies;
   @override
@@ -182,7 +186,13 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                         Align(
                                           alignment: Alignment.topLeft,
                                           child: ManagerViewButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Modular.to.pushNamed("${ManagementRoutes.operatorActivityPage}$enterpriseId", arguments: {
+                                                "manager":widget.managerEntity,
+                                                "operator": pendingOperator,
+                                                "pendencies": operatorPendencies,
+                                              });
+                                            },
                                           ),
                                         ),
                                         SizedBox(

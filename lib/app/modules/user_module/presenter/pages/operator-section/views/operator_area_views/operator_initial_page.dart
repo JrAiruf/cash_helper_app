@@ -1,7 +1,6 @@
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/operator_widgets/cash_number_component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../../../../annotations_module/domain/entities/annotation_entity.dart';
 import '../../../../../../enterprise_module/domain/entities/payment_method_entity.dart';
@@ -11,13 +10,7 @@ import '../../../../components/cash_helper_bottom_navigation_bar.dart';
 import '../../../../components/widgets/annotations_list_view_component.dart';
 
 class OperatorInitialPage extends StatefulWidget {
-  const OperatorInitialPage(
-      {super.key,
-      required this.operatorEntity,
-      this.position,
-      required this.pageController,
-      required this.annotations,
-      required this.enterpriseId});
+  const OperatorInitialPage({super.key, required this.operatorEntity, this.position, required this.pageController, required this.annotations, required this.enterpriseId});
   final List<AnnotationEntity> annotations;
   final OperatorEntity operatorEntity;
   final BottomNavigationBarPosition? position;
@@ -44,25 +37,13 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
-    final surfaceColor = Theme.of(context).colorScheme.surface;
-    final backgroundContainer = Theme.of(context).colorScheme.onBackground;
-    final notFinishedAnnotations = widget.annotations
-        .where(((element) =>
-            element.annotationConcluied == false &&
-            element.annotationPaymentMethod == paymentMethod))
-        .toList();
-    final finishedAnnotations = widget.annotations
-        .where(((element) =>
-            element.annotationConcluied == true &&
-            element.annotationPaymentMethod == paymentMethod))
-        .toList();
+    final notFinishedAnnotations = widget.annotations.where(((element) => element.annotationConcluied == false && element.annotationPaymentMethod == paymentMethod)).toList();
+    final finishedAnnotations = widget.annotations.where(((element) => element.annotationConcluied == true && element.annotationPaymentMethod == paymentMethod)).toList();
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: backgroundContainer,
+        color: appThemes.backgroundColor(context),
       ),
       child: Stack(
         children: [
@@ -71,7 +52,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
             child: Container(
               height: height * 0.15,
               decoration: BoxDecoration(
-                color: primaryColor,
+                color: appThemes.primaryColor(context),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
@@ -99,13 +80,8 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            _doneAnnotations
-                                ? "Finalizadas"
-                                : "Não Finalizadas",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
+                            _doneAnnotations ? "Finalizadas" : "Não Finalizadas",
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: appThemes.surfaceColor(context),
                                 ),
                           ),
@@ -115,36 +91,31 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                             child: AnimatedBuilder(
                                 animation: _paymentMethodsStore,
                                 builder: (context, _) {
-                                  return DropdownButtonFormField<
-                                      PaymentMethodEntity>(
+                                  return DropdownButtonFormField<PaymentMethodEntity>(
                                     borderRadius: BorderRadius.circular(15),
                                     decoration: InputDecoration(
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
-                                          color: surfaceColor,
+                                          color: appThemes.surfaceColor(context),
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
-                                          color: surfaceColor,
+                                          color: appThemes.surfaceColor(context),
                                         ),
                                       ),
                                     ),
                                     onChanged: (value) {
                                       setState(() {
-                                        paymentMethod =
-                                            value!.paymentMethodName!;
+                                        paymentMethod = value!.paymentMethodName!;
                                       });
                                     },
                                     hint: Text(
                                       "Filtrar",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(
-                                            color: surfaceColor,
+                                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                            color: appThemes.surfaceColor(context),
                                           ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -154,11 +125,8 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                                             value: paymentMethod,
                                             child: Text(
                                               paymentMethod.paymentMethodName!,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displaySmall
-                                                  ?.copyWith(
-                                                    color: surfaceColor,
+                                              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                                    color: appThemes.surfaceColor(context),
                                                   ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -182,15 +150,14 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                           AnnoationsListViewComponent(
                               borderColor: appThemes.surfaceColor(context),
                               seccundaryColor: appThemes.surfaceColor(context),
-                              backgroundColor: primaryColor,
+                              backgroundColor: appThemes.primaryColor(context),
                               itemWidth: sizeFrame ? width * 0.33 : width * 0.4,
-                              itemHeight:
-                                  sizeFrame ? height * 0.025 : height * 0.033,
+                              itemHeight: sizeFrame ? height * 0.025 : height * 0.033,
                               annotations: finishedAnnotations),
                           AnnoationsListViewComponent(
                               borderColor: appThemes.surfaceColor(context),
                               seccundaryColor: appThemes.surfaceColor(context),
-                              backgroundColor: primaryColor,
+                              backgroundColor: appThemes.primaryColor(context),
                               itemWidth: width * 0.4,
                               annotations: notFinishedAnnotations),
                         ],
@@ -209,10 +176,7 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CashNumberComponent(
-                      operatorEntity: widget.operatorEntity,
-                      backgroundColor: surfaceColor,
-                      radius: 16),
+                  CashNumberComponent(operatorEntity: widget.operatorEntity, backgroundColor: appThemes.surfaceColor(context), radius: 16),
                   Text(
                     "${widget.operatorEntity.operatorName}",
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
@@ -227,15 +191,13 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
             top: height * 0.245,
             left: 2,
             child: Switch(
-              activeColor: tertiaryColor,
+              activeColor: appThemes.greenColor(context),
               value: _doneAnnotations,
               onChanged: (value) {
                 setState(
                   () {
                     _doneAnnotations = !_doneAnnotations;
-                    _listTypeController.animateToPage(_doneAnnotations ? 0 : 1,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.linear);
+                    _listTypeController.animateToPage(_doneAnnotations ? 0 : 1, duration: const Duration(milliseconds: 400), curve: Curves.linear);
                   },
                 );
               },

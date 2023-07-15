@@ -1,10 +1,10 @@
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/operator_activity_page.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/views/admin_options_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
-import '../presenter/pages/manager_section/admin_options_page.dart';
 import '../presenter/pages/manager_section/controll_panel_page.dart';
 import '../presenter/pages/manager_section/management_page.dart';
 import '../presenter/pages/manager_section/manager_home_page.dart';
-import '../presenter/pages/manager_section/manager_settings_page.dart';
+import '../presenter/pages/manager_section/views/manager_settings_page.dart';
 
 class ManagerChildRoutes {
   static List<ChildRoute> routes = [
@@ -37,6 +37,10 @@ class ManagerChildRoutes {
       child: (_, args) => ControllPanelPage(
         managerEntity: args.data,
       ),
+    ),
+    ChildRoute(
+      "/operator-activity-page/:enterpriseId",
+      child: (_, args) => OperatorActivityPage(managerEntity: args.data["manager"], operatorEntity: args.data["operator"], pendencies: args.data["pendencies"]),
     ),
   ];
 }

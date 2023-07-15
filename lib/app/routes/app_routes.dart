@@ -26,6 +26,7 @@ class UserRoutes {
   static const operatorProfilePage = "/user-module/operator-profile-page/";
   static const operatorSettingsPage = "/user-module/operator-settings-page/";
 }
+
 class AnnotationRoutes {
   static const createAnnotationPage = "/annotations-module/";
   static const annotationPage = "/annotations-module/annotation-page/";
@@ -38,5 +39,6 @@ class ManagementRoutes {
   static const createPaymentMethodPage = "/management-module/create-payment-method-page/";
   static const removePaymentMethodPage = "/management-module/remove-payment-method-page/";
   static const pendenciesListPage = "/management-module/pendencies-list-page/";
+  static const operatorActivityPage = "/user-module/operator-activity-page/";
   static const controllPanelPage = "/management-module/controll-panel-page/";
 }
