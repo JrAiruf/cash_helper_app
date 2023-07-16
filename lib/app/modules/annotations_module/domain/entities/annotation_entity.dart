@@ -13,14 +13,14 @@ class AnnotationEntity {
   
   AnnotationEntity({
    this.annotationId,
-   required this.annotationSaleTime,
-   required this.annotationCreatorId,
-   required this.annotationSaleDate,
-   required this.annotationSaleValue,
-   required this.annotationPaymentMethod,
-   required this.annotationReminder,
-   required this.annotationClientAddress,
-   required this.annotationConcluied,
-   required this.annotationWithPendency,
+   this.annotationSaleTime,
+   this.annotationCreatorId,
+   this.annotationSaleDate,
+   this.annotationSaleValue,
+   this.annotationPaymentMethod,
+   this.annotationReminder,
+   this.annotationClientAddress,
+   this.annotationConcluied,
+   this.annotationWithPendency,
   });
 }

@@ -91,9 +91,14 @@ class AnnotationsRepositoryMock implements AnnotationRepository {
   }
 
   @override
-  Future<List<AnnotationModel>?>? getAllPendingAnnotations(String? enterpriseId) {
-    // TODO: implement getAllPendingAnnotations
-    throw UnimplementedError();
+  Future<List<AnnotationModel>?>? getAllPendingAnnotations(String? enterpriseId) async {
+    final datasoourceAnnotationsList = await _datasource.getAllPendingAnnotations(enterpriseId!);
+    if (enterpriseId.isNotEmpty) {
+      final annotationsModelList = datasoourceAnnotationsList?.map((annotationMap) => AnnotationModel.fromMap(annotationMap)).toList();
+      return annotationsModelList;
+    } else {
+      return [];
+    }
   }
 }
 
@@ -145,6 +150,32 @@ void main() {
                 AnnotationsTestObjects.databaseAnnotation,
               ]);
           final annotationsList = await repository.getAllAnnotations("");
+          expect(annotationsList?.isNotEmpty, equals(false));
+        },
+      );
+    },
+  );
+  group(
+    "GetAllPendingAnnotations Function Should",
+    () {
+      test(
+        "Return a List<AnnotationModel>",
+        () async {
+          when(datasource.getAllPendingAnnotations(any)).thenAnswer((_) async => [
+                AnnotationsTestObjects.databasePendingAnnotation,
+              ]);
+          final annotationsList = await repository.getAllPendingAnnotations("enterpriseId");
+          expect(annotationsList, isA<List<AnnotationModel>>());
+          expect(annotationsList?.isNotEmpty, equals(true));
+        },
+      );
+      test(
+        "Fail returning a List<AnnotationModel>(returns [])",
+        () async {
+          when(datasource.getAllAnnotations(any)).thenAnswer((_) async => [
+                AnnotationsTestObjects.databaseAnnotation,
+              ]);
+          final annotationsList = await repository.getAllPendingAnnotations("");
           expect(annotationsList?.isNotEmpty, equals(false));
         },
       );

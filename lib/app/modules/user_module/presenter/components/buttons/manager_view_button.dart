@@ -2,9 +2,10 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 
 class ManagerViewButton extends StatelessWidget {
-  const ManagerViewButton({required this.onPressed, super.key});
+  const ManagerViewButton({required this.onPressed, this.text,super.key});
 
   final Function() onPressed;
+  final String? text;
   @override
   Widget build(BuildContext context) {
     final appThemes = CashHelperThemes();
@@ -35,7 +36,7 @@ class ManagerViewButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: Text(
-          "Visualizar",
+          text ?? "",
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ),

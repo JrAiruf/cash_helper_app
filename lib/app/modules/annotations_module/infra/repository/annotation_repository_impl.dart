@@ -42,6 +42,17 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
   }
 
   @override
+  Future<List<AnnotationModel>?>? getAllPendingAnnotations(String? enterpriseId) async {
+    final datasoourceAnnotationsList = await _datasource.getAllPendingAnnotations(enterpriseId!);
+    if (enterpriseId.isNotEmpty) {
+      final annotationsModelList = datasoourceAnnotationsList?.map((annotationMap) => AnnotationModel.fromMap(annotationMap)).toList();
+      return annotationsModelList;
+    } else {
+      return [];
+    }
+  }
+  
+  @override
   Future<List<AnnotationModel>?>? searchAnnotationsByClientAddress(String? operatorId, String? clientAddress) async {
     final datasourceSugestedMaps = await _datasource.searchAnnotationsByClientAddress(operatorId!, clientAddress!);
     if (operatorId.isNotEmpty && clientAddress.isNotEmpty) {
@@ -85,9 +96,5 @@ class AnnotationRepositoryImpl implements AnnotationRepository {
     throw UnimplementedError();
   }
   
-  @override
-  Future<List<AnnotationModel>?>? getAllPendingAnnotations(String? enterpriseId) {
-    // TODO: implement getAllPendingAnnotations
-    throw UnimplementedError();
-  }
+
 }

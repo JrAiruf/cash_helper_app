@@ -37,6 +37,17 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   }
 
   @override
+  Future<List<Map<String, dynamic>>?>? getAllPendingAnnotations(String? enterpriseId) async {
+    final pendingAnnotationsList = await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").get();
+    final pendingAnnotationsMapList = pendingAnnotationsList.docs.map((e) => e.data()).toList();
+    if (pendingAnnotationsMapList.isNotEmpty) {
+      return pendingAnnotationsMapList;
+    } else {
+      return null;
+    }
+  }
+
+  @override
   Future<Map<String, dynamic>?>? getAnnotationById(String? enterpriseId, String? operatorId, String? annotationId) async {
     final annotationsCollection = _getCollection(enterpriseId);
     if (operatorId != null && annotationId != null) {
@@ -171,6 +182,32 @@ void main() {
           expect(result?["annotationId"] != null, equals(true));
           final createdAnnotation = await database.getAllAnnotations(null);
           expect(createdAnnotation, equals(null));
+        },
+      );
+    },
+  );
+  group(
+    "GetAllPendingAnnotations function should",
+    () {
+      test(
+        "Return all pending annotations (List<Map<String,dynamic>>)",
+        () async {
+          final createdAnnotation = await database.createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newPendingAnnotationMap);
+          expect(createdAnnotation, isA<Map<String, dynamic>>());
+          expect(createdAnnotation?["annotationId"] != null, equals(true));
+          final result = await database.getAllPendingAnnotations("enterpriseId");
+          expect(result, isA<List<Map<String, dynamic>>>());
+          expect(result?.first != null, equals(true));
+        },
+      );
+      test(
+        "Fail Returning pending annotations",
+        () async {
+          final result = await database.createAnnotation("", "operatorId", AnnotationsTestObjects.newAnnotationMap);
+          expect(result, isA<Map<String, dynamic>>());
+          expect(result?["annotationId"] != null, equals(true));
+          final createdPendingAnnotation = await database.getAllPendingAnnotations(null);
+          expect(createdPendingAnnotation, equals(null));
         },
       );
     },

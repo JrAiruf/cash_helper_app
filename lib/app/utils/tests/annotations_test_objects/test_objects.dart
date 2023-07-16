@@ -17,6 +17,17 @@ class AnnotationsTestObjects {
       annotationId: "askjdfhlakjsdhkajshdgkjahlskjdghla",
       annotationClientAddress: "Andorinhas 381",
       annotationConcluied: false,
+      annotationWithPendency: false,
+      annotationPaymentMethod: "Dinheiro",
+      annotationReminder: null,
+      annotationSaleDate: "Data Atual",
+      annotationSaleTime: "Hora Atual",
+      annotationSaleValue: "1455,67");
+  static final pendingAnnotationModel = AnnotationModel(
+      annotationId: "askjdfhlakjsdhkajshdgkjahlskjdghla",
+      annotationClientAddress: "Andorinhas 381",
+      annotationConcluied: false,
+      annotationWithPendency: true,
       annotationPaymentMethod: "Dinheiro",
       annotationReminder: null,
       annotationSaleDate: "Data Atual",
@@ -73,6 +84,17 @@ class AnnotationsTestObjects {
     'annotationReminder': null,
     'annotationConcluied': false,
     'annotationWithPendency': false,
+  };
+  static final databasePendingAnnotation = <String, dynamic>{
+    'annotationId': "askjdfhlakjsdhkajshdgkjahlskjdghla",
+    'annotationClientAddress': "Andorinhas 381",
+    'annotationSaleValue': "125,56",
+    'annotationSaleTime': "12:45",
+    'annotationSaleDate': "07/04",
+    'annotationPaymentMethod': "Dinheiro",
+    'annotationReminder': null,
+    'annotationConcluied': false,
+    'annotationWithPendency': true,
   };
   static final finishedAnnotation = <String, dynamic>{
     'annotationId': "askjdfhlakjsdhkajshdgkjahlskjdghla",

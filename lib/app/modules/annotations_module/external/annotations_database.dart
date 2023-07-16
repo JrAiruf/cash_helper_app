@@ -36,6 +36,17 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   }
 
   @override
+  Future<List<Map<String, dynamic>>?>? getAllPendingAnnotations(String? enterpriseId) async {
+    final pendingAnnotationsList = await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").get();
+    final pendingAnnotationsMapList = pendingAnnotationsList.docs.map((e) => e.data()).toList();
+    if (pendingAnnotationsMapList.isNotEmpty) {
+      return pendingAnnotationsMapList;
+    } else {
+      return null;
+    }
+  }
+
+  @override
   Future<Map<String, dynamic>?>? getAnnotationById(String? enterpriseId, String? operatorId, String? annotationId) async {
     final annotationsCollection = _getCollection(enterpriseId);
     if (operatorId != null && annotationId != null) {

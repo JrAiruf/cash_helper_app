@@ -1,4 +1,6 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_all_annotations/iget_all_annotations.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_all_pending_annotations/get_all_pending_annotations.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/get_all_pending_annotations/iget_all_pending_annotations.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
@@ -81,6 +83,11 @@ class AnnotationModule extends Module {
         repository: i(),
       ),
     ),
+    Bind<IGetAllPendingAnnotations>(
+      (i) => GetAllPendingAnnotations(
+        repository: i(),
+      ),
+    ),
     Bind<IGetAnnotationById>(
       (i) => GetAnnotationById(
         repository: i(),
@@ -99,6 +106,7 @@ class AnnotationModule extends Module {
     Bind<AnnotationsListStore>(
       (i) => AnnotationsListStore(
         getAllAnnotations: i(),
+        getAllPendingAnnotations: i(),
         searchAnnotationsByClientAddress: i(),
       ),
     ),
