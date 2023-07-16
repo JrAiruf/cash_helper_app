@@ -1,5 +1,6 @@
 abstract class ApplicationAnnotationDatabase {
   Future<Map<String, dynamic>?>? createAnnotation(String enterpriseId, String operatorId, Map<String, dynamic> annotation);
+  Future<Map<String, dynamic>?>? createPendingAnnotation(String enterpriseId, Map<String, dynamic> annotation);
   Future<Map<String, dynamic>?>? getAnnotationById(String enterpriseId, String operatorId, String annotationId);
   Future<List<Map<String, dynamic>>?>? getAllAnnotations(String enterpriseId);
   Future<List<Map<String, dynamic>>?>? getAllPendingAnnotations(String enterpriseId);

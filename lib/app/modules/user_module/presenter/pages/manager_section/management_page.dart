@@ -127,6 +127,7 @@ class _ManagementPageState extends State<ManagementPage> {
                                 height: 15,
                               ),
                               ManagerViewButton(
+                                text: "Visualizar",
                                 onPressed: () => Modular.to.pushNamed(
                                   "${ManagementRoutes.paymentMethodsPage}$_enterpriseId",
                                   arguments: widget.managerEntity,
@@ -152,6 +153,7 @@ class _ManagementPageState extends State<ManagementPage> {
                                 height: 15,
                               ),
                               ManagerViewButton(
+                                text: "Visualizar",
                                 onPressed: () => Modular.to.pushNamed(
                                   "${ManagementRoutes.pendenciesListPage}$_enterpriseId",
                                   arguments: {

@@ -73,12 +73,17 @@ class ManagementController {
     }
   }
 
+  Future<void> getAllAnnotations() async {
+    annotationsListStore.getAllAnnotations(enterpriseId);
+    operatorAnnotations.value.clear();
+    operatorAnnotations.value.addAll(annotationsListStore.value);
+  }
+
   Future<void>? getAnnotationsByOperator(String operatorId) async {
     final operatorAnnotationsList = annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operatorId).toList();
     operatorAnnotations.value.clear();
     operatorAnnotations.value.addAll(operatorAnnotationsList);
   }
-
 
   Future<void>? getAllOperatorsWithPendencies(String enterpriseId) async {
     final operators = await _loginStore.getAllOperators(enterpriseId);

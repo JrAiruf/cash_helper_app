@@ -25,7 +25,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
   void initState() {
     super.initState();
     _managementController.enterpriseId = Modular.args.params["enterpriseId"];
-    _managementController.annotationsListStore.getAllAnnotations(_managementController.enterpriseId);
+    _managementController.annotationsListStore.getAllPendingAnnotations(_managementController.enterpriseId);
   }
 
   @override

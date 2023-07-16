@@ -12,7 +12,7 @@ import '../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../domain/entities/pendency_entity.dart';
 
 class PendenciesListPage extends StatefulWidget {
-  const PendenciesListPage({required this.managerEntity,required this.operatorsList, required this.pendencies, super.key});
+  const PendenciesListPage({required this.managerEntity, required this.operatorsList, required this.pendencies, super.key});
 
   final ManagerEntity managerEntity;
   final List<OperatorEntity> operatorsList;
@@ -29,6 +29,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
   void initState() {
     super.initState();
     _loginController.enterpriseId = Modular.args.params["enterpriseId"];
+    _managementController.getAllAnnotations();
   }
 
   @override
@@ -97,11 +98,11 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                           child: ListView.builder(
                             itemCount: widget.operatorsList.length,
                             itemBuilder: (_, i) {
-                              _managementController.annotationsListStore.getAllAnnotations(_loginController.enterpriseId);
                               final pendingOperator = widget.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == widget.operatorsList[i].operatorId);
-                              final operatorAnnotations = _managementController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == pendingOperator.operatorId).toList();
+                              final operatorAnnotations = _managementController.operatorAnnotations.value
+                                  .where((annotation) => annotation.annotationCreatorId == pendingOperator.operatorId && !annotation.annotationWithPendency!)
+                                  .toList();
                               final operatorPendencies = widget.pendencies.where((pendency) => pendency.operatorId == pendingOperator.operatorId).toList();
-                              _managementController.getAnnotationsByOperator(pendingOperator.operatorId!);
                               return Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 3),
                                 child: Container(
@@ -186,9 +187,10 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                         Align(
                                           alignment: Alignment.topLeft,
                                           child: ManagerViewButton(
+                                            text: "Visualizar",
                                             onPressed: () {
                                               Modular.to.pushNamed("${ManagementRoutes.operatorActivityPage}$enterpriseId", arguments: {
-                                                "manager":widget.managerEntity,
+                                                "manager": widget.managerEntity,
                                                 "operator": pendingOperator,
                                                 "pendencies": operatorPendencies,
                                               });
