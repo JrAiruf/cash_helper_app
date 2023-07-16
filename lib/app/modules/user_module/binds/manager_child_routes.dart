@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/operator_activity_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/views/admin_options_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../presenter/pages/manager_section/controll_panel_page.dart';
@@ -37,10 +36,6 @@ class ManagerChildRoutes {
       child: (_, args) => ControllPanelPage(
         managerEntity: args.data,
       ),
-    ),
-    ChildRoute(
-      "/operator-activity-page/:enterpriseId",
-      child: (_, args) => OperatorActivityPage(managerEntity: args.data["manager"], operatorEntity: args.data["operator"], pendencies: args.data["pendencies"]),
     ),
   ];
 }

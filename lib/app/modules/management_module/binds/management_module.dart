@@ -12,6 +12,7 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/pages/pa
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/pendencies/pendencies_list_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods/remove_payment_method_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/pages/manager_section/operator_activity_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../domain/usecases/payment_methods/create_new_payment_method/create_new_payment_method.dart';
 import '../domain/usecases/payment_methods/get_all_payment_methods/get_all_payment_methods.dart';
@@ -66,6 +67,10 @@ class ManagementModule extends Module {
     ChildRoute(
       "/pendencies-list-page/:enterpriseId",
       child: (_, args) => PendenciesListPage(managerEntity: args.data["manager"], pendencies: args.data["pendenciesList"], operatorsList: args.data["operatorsList"]),
+    ),
+    ChildRoute(
+      "/operator-activity-page/:enterpriseId",
+      child: (_, args) => OperatorActivityPage(managerEntity: args.data["manager"], operatorEntity: args.data["operator"], pendencies: args.data["pendencies"]),
     ),
   ];
   final bindsList = <Bind>[

@@ -39,6 +39,6 @@ class ManagementRoutes {
   static const createPaymentMethodPage = "/management-module/create-payment-method-page/";
   static const removePaymentMethodPage = "/management-module/remove-payment-method-page/";
   static const pendenciesListPage = "/management-module/pendencies-list-page/";
-  static const operatorActivityPage = "/user-module/operator-activity-page/";
+  static const operatorActivityPage = "/management-module/operator-activity-page/";
   static const controllPanelPage = "/management-module/controll-panel-page/";
 }
