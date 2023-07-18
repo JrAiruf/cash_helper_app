@@ -64,7 +64,7 @@ class AnnotationsController {
           annotationPaymentMethod: annotationPaymentMethod,
           annotationId: "AnnotationId",
           annotationSaleValue: annotationValue);
-      await _annotationsStore.createNewAnnotation(enterpriseId, operatorId, newAnnotation);
+      await _annotationsStore.createNewAnnotation(enterpriseId, newAnnotation);
       annotationLoadingState.value = false;
       Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$enterpriseId", arguments: operatorEntity);
     } else {

@@ -54,7 +54,7 @@ class OperatorController {
             );
             annotation.annotationWithPendency = true;
             await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
-            await annotationStore.createNewAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation);
+            await annotationStore.createNewAnnotation(enterpriseId ?? "", annotation);
             await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
           }
           operatorStore.closeOperatorCash(

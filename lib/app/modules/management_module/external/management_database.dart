@@ -88,7 +88,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
     Map<String, dynamic> pendencyMap = {};
     try {
-      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId!, operatorId!, annotationId!);
+      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId!, annotationId!);
       await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").add({
         "annotationId": annotationId,
         "pendencySaleTime": pendingAnnotation?["annotationSaleTime"],

@@ -11,10 +11,10 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   final Uuid uuidGenertor;
   Map<String, dynamic>? annotationData = {};
   @override
-  Future<Map<String, dynamic>?>? createAnnotation(String? enterpriseId, String? operatorId, Map<String, dynamic>? annotation) async {
+  Future<Map<String, dynamic>?>? createAnnotation(String? enterpriseId, Map<String, dynamic>? annotation) async {
     final annotationsCollection = _getCollection(enterpriseId);
-    if (operatorId != null && annotation != null) {
-      annotationData = await _createNewAnnotation(annotationsCollection, enterpriseId!, annotation);
+    if (enterpriseId != null && annotation != null) {
+      annotationData = await _createNewAnnotation(annotationsCollection, enterpriseId, annotation);
       return annotationData!.isEmpty ? null : annotationData;
     } else {
       return null;
@@ -22,7 +22,7 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?> createPendingAnnotation(String? enterpriseId, Map<String, dynamic>? annotation) async {
+  Future<Map<String, dynamic>?>? createPendingAnnotation(String? enterpriseId, Map<String, dynamic>? annotation) async {
     if (enterpriseId != null && annotation != null) {
       await _createPendingAnnotation(enterpriseId, annotation);
       final currentAnnotation = await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").doc(annotation["annotationId"]).get().then((value) => value.data());

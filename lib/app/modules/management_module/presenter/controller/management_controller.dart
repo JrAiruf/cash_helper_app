@@ -1,10 +1,10 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/pending_annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ class ManagementController {
   var pendencies = ValueNotifier(<PendencyEntity>[]);
   var operatorsList = <OperatorEntity>[];
   var operatorAnnotations = ValueNotifier(<AnnotationEntity>[]);
+  var operatorPendingAnnotations = ValueNotifier(<AnnotationEntity>[]);
   var operatorsPendencies = ValueNotifier(<PendencyEntity>[]);
   final operatorsWithPendencies = ValueNotifier(<String>[]);
   final periodList = ValueNotifier(<String>[]);
@@ -31,6 +32,7 @@ class ManagementController {
   final managementStore = Modular.get<ManagementStore>();
   final pendencyStore = Modular.get<PendencyStore>();
   final pendenciesListStore = Modular.get<PendenciesListStore>();
+  final pendingAnnotationsListStore = Modular.get<PendingAnnotationsListStore>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
   String enterpriseId = "";
 
@@ -77,6 +79,12 @@ class ManagementController {
     annotationsListStore.getAllAnnotations(enterpriseId);
     operatorAnnotations.value.clear();
     operatorAnnotations.value.addAll(annotationsListStore.value);
+  }
+
+  Future<void> getAllPendingAnnotations() async {
+    pendingAnnotationsListStore.getAllPendingAnnotations(enterpriseId);
+    operatorPendingAnnotations.value.clear();
+    operatorPendingAnnotations.value.addAll(pendingAnnotationsListStore.value);
   }
 
   Future<void>? getAnnotationsByOperator(String operatorId) async {

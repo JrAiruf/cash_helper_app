@@ -38,10 +38,9 @@ void main() {
       test(
         "Change annotation status",
         () async {
-          when(repository.createAnnotation(any, any, any)).thenAnswer(
+          when(repository.createAnnotation(any, any)).thenAnswer(
               (_) async => AnnotationsTestObjects.repositoryAnnotation);
-          final createdAnnotation = await createAnnotation("enterpriseId",
-              "operatorId", AnnotationsTestObjects.newAnnotation);
+          final createdAnnotation = await createAnnotation("enterpriseId", AnnotationsTestObjects.newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
           when(repository.finishAnnotation(any, any, any)).thenReturn(null);
           when(repository.getAnnotationById(any, any, any)).thenAnswer(
@@ -57,10 +56,9 @@ void main() {
       test(
         "Fail changing status",
         () async {
-        when(repository.createAnnotation(any, any, any)).thenAnswer(
+        when(repository.createAnnotation(any, any)).thenAnswer(
               (_) async => AnnotationsTestObjects.repositoryAnnotation);
-          final createdAnnotation = await createAnnotation("enterpriseId",
-              "operatorId", AnnotationsTestObjects.newAnnotation);
+          final createdAnnotation = await createAnnotation("enterpriseId", AnnotationsTestObjects.newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
           when(repository.finishAnnotation(any, any, any)).thenReturn(null);
           when(repository.getAnnotationById(any, any, any)).thenAnswer(

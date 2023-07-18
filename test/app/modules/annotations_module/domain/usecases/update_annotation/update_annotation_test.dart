@@ -39,8 +39,8 @@ void main() {
       test(
         "Update the respective property passed in object",
         () async {
-          when(repository.createAnnotation(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.repositoryAnnotation);
-          final createdAnnotation = await createAnnotation("enterprise", "operatorId", AnnotationsTestObjects.newAnnotation);
+          when(repository.createAnnotation(any, any)).thenAnswer((_) async => AnnotationsTestObjects.repositoryAnnotation);
+          final createdAnnotation = await createAnnotation("enterprise", AnnotationsTestObjects.newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
           when(repository.updateAnnotation(any, any, any, any)).thenReturn(null);
           when(repository.getAnnotationById(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.newAnnotationModel);
@@ -54,8 +54,8 @@ void main() {
       test(
         "Fail update properties",
         () async {
-          when(repository.createAnnotation(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.repositoryAnnotation);
-          final createdAnnotation = await createAnnotation("enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotation);
+          when(repository.createAnnotation(any, any)).thenAnswer((_) async => AnnotationsTestObjects.repositoryAnnotation);
+          final createdAnnotation = await createAnnotation("enterpriseId", AnnotationsTestObjects.newAnnotation);
           expect(createdAnnotation, isA<AnnotationEntity>());
           when(repository.updateAnnotation(any, any, any, any)).thenReturn(null);
           when(repository.getAnnotationById(any, any, any)).thenAnswer((_) async => AnnotationsTestObjects.modifiedAnnotationModel);

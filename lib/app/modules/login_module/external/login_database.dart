@@ -48,7 +48,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
           : null;
       final registeredUsersList = await _database.collection("enterprise").doc(enterpriseId).collection(newUserMap["businessPosition"]).get();
       userData = registeredUsersList.docs.firstWhere((element) => element.data()["${collection}Id"] == newUserId).data();
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 4));
       return userData;
     } catch (e) {
       if (userData.isEmpty) {
@@ -85,7 +85,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
 
   @override
   Future<Map<String, dynamic>>? getUserById(String? enterpriseId, String? operatorId, String? collection) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     try {
       final databaseCollection = await _database.collection("enterprise").doc(enterpriseId).collection(collection!).get();
       userData = databaseCollection.docs.firstWhere((element) => element["${collection}Id"] == operatorId).data();

@@ -5,16 +5,13 @@ import '../../../infra/data/annotation_repository.dart';
 import '../../../infra/models/annotation_model.dart';
 
 class CreateNewAnnotation implements ICreateNewAnnotation {
-  CreateNewAnnotation({required AnnotationRepository repository})
-      : _repository = repository;
+  CreateNewAnnotation({required AnnotationRepository repository}) : _repository = repository;
 
   final AnnotationRepository _repository;
   @override
-  Future<AnnotationEntity>? call(String? enterpriseId, String? operatorId,
-      AnnotationEntity? annotation) async {
+  Future<AnnotationEntity>? call(String? enterpriseId, AnnotationEntity? annotation) async {
     final annotationModel = AnnotationModel.fromEntityData(annotation!);
-    final repositoryAnnotation = await _repository.createAnnotation(
-        enterpriseId!, operatorId!, annotationModel);
-    return AnnotationModel.toEntityData(repositoryAnnotation ?? AnnotationModel());
+    final repositoryAnnotation = await _repository.createAnnotation(enterpriseId!, annotationModel);
+    return AnnotationModel.toEntityData(repositoryAnnotation!);
   }
 }

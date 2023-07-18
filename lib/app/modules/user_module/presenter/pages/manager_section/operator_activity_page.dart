@@ -25,7 +25,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
   void initState() {
     super.initState();
     _managementController.enterpriseId = Modular.args.params["enterpriseId"];
-    _managementController.annotationsListStore.getAllPendingAnnotations(_managementController.enterpriseId);
+    _managementController.getAllPendingAnnotations();
   }
 
   @override
@@ -34,7 +34,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
-    final annotations = _managementController.annotationsListStore.value.where((annotation) {
+    final annotations = _managementController.operatorPendingAnnotations.value.where((annotation) {
       final pendingAnnotationsIdList = widget.pendencies.map((e) => e.annotationId).toList();
       return pendingAnnotationsIdList.contains(annotation.annotationId);
     }).toList();
@@ -77,7 +77,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
             Positioned(
               top: sizeFrame ? height * 0.2 : height * 0.21,
               child: SizedBox(
-                height: height * 0.28,
+                height: height * 0.26,
                 width: width,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -100,13 +100,13 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                               child: OperatorPendencyCard(
                                 backgroundColor: appThemes.primaryColor(context),
                                 borderColor: appThemes.surfaceColor(context),
-                                cardWidth: sizeFrame ? width * 0.4 : width * 0.41,
+                                cardWidth: sizeFrame ? width * 0.38 : width * 0.39,
                                 annotation: annotations[i],
                               ),
                             );
                           },
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

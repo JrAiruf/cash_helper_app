@@ -1,8 +1,8 @@
 import 'package:cash_helper_app/app/modules/annotations_module/infra/models/annotation_model.dart';
 
 abstract class AnnotationRepository {
-  Future<AnnotationModel?>? createAnnotation(String enterpriseId, String operatorId, AnnotationModel annotation);
-  Future<void>? createPendingAnnotation(String enterpriseId, String operatorId, String annotationId);
+  Future<AnnotationModel?>? createAnnotation(String enterpriseId, AnnotationModel annotation);
+  Future<AnnotationModel?>? createPendingAnnotation(String enterpriseId, AnnotationModel? annotation);
   Future<AnnotationModel?>? getAnnotationById(String enterpriseId, String operatorId, String annotationId);
   Future<List<AnnotationModel>?>? getAllAnnotations(String enterpriseId);
   Future<List<AnnotationModel>?>? getAllPendingAnnotations(String enterpriseId);

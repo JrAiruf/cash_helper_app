@@ -306,7 +306,7 @@ void main() {
         () async {
           final createdEnterprise = await enterpriseDb.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
           final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
-          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], AnnotationsTestObjects.databaseAnnotation);
+          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], AnnotationsTestObjects.databaseAnnotation);
           final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
           final currentUser = await loginDb.getUserById(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], "operator");
           expect(result, isA<Map<String, dynamic>>());
@@ -331,7 +331,7 @@ void main() {
         () async {
           final createdEnterprise = await enterpriseDb.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
           final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
-          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], AnnotationsTestObjects.databaseAnnotation);
+          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], AnnotationsTestObjects.databaseAnnotation);
           final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));

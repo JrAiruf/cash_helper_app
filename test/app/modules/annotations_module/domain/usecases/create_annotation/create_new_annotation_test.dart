@@ -8,16 +8,13 @@ import 'package:mockito/mockito.dart';
 import '../../../../../mocks/mocks.dart';
 
 class CreateNewAnnotationMock implements ICreateNewAnnotation {
-  CreateNewAnnotationMock({required AnnotationRepository repository})
-      : _repository = repository;
+  CreateNewAnnotationMock({required AnnotationRepository repository}) : _repository = repository;
 
   final AnnotationRepository _repository;
   @override
-  Future<AnnotationEntity>? call(String? enterpriseId, String? operatorId,
-      AnnotationEntity? annotation) async {
+  Future<AnnotationEntity>? call(String? enterpriseId, AnnotationEntity? annotation) async {
     final annotationModel = AnnotationModel.fromEntityData(annotation!);
-    final repositoryAnnotation = await _repository.createAnnotation(
-        enterpriseId!, operatorId!, annotationModel);
+    final repositoryAnnotation = await _repository.createAnnotation(enterpriseId!, annotationModel);
     return AnnotationModel.toEntityData(repositoryAnnotation!);
   }
 }
@@ -25,15 +22,13 @@ class CreateNewAnnotationMock implements ICreateNewAnnotation {
 void main() {
   final repository = AnnotationRepo();
   final createAnnotation = CreateNewAnnotationMock(repository: repository);
-      test(
-        "CreateNewAnnotation Usecase should create a new Annotation and return an AnnotationEntity object",
-        () async {
-          when(repository.createAnnotation(any, any, any)).thenAnswer(
-              (_) async => AnnotationsTestObjects.repositoryAnnotation);
-          final createdAnnotation = await createAnnotation(
-              "enterpriseId", "operatorId", AnnotationsTestObjects.newAnnotation);
-          expect(createdAnnotation, isA<AnnotationEntity>());
-          expect(createdAnnotation?.annotationId != null, equals(true));
-        },
-      );
-    }
+  test(
+    "CreateNewAnnotation Usecase should create a new Annotation and return an AnnotationEntity object",
+    () async {
+      when(repository.createAnnotation(any, any)).thenAnswer((_) async => AnnotationsTestObjects.repositoryAnnotation);
+      final createdAnnotation = await createAnnotation("enterpriseId", AnnotationsTestObjects.newAnnotation);
+      expect(createdAnnotation, isA<AnnotationEntity>());
+      expect(createdAnnotation?.annotationId != null, equals(true));
+    },
+  );
+}
