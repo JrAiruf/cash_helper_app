@@ -1,7 +1,9 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/create_enterprise_account/icreate_enterprise_account.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/get_enterprise_by_code/iget_enterprise_by_code.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/bloc_binds.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_bloc.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_bloc.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_bloc.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/create_enterprise_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/enterprise_formulary_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
@@ -83,11 +85,7 @@ class EnterpriseModule extends Module {
         getEnterpriseByCode: i(),
       ),
     ),
-    Bind<CreateEnterpriseBLoc>(
-      (i) => CreateEnterpriseBLoc(
-        createEnterprise: i(),
-      ),
-    ),
+    ...EnterpriseBlocBinds.binds,
     Bind<EnterpriseController>(
       (i) => EnterpriseController(),
     ),
