@@ -4,8 +4,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class EnterpriseBlocBinds {
   static final binds = <Bind>[
-    Bind<CreateEnterpriseBLoc>(
-          (i) => CreateEnterpriseBLoc(
+    Bind<CreateEnterpriseBloc>(
+          (i) => CreateEnterpriseBloc(
         createEnterprise: i(),
       ),
     ),Bind<GetEnterpriseByCodeBloc>(

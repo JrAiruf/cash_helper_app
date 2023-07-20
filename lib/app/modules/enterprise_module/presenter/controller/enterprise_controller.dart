@@ -1,5 +1,7 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_bloc.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_events.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_bloc.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -25,7 +27,8 @@ class EnterpriseController {
   String confirmationPassword = "";
 
   final enterpriseStore = Modular.get<EnterpriseStore>();
-  final createEnterpriseBloc = Modular.get<CreateEnterpriseBLoc>();
+  final createEnterpriseBloc = Modular.get<CreateEnterpriseBloc>();
+  final getEnterpriseByCodeBloc = Modular.get<GetEnterpriseByCodeBloc>();
   final enterpriseFormKey = GlobalKey<FormState>();
   final createEnterpriseFormKey = GlobalKey<FormState>();
   bool loadingData = false;
@@ -116,19 +119,9 @@ class EnterpriseController {
   void authenticateEnterprise(BuildContext context) async {
     enterpriseFormKey.currentState?.validate();
     if (enterpriseFormKey.currentState!.validate()) {
-      loadingEnterpriseAuth.value = true;
       enterpriseFormKey.currentState?.save();
-      final enterprise = await enterpriseStore
-          .getEnterpriseByCode(enterpriseCodeField.text)
-          .catchError((e) {
-        enterpriseNotFound(context,
-            message: "Código Inválido! Digite o cógido da sua empresa");
-        loadingEnterpriseAuth.value = false;
-        return null;
-      });
-      if (enterprise != null) {
-        Modular.to.navigate(LoginRoutes.login, arguments: enterprise);
-        loadingEnterpriseAuth.value = false;
+      getEnterpriseByCodeBloc
+          .add(GetEnterpriseByCodeEvent(enterpriseCodeField.text ?? ""));
       }
     }
   }
@@ -180,4 +173,3 @@ class EnterpriseController {
       ),
     );
   }
-}

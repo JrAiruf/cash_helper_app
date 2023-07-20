@@ -3,9 +3,9 @@ import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/cr
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreateEnterpriseBLoc
+class CreateEnterpriseBloc
     extends Bloc<CreateEnterpriseEvents, CreateEnterpriseStates> {
-  CreateEnterpriseBLoc({required ICreateEnterpriseAccount createEnterprise})
+  CreateEnterpriseBloc({required ICreateEnterpriseAccount createEnterprise})
       : _createEnterprise = createEnterprise,
         super(CreateEnterpriseInitialState()) {
     on<CreateEnterpriseEvent>(_mapCreateEnterpriseEventToState);
