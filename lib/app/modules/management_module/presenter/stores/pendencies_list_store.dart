@@ -17,12 +17,10 @@ class PendenciesListStore extends ValueNotifier<PendencyStates> {
     value = LoadingPendenciesState();
     final operatorsList = await _getAllOperators(enterpriseId);
     final pendenciesList = await _getAllPendencies(enterpriseId);
-    if (pendenciesList.isNotEmpty) {
-      if (operatorsList!.isNotEmpty) {
-        value = PendenciesListState(operators: operatorsList, pendencies: pendenciesList);
-      }
+    if (operatorsList!.isNotEmpty && pendenciesList.isNotEmpty) {
+      value = PendenciesListState(operators: operatorsList, pendencies: pendenciesList);
     } else {
-      value = NoPendenciesState();
+      value = operatorsList.isEmpty ? NoOperatorsState() : pendenciesList.isEmpty ? NoPendenciesState() : PendenciesInitialState();
     }
   }
 }

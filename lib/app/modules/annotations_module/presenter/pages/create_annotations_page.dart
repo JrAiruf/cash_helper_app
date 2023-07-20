@@ -30,8 +30,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
     super.initState();
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
     _annotationsController.operatorId = widget.operatorEntity.operatorId!;
-    _paymentMethodListStore
-        .getAllPaymentMethods(_annotationsController.enterpriseId);
+    _paymentMethodListStore.getAllPaymentMethods(_annotationsController.enterpriseId);
   }
 
   @override
@@ -47,9 +46,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Modular.to.navigate(
-              "${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}",
-              arguments: widget.operatorEntity),
+          onPressed: () => Modular.to.navigate("${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}", arguments: widget.operatorEntity),
           icon: const Icon(
             Icons.arrow_back,
           ),
@@ -92,17 +89,15 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                           left: 25,
                           child: Text(
                             "Criar Anotação",
-                            style:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      color: surfaceColor,
-                                    ),
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  color: surfaceColor,
+                                ),
                           ),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       child: SizedBox(
                         width: width,
                         child: Column(
@@ -110,10 +105,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                           children: [
                             Text(
                               "Dados da anotação:",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: surfaceColor,
                                   ),
                             ),
@@ -125,101 +117,67 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                               width: width * 0.96,
                               child: Card(
                                 color: primaryColor,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                 child: Form(
-                                  key: _annotationsController
-                                      .newAnnotationFormKey,
+                                  key: _annotationsController.newAnnotationFormKey,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         CashHelperTextFieldComponent(
                                           textColor: surfaceColor,
                                           primaryColor: surfaceColor,
                                           radius: 15,
-                                          validator: _annotationsController
-                                              .annotationAddressValidate,
-                                          onSaved: (value) =>
-                                              _annotationsController
-                                                  .annotationAddressField
-                                                  .text = value!,
-                                          controller: _annotationsController
-                                              .annotationAddressField,
+                                          validator: _annotationsController.annotationAddressValidate,
+                                          onSaved: (value) => _annotationsController.annotationAddressField.text = value!,
+                                          controller: _annotationsController.annotationAddressField,
                                           label: 'Endereço',
                                         ),
                                         CashHelperTextFieldComponent(
                                           textColor: surfaceColor,
                                           primaryColor: surfaceColor,
                                           radius: 15,
-                                          validator: _annotationsController
-                                              .annotationValueValidate,
-                                          onSaved: (value) =>
-                                              _annotationsController
-                                                  .annotationValueField
-                                                  .text = value!,
-                                          controller: _annotationsController
-                                              .annotationValueField,
+                                          validator: _annotationsController.annotationValueValidate,
+                                          onSaved: (value) => _annotationsController.annotationValueField.text = value!,
+                                          controller: _annotationsController.annotationValueField,
                                           label: 'Valor',
                                         ),
                                         AnimatedBuilder(
                                           animation: _paymentMethodListStore,
                                           builder: (_, __) {
-                                            return DropdownButtonFormField<
-                                                PaymentMethodEntity>(
+                                            return DropdownButtonFormField<PaymentMethodEntity>(
                                               decoration: InputDecoration(
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(15),
                                                   borderSide: BorderSide(
                                                     color: surfaceColor,
                                                   ),
                                                 ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(15),
                                                   borderSide: BorderSide(
                                                     color: surfaceColor,
                                                   ),
                                                 ),
                                               ),
-                                              validator: _managementController
-                                                  .paymentMethodValidate,
-                                              onSaved: (value) =>
-                                                  _annotationsController
-                                                          .annotationPaymentMethodField
-                                                          .text =
-                                                      value!.paymentMethodName!,
+                                              validator: _managementController.paymentMethodValidate,
+                                              onSaved: (value) => _annotationsController.annotationPaymentMethodField.text = value!.paymentMethodName!,
                                               onChanged: (value) => value,
                                               hint: Text(
                                                 "Selecione o método de pagamento",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .displaySmall
-                                                    ?.copyWith(
+                                                style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                                       color: surfaceColor,
                                                     ),
                                               ),
-                                              items: _paymentMethodListStore
-                                                  .value
+                                              items: _paymentMethodListStore.value
                                                   ?.map(
-                                                    (paymentMethod) =>
-                                                        DropdownMenuItem(
+                                                    (paymentMethod) => DropdownMenuItem(
                                                       value: paymentMethod,
                                                       child: Text(
-                                                        paymentMethod
-                                                            .paymentMethodName!,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .displaySmall
-                                                            ?.copyWith(
-                                                              color:
-                                                                  surfaceColor,
+                                                        paymentMethod.paymentMethodName!,
+                                                        style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                                              color: surfaceColor,
                                                             ),
                                                       ),
                                                     ),
@@ -232,8 +190,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                           children: [
                                             Expanded(
                                               flex: 1,
-                                              child:
-                                                  CashHelperTextFieldComponent(
+                                              child: CashHelperTextFieldComponent(
                                                 enable: false,
                                                 readOnly: true,
                                                 textColor: surfaceColor,
@@ -247,22 +204,15 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                             ),
                                             Expanded(
                                               flex: 1,
-                                              child:
-                                                  CashHelperTextFieldComponent(
-                                                controller:
-                                                    _annotationsController
-                                                        .annotationSaleTimeField,
+                                              child: CashHelperTextFieldComponent(
+                                                controller: _annotationsController.annotationSaleTimeField,
                                                 enable: false,
                                                 readOnly: true,
                                                 textColor: surfaceColor,
                                                 primaryColor: surfaceColor,
                                                 radius: 15,
-                                                onSaved: (value) =>
-                                                    _annotationsController
-                                                        .annotationSaleTimeField
-                                                        .text = value!,
-                                                initialValue: dateValue
-                                                    .annotationHourDateTime,
+                                                onSaved: (value) => _annotationsController.annotationSaleTimeField.text = value!,
+                                                initialValue: dateValue.annotationHourDateTime,
                                               ),
                                             ),
                                           ],
@@ -282,8 +232,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                                 height: 50,
                                 width: width * 0.7,
                                 radius: 12,
-                                onPressed: () => _annotationsController
-                                    .createAnnotation(widget.operatorEntity),
+                                onPressed: () => _annotationsController.createAnnotation(widget.operatorEntity),
                               ),
                             ),
                           ],

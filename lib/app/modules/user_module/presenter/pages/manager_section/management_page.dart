@@ -51,17 +51,198 @@ class _ManagementPageState extends State<ManagementPage> {
             );
           }
           if (state is NoPendenciesState) {
-            return Container(
-              decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-              child: Center(
-                child: Text(
-                  "Sem pendências no momento",
-                  style: Theme.of(context).textTheme.bodySmall,
+            return Scaffold(
+              appBar: AppBar(),
+              drawer: ManagerSectionDrawer(
+                currentPage: ManagerDrawerPage.management,
+                managerEntity: widget.managerEntity,
+                enterpriseId: _enterpriseId,
+              ),
+              body: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Container(
+                  height: height,
+                  decoration: BoxDecoration(
+                    color: appThemes.backgroundColor(context),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Container(
+                            height: sizeFrame ? height * 0.16 : height * 0.15,
+                            decoration: BoxDecoration(
+                              color: appThemes.primaryColor(context),
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: height * 0.09,
+                            child: Text(
+                              "Gerenciamento",
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          )
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                        ),
+                        child: SizedBox(
+                          width: width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: height * 0.05,
+                              ),
+                              Text(
+                                "Métodos de Pagamento:",
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              PaymentMethodsInformationCard(enterpriseId: _enterpriseId),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              ManagerViewButton(
+                                text: "Visualizar",
+                                onPressed: () => Modular.to.pushNamed(
+                                  "${ManagementRoutes.paymentMethodsPage}$_enterpriseId",
+                                  arguments: widget.managerEntity,
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.035,
+                              ),
+                              Text(
+                                "Pendências:",
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              PendenciesInformationCard(
+                                height: height,
+                                enterpriseId: _enterpriseId,
+                                pendencies: const [],
+                                operators: const [],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
           }
-          if (state is PendenciesListState) {
+          if (state is NoOperatorsState) {
+            return Scaffold(
+              appBar: AppBar(),
+              drawer: ManagerSectionDrawer(
+                currentPage: ManagerDrawerPage.management,
+                managerEntity: widget.managerEntity,
+                enterpriseId: _enterpriseId,
+              ),
+              body: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                child: Container(
+                  height: height,
+                  decoration: BoxDecoration(
+                    color: appThemes.backgroundColor(context),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Container(
+                            height: sizeFrame ? height * 0.16 : height * 0.15,
+                            decoration: BoxDecoration(
+                              color: appThemes.primaryColor(context),
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: height * 0.09,
+                            child: Text(
+                              "Gerenciamento",
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          )
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                        ),
+                        child: SizedBox(
+                          width: width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: height * 0.05,
+                              ),
+                              Text(
+                                "Métodos de Pagamento:",
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              PaymentMethodsInformationCard(enterpriseId: _enterpriseId),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              ManagerViewButton(
+                                text: "Visualizar",
+                                onPressed: () => Modular.to.pushNamed(
+                                  "${ManagementRoutes.paymentMethodsPage}$_enterpriseId",
+                                  arguments: widget.managerEntity,
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.035,
+                              ),
+                              Text(
+                                "Pendências:",
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              PendenciesInformationCard(
+                                height: height,
+                                enterpriseId: _enterpriseId,
+                                pendencies: const [],
+                                operators: const [],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          /*   if (state is PendenciesListState) {
             final pendingOperatorsIdList = state.pendencies.map((pendency) => pendency.operatorId).toList();
             final pendingOperators = state.operators.where((operatorEntity) => pendingOperatorsIdList.contains(operatorEntity.operatorId)).toList();
             return Scaffold(
@@ -172,7 +353,8 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
               ),
             );
-          } else {
+          } */
+          else {
             return Container();
           }
         });

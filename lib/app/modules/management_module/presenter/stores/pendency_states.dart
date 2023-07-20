@@ -9,6 +9,8 @@ class LoadingPendenciesState extends PendencyStates {}
 
 class NoPendenciesState extends PendencyStates {}
 
+class NoOperatorsState extends PendencyStates {}
+
 class PendenciesListState extends PendencyStates {
   PendenciesListState({required this.operators, required this.pendencies});
   final List<OperatorEntity> operators;

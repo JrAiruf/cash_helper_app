@@ -99,7 +99,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         child: ValueListenableBuilder(
                           valueListenable: _managementController.managementStore,
                           builder: (_, state, __) {
-                            _managementController.getAllPendencies();
                             if (state is ManagementLoadingState) {
                               return Container(
                                 decoration: BoxDecoration(color: appThemes.primaryColor(context)),
@@ -121,6 +120,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               );
                             }
                             if (state is GetUsersListState) {
+                              state.operators.isNotEmpty ? _managementController.getAllPendencies() : null;
                               final operatorsList = state.operators;
                               return SizedBox(
                                 child: ValueListenableBuilder(
