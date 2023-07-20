@@ -1,5 +1,7 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/create_enterprise_account/icreate_enterprise_account.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/usecases/get_enterprise_by_code/iget_enterprise_by_code.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_bloc.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_bloc.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/create_enterprise_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/enterprise_formulary_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
@@ -26,10 +28,12 @@ abstract class AppEnterpriseModule {
 
 class EnterpriseModule extends Module {
   EnterpriseModule._();
+
   static final instance = EnterpriseModule._();
 
   @override
   List<Bind<Object>> get binds => bindList;
+
   @override
   List<ModularRoute> get routes => routesList;
 
@@ -77,6 +81,11 @@ class EnterpriseModule extends Module {
       (i) => EnterpriseStore(
         createEnterpriseAccount: i(),
         getEnterpriseByCode: i(),
+      ),
+    ),
+    Bind<CreateEnterpriseBLoc>(
+      (i) => CreateEnterpriseBLoc(
+        createEnterprise: i(),
       ),
     ),
     Bind<EnterpriseController>(
