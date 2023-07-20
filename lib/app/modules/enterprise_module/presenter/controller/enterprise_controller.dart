@@ -1,3 +1,5 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_bloc.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -23,6 +25,7 @@ class EnterpriseController {
   String confirmationPassword = "";
 
   final enterpriseStore = Modular.get<EnterpriseStore>();
+  final createEnterpriseBloc = Modular.get<CreateEnterpriseBLoc>();
   final enterpriseFormKey = GlobalKey<FormState>();
   final createEnterpriseFormKey = GlobalKey<FormState>();
   bool loadingData = false;
@@ -102,7 +105,8 @@ class EnterpriseController {
     createEnterpriseFormKey.currentState?.save();
     if (createEnterpriseFormKey.currentState!.validate()) {
       if (confirmationPassword == enterpriseEntity.enterprisePassword) {
-        enterpriseStore.createEnterpriseAccount(enterpriseEntity);
+        // enterpriseStore.createEnterpriseAccount(enterpriseEntity);
+        createEnterpriseBloc.add(CreateEnterpriseEvent(enterpriseEntity));
       } else {
         noMatchingPasswords(context, message: "As senhas não correspondem");
       }

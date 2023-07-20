@@ -1,14 +1,14 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
-import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_states.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_states.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../routes/app_routes.dart';
 import '../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../login_module/presenter/components/cash_helper_text_field.dart';
 import '../../../login_module/presenter/components/visibility_icon_component.dart';
 import '../controller/enterprise_controller.dart';
-import '../stores/enterprise_store.dart';
 
 class CreateEnterprisePage extends StatefulWidget {
   const CreateEnterprisePage({required this.enterpriseEntity, super.key});
@@ -20,25 +20,21 @@ class CreateEnterprisePage extends StatefulWidget {
 
 class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
   final _enterpriseController = Modular.get<EnterpriseController>();
-  final _enterpriseStore = Modular.get<EnterpriseStore>();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final surfaceColor = Theme.of(context).colorScheme.onSurface;
-    final surface = Theme.of(context).colorScheme.surface;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
+    final appThemes = CashHelperThemes();
     final sizeFrame = height <= 800;
 
     return Scaffold(
       appBar: AppBar(),
-      body: ValueListenableBuilder(
-        valueListenable: _enterpriseStore,
-        builder: (_, state, __) {
-          if (state is LoadingState) {
+      body: BlocBuilder(
+        bloc: _enterpriseController.createEnterpriseBloc,
+        builder: (_, state) {
+          if (state is CreateEnterpriseLoadingState) {
             return Container(
-              decoration: BoxDecoration(color: primaryColor),
+              decoration: BoxDecoration(color: appThemes.primaryColor(context)),
               height: height,
               width: width,
               child: Center(
@@ -47,13 +43,22 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                 ),
               ),
             );
-          } else if (state is EnterpriseStoreInitialState) {
+          } if (state is CreateEnterpriseErrorState) {
+            return Container(
+              decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+              height: height,
+              width: width,
+              child: Center(
+                child: Text(state.error,style: Theme.of(context).textTheme.bodyMedium,)
+              ),
+            );
+          } if (state is CreateEnterpriseInitialState) {
             return SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
               child: Container(
                 height: height,
                 width: width,
-                decoration: BoxDecoration(color: primaryColor),
+                decoration: BoxDecoration(color: appThemes.primaryColor(context)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -73,14 +78,14 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: Text('Dados Empresariais', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surface)),
+                            child: Text('Dados Empresariais', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surface(context))),
                           ),
                           const SizedBox(height: 15),
                           SizedBox(
                             height: height * 0.35,
                             width: width * 0.95,
                             child: Card(
-                              color: seccondaryColor,
+                              color: appThemes.purpleColor(context),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                               child: Form(
                                 key: _enterpriseController.createEnterpriseFormKey,
@@ -91,8 +96,8 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       CashHelperTextFieldComponent(
-                                        textColor: surfaceColor,
-                                        primaryColor: surfaceColor,
+                                        textColor: appThemes.surfaceColor(context),
+                                        primaryColor: appThemes.surfaceColor(context),
                                         radius: 15,
                                         validator: (value) => _enterpriseController.enterpriseEmailValidate(value),
                                         onSaved: (value) => widget.enterpriseEntity.enterpriseEmail = value,
@@ -105,10 +110,10 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                           animation: _enterpriseController.passwordVisible,
                                           builder: (_, __) {
                                             return CashHelperTextFieldComponent(
-                                              textColor: surfaceColor,
-                                              primaryColor: surfaceColor,
+                                              textColor: appThemes.surfaceColor(context),
+                                              primaryColor: appThemes.surfaceColor(context),
                                               suffixIcon: VisibilityIconComponent(
-                                                  iconColor: surfaceColor,
+                                                  iconColor: appThemes.surfaceColor(context),
                                                   onTap: () => _enterpriseController.passwordVisible.value = !_enterpriseController.passwordVisible.value,
                                                   forVisibility: Icons.visibility,
                                                   forHideContent: Icons.visibility_off,
@@ -125,10 +130,10 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                                         animation: _enterpriseController.confirmPasswordVisible,
                                         builder: (_, __) {
                                           return CashHelperTextFieldComponent(
-                                            textColor: surfaceColor,
-                                            primaryColor: surfaceColor,
+                                            textColor: appThemes.surfaceColor(context),
+                                            primaryColor: appThemes.surfaceColor(context),
                                             suffixIcon: VisibilityIconComponent(
-                                                iconColor: surfaceColor,
+                                                iconColor: appThemes.surfaceColor(context),
                                                 onTap: () => _enterpriseController.confirmPasswordVisible.value = !_enterpriseController.confirmPasswordVisible.value,
                                                 forVisibility: Icons.visibility,
                                                 forHideContent: Icons.visibility_off,
@@ -163,14 +168,14 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                         buttonName: 'Próximo',
                         fontSize: 15,
                         nameColor: Colors.white,
-                        backgroundColor: seccondaryColor,
+                        backgroundColor: appThemes.purpleColor(context),
                       ),
                     )
                   ],
                 ),
               ),
             );
-          } else if (state is CreatedEnterpriseState) {
+          } if (state is CreateEnterpriseSuccessState) {
             final enterprise = state.enterprise;
             Modular.to.pushReplacementNamed(EnterpriseRoutes.enterpriseCreated, arguments: enterprise);
             return Container();
