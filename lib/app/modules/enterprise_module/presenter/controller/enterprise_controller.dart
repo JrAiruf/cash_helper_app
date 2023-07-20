@@ -108,7 +108,6 @@ class EnterpriseController {
     createEnterpriseFormKey.currentState?.save();
     if (createEnterpriseFormKey.currentState!.validate()) {
       if (confirmationPassword == enterpriseEntity.enterprisePassword) {
-        // enterpriseStore.createEnterpriseAccount(enterpriseEntity);
         createEnterpriseBloc.add(CreateEnterpriseEvent(enterpriseEntity));
       } else {
         noMatchingPasswords(context, message: "As senhas não correspondem");
@@ -121,7 +120,7 @@ class EnterpriseController {
     if (enterpriseFormKey.currentState!.validate()) {
       enterpriseFormKey.currentState?.save();
       getEnterpriseByCodeBloc
-          .add(GetEnterpriseByCodeEvent(enterpriseCodeField.text ?? ""));
+          .add(GetEnterpriseByCodeEvent(enterpriseCodeField.text));
       }
     }
   }
