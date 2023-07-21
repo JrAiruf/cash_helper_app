@@ -1,6 +1,10 @@
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_close_page.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../../../enterprise_module/domain/entities/enterprise_business_position.dart';
@@ -22,20 +26,24 @@ class UserNotFoundView extends StatefulWidget {
 
 final _loginController = Modular.get<LoginController>();
 bool _passwordVisible = false;
-bool _managerUser = false;
 late EnterpriseBusinessPosition businessPosition;
 
 class _UserNotFoundViewState extends State<UserNotFoundView> {
+  @override
+  void initState() {
+    super.initState();
+    _loginController.authBloc.add(InitialAuthEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    final userBusinessPosition = _managerUser ? "Gerente" : "Operador";
-    return ValueListenableBuilder(
-      valueListenable: _loginController.loginStore,
-      builder: (_, state, __) {
-        if (state is LoginLoadingState) {
+    return BlocBuilder<AuthBloc, AuthStates>(
+      bloc: _loginController.authBloc,
+      builder: (_, state) {
+        if (state is AuthLoadingState) {
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
@@ -45,7 +53,7 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
             ),
           );
         }
-        if (state is LoginNoUserErrorState) {
+        if (state is AuthInitialState) {
           return Scaffold(
             body: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -96,26 +104,6 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                           ),
                         ],
                       ),
-                      /* 
-                      Row(
-                        children: [
-                          Switch(
-                              activeColor: appThemes.greenColor(context),
-                              value: _managerUser,
-                              onChanged: (value) {
-                                _managerUser = !_managerUser;
-                                setState(() {
-                                  businessPosition = _managerUser ? EnterpriseBusinessPosition.manager : EnterpriseBusinessPosition.cashOperator;
-                                });
-                              }),
-                          const SizedBox(width: 25),
-                          Text(
-                            userBusinessPosition,
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(color: appThemes.surface(context)),
-                          ),
-                          const SizedBox(width: 35),
-                        ],
-                      ), */
                       Stack(
                         children: [
                           Card(
@@ -231,20 +219,16 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
             ),
           );
         }
-        if (state is LoginSuccessState) {
-          final enterpriseId = widget.enterpriseEntity.enterpriseId;
-          final operatorEntity = state.operatorEntity;
-          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
+        if (state is AuthOperatorSuccessState) {
+          Modular.to.navigate("${UserRoutes.operatorHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.cashOperator);
           return Container(
             decoration: BoxDecoration(
               color: appThemes.primaryColor(context),
             ),
           );
         }
-        if (state is ManagerLoginSuccessState) {
-          final enterpriseId = widget.enterpriseEntity.enterpriseId;
-          final managerEntity = state.managerEntity;
-          Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId", arguments: managerEntity);
+        if (state is AuthManagerSuccessState) {
+          Modular.to.navigate("${UserRoutes.managerHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.manager);
           return Container(
             decoration: BoxDecoration(
               color: appThemes.primaryColor(context),

@@ -171,9 +171,26 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                             child: Text('Cash Helper', style: Theme.of(context).textTheme.bodyLarge),
                           ),
                           Center(
-                            child: Text(
-                              state.error,
-                              style: Theme.of(context).textTheme.bodyLarge,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  state.error,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                SizedBox(
+                                  height: height * 0.05,
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    _enterpriseController.getEnterpriseByCodeBloc.add(InitialAppEvent());
+                                  },
+                                  child: Text(
+                                    "Voltar",
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ],

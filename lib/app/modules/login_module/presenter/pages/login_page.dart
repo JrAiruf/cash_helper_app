@@ -1,5 +1,6 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_business_position.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
@@ -38,9 +39,12 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    return BlocBuilder(
+    return BlocBuilder<AuthBloc,AuthStates>(
       bloc: _loginController.authBloc,
       builder: (_, state) {
+        if (state is AuthErrorState) {
+          return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
+        }
         if (state is AuthLoadingState) {
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
@@ -231,9 +235,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
-        if (state is AuthErrorState) {
-          return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
-        }
+
         return Container(
           decoration: BoxDecoration(
             color: appThemes.primaryColor(context),

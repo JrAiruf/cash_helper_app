@@ -156,12 +156,15 @@ class LoginController {
   }
 
   void login() async {
+    loadingData.value = true;
     managerUser.value ? userEnterpriseBusinessPosition = EnterpriseBusinessPosition.manager : userEnterpriseBusinessPosition = EnterpriseBusinessPosition.cashOperator;
     loginFormKey.currentState?.validate();
     if (loginFormKey.currentState!.validate()) {
       loginFormKey.currentState!.save();
       authBloc.add(LoginEvent(entepriseEntity.enterpriseId!, emailField.text, passwordField.text, userEnterpriseBusinessPosition.position));
+      loadingData.value = false;
     }
+    loadingData.value = false;
   }
 
   void signOut(

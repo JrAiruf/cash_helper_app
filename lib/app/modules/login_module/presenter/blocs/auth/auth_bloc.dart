@@ -19,7 +19,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
 
   void _mapLoginEventToState(LoginEvent event, Emitter<AuthStates> state) async {
     state(AuthLoadingState());
-    final appUser = await _login(event.email, event.password, event.enterpriseId, event.collection);
+    final appUser = await _login(event.email, event.password, event.enterpriseId, event.collection).catchError(
+      (e) {
+        state(AuthErrorState("Credenciais inválidas"));
+      },
+    );
     if (appUser != null) {
       switch (event.collection) {
         case "operator":
@@ -29,8 +33,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           state(AuthManagerSuccessState(appUser));
           break;
       }
-    } else {
-      state(AuthErrorState("Credenciais inválidas"));
     }
   }
 }

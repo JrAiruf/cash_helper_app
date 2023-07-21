@@ -14,11 +14,11 @@ class GetEnterpriseByCodeBloc extends Bloc<GetEnterpriseByCodeEvents, GetEnterpr
   final IGetEnterpriseByCode _getEnterpriseByCode;
   void _mapGetEnterpriseByCodeEventToState(GetEnterpriseByCodeEvent event, Emitter<GetEnterpriseByCodeStates> state) async {
     state(GetEnterpriseLoadingState());
-    final enterprise = await _getEnterpriseByCode(event.enterpriseCode);
+    final enterprise = await _getEnterpriseByCode(event.enterpriseCode)?.catchError((e) {
+      state(GetEnterpriseErrorState("O código não pertence a nenhuma empresa cadastrada"));
+    });
     if (enterprise != null) {
       state(GetEnterpriseSuccessState(enterprise));
-    } else {
-      state(GetEnterpriseErrorState("O código não pertence a nenhuma empresa cadastrada"));
     }
   }
 
