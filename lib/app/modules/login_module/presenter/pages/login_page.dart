@@ -39,10 +39,13 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    return BlocBuilder<AuthBloc,AuthStates>(
+    return BlocBuilder<AuthBloc, AuthStates>(
       bloc: _loginController.authBloc,
       builder: (_, state) {
         if (state is AuthErrorState) {
+          return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
+        }
+        if (state is AuthBusinessPositionErrorState) {
           return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
         }
         if (state is AuthLoadingState) {

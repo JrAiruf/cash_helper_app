@@ -1,7 +1,5 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_close_page.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +11,6 @@ import '../../components/buttons/cash_helper_login_button.dart';
 import '../../components/cash_helper_text_field.dart';
 import '../../components/visibility_icon_component.dart';
 import '../../controllers/login_controller.dart';
-import '../../stores/login_states.dart';
 import 'auth_error_view.dart';
 
 class UserNotFoundView extends StatefulWidget {
@@ -26,15 +23,10 @@ class UserNotFoundView extends StatefulWidget {
 
 final _loginController = Modular.get<LoginController>();
 bool _passwordVisible = false;
+var _managerUser = ValueNotifier(false);
 late EnterpriseBusinessPosition businessPosition;
 
 class _UserNotFoundViewState extends State<UserNotFoundView> {
-  @override
-  void initState() {
-    super.initState();
-    _loginController.authBloc.add(InitialAuthEvent());
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -53,7 +45,7 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
             ),
           );
         }
-        if (state is AuthInitialState) {
+        if (state is AuthBusinessPositionErrorState) {
           return Scaffold(
             body: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -73,8 +65,8 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                       Text('Cash Helper', style: Theme.of(context).textTheme.bodyLarge),
                       SizedBox(height: height * 0.2),
                       Text(
-                        "Selecione sua área de ocupação",
-                        style: Theme.of(context).textTheme.displaySmall?.copyWith(color: appThemes.surface(context)),
+                        "Especifique a função correta",
+                        style: Theme.of(context).textTheme.displaySmall?.copyWith(color: appThemes.surfaceColor(context)),
                       ),
                       const SizedBox(height: 25),
                       Row(
@@ -83,7 +75,9 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                             animation: _loginController.managerUser,
                             builder: (_, __) {
                               return Switch(
-                                activeColor: appThemes.greenColor(context),
+                                inactiveThumbColor: appThemes.greenColor(context),
+                                inactiveTrackColor: appThemes.greenColor(context),
+                                activeColor: appThemes.blueColor(context),
                                 value: _loginController.userStatus,
                                 onChanged: (value) {
                                   _loginController.userStatus = value;
@@ -122,7 +116,7 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         CashHelperTextFieldComponent(
-                                          primaryColor: appThemes.surfaceColor(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
                                           validator: _loginController.emailValidate,
                                           onSaved: (value) => _loginController.emailField.text = value ?? "",
@@ -133,9 +127,9 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                                           height: 30,
                                         ),
                                         CashHelperTextFieldComponent(
-                                          primaryColor: appThemes.surfaceColor(context),
+                                          primaryColor: appThemes.surface(context),
                                           suffixIcon: VisibilityIconComponent(
-                                              iconColor: appThemes.surfaceColor(context),
+                                              iconColor: appThemes.surface(context),
                                               onTap: () {
                                                 setState(() {
                                                   _passwordVisible = !_passwordVisible;
@@ -193,23 +187,15 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 25),
-                        child: Visibility(
-                          visible: !_loginController.loadingData.value,
-                          replacement: Center(
-                            child: CircularProgressIndicator(
-                              color: appThemes.indicatorColor(context),
-                            ),
-                          ),
-                          child: CashHelperElevatedButton(
-                            onPressed: _loginController.login,
-                            radius: 12,
-                            width: width,
-                            height: 65,
-                            buttonName: 'Entrar',
-                            fontSize: 20,
-                            nameColor: appThemes.surfaceColor(context),
-                            backgroundColor: appThemes.purpleColor(context),
-                          ),
+                        child: CashHelperElevatedButton(
+                          onPressed: _loginController.login,
+                          radius: 12,
+                          width: width,
+                          height: 65,
+                          buttonName: 'Entrar',
+                          fontSize: 20,
+                          nameColor: appThemes.surface(context),
+                          backgroundColor: appThemes.purpleColor(context),
                         ),
                       ),
                     ],
@@ -240,17 +226,15 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
             ),
           );
         }
-        if (state is LoginAuthErrorState) {
+        if (state is AuthErrorState) {
           return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
+        }
+        if (state is AuthBusinessPositionErrorState) {
+          return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
         }
         return Container(
           decoration: BoxDecoration(
             color: appThemes.primaryColor(context),
-          ),
-          child: Center(
-            child: CircularProgressIndicator(
-              color: appThemes.indicatorColor(context),
-            ),
           ),
         );
       },

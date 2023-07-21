@@ -1,4 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +23,12 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     state(AuthLoadingState());
     final appUser = await _login(event.email, event.password, event.enterpriseId, event.collection).catchError(
       (e) {
-        state(AuthErrorState("Credenciais inválidas"));
+        if (e.runtimeType == AuthenticationError) {
+          state(AuthErrorState("Email ou senha inválidos. Verifique os dados e tente novamente."));
+        }
+        if (e.runtimeType == UserNotFound) {
+          state(AuthBusinessPositionErrorState("Especifique sua função para realizar o login."));
+        }
       },
     );
     if (appUser != null) {

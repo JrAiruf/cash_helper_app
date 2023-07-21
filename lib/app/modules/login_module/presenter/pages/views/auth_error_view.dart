@@ -1,6 +1,9 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/user_not_found_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../../shared/themes/cash_helper_themes.dart';
@@ -10,8 +13,6 @@ import '../../components/buttons/cash_helper_login_button.dart';
 import '../../components/cash_helper_text_field.dart';
 import '../../components/visibility_icon_component.dart';
 import '../../controllers/login_controller.dart';
-import '../../stores/login_states.dart';
-import '../../stores/login_store.dart';
 
 class AuthErrorView extends StatefulWidget {
   const AuthErrorView({super.key, required this.enterpriseEntity});
@@ -31,18 +32,12 @@ class _AuthErrorViewState extends State<AuthErrorView> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final surfaceColor = Theme.of(context).colorScheme.onSurface;
-    final surface = Theme.of(context).colorScheme.surface;
-    final secondaryColor = Theme.of(context).colorScheme.secondary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
     final userBusinessPosition = _managerUser ? "Gerente" : "Operador";
     final appThemes = CashHelperThemes();
-    return ValueListenableBuilder(
-        valueListenable: _loginController.loginStore,
-        builder: (_, state, __) {
-          if (state is LoginLoadingState) {
+    return BlocBuilder<AuthBloc, AuthStates>(
+        bloc: _loginController.authBloc,
+        builder: (_, state) {
+          if (state is AuthLoadingState) {
             return Container(
               decoration: BoxDecoration(color: appThemes.primaryColor(context)),
               child: Center(
@@ -52,14 +47,14 @@ class _AuthErrorViewState extends State<AuthErrorView> {
               ),
             );
           }
-          if (state is LoginAuthErrorState) {
+          if (state is AuthErrorState) {
             return Scaffold(
               body: SingleChildScrollView(
                 physics: const NeverScrollableScrollPhysics(),
                 child: Container(
                   height: height,
                   width: width,
-                  decoration: BoxDecoration(color: primaryColor),
+                  decoration: BoxDecoration(color: appThemes.primaryColor(context)),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 15,
@@ -71,29 +66,39 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                         SizedBox(height: height * 0.1),
                         Text('Cash Helper', style: Theme.of(context).textTheme.bodyLarge),
                         SizedBox(height: height * 0.16),
-                        Row(
-                          children: [
-                            Switch(
-                                activeColor: tertiaryColor,
-                                value: _managerUser,
+                      Row(
+                        children: [
+                          AnimatedBuilder(
+                            animation: _loginController.managerUser,
+                            builder: (_, __) {
+                              return Switch(
+                                inactiveThumbColor: appThemes.greenColor(context),
+                                inactiveTrackColor: appThemes.greenColor(context),
+                                activeColor: appThemes.blueColor(context),
+                                value: _loginController.userStatus,
                                 onChanged: (value) {
-                                  _managerUser = !_managerUser;
-                                  setState(() {
-                                    businessPosition = _managerUser ? EnterpriseBusinessPosition.manager : EnterpriseBusinessPosition.cashOperator;
-                                  });
-                                }),
-                            const SizedBox(width: 25),
-                            Text(
-                              userBusinessPosition,
-                              style: Theme.of(context).textTheme.displayMedium?.copyWith(color: surface),
-                            ),
-                            const SizedBox(width: 35),
-                          ],
-                        ),
+                                  _loginController.userStatus = value;
+                                  _loginController.userBusinessPosition = value ? EnterpriseBusinessPosition.manager.position : EnterpriseBusinessPosition.cashOperator.position;
+                                },
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 25),
+                          AnimatedBuilder(
+                            animation: _loginController.businessPosition,
+                            builder: (_, __) {
+                              return Text(
+                                _loginController.userBusinessPosition,
+                                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                         Stack(
                           children: [
                             Card(
-                              color: secondaryColor,
+                              color: appThemes.purpleColor(context),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                               child: SizedBox(
                                 height: height * 0.4,
@@ -108,7 +113,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           CashHelperTextFieldComponent(
-                                            primaryColor: surfaceColor,
+                                            primaryColor: appThemes.surfaceColor(context),
                                             radius: 15,
                                             validator: (value) => _loginController.emailValidate(value),
                                             onSaved: (value) => _loginController.emailField.text = value ?? "",
@@ -119,9 +124,9 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                                             height: 30,
                                           ),
                                           CashHelperTextFieldComponent(
-                                            primaryColor: surfaceColor,
+                                            primaryColor: appThemes.surfaceColor(context),
                                             suffixIcon: VisibilityIconComponent(
-                                                iconColor: surfaceColor,
+                                                iconColor: appThemes.surfaceColor(context),
                                                 onTap: () {
                                                   setState(() {
                                                     _passwordVisible = !_passwordVisible;
@@ -179,30 +184,22 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 25),
-                          child: Visibility(
-                            visible: !_loginController.loadingData.value,
-                            replacement: Center(
-                              child: CircularProgressIndicator(
-                                color: indicatorColor,
-                              ),
-                            ),
-                            child: CashHelperElevatedButton(
-                              onPressed: _loginController.login,
-                              radius: 12,
-                              width: width,
-                              height: 65,
-                              buttonName: 'Entrar',
-                              fontSize: 20,
-                              nameColor: surfaceColor,
-                              backgroundColor: secondaryColor,
-                            ),
+                          child: CashHelperElevatedButton(
+                            onPressed: _loginController.login,
+                            radius: 12,
+                            width: width,
+                            height: 65,
+                            buttonName: 'Entrar',
+                            fontSize: 20,
+                            nameColor: appThemes.surfaceColor(context),
+                            backgroundColor: appThemes.purpleColor(context),
                           ),
                         ),
                         const SizedBox(height: 20),
                         Center(
                           child: Text(
                             "E-mail ou senha inválidos. Login não realizado!",
-                            style: Theme.of(context).textTheme.displaySmall?.copyWith(color: surface),
+                            style: Theme.of(context).textTheme.displaySmall?.copyWith(color: appThemes.surfaceColor(context)),
                           ),
                         ),
                       ],
@@ -212,20 +209,16 @@ class _AuthErrorViewState extends State<AuthErrorView> {
               ),
             );
           }
-          if (state is LoginSuccessState) {
-            final enterpriseId = widget.enterpriseEntity.enterpriseId;
-            final operatorEntity = state.operatorEntity;
-            Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
+          if (state is AuthOperatorSuccessState) {
+            Modular.to.navigate("${UserRoutes.operatorHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.cashOperator);
             return Container(
               decoration: BoxDecoration(
                 color: appThemes.primaryColor(context),
               ),
             );
           }
-          if (state is ManagerLoginSuccessState) {
-            final enterpriseId = widget.enterpriseEntity.enterpriseId;
-            final managerEntity = state.managerEntity;
-            Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId", arguments: managerEntity);
+          if (state is AuthManagerSuccessState) {
+            Modular.to.navigate("${UserRoutes.managerHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.manager);
             return Container(
               decoration: BoxDecoration(
                 color: appThemes.primaryColor(context),
@@ -236,19 +229,16 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                 ),
               ),
             );
-          } else if (state is LoginAuthErrorState) {
+          }
+          if (state is AuthErrorState) {
             return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
-          } else if (state is LoginNoUserErrorState) {
+          }
+          if (state is AuthBusinessPositionErrorState) {
             return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
           }
           return Container(
             decoration: BoxDecoration(
               color: appThemes.primaryColor(context),
-            ),
-            child: Center(
-              child: CircularProgressIndicator(
-                color: appThemes.indicatorColor(context),
-              ),
             ),
           );
         });
