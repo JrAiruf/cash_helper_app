@@ -8,13 +8,15 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       : _login = login,
         super(AuthInitialState()) {
     on<LoginEvent>(_mapLoginEventToState);
-    on((event, emit) => null);
-    on((event, emit) => null);
-    on((event, emit) => null);
-    on((event, emit) => null);
+    on<InitialAuthEvent>(_setAuthInitialState);
   }
 
   final ILogin _login;
+
+  void _setAuthInitialState(InitialAuthEvent event, Emitter<AuthStates> state) async {
+    state(AuthInitialState());
+  }
+
   void _mapLoginEventToState(LoginEvent event, Emitter<AuthStates> state) async {
     state(AuthLoadingState());
     final appUser = await _login(event.email, event.password, event.enterpriseId, event.collection);

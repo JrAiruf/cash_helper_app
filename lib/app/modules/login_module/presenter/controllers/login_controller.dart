@@ -2,6 +2,8 @@
 
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ class LoginController {
   final cashierNumberField = TextEditingController();
 
   final loginStore = Modular.get<LoginStore>();
+  final authBloc = Modular.get<AuthBloc>();
   final dateValue = DateValues();
   bool loadingLoginData = false;
   bool loadingAuthData = false;
@@ -157,7 +160,7 @@ class LoginController {
     loginFormKey.currentState?.validate();
     if (loginFormKey.currentState!.validate()) {
       loginFormKey.currentState!.save();
-      await loginStore.login(emailField.text, passwordField.text, enterpriseId, userEnterpriseBusinessPosition.position);
+      authBloc.add(LoginEvent(entepriseEntity.enterpriseId!, emailField.text, passwordField.text, userEnterpriseBusinessPosition.position));
     }
   }
 

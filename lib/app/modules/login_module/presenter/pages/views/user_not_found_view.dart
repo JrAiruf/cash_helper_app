@@ -2,7 +2,6 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../routes/app_routes.dart';
 import '../../../../enterprise_module/domain/entities/enterprise_business_position.dart';
 import '../../../../enterprise_module/domain/entities/enterprise_entity.dart';

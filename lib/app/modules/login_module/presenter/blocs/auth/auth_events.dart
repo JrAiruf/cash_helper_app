@@ -6,11 +6,10 @@ abstract class AuthEvents {}
 class LoginEvent implements AuthEvents {
   final String enterpriseId;
   final String email;
-  final String collection;
   final String password;
+  final String collection;
 
-  LoginEvent(this.enterpriseId, this.email, this.collection, this.password);
-
+  LoginEvent(this.enterpriseId, this.email, this.password, this.collection);
 }
 
 class RegisterManagerEvent implements AuthEvents {
@@ -18,15 +17,14 @@ class RegisterManagerEvent implements AuthEvents {
   final ManagerEntity manager;
 
   RegisterManagerEvent(this.enterpriseId, this.manager);
-
 }
 
 class CreateOperatorEvent implements AuthEvents {
-final String enterpriseId;
+  final String enterpriseId;
   final OperatorEntity newOperator;
 
   CreateOperatorEvent(this.enterpriseId, this.newOperator);
-
 }
 
 class RetrievePasswordEvent implements AuthEvents {}
+class InitialAuthEvent implements AuthEvents {}

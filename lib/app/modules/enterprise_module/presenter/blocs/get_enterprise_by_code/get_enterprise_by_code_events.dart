@@ -5,3 +5,5 @@ class GetEnterpriseByCodeEvent implements GetEnterpriseByCodeEvents {
 
   GetEnterpriseByCodeEvent(this.enterpriseCode);
 }
+
+class InitialAppEvent implements GetEnterpriseByCodeEvents {}

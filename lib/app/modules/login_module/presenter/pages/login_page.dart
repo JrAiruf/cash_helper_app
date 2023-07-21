@@ -1,5 +1,7 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_business_position.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/auth_error_view.dart';
@@ -7,6 +9,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/u
 import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../components/buttons/cash_helper_login_button.dart';
@@ -26,9 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _loginController.loginStore.restartLoginStoreState();
     _loginController.entepriseEntity = widget.enterpriseEntity;
-    _loginController.enterpriseId = widget.enterpriseEntity.enterpriseId!;
+    _loginController.authBloc.add(InitialAuthEvent());
   }
 
   @override
@@ -36,10 +38,10 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    return ValueListenableBuilder(
-      valueListenable: _loginController.loginStore,
-      builder: (_, state, __) {
-        if (state is LoginLoadingState) {
+    return BlocBuilder(
+      bloc: _loginController.authBloc,
+      builder: (_, state) {
+        if (state is AuthLoadingState) {
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
@@ -48,7 +50,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           );
-        } else if (state is LoginInitialState) {
+        }
+        if (state is AuthInitialState) {
           return Scaffold(
             body: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -206,19 +209,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           );
-        } else if (state is LoginSuccessState) {
-          final enterpriseId = widget.enterpriseEntity.enterpriseId;
-          final operatorEntity = state.operatorEntity;
-          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
+        }
+        if (state is AuthOperatorSuccessState) {
+          Modular.to.navigate("${UserRoutes.operatorHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.cashOperator);
           return Container(
             decoration: BoxDecoration(
               color: appThemes.primaryColor(context),
             ),
           );
-        } else if (state is ManagerLoginSuccessState) {
-          final enterpriseId = widget.enterpriseEntity.enterpriseId;
-          final managerEntity = state.managerEntity;
-          Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId", arguments: managerEntity);
+        }
+        if (state is AuthManagerSuccessState) {
+          Modular.to.navigate("${UserRoutes.managerHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.manager);
           return Container(
             decoration: BoxDecoration(
               color: appThemes.primaryColor(context),
@@ -229,9 +230,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           );
-        } else if (state is LoginAuthErrorState) {
-          return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
-        } else if (state is LoginNoUserErrorState) {
+        }
+        if (state is AuthErrorState) {
           return UserNotFoundView(enterpriseEntity: widget.enterpriseEntity);
         }
         return Container(
