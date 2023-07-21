@@ -39,15 +39,11 @@ class EnterpriseController {
   final codeVisible = ValueNotifier(false);
 
   String? passwordValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.length >= 8
-        ? null
-        : 'Senha Inválida! Sua Senha deve ter pelo menos 8 dígitos.';
+    return value!.isNotEmpty && value != '' && value.length >= 8 ? null : 'Senha Inválida! Sua Senha deve ter pelo menos 8 dígitos.';
   }
 
   String? cnpjValidate(String? value) {
-    return value!.isNotEmpty && value != ''
-        ? null
-        : 'Insira o CNPJ da empresa.';
+    return value!.isNotEmpty && value != '' ? null : 'Insira o CNPJ da empresa.';
   }
 
   String? enterpriseNameValidate(String? value) {
@@ -55,15 +51,11 @@ class EnterpriseController {
   }
 
   String? cityValidate(String? value) {
-    return value!.isNotEmpty && value != ''
-        ? null
-        : 'Insiar o nome onde sua empresa está situada';
+    return value!.isNotEmpty && value != '' ? null : 'Insiar o nome onde sua empresa está situada';
   }
 
   String? enterpriseEmailValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value.contains("@")
-        ? null
-        : 'Insiar o nome onde sua empresa está situada';
+    return value!.isNotEmpty && value != '' && value.contains("@") ? null : 'Insiar o nome onde sua empresa está situada';
   }
 
   String? cepValidate(String? value) {
@@ -71,35 +63,26 @@ class EnterpriseController {
   }
 
   String? stateValidate(String? value) {
-    return value!.isNotEmpty && value != ''
-        ? null
-        : 'Insira o Estado da Empresa';
+    return value!.isNotEmpty && value != '' ? null : 'Insira o Estado da Empresa';
   }
 
   String? streetValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value != ' '
-        ? null
-        : 'Informe a rua de endereço da empresa.';
+    return value!.isNotEmpty && value != '' && value != ' ' ? null : 'Informe a rua de endereço da empresa.';
   }
 
   String? addressNumberValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value != ' '
-        ? null
-        : 'Informe o número de endereço da empresa.';
+    return value!.isNotEmpty && value != '' && value != ' ' ? null : 'Informe o número de endereço da empresa.';
   }
 
   String? phoneNumberValidate(String? value) {
-    return value!.isNotEmpty && value != '' && value != ' '
-        ? null
-        : 'Informe o número de telefone da empresa.';
+    return value!.isNotEmpty && value != '' && value != ' ' ? null : 'Informe o número de telefone da empresa.';
   }
 
   void nextRegistrationStep() {
     enterpriseFormKey.currentState!.validate();
     if (enterpriseFormKey.currentState!.validate()) {
       enterpriseFormKey.currentState?.save();
-      Modular.to.pushNamed(EnterpriseRoutes.createEnterprise,
-          arguments: enterpriseEntity);
+      Modular.to.pushNamed(EnterpriseRoutes.createEnterprise, arguments: enterpriseEntity);
     }
   }
 
@@ -119,56 +102,56 @@ class EnterpriseController {
     enterpriseFormKey.currentState?.validate();
     if (enterpriseFormKey.currentState!.validate()) {
       enterpriseFormKey.currentState?.save();
-      getEnterpriseByCodeBloc
-          .add(GetEnterpriseByCodeEvent(enterpriseCodeField.text));
-      }
+      getEnterpriseByCodeBloc.add(GetEnterpriseByCodeEvent(enterpriseCodeField.text));
+      enterpriseCodeField.clear();
     }
   }
+}
 
-  noMatchingPasswords(BuildContext context, {required String message}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-        ),
-        backgroundColor: Colors.redAccent,
-        elevation: 5,
-        duration: const Duration(seconds: 5),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.07,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: Text(
-            message,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+noMatchingPasswords(BuildContext context, {required String message}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
         ),
       ),
-    );
-  }
-
-  enterpriseNotFound(BuildContext context, {required String message}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-          ),
-        ),
-        backgroundColor: Colors.redAccent,
-        elevation: 5,
-        duration: const Duration(seconds: 5),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.07,
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: Text(
-            message,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+      backgroundColor: Colors.redAccent,
+      elevation: 5,
+      duration: const Duration(seconds: 5),
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.07,
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Text(
+          message,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
+enterpriseNotFound(BuildContext context, {required String message}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+      ),
+      backgroundColor: Colors.redAccent,
+      elevation: 5,
+      duration: const Duration(seconds: 5),
+      content: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.07,
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: Text(
+          message,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ),
+    ),
+  );
+}

@@ -24,8 +24,11 @@ class AuthErrorState implements AuthStates {
 
   AuthErrorState(this.error);
 }
+
 class AuthBusinessPositionErrorState implements AuthStates {
   final String error;
 
   AuthBusinessPositionErrorState(this.error);
 }
+
+class AuthSignOutState implements AuthStates {}

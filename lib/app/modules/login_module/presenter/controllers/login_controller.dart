@@ -163,6 +163,8 @@ class LoginController {
       loginFormKey.currentState!.save();
       authBloc.add(LoginEvent(entepriseEntity.enterpriseId!, emailField.text, passwordField.text, userEnterpriseBusinessPosition.position));
       loadingData.value = false;
+      emailField.clear();
+      passwordField.clear();
     }
     loadingData.value = false;
   }
@@ -174,9 +176,9 @@ class LoginController {
     showSignOutDialog(
       context,
       appThemes.primaryColor(context),
-      () async {
+      () {
         Modular.to.pop();
-        await loginStore.signOut();
+        authBloc.add(AuthSignOutEvent());
         Modular.to.navigate(EnterpriseRoutes.initial);
       },
     );

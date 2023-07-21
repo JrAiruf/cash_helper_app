@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_bloc.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_events.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
@@ -44,7 +45,7 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
             padding: const EdgeInsets.symmetric(
               horizontal: 15,
             ),
-            child: BlocBuilder(
+            child: BlocBuilder<GetEnterpriseByCodeBloc, GetEnterpriseByCodeStates>(
               bloc: _enterpriseController.getEnterpriseByCodeBloc,
               builder: (_, state) {
                 if (state is GetEnterpriseLoadingState) {

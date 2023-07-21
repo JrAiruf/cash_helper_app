@@ -238,6 +238,19 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
+        if (state is AuthSignOutState) {
+          Modular.to.navigate(EnterpriseRoutes.initial);
+          return Container(
+            decoration: BoxDecoration(
+              color: appThemes.primaryColor(context),
+            ),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: appThemes.indicatorColor(context),
+              ),
+            ),
+          );
+        }
 
         return Container(
           decoration: BoxDecoration(

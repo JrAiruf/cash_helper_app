@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
@@ -6,14 +7,19 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/au
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {
-  AuthBloc({required ILogin login})
-      : _login = login,
+  AuthBloc({
+    required ILogin login,
+    required ISignOut signOut,
+  })  : _login = login,
+        _signOut = signOut,
         super(AuthInitialState()) {
     on<LoginEvent>(_mapLoginEventToState);
     on<InitialAuthEvent>(_setAuthInitialState);
+    on<AuthSignOutEvent>(_mapAuthSignOutEventToState);
   }
 
   final ILogin _login;
+  final ISignOut _signOut;
 
   void _setAuthInitialState(InitialAuthEvent event, Emitter<AuthStates> state) async {
     state(AuthInitialState());
@@ -41,5 +47,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           break;
       }
     }
+  }
+
+  void _mapAuthSignOutEventToState(AuthSignOutEvent event, Emitter<AuthStates> state) async {
+    state(AuthLoadingState());
+    await _signOut();
+    state(AuthSignOutState());
   }
 }

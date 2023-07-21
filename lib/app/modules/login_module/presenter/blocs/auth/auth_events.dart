@@ -3,6 +3,8 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 
 abstract class AuthEvents {}
 
+class InitialAuthEvent implements AuthEvents {}
+
 class LoginEvent implements AuthEvents {
   final String enterpriseId;
   final String email;
@@ -27,4 +29,5 @@ class CreateOperatorEvent implements AuthEvents {
 }
 
 class RetrievePasswordEvent implements AuthEvents {}
-class InitialAuthEvent implements AuthEvents {}
+
+class AuthSignOutEvent implements AuthEvents {}
