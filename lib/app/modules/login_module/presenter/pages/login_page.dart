@@ -7,7 +7,6 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/components/vi
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/auth_error_view.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/user_not_found_view.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,9 +38,10 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    return BlocBuilder<AuthBloc, AuthStates>(
+    return BlocBuilder<AuthBloc, AuthStates?>(
       bloc: _loginController.authBloc,
       builder: (_, state) {
+        print(state);
         if (state is AuthErrorState) {
           return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
         }
@@ -59,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
         if (state is AuthInitialState) {
+          print(state);
           return Scaffold(
             body: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
@@ -238,20 +239,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
-        if (state is AuthSignOutState) {
-          Modular.to.navigate(EnterpriseRoutes.initial);
-          return Container(
-            decoration: BoxDecoration(
-              color: appThemes.primaryColor(context),
-            ),
-            child: Center(
-              child: CircularProgressIndicator(
-                color: appThemes.indicatorColor(context),
-              ),
-            ),
-          );
-        }
-
         return Container(
           decoration: BoxDecoration(
             color: appThemes.primaryColor(context),

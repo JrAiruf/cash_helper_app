@@ -1,5 +1,7 @@
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
@@ -10,6 +12,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/controller/man
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../components/buttons/quick_access_button.dart';
@@ -33,7 +36,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
     _managementController.enterpriseId = _enterpriseId;
-    _loginController.loginStore.getUserById(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!);
+    _loginController.authBloc.add(AuthGetUserByIdEvent(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!));
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
   }
@@ -44,10 +47,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    return ValueListenableBuilder(
-      valueListenable: _loginController.loginStore,
-      builder: (_, state, __) {
-        if (state is LoginLoadingState) {
+    return BlocBuilder<AuthBloc, AuthStates?>(
+      bloc: _loginController.authBloc,
+      builder: (_, state) {
+        print(state);
+        if (state is AuthLoadingState) {
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
@@ -57,8 +61,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             ),
           );
         }
-        if (state is ManagerLoginSuccessState) {
-          final manager = state.managerEntity;
+        if (state is AuthManagerSuccessState) {
+          print(state);
+          final manager = state.manager;
           return Scaffold(
             appBar: AppBar(),
             drawer: ManagerSectionDrawer(
@@ -282,16 +287,15 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             ),
           );
         }
-        if (state is LoginSignOutState) {
+        if (state is AuthSignOutState) {
           Modular.to.navigate(EnterpriseRoutes.initial);
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
           );
-        } else {
-          return Container(
-            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-          );
         }
+        return Container(
+          decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+        );
       },
     );
   }

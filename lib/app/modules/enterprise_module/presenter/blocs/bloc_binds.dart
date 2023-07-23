@@ -4,11 +4,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class EnterpriseBlocBinds {
   static final binds = <Bind>[
-    Bind<CreateEnterpriseBloc>(
+    Bind.lazySingleton<CreateEnterpriseBloc>(
           (i) => CreateEnterpriseBloc(
         createEnterprise: i(),
       ),
-    ),Bind<GetEnterpriseByCodeBloc>(
+    ),Bind.lazySingleton<GetEnterpriseByCodeBloc>(
           (i) => GetEnterpriseByCodeBloc(
         getEnterpriseByCode: i(),
       ),

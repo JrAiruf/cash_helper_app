@@ -42,8 +42,8 @@ class LoginController {
   final createManagerFormKey = GlobalKey<FormState>();
   final createOperatorFormKey = GlobalKey<FormState>();
 
-  final managerEntity = ManagerEntity(businessPosition: EnterpriseBusinessPosition.manager.position);
-  final operatorEntity = OperatorEntity(
+  var managerEntity = ManagerEntity(businessPosition: EnterpriseBusinessPosition.manager.position);
+  var operatorEntity = OperatorEntity(
     operatorClosing: 'Pendente',
     businessPosition: EnterpriseBusinessPosition.cashOperator.position,
   );
@@ -169,19 +169,11 @@ class LoginController {
     loadingData.value = false;
   }
 
-  void signOut(
-    BuildContext context,
-  ) async {
-    final appThemes = CashHelperThemes();
-    showSignOutDialog(
-      context,
-      appThemes.primaryColor(context),
-      () {
-        Modular.to.pop();
-        authBloc.add(AuthSignOutEvent());
-        Modular.to.navigate(EnterpriseRoutes.initial);
-      },
-    );
+  void signOut() async {
+    authBloc.add(AuthSignOutEvent());
+    managerEntity = ManagerEntity();
+    operatorEntity = OperatorEntity();
+    authBloc.close();
   }
 
   void getOperatorById(String enterpriseId, String operatorId) async {

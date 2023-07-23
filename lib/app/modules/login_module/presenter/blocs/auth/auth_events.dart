@@ -31,3 +31,11 @@ class CreateOperatorEvent implements AuthEvents {
 class RetrievePasswordEvent implements AuthEvents {}
 
 class AuthSignOutEvent implements AuthEvents {}
+
+class AuthGetUserByIdEvent implements AuthEvents {
+  final String enterpriseId;
+  final String userId;
+  final String collection;
+
+  AuthGetUserByIdEvent(this.enterpriseId, this.userId, this.collection);
+}

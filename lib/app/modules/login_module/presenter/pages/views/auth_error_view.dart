@@ -34,7 +34,7 @@ class _AuthErrorViewState extends State<AuthErrorView> {
     final width = MediaQuery.of(context).size.width;
     final userBusinessPosition = _managerUser ? "Gerente" : "Operador";
     final appThemes = CashHelperThemes();
-    return BlocBuilder<AuthBloc, AuthStates>(
+    return BlocBuilder<AuthBloc, AuthStates?>(
         bloc: _loginController.authBloc,
         builder: (_, state) {
           if (state is AuthLoadingState) {
@@ -66,35 +66,35 @@ class _AuthErrorViewState extends State<AuthErrorView> {
                         SizedBox(height: height * 0.1),
                         Text('Cash Helper', style: Theme.of(context).textTheme.bodyLarge),
                         SizedBox(height: height * 0.16),
-                      Row(
-                        children: [
-                          AnimatedBuilder(
-                            animation: _loginController.managerUser,
-                            builder: (_, __) {
-                              return Switch(
-                                inactiveThumbColor: appThemes.greenColor(context),
-                                inactiveTrackColor: appThemes.greenColor(context),
-                                activeColor: appThemes.blueColor(context),
-                                value: _loginController.userStatus,
-                                onChanged: (value) {
-                                  _loginController.userStatus = value;
-                                  _loginController.userBusinessPosition = value ? EnterpriseBusinessPosition.manager.position : EnterpriseBusinessPosition.cashOperator.position;
-                                },
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 25),
-                          AnimatedBuilder(
-                            animation: _loginController.businessPosition,
-                            builder: (_, __) {
-                              return Text(
-                                _loginController.userBusinessPosition,
-                                style: Theme.of(context).textTheme.displayMedium?.copyWith(color: appThemes.surfaceColor(context)),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        Row(
+                          children: [
+                            AnimatedBuilder(
+                              animation: _loginController.managerUser,
+                              builder: (_, __) {
+                                return Switch(
+                                  inactiveThumbColor: appThemes.greenColor(context),
+                                  inactiveTrackColor: appThemes.greenColor(context),
+                                  activeColor: appThemes.blueColor(context),
+                                  value: _loginController.userStatus,
+                                  onChanged: (value) {
+                                    _loginController.userStatus = value;
+                                    _loginController.userBusinessPosition = value ? EnterpriseBusinessPosition.manager.position : EnterpriseBusinessPosition.cashOperator.position;
+                                  },
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 25),
+                            AnimatedBuilder(
+                              animation: _loginController.businessPosition,
+                              builder: (_, __) {
+                                return Text(
+                                  _loginController.userBusinessPosition,
+                                  style: Theme.of(context).textTheme.displayMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                         Stack(
                           children: [
                             Card(

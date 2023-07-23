@@ -32,7 +32,7 @@ class _UserNotFoundViewState extends State<UserNotFoundView> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    return BlocBuilder<AuthBloc, AuthStates>(
+    return BlocBuilder<AuthBloc, AuthStates?>(
       bloc: _loginController.authBloc,
       builder: (_, state) {
         if (state is AuthLoadingState) {
