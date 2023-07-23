@@ -5,6 +5,7 @@ import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/cr
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/create_enterprise/create_enterprise_bloc.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_bloc.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/create_enterprise_page.dart';
+import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/enterprise_error_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/enterprise_formulary_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
@@ -51,6 +52,10 @@ class EnterpriseModule extends Module {
     ChildRoute(
       EnterpriseRoutes.enterpriseCreated,
       child: (_, args) => EnterpriseCreatedPage(enterpriseEntity: args.data),
+    ),
+    ChildRoute(
+      EnterpriseRoutes.enterpriseCreated,
+      child: (_, args) => EnterpriseErrorPage(errorText: args.data),
     ),
   ];
 

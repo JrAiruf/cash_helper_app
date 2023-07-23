@@ -6,6 +6,9 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/controll
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_events.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/operator_info_list_view_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
@@ -36,7 +39,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
     _managementController.enterpriseId = _enterpriseId;
-    _loginController.authBloc.add(AuthGetUserByIdEvent(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!));
+    _loginController.managerBloc.add(GetManagerByIdEvent(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!));
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
   }
@@ -47,11 +50,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    return BlocBuilder<AuthBloc, AuthStates?>(
-      bloc: _loginController.authBloc,
+    return BlocBuilder<ManagerBloc, ManagerStates>(
+      bloc: _loginController.managerBloc,
       builder: (_, state) {
         print(state);
-        if (state is AuthLoadingState) {
+        if (state is ManagerLoadingState) {
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
@@ -61,8 +64,16 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             ),
           );
         }
-        if (state is AuthManagerSuccessState) {
-          print(state);
+        if (state is ManagerErrorState) {
+          Modular.to.navigate(EnterpriseRoutes.initial);
+           return Container(
+            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+            child: Center(
+              child: Icon(Icons.error, size: height * 0.035,)
+            ),
+          );
+        }
+        if (state is ManagerSuccessState) {
           final manager = state.manager;
           return Scaffold(
             appBar: AppBar(),
@@ -287,12 +298,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             ),
           );
         }
-        if (state is AuthSignOutState) {
+        if (state is ManagerSignOutState) {
           Modular.to.navigate(EnterpriseRoutes.initial);
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
           );
         }
+        
         return Container(
           decoration: BoxDecoration(color: appThemes.primaryColor(context)),
         );

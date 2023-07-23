@@ -5,6 +5,8 @@ import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/en
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_events.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -31,6 +33,7 @@ class LoginController {
 
   final loginStore = Modular.get<LoginStore>();
   final authBloc = Modular.get<AuthBloc>();
+  final managerBloc = Modular.get<ManagerBloc>();
   final dateValue = DateValues();
   bool loadingLoginData = false;
   bool loadingAuthData = false;
@@ -169,11 +172,8 @@ class LoginController {
     loadingData.value = false;
   }
 
-  void signOut() async {
-    authBloc.add(AuthSignOutEvent());
-    managerEntity = ManagerEntity();
-    operatorEntity = OperatorEntity();
-    authBloc.close();
+  void managerSignOut() async {
+    managerBloc.add(ManagerSignOutEvent());
   }
 
   void getOperatorById(String enterpriseId, String operatorId) async {

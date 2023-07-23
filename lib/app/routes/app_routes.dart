@@ -12,6 +12,7 @@ class EnterpriseRoutes {
   static const enterpriseFormulary = "/enterprise-formulary-page";
   static const createEnterprise = "/create-enterprise-page";
   static const enterpriseCreated = "/enterprise-created-page";
+  static const enterpriseError = "/enterprise-error-page";
 }
 
 class UserRoutes {

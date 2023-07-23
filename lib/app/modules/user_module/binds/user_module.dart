@@ -3,6 +3,7 @@ import 'package:cash_helper_app/app/modules/user_module/binds/operator_child_rou
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/open_operator_cash/iopen_operator_cash.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/data/operator_database.dart';
 import 'package:cash_helper_app/app/modules/user_module/external/operator_database_impl.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/user_module_bloc_binds.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/payment_methods_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -96,5 +97,6 @@ class UserModule extends Module {
     Bind.singleton<OperatorController>(
       (i) => OperatorController(),
     ),
+    ...UserModuleBlocBinds.binds,
   ];
 }

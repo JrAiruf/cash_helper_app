@@ -24,12 +24,6 @@ final _enterpriseController = Modular.get<EnterpriseController>();
 
 class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
   @override
-  void initState() {
-    super.initState();
-    _enterpriseController.getEnterpriseByCodeBloc.add(InitialAppEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
@@ -160,44 +154,8 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
                   );
                 }
                 if (state is GetEnterpriseErrorState) {
-                  return Container(
-                    height: height,
-                    width: width,
-                    decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-                    child: Center(
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: height * 0.1,
-                            child: Text('Cash Helper', style: Theme.of(context).textTheme.bodyLarge),
-                          ),
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  state.error,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                                SizedBox(
-                                  height: height * 0.05,
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    _enterpriseController.getEnterpriseByCodeBloc.add(InitialAppEvent());
-                                  },
-                                  child: Text(
-                                    "Voltar",
-                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  Modular.to.pushNamed(EnterpriseRoutes.enterpriseError);
+                  
                 }
                 if (state is GetEnterpriseSuccessState) {
                   Modular.to.navigate(LoginRoutes.login, arguments: state.enterprise);

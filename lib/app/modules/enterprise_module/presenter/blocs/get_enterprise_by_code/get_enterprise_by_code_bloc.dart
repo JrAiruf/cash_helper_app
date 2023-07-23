@@ -8,7 +8,6 @@ class GetEnterpriseByCodeBloc extends Bloc<GetEnterpriseByCodeEvents, GetEnterpr
       : _getEnterpriseByCode = getEnterpriseByCode,
         super(GetEnterpriseInitialState()) {
     on<GetEnterpriseByCodeEvent>(_mapGetEnterpriseByCodeEventToState);
-    on<InitialAppEvent>(_setInitialState);
   }
 
   final IGetEnterpriseByCode _getEnterpriseByCode;
@@ -20,9 +19,5 @@ class GetEnterpriseByCodeBloc extends Bloc<GetEnterpriseByCodeEvents, GetEnterpr
     if (enterprise != null) {
       state(GetEnterpriseSuccessState(enterprise));
     }
-  }
-
-  void _setInitialState(InitialAppEvent event, Emitter<GetEnterpriseByCodeStates> state) {
-    state(GetEnterpriseInitialState());
   }
 }
