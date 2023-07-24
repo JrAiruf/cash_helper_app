@@ -7,6 +7,8 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/au
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_events.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_bloc.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_events.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -34,6 +36,7 @@ class LoginController {
   final loginStore = Modular.get<LoginStore>();
   final authBloc = Modular.get<AuthBloc>();
   final managerBloc = Modular.get<ManagerBloc>();
+  final operatorBloc = Modular.get<OperatorBloc>();
   final dateValue = DateValues();
   bool loadingLoginData = false;
   bool loadingAuthData = false;
@@ -174,6 +177,9 @@ class LoginController {
 
   void managerSignOut() async {
     managerBloc.add(ManagerSignOutEvent());
+  }
+  void operatorSignOut() async {
+    operatorBloc.add(OperatorSignOutEvent());
   }
 
   void getOperatorById(String enterpriseId, String operatorId) async {
