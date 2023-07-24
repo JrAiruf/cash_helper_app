@@ -5,6 +5,7 @@ import 'package:cash_helper_app/app/modules/annotations_module/external/annotati
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/repository/annotation_repository_impl.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc_binds.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
@@ -127,6 +128,7 @@ class AnnotationModule extends Module {
         deleteAnnotation: i(),
       ),
     ),
+    ...AnnotationsBlocBinds.binds,
   ];
 
   final routesList = <ModularRoute>[

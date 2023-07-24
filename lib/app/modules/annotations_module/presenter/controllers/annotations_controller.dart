@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ class AnnotationsController {
   final annotationSaleTimeField = TextEditingController();
   final dateValue = DateValues();
   final _annotationsStore = Modular.get<AnnotationStore>();
+  final annotationsBloc = Modular.get<AnnotationsBloc>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
   final annotationsPageController = PageController();
   final annotationsListPageController = PageController();
@@ -51,7 +54,6 @@ class AnnotationsController {
   Future<void> createAnnotation(OperatorEntity operatorEntity) async {
     newAnnotationFormKey.currentState!.validate();
     if (newAnnotationFormKey.currentState!.validate()) {
-      annotationLoadingState.value = true;
       newAnnotationFormKey.currentState?.save();
       final newAnnotation = AnnotationEntity(
           annotationCreatorId: operatorEntity.operatorId,
@@ -64,8 +66,7 @@ class AnnotationsController {
           annotationPaymentMethod: annotationPaymentMethod,
           annotationId: "AnnotationId",
           annotationSaleValue: annotationValue);
-      await _annotationsStore.createNewAnnotation(enterpriseId, newAnnotation);
-      annotationLoadingState.value = false;
+      annotationsBloc.add(CreateAnnotationEvent(enterpriseId, newAnnotation));
       Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$enterpriseId", arguments: operatorEntity);
     } else {
       return;
