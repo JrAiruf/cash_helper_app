@@ -7,11 +7,11 @@ class AnnotationsBloc extends Bloc<AnnotationsEvents, AnnotationsStates> {
   AnnotationsBloc({required ICreateNewAnnotation createNewAnnotation})
       : _createNewAnnotation = createNewAnnotation,
         super(AnnotationsInitialState()) {
-    on<CreateAnnotationEvent>((event, emit) => null);
+    on<CreateAnnotationEvent>(_mapCreateNewAnnotationEventToState);
   }
 
   final ICreateNewAnnotation _createNewAnnotation;
-  void _mapEventToState(CreateAnnotationEvent event, Emitter<AnnotationsStates> state) async {
+  void _mapCreateNewAnnotationEventToState(CreateAnnotationEvent event, Emitter<AnnotationsStates> state) async {
     state(AnnotationsLoadingState());
     final annotation = await _createNewAnnotation(event.enterpriseId, event.annotation)?.catchError((e) {
       state(AnnotationsErrorState());
