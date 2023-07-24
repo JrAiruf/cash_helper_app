@@ -34,7 +34,6 @@ class _EnterpriseAuthPageState extends State<EnterpriseAuthPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    print(Modular.initialRoutePath);
     return Scaffold(
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),

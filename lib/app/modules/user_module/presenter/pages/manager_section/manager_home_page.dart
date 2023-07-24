@@ -36,13 +36,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
     _managementController.enterpriseId = _enterpriseId;
+    _loginController.managerBloc.add(GetManagerByIdEvent(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!));
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
   }
 
   @override
   Widget build(BuildContext context) {
-    _loginController.managerBloc.add(GetManagerByIdEvent(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!));
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
@@ -55,8 +55,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         }
       }),
       builder: (_, state) {
-        print(Modular.to.path);
-        print(state);
         if (state is ManagerLoadingState) {
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),

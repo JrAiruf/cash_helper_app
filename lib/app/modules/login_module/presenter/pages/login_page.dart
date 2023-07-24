@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
         if (state is AuthInitialState) {
-          print(state);
           return Scaffold(
             body: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
