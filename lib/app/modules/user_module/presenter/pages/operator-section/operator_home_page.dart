@@ -2,8 +2,9 @@
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_events.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
@@ -11,6 +12,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/controller/ope
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_close_page.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../components/operator_widgets/operator_status_component.dart';
@@ -32,7 +34,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
   void initState() {
-    _loginController.loginStore.getUserById(_enterpriseId, widget.operatorEntity.operatorId!, widget.operatorEntity.businessPosition!);
+    _loginController.operatorBloc.add(GetOperatorByIdEvent(_enterpriseId, widget.operatorEntity.operatorId!, widget.operatorEntity.businessPosition!));
     _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId);
     super.initState();
   }
@@ -43,10 +45,15 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
-    return ValueListenableBuilder(
-      valueListenable: _loginController.loginStore,
-      builder: (_, operatorState, __) {
-        if (operatorState is LoginLoadingState) {
+    return BlocConsumer(
+      bloc: _loginController.operatorBloc,
+      listener: (context, state) {
+        if (state is OperatorSignOutState) {
+          Modular.to.navigate(EnterpriseRoutes.initial);
+        }
+      },
+      builder: (_, state) {
+        if (state is OperatorLoadingState) {
           return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
@@ -56,8 +63,8 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
             ),
           );
         }
-        if (operatorState is LoginSuccessState) {
-          final currentOperator = operatorState.operatorEntity;
+        if (state is OperatorSuccessState) {
+          final currentOperator = state.operatorEntity;
           return Scaffold(
             appBar: AppBar(),
             drawer: CashHelperDrawer(
@@ -222,14 +229,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
             ),
           );
         }
-        if (operatorState is LoginSignOutState) {
-          Modular.to.navigate(EnterpriseRoutes.initial);
-          return Container();
-        } else {
-          return Container(
-            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-          );
-        }
+        return Container(
+          decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+        );
       },
     );
   }

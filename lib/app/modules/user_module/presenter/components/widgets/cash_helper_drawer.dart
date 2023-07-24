@@ -90,7 +90,7 @@ class CashHelperDrawer extends StatelessWidget {
                   ),
                   SizedBox(height: itemSpacingHeight * 10),
                   TextButton(
-                    onPressed:loginController.managerSignOut,
+                    onPressed: loginController.operatorSignOut,
                     child: Row(
                       children: [
                         Text(
