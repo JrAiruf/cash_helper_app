@@ -6,6 +6,7 @@ import 'package:cash_helper_app/app/modules/management_module/external/data/appl
 import 'package:cash_helper_app/app/modules/management_module/external/management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/data/management_repository.dart';
 import 'package:cash_helper_app/app/modules/management_module/infra/repositories/management_repository_impl.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/management_bloc_binds.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods/payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods/payment_methods_page.dart';
@@ -137,6 +138,7 @@ class ManagementModule extends Module {
         getAllOperators: i(),
       ),
     ),
+    ...ManagementBlocBinds.binds,
     Bind<ManagementController>(
       (i) => ManagementController(),
     ),

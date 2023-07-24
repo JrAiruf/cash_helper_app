@@ -1,11 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/pending_annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_method_events.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_methods_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
+import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -14,10 +19,10 @@ import '../../../annotations_module/presenter/stores/annotations_list_store.dart
 import '../../../login_module/presenter/stores/login_store.dart';
 
 class ManagementController {
+  final paymentMethodFormKey = GlobalKey<FormState>();
   final paymentMethodNameField = TextEditingController();
   final paymentMethodDescriptionField = TextEditingController();
   final managerCodeField = TextEditingController();
-
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
   var pendencies = ValueNotifier(<PendencyEntity>[]);
   var operatorsList = <OperatorEntity>[];
@@ -27,6 +32,10 @@ class ManagementController {
   final operatorsWithPendencies = ValueNotifier(<String>[]);
   final periodList = ValueNotifier(<String>[]);
 
+// Blocs
+  final paymentMethodsBloc = Modular.get<PaymentMethodsBloc>();
+
+//
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
   final _loginStore = Modular.get<LoginStore>();
   final managementStore = Modular.get<ManagementStore>();
@@ -34,8 +43,11 @@ class ManagementController {
   final pendenciesListStore = Modular.get<PendenciesListStore>();
   final pendingAnnotationsListStore = Modular.get<PendingAnnotationsListStore>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
+  ValueNotifier managementCodeVisible = ValueNotifier(true);
   String enterpriseId = "";
-
+  String? managerCode;
+  ManagerEntity? manager;
+  final newPaymentMethod = PaymentMethodEntity();
   String? paymentMethodNameValidate(String? value) {
     return value!.isNotEmpty ? null : 'Insira o nome do método de pagamento';
   }
@@ -46,6 +58,26 @@ class ManagementController {
 
   String? paymentMethodValidate(PaymentMethodEntity? value) {
     return value != null ? null : 'Campo obrigatório.';
+  }
+
+  Future<void> createPaymentMethod(BuildContext context) async {
+    paymentMethodFormKey.currentState?.validate();
+    paymentMethodFormKey.currentState?.save();
+    if (paymentMethodFormKey.currentState!.validate()) {
+      if (managerCode == manager?.managerCode) {
+        newPaymentMethod.paymentMethodUsingRate = 0;
+        paymentMethodsBloc.add(CreateNewPaymentMethod(enterpriseId, newPaymentMethod));
+        paymentMethodAddedSnackBar(
+          context,
+          message: "Novo método de pagamento adicionado!",
+        );
+      } else {
+        noMatchingCodes(
+          context,
+          message: "Código Administrativo Inválido!",
+        );
+      }
+    }
   }
 
   Future<void> getAllPaymentMethods(String enterpriseId) async {
