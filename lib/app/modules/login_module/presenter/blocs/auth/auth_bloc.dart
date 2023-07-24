@@ -1,5 +1,4 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
@@ -10,8 +9,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates?> {
   AuthBloc({
     required ILogin login,
   })  : _login = login,
-  
-        super(null) {
+        super(AuthInitialState()) {
     on<LoginEvent>(_mapLoginEventToState);
     on<InitialAuthEvent>(_setAuthInitialState);
   }
@@ -21,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates?> {
   var appUser;
 
   void _setAuthInitialState(InitialAuthEvent event, Emitter<AuthStates?> state) async {
+    state(AuthLoadingState());
     state(AuthInitialState());
   }
 

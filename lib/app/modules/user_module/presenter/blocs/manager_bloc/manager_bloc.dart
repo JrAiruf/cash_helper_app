@@ -9,7 +9,7 @@ class ManagerBloc extends Bloc<ManagerEvents, ManagerStates> {
     required IGetUserById getUserById,
     required ISignOut signOut,
   })  : _getUserById = getUserById,
-  _signOut = signOut,
+        _signOut = signOut,
         super(ManagerInitialState()) {
     on<GetManagerByIdEvent>(_mapGetUserByIdEventToState);
     on<ManagerSignOutEvent>(_mapManagerSignOutEventToState);
@@ -27,7 +27,8 @@ class ManagerBloc extends Bloc<ManagerEvents, ManagerStates> {
       state(ManagerSuccessState(appUser));
     }
   }
-   void _mapManagerSignOutEventToState(ManagerSignOutEvent event, Emitter<ManagerStates> state) async {
+
+  void _mapManagerSignOutEventToState(ManagerSignOutEvent event, Emitter<ManagerStates> state) async {
     state(ManagerSignOutState());
     await _signOut();
   }

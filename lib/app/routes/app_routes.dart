@@ -1,5 +1,4 @@
 class LoginRoutes {
-  static const initial = "/";
   static const login = "/login";
   static const createOperator = "/create-new-operator";
   static const createManager = "/create-new-manager";

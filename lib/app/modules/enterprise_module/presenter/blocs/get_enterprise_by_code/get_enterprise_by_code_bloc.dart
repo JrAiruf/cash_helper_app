@@ -8,16 +8,25 @@ class GetEnterpriseByCodeBloc extends Bloc<GetEnterpriseByCodeEvents, GetEnterpr
       : _getEnterpriseByCode = getEnterpriseByCode,
         super(GetEnterpriseInitialState()) {
     on<GetEnterpriseByCodeEvent>(_mapGetEnterpriseByCodeEventToState);
+    on<InitialAppEvent>(_setInitialState);
   }
 
   final IGetEnterpriseByCode _getEnterpriseByCode;
   void _mapGetEnterpriseByCodeEventToState(GetEnterpriseByCodeEvent event, Emitter<GetEnterpriseByCodeStates> state) async {
     state(GetEnterpriseLoadingState());
-    final enterprise = await _getEnterpriseByCode(event.enterpriseCode)?.catchError((e) {
+    final enterprise = await _getEnterpriseByCode(event.enterpriseCode)?.catchError((e) async {
       state(GetEnterpriseErrorState("O código não pertence a nenhuma empresa cadastrada"));
+      await Future.delayed(const Duration(seconds: 1));
+      state(GetEnterpriseInitialState());
     });
     if (enterprise != null) {
       state(GetEnterpriseSuccessState(enterprise));
     }
+  }
+
+  void _setInitialState(InitialAppEvent event, Emitter<GetEnterpriseByCodeStates> state) async {
+    state(GetEnterpriseLoadingState());
+    await Future.delayed(const Duration(seconds: 1));
+    state(GetEnterpriseInitialState());
   }
 }

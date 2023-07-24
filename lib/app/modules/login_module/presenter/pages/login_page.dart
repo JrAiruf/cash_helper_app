@@ -38,10 +38,17 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final appThemes = CashHelperThemes();
-    return BlocBuilder<AuthBloc, AuthStates?>(
+    return BlocConsumer<AuthBloc, AuthStates?>(
       bloc: _loginController.authBloc,
+      listener: (context, state) {
+        if (state is AuthOperatorSuccessState) {
+          Modular.to.navigate("${UserRoutes.operatorHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.cashOperator);
+        }
+        if (state is AuthManagerSuccessState) {
+          Modular.to.navigate("${UserRoutes.managerHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.manager);
+        }
+      },
       builder: (_, state) {
-        print(state);
         if (state is AuthErrorState) {
           return AuthErrorView(enterpriseEntity: widget.enterpriseEntity);
         }
@@ -218,27 +225,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
-        if (state is AuthOperatorSuccessState) {
-          Modular.to.navigate("${UserRoutes.operatorHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.cashOperator);
-          return Container(
-            decoration: BoxDecoration(
-              color: appThemes.primaryColor(context),
-            ),
-          );
-        }
-        if (state is AuthManagerSuccessState) {
-          Modular.to.navigate("${UserRoutes.managerHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.manager);
-          return Container(
-            decoration: BoxDecoration(
-              color: appThemes.primaryColor(context),
-            ),
-            child: Center(
-              child: CircularProgressIndicator(
-                color: appThemes.indicatorColor(context),
-              ),
-            ),
-          );
-        }
+
         return Container(
           decoration: BoxDecoration(
             color: appThemes.primaryColor(context),

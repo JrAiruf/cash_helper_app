@@ -15,12 +15,20 @@ class PendenciesListStore extends ValueNotifier<PendencyStates> {
 
   Future<void> getAllPendencies(String enterpriseId) async {
     value = LoadingPendenciesState();
-    final operatorsList = await _getAllOperators(enterpriseId);
-    final pendenciesList = await _getAllPendencies(enterpriseId);
+    final operatorsList = await _getAllOperators(enterpriseId)?.catchError((e) {
+      value = NoOperatorsState();
+    });
+    final pendenciesList = await _getAllPendencies(enterpriseId).catchError((e) {
+      value = NoPendenciesState();
+    });
     if (operatorsList!.isNotEmpty && pendenciesList.isNotEmpty) {
       value = PendenciesListState(operators: operatorsList, pendencies: pendenciesList);
     } else {
-      value = operatorsList.isEmpty ? NoOperatorsState() : pendenciesList.isEmpty ? NoPendenciesState() : PendenciesInitialState();
+      value = operatorsList.isEmpty
+          ? NoOperatorsState()
+          : pendenciesList.isEmpty
+              ? NoPendenciesState()
+              : PendenciesInitialState();
     }
   }
 }

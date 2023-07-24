@@ -1,6 +1,3 @@
-import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
@@ -39,20 +36,26 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
     _managementController.enterpriseId = _enterpriseId;
-    _loginController.managerBloc.add(GetManagerByIdEvent(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!));
     _managementController.managementStore.getOperatorsInformations(_enterpriseId);
     _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
   }
 
   @override
   Widget build(BuildContext context) {
+    _loginController.managerBloc.add(GetManagerByIdEvent(_enterpriseId, widget.managerEntity.managerId!, widget.managerEntity.businessPosition!));
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    return BlocBuilder<ManagerBloc, ManagerStates>(
+    return BlocConsumer<ManagerBloc, ManagerStates>(
       bloc: _loginController.managerBloc,
+      listener: ((context, state) {
+        if (state is ManagerSignOutState) {
+          Modular.to.navigate(Modular.initialRoute);
+        }
+      }),
       builder: (_, state) {
+        print(Modular.to.path);
         print(state);
         if (state is ManagerLoadingState) {
           return Container(
@@ -66,11 +69,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         }
         if (state is ManagerErrorState) {
           Modular.to.navigate(EnterpriseRoutes.initial);
-           return Container(
+          return Container(
             decoration: BoxDecoration(color: appThemes.primaryColor(context)),
             child: Center(
-              child: Icon(Icons.error, size: height * 0.035,)
-            ),
+                child: Icon(
+              Icons.error,
+              size: height * 0.035,
+            )),
           );
         }
         if (state is ManagerSuccessState) {
@@ -298,13 +303,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             ),
           );
         }
-        if (state is ManagerSignOutState) {
-          Modular.to.navigate(EnterpriseRoutes.initial);
-          return Container(
-            decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-          );
-        }
-        
         return Container(
           decoration: BoxDecoration(color: appThemes.primaryColor(context)),
         );
