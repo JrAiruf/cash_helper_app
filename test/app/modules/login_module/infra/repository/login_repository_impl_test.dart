@@ -67,7 +67,7 @@ class LoginRepoMock implements LoginRepository {
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? newPassword) {
+  Future<void>? resetUserPassword(String? email, String? operatorCode, String? newPassword) {
     throw UnimplementedError();
   }
 

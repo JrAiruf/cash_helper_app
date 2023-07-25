@@ -67,9 +67,9 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? newPassword) async {
+  Future<void>? resetUserPassword(String? email, String? operatorCode, String? newPassword) async {
     if (email!.isNotEmpty && operatorCode!.isNotEmpty && newPassword!.isNotEmpty) {
-      return await _datasource.resetOperatorPassword(email, operatorCode, "", newPassword);
+      return await _datasource.resetUserPassword(email, operatorCode, "", newPassword);
     } else {
       return;
     }

@@ -1,8 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_events.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc/annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
+import '../blocs/annotations_bloc/annotations_bloc/annotations_events.dart';
 import '../date_values/date_values.dart';
 import '../stores/annotations_list_store.dart';
 import '../stores/annotations_store.dart';

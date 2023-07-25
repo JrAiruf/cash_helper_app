@@ -28,7 +28,14 @@ class CreateOperatorEvent implements AuthEvents {
   CreateOperatorEvent(this.enterpriseId, this.newOperator);
 }
 
-class RetrievePasswordEvent implements AuthEvents {}
+class RetrievePasswordEvent implements AuthEvents {
+  final String userEmail;
+  final String userCode;
+  final String enterpriseId;
+  final String newPassword;
+
+  RetrievePasswordEvent(this.userEmail, this.userCode, this.enterpriseId, this.newPassword);
+}
 
 class AuthSignOutEvent implements AuthEvents {}
 

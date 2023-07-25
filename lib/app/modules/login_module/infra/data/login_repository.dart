@@ -4,6 +4,6 @@ Future<dynamic>? login(String? email, String? password, String? enterpriseId, St
 Future<dynamic>? getUserById(String? enterpriseId, String? userId, String? collection);
 Future<dynamic>? getAllOperators(String enterpriseId);
 Future<bool>? checkOperatorDataForResetPassword(String? email, String? userCode, String? collection);
-Future<void>? resetOperatorPassword( String? email, String? userCode, String? newPassword);
+Future<void>? resetUserPassword( String? email, String? userCode, String? newPassword);
 Future<void>? signOut();
 }

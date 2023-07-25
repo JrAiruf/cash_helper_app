@@ -3,7 +3,7 @@ import 'package:cash_helper_app/app/modules/login_module/domain/usecases/get_all
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_manager/iregister_manager.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/register_operator/iregister_operator.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/usecases/reset_operator_password/ireset_operator_password.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/usecases/reset_user_password/ireset_user_password.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/sign_out/isign_out.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';

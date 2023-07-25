@@ -12,8 +12,8 @@ import '../usecases/register_manager/iregister_manager.dart';
 import '../usecases/register_manager/register_manager.dart';
 import '../usecases/register_operator/iregister_operator.dart';
 import '../usecases/register_operator/register_operator.dart';
-import '../usecases/reset_operator_password/ireset_operator_password.dart';
-import '../usecases/reset_operator_password/reset_operator_password.dart';
+import '../usecases/reset_user_password/ireset_user_password.dart';
+import '../usecases/reset_user_password/reset_user_password.dart';
 import '../usecases/sign_out/isign_out.dart';
 import '../usecases/sign_out/sign_out.dart';
 

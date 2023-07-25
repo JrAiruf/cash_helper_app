@@ -101,7 +101,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? enterpriseId, String? newPassword) {
+  Future<void>? resetUserPassword(String? email, String? operatorCode, String? enterpriseId, String? newPassword) {
     throw UnimplementedError();
   }
 

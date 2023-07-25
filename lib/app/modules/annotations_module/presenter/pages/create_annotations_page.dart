@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_states.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc/annotations_states.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';

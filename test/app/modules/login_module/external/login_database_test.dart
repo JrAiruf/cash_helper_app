@@ -115,7 +115,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? resetOperatorPassword(String? email, String? operatorCode, String? enterpriseId, String? newPassword) async {
+  Future<void>? resetUserPassword(String? email, String? operatorCode, String? enterpriseId, String? newPassword) async {
     try {
       final operatorsList = await _database.collection("operator").get();
       if (_dataVerifier.validateInputData(inputs: [email, operatorCode])) {
@@ -315,6 +315,29 @@ void main() {
   );
   group(
     "GetAllOperators function should",
+    () {
+      test(
+        "Return a List from firebase containing data of all operators",
+        () async {
+          await enterpriseDatabase.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final enterprisesList = await firebaseMock.collection("enterprise").get();
+          final createdEnterprise = enterprisesList.docs.first.data();
+          await database.register(LoginTestObjects.newOperator, createdEnterprise["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          final operatorsList = await database.getAllOperators(createdEnterprise["enterpriseId"]);
+          expect(operatorsList, isA<List<Map<String, dynamic>>>());
+          expect(operatorsList?.isNotEmpty, equals(true));
+        },
+      );
+      test(
+        "Fail returning operators List (throws OperatorsUnavailable)",
+        () async {
+          expect(() async => database.getAllOperators(""), throwsA(isA<OperatorsUnavailable>()));
+        },
+      );
+    },
+  );
+  group(
+    "ResetUserPassword function should",
     () {
       test(
         "Return a List from firebase containing data of all operators",
