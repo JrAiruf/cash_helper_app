@@ -33,7 +33,7 @@ class _OperatorProfilePageState extends State<OperatorProfilePage> {
   void initState() {
     super.initState();
     _annotationController.getAllAnnotations();
-    _managementController.getAllPaymentMethods(_enterpriseId);
+    _managementController.getAllPaymentMethods();
   }
 
   @override

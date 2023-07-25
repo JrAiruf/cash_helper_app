@@ -98,7 +98,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       ManagerViewButton(
                         text: "Visualizar",
                         onPressed: () => Modular.to.pushNamed(
-                          "${ManagementRoutes.paymentMethodsPage}$_managementController.enterpriseId",
+                          "${ManagementRoutes.paymentMethodsPage}${_managementController.enterpriseId}",
                           arguments: widget.managerEntity,
                         ),
                       ),

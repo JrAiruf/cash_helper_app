@@ -2,9 +2,9 @@ import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/pa
 
 abstract class PaymentMethodEvents {}
 
-class CreateNewPaymentMethod implements PaymentMethodEvents {
+class CreateNewPaymentMethodEvent implements PaymentMethodEvents {
   final String enterpriseId;
   final PaymentMethodEntity paymentMethod;
 
-  CreateNewPaymentMethod(this.enterpriseId, this.paymentMethod);
+  CreateNewPaymentMethodEvent(this.enterpriseId, this.paymentMethod);
 }

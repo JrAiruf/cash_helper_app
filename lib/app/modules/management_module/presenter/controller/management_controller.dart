@@ -6,6 +6,8 @@ import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/pa
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_method_events.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_methods_bloc.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_bloc.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_events.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
@@ -33,7 +35,8 @@ class ManagementController {
   final periodList = ValueNotifier(<String>[]);
 
 // Blocs
-  final paymentMethodsBloc = Modular.get<PaymentMethodsBloc>();
+  final paymentMethodBloc = Modular.get<PaymentMethodsBloc>();
+  final paymentMethodsListBloc = Modular.get<PaymentMethodsListBloc>();
 
 //
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
@@ -66,7 +69,7 @@ class ManagementController {
     if (paymentMethodFormKey.currentState!.validate()) {
       if (managerCode == manager?.managerCode) {
         newPaymentMethod.paymentMethodUsingRate = 0;
-        paymentMethodsBloc.add(CreateNewPaymentMethod(enterpriseId, newPaymentMethod));
+        paymentMethodBloc.add(CreateNewPaymentMethodEvent(enterpriseId, newPaymentMethod));
         paymentMethodAddedSnackBar(
           context,
           message: "Novo método de pagamento adicionado!",
@@ -80,9 +83,8 @@ class ManagementController {
     }
   }
 
-  Future<void> getAllPaymentMethods(String enterpriseId) async {
-    await paymentMethodsListStore.getAllPaymentMethods(enterpriseId);
-    paymentMethods.value = paymentMethodsListStore.value ?? [];
+  void getAllPaymentMethods() {
+    paymentMethodsListBloc.add(GetAllPaymentMethodsEvent(enterpriseId));
   }
 
   Future<void> getAllPendencies() async {

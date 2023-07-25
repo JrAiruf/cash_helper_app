@@ -29,6 +29,7 @@ class EnterpriseController {
   final enterpriseStore = Modular.get<EnterpriseStore>();
   final createEnterpriseBloc = Modular.get<CreateEnterpriseBloc>();
   final getEnterpriseByCodeBloc = Modular.get<GetEnterpriseByCodeBloc>();
+  final enterpriseInitialFormularyKey = GlobalKey<FormState>();
   final enterpriseFormKey = GlobalKey<FormState>();
   final createEnterpriseFormKey = GlobalKey<FormState>();
   bool loadingData = false;
@@ -79,9 +80,9 @@ class EnterpriseController {
   }
 
   void nextRegistrationStep() {
-    enterpriseFormKey.currentState!.validate();
-    if (enterpriseFormKey.currentState!.validate()) {
-      enterpriseFormKey.currentState?.save();
+    enterpriseInitialFormularyKey.currentState!.validate();
+    if (enterpriseInitialFormularyKey.currentState!.validate()) {
+      enterpriseInitialFormularyKey.currentState?.save();
       Modular.to.pushNamed(EnterpriseRoutes.createEnterprise, arguments: enterpriseEntity);
     }
   }

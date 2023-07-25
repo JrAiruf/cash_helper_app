@@ -41,7 +41,7 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: BlocConsumer<PaymentMethodsBloc, PaymentMethodStates>(
-            bloc: _managementController.paymentMethodsBloc,
+            bloc: _managementController.paymentMethodBloc,
             listener: (_, state) {
               if (state is PaymentMethodSuccessState) {
                 Modular.to.navigate(
@@ -70,141 +70,138 @@ class _CreatePaymentMethodPageState extends State<CreatePaymentMethodPage> {
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(color: appThemes.surfaceColor(context)),
                     ));
               }
-              if (state is PaymentMethodInitialState) {
-                return Container(
-                  height: height,
-                  decoration: BoxDecoration(color: appThemes.backgroundColor(context)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Stack(
-                        alignment: Alignment.topCenter,
-                        children: [
-                          Container(
-                            height: height * 0.15,
-                            decoration: BoxDecoration(
-                              color: appThemes.primaryColor(context),
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
+              return Container(
+                height: height,
+                decoration: BoxDecoration(color: appThemes.backgroundColor(context)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Container(
+                          height: height * 0.15,
+                          decoration: BoxDecoration(
+                            color: appThemes.primaryColor(context),
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
                             ),
                           ),
-                          Positioned(
-                            top: 90,
-                            child: Text(
-                              "Métodos de Pagamento",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
                         ),
-                        child: SizedBox(
-                          width: width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: height * 0.08,
-                              ),
-                              Text(
-                                "Criar novo método:",
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
-                              ),
-                              SizedBox(
-                                height: height * 0.05,
-                              ),
-                              SizedBox(
-                                height: height * 0.27,
-                                child: Form(
-                                  key: _managementController.paymentMethodFormKey,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      CashHelperTextFieldComponent(
-                                        label: "Nome",
-                                        controller: _managementController.paymentMethodNameField,
-                                        validator: _managementController.paymentMethodNameValidate,
-                                        onSaved: (value) => _managementController.newPaymentMethod.paymentMethodName = value,
-                                      ),
-                                      CashHelperTextFieldComponent(
-                                        label: "Descrição",
-                                        controller: _managementController.paymentMethodNameField,
-                                        onSaved: (value) => _managementController.newPaymentMethod.paymentMethodDescription = value,
-                                      ),
-                                      AnimatedBuilder(
-                                          animation: _managementController.managementCodeVisible,
-                                          builder: (_, __) {
-                                            return CashHelperTextFieldComponent(
-                                              suffixIcon: VisibilityIconComponent(
-                                                onTap: () {
-                                                  _managementController.managementCodeVisible.value = !_managementController.managementCodeVisible.value;
-                                                },
-                                                iconColor: appThemes.surfaceColor(context),
-                                                forVisibility: Icons.visibility,
-                                                forHideContent: Icons.visibility_off,
-                                                condition: _managementController.managementCodeVisible.value,
-                                              ),
-                                              obscureText: _managementController.managementCodeVisible.value ? false : true,
-                                              label: "Código Administrativo",
-                                              controller: _managementController.paymentMethodNameField,
-                                              validator: _managementController.paymentMethodNameValidate,
-                                              onSaved: (value) => _managementController.managerCode = value,
-                                            );
-                                          }),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.05,
-                              ),
-                              Center(
+                        Positioned(
+                          top: 90,
+                          child: Text(
+                            "Métodos de Pagamento",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      child: SizedBox(
+                        width: width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: height * 0.08,
+                            ),
+                            Text(
+                              "Criar novo método:",
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: appThemes.surfaceColor(context)),
+                            ),
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
+                            SizedBox(
+                              height: height * 0.27,
+                              child: Form(
+                                key: _managementController.paymentMethodFormKey,
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    CashHelperElevatedButton(
-                                      radius: 10,
-                                      onPressed: () {
-                                        _managementController.createPaymentMethod(context);
-                                      },
-                                      border: true,
-                                      backgroundColor: appThemes.greenColor(context),
-                                      height: 50,
-                                      width: width * 0.7,
-                                      buttonName: "Salvar",
+                                    CashHelperTextFieldComponent(
+                                      label: "Nome",
+                                      controller: _managementController.paymentMethodNameField,
+                                      validator: _managementController.paymentMethodNameValidate,
+                                      onSaved: (value) => _managementController.newPaymentMethod.paymentMethodName = value,
                                     ),
-                                    SizedBox(
-                                      height: height * 0.02,
+                                    CashHelperTextFieldComponent(
+                                      label: "Descrição",
+                                      controller: _managementController.paymentMethodNameField,
+                                      onSaved: (value) => _managementController.newPaymentMethod.paymentMethodDescription = value,
                                     ),
-                                    CashHelperElevatedButton(
-                                      radius: 10,
-                                      onPressed: () {
-                                        Modular.to.navigate("${UserRoutes.managementPage}${_managementController.enterpriseId}", arguments: widget.managerEntity);
-                                      },
-                                      border: true,
-                                      backgroundColor: appThemes.primaryColor(context),
-                                      nameColor: appThemes.surfaceColor(context),
-                                      height: 50,
-                                      width: width * 0.7,
-                                      buttonName: "Voltar",
-                                      fontSize: 15,
-                                    ),
+                                    AnimatedBuilder(
+                                        animation: _managementController.managementCodeVisible,
+                                        builder: (_, __) {
+                                          return CashHelperTextFieldComponent(
+                                            suffixIcon: VisibilityIconComponent(
+                                              onTap: () {
+                                                _managementController.managementCodeVisible.value = !_managementController.managementCodeVisible.value;
+                                              },
+                                              iconColor: appThemes.surfaceColor(context),
+                                              forVisibility: Icons.visibility,
+                                              forHideContent: Icons.visibility_off,
+                                              condition: _managementController.managementCodeVisible.value,
+                                            ),
+                                            obscureText: _managementController.managementCodeVisible.value ? false : true,
+                                            label: "Código Administrativo",
+                                            controller: _managementController.paymentMethodNameField,
+                                            validator: _managementController.paymentMethodNameValidate,
+                                            onSaved: (value) => _managementController.managerCode = value,
+                                          );
+                                        }),
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
+                            Center(
+                              child: Column(
+                                children: [
+                                  CashHelperElevatedButton(
+                                    radius: 10,
+                                    onPressed: () {
+                                      _managementController.createPaymentMethod(context);
+                                    },
+                                    border: true,
+                                    backgroundColor: appThemes.greenColor(context),
+                                    height: 50,
+                                    width: width * 0.7,
+                                    buttonName: "Salvar",
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  CashHelperElevatedButton(
+                                    radius: 10,
+                                    onPressed: () {
+                                      Modular.to.navigate("${UserRoutes.managementPage}${_managementController.enterpriseId}", arguments: widget.managerEntity);
+                                    },
+                                    border: true,
+                                    backgroundColor: appThemes.primaryColor(context),
+                                    nameColor: appThemes.surfaceColor(context),
+                                    height: 50,
+                                    width: width * 0.7,
+                                    buttonName: "Voltar",
+                                    fontSize: 15,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                );
-              }
-              return Container();
+                    ),
+                  ],
+                ),
+              );
             }),
       ),
     );

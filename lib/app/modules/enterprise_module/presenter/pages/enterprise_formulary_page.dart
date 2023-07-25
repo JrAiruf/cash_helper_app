@@ -71,7 +71,7 @@ class _EnterpriseFormularyPageState extends State<EnterpriseFormularyPage> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             child: Form(
-                              key: _enterpriseController.enterpriseFormKey,
+                              key: _enterpriseController.enterpriseInitialFormularyKey,
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 10),

@@ -29,8 +29,14 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
 
     return Scaffold(
       appBar: AppBar(),
-      body: BlocBuilder(
+      body: BlocConsumer(
         bloc: _enterpriseController.createEnterpriseBloc,
+        listener: (context, state) {
+          if (state is CreateEnterpriseSuccessState) {
+            final enterprise = state.enterprise;
+            Modular.to.pushReplacementNamed(EnterpriseRoutes.enterpriseCreated, arguments: enterprise);
+          }
+        },
         builder: (_, state) {
           if (state is CreateEnterpriseLoadingState) {
             return Container(
@@ -175,13 +181,9 @@ class _CreateEnterprisePageState extends State<CreateEnterprisePage> {
                 ),
               ),
             );
-          } if (state is CreateEnterpriseSuccessState) {
-            final enterprise = state.enterprise;
-            Modular.to.pushReplacementNamed(EnterpriseRoutes.enterpriseCreated, arguments: enterprise);
+          }  
             return Container();
-          } else {
-            return Container();
-          }
+          
         },
       ),
     );
