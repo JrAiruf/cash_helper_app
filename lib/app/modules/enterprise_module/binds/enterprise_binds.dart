@@ -4,7 +4,6 @@ import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/bl
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/create_enterprise_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/enterprise_error_page.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/pages/enterprise_formulary_page.dart';
-import 'package:cash_helper_app/app/modules/enterprise_module/presenter/stores/enterprise_store.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/enterprise_auth_page.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -84,12 +83,6 @@ class EnterpriseModule extends Module {
     Bind<IGetEnterpriseByCode>(
       (i) => GetEnterpriseByCode(
         repository: i(),
-      ),
-    ),
-    Bind<EnterpriseStore>(
-      (i) => EnterpriseStore(
-        createEnterpriseAccount: i(),
-        getEnterpriseByCode: i(),
       ),
     ),
     ...EnterpriseBlocBinds.binds,

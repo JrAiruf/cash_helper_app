@@ -1,9 +1,9 @@
-import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/database_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/operators_unavailable.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/registration_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/authentication_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/database_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/operators_unavailable.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/user_not_found_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/registration_error.dart';
 import 'package:cash_helper_app/app/services/crypt_serivce.dart';
 import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
@@ -115,9 +115,9 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<void>? resetUserPassword(String? email, String? operatorCode, String? enterpriseId, String? newPassword) async {
+  Future<void>? resetUserPassword(String? email, String? operatorCode, String? enterpriseId, String? collection, String? newPassword) async {
     try {
-      final operatorsList = await _database.collection("operator").get();
+      final operatorsList = await _database.collection("enterprise").doc(enterpriseId).collection("collectionPath").get();
       if (_dataVerifier.validateInputData(inputs: [email, operatorCode])) {
         final databaseOperator = operatorsList.docs.firstWhere((operator) => operator["operatorEmail"] == email && operator["operatorCode"] == operatorCode).data();
         await _auth.currentUser?.updatePassword(newPassword!);
@@ -148,7 +148,7 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
         throw OperatorsUnavailable(message: "Nenhum Usuário encontrado");
       }
     } catch (e) {
-        throw OperatorsUnavailable(message: e.toString());
+      throw OperatorsUnavailable(message: e.toString());
     }
   }
 }
@@ -160,6 +160,7 @@ void main() {
   late EnterpriseDatabaseMock enterpriseDatabase;
   late FirebaseDatabaseMock database;
   late DataVerifier dataVerifier;
+  late EncryptService encrypter;
   setUp(() {
     final user = MockUser(
       isAnonymous: false,
@@ -167,12 +168,13 @@ void main() {
       email: 'email@email.com',
       displayName: 'Junior',
     );
+    encrypter = EncryptService();
     authMock = MockFirebaseAuth(mockUser: user);
     firebaseMock = FakeFirebaseFirestore();
     uuid = const Uuid();
     dataVerifier = DataVerifier();
     enterpriseDatabase = EnterpriseDatabaseMock(database: firebaseMock, auth: authMock, uuid: uuid);
-    database = FirebaseDatabaseMock(database: firebaseMock, auth: authMock, encryptService: EncryptService(), uuid: uuid, dataVerifier: dataVerifier);
+    database = FirebaseDatabaseMock(database: firebaseMock, auth: authMock, encryptService: encrypter, uuid: uuid, dataVerifier: dataVerifier);
   });
   group(
     "Register function should",
@@ -340,15 +342,17 @@ void main() {
     "ResetUserPassword function should",
     () {
       test(
-        "Return a List from firebase containing data of all operators",
+        "Reset the user's password, within the conditions",
         () async {
           await enterpriseDatabase.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
           final enterprisesList = await firebaseMock.collection("enterprise").get();
           final createdEnterprise = enterprisesList.docs.first.data();
-          await database.register(LoginTestObjects.newOperator, createdEnterprise["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
-          final operatorsList = await database.getAllOperators(createdEnterprise["enterpriseId"]);
-          expect(operatorsList, isA<List<Map<String, dynamic>>>());
-          expect(operatorsList?.isNotEmpty, equals(true));
+          final createdOperator = await database.register(LoginTestObjects.newOperator, createdEnterprise["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          expect(createdOperator, isA<Map<String, dynamic>>());
+          expect(createdOperator!["operatorId"] != null, equals(true));
+          expect(encrypter.checkHashCode("12345678", createdOperator["operatorPassword"]), equals(true));
+          await database.resetUserPassword(createdOperator["operatorEmail"], createdOperator["operatorCode"], createdEnterprise["enterpriseId"], createdOperator["businessPosition"],"newPassword1234");
+          expect(encrypter.checkHashCode("newPassword1234", createdOperator["operatorPassword"]), equals(true));
         },
       );
       test(

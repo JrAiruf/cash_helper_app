@@ -1,6 +1,10 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_string_interpolations
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_operator_bloc/create_operator_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../enterprise_module/domain/entities/enterprise_entity.dart';
 import '../components/cash_helper_text_field.dart';
@@ -27,23 +31,36 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final onSurface = Theme.of(context).colorScheme.onSurface;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
+    final appThemes = CashHelperThemes();
     return Scaffold(
       appBar: AppBar(),
-      body: AnimatedBuilder(
-          animation: _loginController.loadingData,
-          builder: (_, __) {
-            return Visibility(
-              visible: _loginController.loadingData.value,
-              replacement: SingleChildScrollView(
+      body: BlocConsumer(
+          listener: (context, state) {
+            if (state is CreateOperatorSuccessState) {
+              Modular.to.navigate("${UserRoutes.operatorHomePage}${_loginController.enterpriseId}", arguments: state.operatorEntity);
+            }
+          },
+          bloc: _loginController.createOperatorBloc,
+          builder: (_, state) {
+            if (state is CreateOperatorLoadingState) {
+              return Container(
+                decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+                height: height,
+                width: width,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+                ),
+              );
+            }
+            if (state is CreateOperatorInitialState) {
+              return SingleChildScrollView(
                 physics: const NeverScrollableScrollPhysics(),
                 child: Container(
                   height: height,
                   width: width,
-                  decoration: BoxDecoration(color: primaryColor),
+                  decoration: BoxDecoration(color: appThemes.primaryColor(context)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -52,8 +69,7 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                           horizontal: 25,
                           vertical: height * 0.05,
                         ),
-                        child: Text('Crie sua Conta',
-                            style: Theme.of(context).textTheme.bodyLarge),
+                        child: Text('Crie sua Conta', style: Theme.of(context).textTheme.bodyLarge),
                       ),
                       Center(
                         child: Column(
@@ -62,175 +78,105 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                               height: height * 0.6,
                               width: width * 0.95,
                               child: Card(
-                                color: seccondaryColor,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
+                                color: appThemes.purpleColor(context),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                 child: Form(
                                   key: _loginController.createOperatorFormKey,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 5),
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
-                                          validator: _loginController
-                                              .cashierNameValidate,
-                                          onSaved: (value) => _loginController
-                                              .operatorEntity
-                                              .operatorName = value,
-                                          controller:
-                                              _loginController.cashierNameField,
+                                          validator: _loginController.cashierNameValidate,
+                                          onSaved: (value) => _loginController.operatorEntity.operatorName = value,
+                                          controller: _loginController.cashierNameField,
                                           label: 'Nome',
                                         ),
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
-                                          validator:
-                                              _loginController.emailValidate,
-                                          onSaved: (value) => _loginController
-                                              .operatorEntity
-                                              .operatorEmail = value,
-                                          controller: _loginController
-                                              .newOperatorEmailField,
+                                          validator: _loginController.emailValidate,
+                                          onSaved: (value) => _loginController.operatorEntity.operatorEmail = value,
+                                          controller: _loginController.newOperatorEmailField,
                                           label: 'Email',
                                         ),
                                         AnimatedBuilder(
-                                            animation: _loginController
-                                                .operatorPasswordVisible,
+                                            animation: _loginController.operatorPasswordVisible,
                                             builder: (_, __) {
                                               return CashHelperTextFieldComponent(
-                                                textColor: onSurface,
-                                                primaryColor: onSurface,
-                                                suffixIcon:
-                                                    VisibilityIconComponent(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            _loginController
-                                                                    .operatorPasswordVisible
-                                                                    .value =
-                                                                !_loginController
-                                                                    .operatorPasswordVisible
-                                                                    .value;
-                                                          });
-                                                        },
-                                                        forVisibility:
-                                                            Icons.visibility,
-                                                        forHideContent: Icons
-                                                            .visibility_off,
-                                                        condition: _loginController
-                                                            .operatorPasswordVisible
-                                                            .value),
+                                                textColor: appThemes.surface(context),
+                                                primaryColor: appThemes.surface(context),
+                                                suffixIcon: VisibilityIconComponent(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        _loginController.operatorPasswordVisible.value = !_loginController.operatorPasswordVisible.value;
+                                                      });
+                                                    },
+                                                    forVisibility: Icons.visibility,
+                                                    forHideContent: Icons.visibility_off,
+                                                    condition: _loginController.operatorPasswordVisible.value),
                                                 radius: 15,
-                                                obscureText: _loginController
-                                                        .operatorPasswordVisible
-                                                        .value
-                                                    ? false
-                                                    : true,
-                                                validator: (value) =>
-                                                    _loginController
-                                                        .passwordValidate(
-                                                            value),
-                                                onSaved: (value) =>
-                                                    _loginController
-                                                            .operatorEntity
-                                                            .operatorPassword =
-                                                        value,
-                                                controller: _loginController
-                                                    .newOperatorPasswordField,
+                                                obscureText: _loginController.operatorPasswordVisible.value ? false : true,
+                                                validator: _loginController.passwordValidate,
+                                                onSaved: (value) => _loginController.operatorEntity.operatorPassword = value,
+                                                controller: _loginController.newOperatorPasswordField,
                                                 label: 'Senha',
                                               );
                                             }),
                                         AnimatedBuilder(
-                                            animation: _loginController
-                                                .operatorConfirmationPasswordVisible,
+                                            animation: _loginController.operatorConfirmationPasswordVisible,
                                             builder: (_, __) {
                                               return CashHelperTextFieldComponent(
-                                                textColor: onSurface,
-                                                primaryColor: onSurface,
-                                                suffixIcon:
-                                                    VisibilityIconComponent(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            _loginController
-                                                                    .operatorConfirmationPasswordVisible
-                                                                    .value =
-                                                                !_loginController
-                                                                    .operatorConfirmationPasswordVisible
-                                                                    .value;
-                                                          });
-                                                        },
-                                                        forVisibility:
-                                                            Icons.visibility,
-                                                        forHideContent: Icons
-                                                            .visibility_off,
-                                                        condition: _loginController
-                                                            .operatorConfirmationPasswordVisible
-                                                            .value),
+                                                textColor: appThemes.surface(context),
+                                                primaryColor: appThemes.surface(context),
+                                                suffixIcon: VisibilityIconComponent(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        _loginController.operatorConfirmationPasswordVisible.value = !_loginController.operatorConfirmationPasswordVisible.value;
+                                                      });
+                                                    },
+                                                    forVisibility: Icons.visibility,
+                                                    forHideContent: Icons.visibility_off,
+                                                    condition: _loginController.operatorConfirmationPasswordVisible.value),
                                                 radius: 15,
-                                                obscureText: _loginController
-                                                        .operatorConfirmationPasswordVisible
-                                                        .value
-                                                    ? false
-                                                    : true,
-                                                validator: (value) =>
-                                                    _loginController
-                                                        .passwordValidate(
-                                                            value),
-                                                onSaved: (value) => _loginController
-                                                        .operatorConfirmationPassword =
-                                                    value,
-                                                controller: _loginController
-                                                    .newOperatorPasswordField,
+                                                obscureText: _loginController.operatorConfirmationPasswordVisible.value ? false : true,
+                                                validator: _loginController.passwordValidate,
+                                                onSaved: (value) => _loginController.operatorConfirmationPassword = value,
+                                                controller: _loginController.newOperatorPasswordField,
                                                 label: 'Confirmar senha',
                                               );
                                             }),
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
-                                          validator: (value) => _loginController
-                                              .cashierNumberValidate(value),
-                                          onSaved: (value) => _loginController
-                                                  .operatorEntity
-                                                  .operatorNumber =
-                                              int.tryParse(value!),
+                                          validator: _loginController.cashierNumberValidate,
+                                          onSaved: (value) => _loginController.operatorEntity.operatorNumber = int.tryParse(value!),
                                           label: 'Número do caixa',
-                                          controller: _loginController
-                                              .cashierNumberField,
+                                          controller: _loginController.cashierNumberField,
                                           input: TextInputType.phone,
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 5),
+                                          padding: const EdgeInsets.symmetric(horizontal: 5),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
                                                 'Abertura de caixa',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium,
+                                                style: Theme.of(context).textTheme.bodyMedium,
                                               ),
                                               Switch(
-                                                activeColor: tertiaryColor,
-                                                value: (_loginController
-                                                    .enabledOperator),
+                                                activeColor: appThemes.greenColor(context),
+                                                value: (_loginController.enabledOperator),
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    _loginController
-                                                            .enabledOperator =
-                                                        value;
-                                                    _loginController
-                                                            .operatorEntity
-                                                            .operatorEnabled =
-                                                        value;
+                                                    _loginController.enabledOperator = value;
+                                                    _loginController.operatorEntity.operatorEnabled = value;
                                                   });
                                                 },
                                               ),
@@ -247,35 +193,44 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                         child: CashHelperElevatedButton(
-                          onPressed: () =>
-                              _loginController.registerOperator(context),
+                          onPressed: _loginController.createOperator,
                           width: width,
                           height: 65,
                           buttonName: 'Registrar',
                           fontSize: 20,
                           nameColor: Colors.white,
-                          backgroundColor: seccondaryColor,
+                          backgroundColor: appThemes.purpleColor(context),
                         ),
                       )
                     ],
                   ),
                 ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(color: primaryColor),
+              );
+            }
+            if (state is CreateOperatorErrorState) {
+              return Container(
+                decoration: BoxDecoration(color: appThemes.primaryColor(context)),
                 height: height,
-                width: width,
                 child: Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.onSecondary,
+                  child: Text(
+                    state.error,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: appThemes.surfaceColor(context),
+                        ),
                   ),
                 ),
-              ),
-            );
+              );
+            }
+            return Container();
           }),
     );
   }
 }
+
+
+/* 
+
+
+ */

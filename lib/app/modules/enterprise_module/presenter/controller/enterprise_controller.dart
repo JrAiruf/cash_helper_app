@@ -4,10 +4,8 @@ import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/ge
 import 'package:cash_helper_app/app/modules/enterprise_module/presenter/blocs/get_enterprise_by_code/get_enterprise_by_code_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../routes/app_routes.dart';
 import '../../domain/entities/enterprise_entity.dart';
-import '../stores/enterprise_store.dart';
 
 class EnterpriseController {
   final cnpjField = TextEditingController();
@@ -26,7 +24,6 @@ class EnterpriseController {
   final enterpriseEntity = EnterpriseEntity();
   String confirmationPassword = "";
 
-  final enterpriseStore = Modular.get<EnterpriseStore>();
   final createEnterpriseBloc = Modular.get<CreateEnterpriseBloc>();
   final getEnterpriseByCodeBloc = Modular.get<GetEnterpriseByCodeBloc>();
   final enterpriseInitialFormularyKey = GlobalKey<FormState>();

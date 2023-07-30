@@ -3,7 +3,7 @@ import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_mo
 
 import '../../../../helpers/data_verifier.dart';
 import '../../../user_module/infra/models/manager_model.dart';
-import '../../external/data/application_login_database.dart';
+import '../../domain/external/data/application_login_database.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   LoginRepositoryImpl({
@@ -67,9 +67,9 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<void>? resetUserPassword(String? email, String? operatorCode, String? newPassword) async {
+  Future<void>? resetUserPassword(String? email, String? operatorCode,String? enterpriseId, String? collection, String? newPassword) async {
     if (email!.isNotEmpty && operatorCode!.isNotEmpty && newPassword!.isNotEmpty) {
-      return await _datasource.resetUserPassword(email, operatorCode, "", newPassword);
+      return await _datasource.resetUserPassword(email, operatorCode, enterpriseId!,collection!,newPassword);
     } else {
       return;
     }

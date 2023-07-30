@@ -14,20 +14,6 @@ class LoginEvent implements AuthEvents {
   LoginEvent(this.enterpriseId, this.email, this.password, this.collection);
 }
 
-class RegisterManagerEvent implements AuthEvents {
-  final String enterpriseId;
-  final ManagerEntity manager;
-
-  RegisterManagerEvent(this.enterpriseId, this.manager);
-}
-
-class CreateOperatorEvent implements AuthEvents {
-  final String enterpriseId;
-  final OperatorEntity newOperator;
-
-  CreateOperatorEvent(this.enterpriseId, this.newOperator);
-}
-
 class RetrievePasswordEvent implements AuthEvents {
   final String userEmail;
   final String userCode;

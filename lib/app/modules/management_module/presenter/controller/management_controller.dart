@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../annotations_module/presenter/stores/annotations_list_store.dart';
-import '../../../login_module/presenter/stores/login_store.dart';
 
 class ManagementController {
   final paymentMethodFormKey = GlobalKey<FormState>();
@@ -40,7 +39,6 @@ class ManagementController {
 
 //
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
-  final _loginStore = Modular.get<LoginStore>();
   final managementStore = Modular.get<ManagementStore>();
   final pendencyStore = Modular.get<PendencyStore>();
   final pendenciesListStore = Modular.get<PendenciesListStore>();
@@ -125,17 +123,6 @@ class ManagementController {
     final operatorAnnotationsList = annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operatorId).toList();
     operatorAnnotations.value.clear();
     operatorAnnotations.value.addAll(operatorAnnotationsList);
-  }
-
-  Future<void>? getAllOperatorsWithPendencies(String enterpriseId) async {
-    final operators = await _loginStore.getAllOperators(enterpriseId);
-    final operatorWithPendenciesList = operators?.where((operatorEntity) => operatorsWithPendencies.value.contains(operatorEntity.operatorId)).toList();
-    operatorsList.clear();
-    for (var operatorEntity in operatorWithPendenciesList!) {
-      if (!operatorsList.contains(operatorEntity)) {
-        operatorsList.add(operatorEntity);
-      }
-    }
   }
 
   noMatchingCodes(BuildContext context, {required String message}) {

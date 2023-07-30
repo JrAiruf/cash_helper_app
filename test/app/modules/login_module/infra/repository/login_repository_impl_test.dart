@@ -1,5 +1,5 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/infra/data/login_repository.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/manager_model.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
@@ -67,7 +67,7 @@ class LoginRepoMock implements LoginRepository {
   }
 
   @override
-  Future<void>? resetUserPassword(String? email, String? operatorCode, String? newPassword) {
+  Future<void>? resetUserPassword(String? email, String? operatorCode,String? enterpriseId,String? collection , String? newPassword) {
     throw UnimplementedError();
   }
 

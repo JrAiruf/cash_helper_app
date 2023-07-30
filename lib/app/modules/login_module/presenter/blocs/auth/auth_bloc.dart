@@ -1,6 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases/login/ilogin.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/authentication_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/user_not_found_error.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

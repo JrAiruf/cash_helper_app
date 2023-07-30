@@ -1,10 +1,11 @@
 // ignore_for_file: unused_element
 
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_manager_bloc/create_manager_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_states.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/stores/login_store.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../components/buttons/cash_helper_login_button.dart';
@@ -20,7 +21,6 @@ class CreateManagerPage extends StatefulWidget {
 }
 
 final _loginController = Modular.get<LoginController>();
-final _loginStore = Modular.get<LoginStore>();
 
 class _CreateManagerPageState extends State<CreateManagerPage> {
   @override
@@ -33,32 +33,34 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final onSurface = Theme.of(context).colorScheme.onSurface;
-    final surface = Theme.of(context).colorScheme.surface;
-    final seccondaryColor = Theme.of(context).colorScheme.secondary;
-    final indicatorColor = Theme.of(context).colorScheme.secondaryContainer;
+    final appThemes = CashHelperThemes();
 
-    return ValueListenableBuilder(
-        valueListenable: _loginStore,
-        builder: (_, state, __) {
-          if (state is LoginLoadingState) {
+    return BlocConsumer(
+        bloc: _loginController.createManagerBloc,
+        listener: (context, state) {
+          if (state is CreateManagerSuccessState) {
+            final enterpriseId = widget.enterpriseEntity.enterpriseId;
+            Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId", arguments: state.manager);
+          }
+        },
+        builder: (_, state) {
+          if (state is CreateManagerLoadingState) {
             return Container(
-              decoration: BoxDecoration(color: primaryColor),
+              decoration: BoxDecoration(color: appThemes.primaryColor(context)),
               child: Center(
                 child: CircularProgressIndicator(
-                  color: indicatorColor,
+                  color: appThemes.indicatorColor(context),
                 ),
               ),
             );
-          } else if (state is LoginInitialState) {
+          } else if (state is CreateManagerInitialState) {
             return Scaffold(
               appBar: AppBar(),
               body: SingleChildScrollView(
                 child: Container(
                   height: height,
                   width: width,
-                  decoration: BoxDecoration(color: primaryColor),
+                  decoration: BoxDecoration(color: appThemes.primaryColor(context)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -77,14 +79,19 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 5),
-                              child: Text('Dados Empresariais', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: surface)),
+                              child: Text(
+                                'Dados Empresariais',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: appThemes.surface(context),
+                                    ),
+                              ),
                             ),
                             const SizedBox(height: 15),
                             SizedBox(
                               height: height * 0.7,
                               width: width * 0.95,
                               child: Card(
-                                color: seccondaryColor,
+                                color: appThemes.purpleColor(context),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                 child: Form(
                                   key: _loginController.createManagerFormKey,
@@ -94,8 +101,8 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
                                           validator: _loginController.cashierNameValidate,
                                           onSaved: (value) => _loginController.managerEntity.managerName = value,
@@ -103,8 +110,8 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                           label: 'Nome Completo',
                                         ),
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
                                           validator: _loginController.cpfValidate,
                                           onSaved: (value) => _loginController.managerEntity.managerCpf = value,
@@ -112,8 +119,8 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                           label: 'CPF',
                                         ),
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
                                           validator: _loginController.rgValidate,
                                           onSaved: (value) => _loginController.managerEntity.managerRg = value,
@@ -121,8 +128,8 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                           label: 'RG',
                                         ),
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
                                           validator: _loginController.phoneValidate,
                                           onSaved: (value) => _loginController.managerEntity.managerPhone = value,
@@ -130,8 +137,8 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                           label: 'Telefone',
                                         ),
                                         CashHelperTextFieldComponent(
-                                          textColor: onSurface,
-                                          primaryColor: onSurface,
+                                          textColor: appThemes.surface(context),
+                                          primaryColor: appThemes.surface(context),
                                           radius: 15,
                                           validator: _loginController.emailValidate,
                                           onSaved: (value) => _loginController.managerEntity.managerEmail = value,
@@ -142,11 +149,11 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                             animation: _loginController.managerPasswordVisible,
                                             builder: (_, __) {
                                               return CashHelperTextFieldComponent(
-                                                textColor: onSurface,
-                                                primaryColor: onSurface,
+                                                textColor: appThemes.surface(context),
+                                                primaryColor: appThemes.surface(context),
                                                 radius: 15,
                                                 suffixIcon: VisibilityIconComponent(
-                                                    iconColor: onSurface,
+                                                    iconColor: appThemes.surface(context),
                                                     onTap: () => _loginController.managerPasswordVisible.value = !_loginController.managerPasswordVisible.value,
                                                     forVisibility: Icons.visibility,
                                                     forHideContent: Icons.visibility_off,
@@ -162,11 +169,11 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                           animation: _loginController.managerConfirmationPasswordVisible,
                                           builder: (_, __) {
                                             return CashHelperTextFieldComponent(
-                                              textColor: onSurface,
-                                              primaryColor: onSurface,
+                                              textColor: appThemes.surface(context),
+                                              primaryColor: appThemes.surface(context),
                                               radius: 15,
                                               suffixIcon: VisibilityIconComponent(
-                                                  iconColor: onSurface,
+                                                  iconColor: appThemes.surface(context),
                                                   onTap: () => _loginController.managerConfirmationPasswordVisible.value = !_loginController.managerConfirmationPasswordVisible.value,
                                                   forVisibility: Icons.visibility,
                                                   forHideContent: Icons.visibility_off,
@@ -191,13 +198,13 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                         child: CashHelperElevatedButton(
-                          onPressed: _loginController.registerManager,
+                          onPressed: _loginController.createManager,
                           width: width,
                           height: 65,
                           buttonName: 'Registrar',
                           fontSize: 15,
                           nameColor: Colors.white,
-                          backgroundColor: seccondaryColor,
+                          backgroundColor: appThemes.purpleColor(context),
                         ),
                       )
                     ],
@@ -205,14 +212,8 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                 ),
               ),
             );
-          } else if (state is ManagerLoginSuccessState) {
-            final manager = state.managerEntity;
-            final enterpriseId = widget.enterpriseEntity.enterpriseId;
-            Modular.to.navigate("${UserRoutes.managerHomePage}$enterpriseId", arguments: manager);
-            return Container();
-          } else {
-            return Container();
           }
+          return Container();
         });
   }
 }

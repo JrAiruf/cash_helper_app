@@ -4,6 +4,8 @@ import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_va
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_manager_bloc/create_manager_bloc.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_manager_bloc/create_manager_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_events.dart';
@@ -16,7 +18,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../enterprise_module/domain/entities/enterprise_business_position.dart';
 import '../../../user_module/domain/entities/operator_entity.dart';
-import '../stores/login_store.dart';
+import '../blocs/create_operator_bloc/create_operator_bloc.dart';
+import '../blocs/create_operator_bloc/create_operator_events.dart';
 
 class LoginController {
   final emailField = TextEditingController();
@@ -33,10 +36,13 @@ class LoginController {
   final cashierCodeField = TextEditingController();
   final cashierNumberField = TextEditingController();
 
-  final loginStore = Modular.get<LoginStore>();
+//BLOCS
   final authBloc = Modular.get<AuthBloc>();
+  final createManagerBloc = Modular.get<CreateManagerBloc>();
+  final createOperatorBloc = Modular.get<CreateOperatorBloc>();
   final managerBloc = Modular.get<ManagerBloc>();
   final operatorBloc = Modular.get<OperatorBloc>();
+  //
   final dateValue = DateValues();
   bool loadingLoginData = false;
   bool loadingAuthData = false;
@@ -113,52 +119,12 @@ class LoginController {
     return value!.isNotEmpty && value != '' && value != ' ' ? null : 'Informe o número do caixa.';
   }
 
-  registerManager() async {
-    createManagerFormKey.currentState?.validate();
-    if (createManagerFormKey.currentState!.validate()) {
-      createManagerFormKey.currentState?.save();
-      await loginStore.registerManager(managerEntity, enterpriseId, managerEntity.businessPosition!);
-    }
+  void createManager() {
+    createManagerBloc.add(CreateManagerEvent(enterpriseId, managerEntity.businessPosition!, managerEntity));
   }
 
-  registerOperator(BuildContext context) async {
-    loadingData.value = true;
-    createOperatorFormKey.currentState!.validate();
-    operatorEntity.operatorEnabled = enabledOperator ? true : false;
-    operatorEntity.hasPendencies = false;
-    operatorEntity.operatorOppening = enabledOperator ? dateValue.operatorOppening : 'Pendente';
-    if (createOperatorFormKey.currentState!.validate()) {
-      createOperatorFormKey.currentState!.save();
-      if (operatorEntity.operatorPassword == operatorConfirmationPassword) {
-        final newOperator = await loginStore
-            .register(
-              operatorEntity,
-              enterpriseId,
-              operatorEntity.businessPosition!,
-            )
-            ?.then((value) => value)
-            .catchError((e) {
-          if (e.toString().contains("already-in-use")) {
-            registrationFail(context, message: "Email já utilizado");
-          } else {
-            const String message = "Erro desconhecido";
-            registrationFail(context, message: message);
-          }
-        });
-        if (newOperator != null) {
-          operatorCreatedSucessfully(context);
-          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: newOperator);
-          loadingData.value = false;
-        } else {
-          onFail(context);
-          loadingData.value = false;
-        }
-      } else {
-        noMatchingPasswords(context, message: "As senhas não correspondem");
-        loadingData.value = false;
-      }
-    }
-    loadingData.value = false;
+  void createOperator() {
+    createOperatorBloc.add(CreateOperatorEvent(enterpriseId, operatorEntity.businessPosition!, operatorEntity));
   }
 
   void login() async {
@@ -178,12 +144,9 @@ class LoginController {
   void managerSignOut() async {
     managerBloc.add(ManagerSignOutEvent());
   }
+
   void operatorSignOut() async {
     operatorBloc.add(OperatorSignOutEvent());
-  }
-
-  void getOperatorById(String enterpriseId, String operatorId) async {
-    await loginStore.getUserById(enterpriseId, operatorId, "operator");
   }
 
   onFail(BuildContext context) {
@@ -218,11 +181,6 @@ class LoginController {
         ),
       ),
     );
-  }
-
-  Future<void> getAllOperators() async {
-    operatorsList.clear();
-    operatorsList = await loginStore.getAllOperators(enterpriseId) ?? [];
   }
 
   registrationFail(BuildContext context, {required String message}) {

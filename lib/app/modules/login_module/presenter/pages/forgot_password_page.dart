@@ -4,7 +4,6 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/l
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../stores/login_store.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -17,7 +16,6 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _checkOperatorDataFormKey = GlobalKey<FormState>();
   final _operatorEntity = OperatorEntity();
   final _loginController = Modular.get<LoginController>();
-  final _loginStore = Modular.get<LoginStore>();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -102,7 +100,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   SizedBox(height: height * 0.15),
                   CashHelperElevatedButton(
                     onPressed: () async {
-                      _checkOperatorDataFormKey.currentState!.validate();
+                      /* _checkOperatorDataFormKey.currentState!.validate();
                       _checkOperatorDataFormKey.currentState!.save();
                       if (_checkOperatorDataFormKey.currentState!.validate()) {
                         setState(() {
@@ -127,7 +125,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         setState(() {
                           _loginController.loadingAuthData = false;
                         });
-                      }
+                      } */
                     },
                     radius: 12,
                     width: width,
