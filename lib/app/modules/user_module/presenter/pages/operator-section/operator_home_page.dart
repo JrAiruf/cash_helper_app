@@ -34,7 +34,6 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
   void initState() {
-    _loginController.operatorBloc.add(GetOperatorByIdEvent(_enterpriseId, widget.operatorEntity.operatorId!, widget.operatorEntity.businessPosition!));
     _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId);
     super.initState();
   }

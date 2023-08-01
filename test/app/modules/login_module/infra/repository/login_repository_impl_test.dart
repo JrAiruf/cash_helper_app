@@ -62,7 +62,7 @@ class LoginRepoMock implements LoginRepository {
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(String? email, String? operatorCode, String? collection) {
+  Future<bool>? checkUserDataForResetPassword(String? enterpriseId,String? email, String? operatorCode, String? collection) {
     throw UnimplementedError();
   }
 

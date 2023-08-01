@@ -58,7 +58,7 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(String? email, String? operatorCode, String? collection) async {
+  Future<bool>? checkUserDataForResetPassword(String? enterpriseId,String? email, String? operatorCode, String? collection) async {
     if (email!.isNotEmpty && collection!.isNotEmpty) {
       return await _datasource.checkOperatorDataForResetPassword(email, operatorCode, "", collection)!;
     } else {

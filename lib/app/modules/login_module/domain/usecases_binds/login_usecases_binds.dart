@@ -1,7 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../usecases/check_operator_data_for_reset_password/check_operator_data_for_reset_password.dart';
-import '../usecases/check_operator_data_for_reset_password/icheck_operator_data_for_reset_password.dart';
+import '../usecases/check_operator_data_for_reset_password/check_user_data_for_reset_password.dart';
+import '../usecases/check_operator_data_for_reset_password/icheck_user_data_for_reset_password.dart';
 import '../usecases/get_all_operators/get_all_operators.dart';
 import '../usecases/get_all_operators/iget_all_operators.dart';
 import '../usecases/get_user_by_id/get_user_by_id.dart';
@@ -42,8 +42,8 @@ class LoginUsecasesBinds {
         dataVerifier: i(),
       ),
     ),
-    Bind<ICheckOperatorDataForResetPassword>(
-      (i) => CheckOperatorDataForResetPassword(
+    Bind<ICheckUserDataForResetPassword>(
+      (i) => CheckUserDataForResetPassword(
         repository: i(),
       ),
     ),

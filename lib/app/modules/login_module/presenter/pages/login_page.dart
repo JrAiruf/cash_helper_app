@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
+import '../../../user_module/presenter/blocs/manager_bloc/manager_events.dart';
+import '../../../user_module/presenter/blocs/operator_bloc/operator_events.dart';
 import '../components/buttons/cash_helper_login_button.dart';
 import '../components/cash_helper_text_field.dart';
 
@@ -42,9 +44,11 @@ class _LoginPageState extends State<LoginPage> {
       bloc: _loginController.authBloc,
       listener: (context, state) {
         if (state is AuthOperatorSuccessState) {
+          _loginController.operatorBloc.add(GetOperatorByIdEvent(widget.enterpriseEntity.enterpriseId!, state.cashOperator.operatorId!, state.cashOperator.businessPosition!));
           Modular.to.navigate("${UserRoutes.operatorHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.cashOperator);
         }
         if (state is AuthManagerSuccessState) {
+          _loginController.managerBloc.add(GetManagerByIdEvent(widget.enterpriseEntity.enterpriseId!, state.manager.managerId!, state.manager.businessPosition!));
           Modular.to.navigate("${UserRoutes.managerHomePage}${widget.enterpriseEntity.enterpriseId}", arguments: state.manager);
         }
       },

@@ -53,6 +53,7 @@ class LoginController {
   final loginFormKey = GlobalKey<FormState>();
   final createManagerFormKey = GlobalKey<FormState>();
   final createOperatorFormKey = GlobalKey<FormState>();
+  final checkOperatorDataFormKey = GlobalKey<FormState>();
 
   var managerEntity = ManagerEntity(businessPosition: EnterpriseBusinessPosition.manager.position);
   var operatorEntity = OperatorEntity(

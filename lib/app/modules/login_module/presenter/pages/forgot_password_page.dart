@@ -13,7 +13,6 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final _checkOperatorDataFormKey = GlobalKey<FormState>();
   final _operatorEntity = OperatorEntity();
   final _loginController = Modular.get<LoginController>();
   @override
@@ -40,8 +39,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 35),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 35),
                     child: Center(
                       child: LinearProgressIndicator(
                         color: tertiaryColor,
@@ -56,29 +54,26 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   SizedBox(height: height * 0.1),
                   Text(
                     "Recuperar Senha",
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(color: surfaceColor),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(color: surfaceColor),
                   ),
                   SizedBox(height: height * 0.1),
-                  Text("Informe os dados necessários:",
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            color: surfaceColor,
-                          ),),
+                  Text(
+                    "Informe os dados necessários:",
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          color: surfaceColor,
+                        ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Form(
-                      key: _checkOperatorDataFormKey,
+                      key: _loginController.checkOperatorDataFormKey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CashHelperTextFieldComponent(
                             radius: 15,
-                            validator: (value) =>
-                                _loginController.emailValidate(value),
-                            onSaved: (value) =>
-                                _operatorEntity.operatorEmail = value,
+                            validator: (value) => _loginController.emailValidate(value),
+                            onSaved: (value) => _operatorEntity.operatorEmail = value,
                             controller: _loginController.emailField,
                             label: 'Email',
                           ),
@@ -86,10 +81,8 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           CashHelperTextFieldComponent(
                             obscureText: true,
                             radius: 15,
-                            validator: (value) =>
-                                _loginController.cashierCodeValidate(value),
-                            onSaved: (value) =>
-                                _operatorEntity.operatorCode = value,
+                            validator: (value) => _loginController.cashierCodeValidate(value),
+                            onSaved: (value) => _operatorEntity.operatorCode = value,
                             controller: _loginController.cashierCodeField,
                             label: 'Código Ops.',
                           ),
