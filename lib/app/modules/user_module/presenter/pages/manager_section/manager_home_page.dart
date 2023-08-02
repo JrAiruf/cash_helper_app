@@ -1,7 +1,6 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/get_operators_bloc/get_operators_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import '../../blocs/get_recent_activities_bloc/get_recent_activities_bloc.dart';
 import '../../components/buttons/quick_access_button.dart';
 import '../../components/widgets/manager_section_drawer.dart';
 
@@ -33,7 +33,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
     _managementController.enterpriseId = _enterpriseId;
-    _managementController.getAllOperators();
+    _managementController.getAllRecentActivities();
   }
 
   @override
@@ -110,17 +110,17 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       SizedBox(
                         height: height * 0.18,
-                        child: BlocBuilder<GetOperatorsBloc, GetOperatorsState>(
-                          bloc: _managementController.getOperatorsBloc,
+                        child: BlocBuilder<GetRecentActivitiesBloc, GetRecentActivitiesStates>(
+                          bloc: _managementController.getRecentActivitiesBloc,
                           builder: (__, state) {
-                            if (state is GetOperatorsLoadingState) {
+                            if (state is GetRecentActivitiesLoadingState) {
                               return Center(
                                 child: CircularProgressIndicator(
                                   color: appThemes.indicatorColor(context),
                                 ),
                               );
                             }
-                            if (state is GetOperatorsFailureState) {
+                            if (state is GetRecentActivitiesFailureState) {
                               return Center(
                                 child: Text(
                                   "Nenhuma Atividade Recente",
@@ -130,7 +130,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 ),
                               );
                             }
-                            if (state is GetOperatorsSuccessState) {
+                            if (state is GetRecentActivitiesSuccessState) {
                               return ListView.builder(
                                   itemCount: state.operators.length,
                                   scrollDirection: Axis.horizontal,

@@ -7,6 +7,6 @@ class GetAllPendencies implements IGetAllPendencies {
   final ManagementRepository _repository;
   @override
   Future<List<PendencyEntity>> call(String enterpriseId) async {
-    return await _repository.getAllPendencies(enterpriseId);
+    return await _repository.getAllPendencies(enterpriseId) ?? [];
   }
 }
