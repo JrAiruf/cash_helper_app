@@ -14,6 +14,7 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/stores/p
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/get_operators_bloc/get_operators_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -36,6 +37,7 @@ class ManagementController {
 // Blocs
   final paymentMethodBloc = Modular.get<PaymentMethodsBloc>();
   final paymentMethodsListBloc = Modular.get<PaymentMethodsListBloc>();
+  final getOperatorsBloc = Modular.get<GetOperatorsBloc>();
 
 //
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
@@ -105,6 +107,10 @@ class ManagementController {
     } else {
       return;
     }
+  }
+
+  Future<void> getAllOperators() async {
+    getOperatorsBloc.add(GetOperatorsEvent(enterpriseId));
   }
 
   Future<void> getAllAnnotations() async {

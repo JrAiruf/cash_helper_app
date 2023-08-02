@@ -1,6 +1,7 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/get_operators_bloc/get_operators_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
@@ -32,8 +33,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
     _managementController.enterpriseId = _enterpriseId;
-    _managementController.managementStore.getOperatorsInformations(_enterpriseId);
-    _managementController.annotationsListStore.getAllAnnotations(_enterpriseId);
+    _managementController.getAllOperators();
   }
 
   @override
@@ -110,7 +110,50 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       SizedBox(
                         height: height * 0.18,
-                        child: Container(),
+                        child: BlocBuilder<GetOperatorsBloc, GetOperatorsState>(
+                          bloc: _managementController.getOperatorsBloc,
+                          builder: (__, state) {
+                            if (state is GetOperatorsLoadingState) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: appThemes.indicatorColor(context),
+                                ),
+                              );
+                            }
+                            if (state is GetOperatorsFailureState) {
+                              return Center(
+                                child: Text(
+                                  "Nenhuma Atividade Recente",
+                                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                        color: appThemes.surfaceColor(context),
+                                      ),
+                                ),
+                              );
+                            }
+                            if (state is GetOperatorsSuccessState) {
+                              return ListView.builder(
+                                  itemCount: state.operators.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (_, i) {
+                                    final operator = state.operators[i];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(operator.operatorName ?? ""),
+                                          Text(operator.operatorCode ?? ""),
+                                          Text(operator.operatorOppening ?? ""),
+                                          Text(operator.operatorClosing ?? ""),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            }
+                            return Container();
+                          },
+                        ),
                       ),
                       SizedBox(
                         height: height * 0.05,
