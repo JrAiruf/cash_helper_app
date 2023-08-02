@@ -7,6 +7,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../annotations_module/presenter/stores/annotations_store.dart';
 import '../../../management_module/presenter/stores/pendency_store.dart';
+import '../blocs/operator_oppening_bloc/operator_oppening_bloc.dart';
 
 class OperatorController {
   final emailField = TextEditingController();
@@ -17,6 +18,7 @@ class OperatorController {
   final annotationsListStore = Modular.get<AnnotationsListStore>();
   final annotationStore = Modular.get<AnnotationStore>();
   final pendencyStore = Modular.get<PendencyStore>();
+  final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
 
   final operatorCodeFormKey = GlobalKey<FormState>();
   bool? loadingOperatorSettings;

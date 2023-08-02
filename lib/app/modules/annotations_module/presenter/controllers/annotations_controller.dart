@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc/annotations_bloc.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/create_annotations_bloc/create_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
-import '../blocs/annotations_bloc/annotations_bloc/annotations_events.dart';
+import '../blocs/annotations_bloc/create_annotations_bloc/create_annotations_events.dart';
 import '../date_values/date_values.dart';
 import '../stores/annotations_list_store.dart';
 import '../stores/annotations_store.dart';
@@ -21,7 +21,7 @@ class AnnotationsController {
   final annotationSaleTimeField = TextEditingController();
   final dateValue = DateValues();
   final _annotationsStore = Modular.get<AnnotationStore>();
-  final annotationsBloc = Modular.get<AnnotationsBloc>();
+  final createAnnotationsBloc = Modular.get<CreateAnnotationsBloc>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
   final annotationsPageController = PageController();
   final annotationsListPageController = PageController();
@@ -41,6 +41,7 @@ class AnnotationsController {
 
   String enterpriseId = "";
   String operatorId = "";
+  OperatorEntity? operatorEntity;
   String annotationId = "";
   List<AnnotationEntity> annotationsList = [];
   String? annotationAddressValidate(String? value) {
@@ -51,12 +52,12 @@ class AnnotationsController {
     return value!.isNotEmpty && value != '' ? null : 'Valor Inválido! Insira o valor da compra feita.';
   }
 
-  Future<void> createAnnotation(OperatorEntity operatorEntity) async {
+  Future<void> createAnnotation() async {
     newAnnotationFormKey.currentState!.validate();
     if (newAnnotationFormKey.currentState!.validate()) {
       newAnnotationFormKey.currentState?.save();
       final newAnnotation = AnnotationEntity(
-          annotationCreatorId: operatorEntity.operatorId,
+          annotationCreatorId: operatorId,
           annotationClientAddress: annotationClientAddress,
           annotationConcluied: false,
           annotationWithPendency: false,
@@ -66,7 +67,7 @@ class AnnotationsController {
           annotationPaymentMethod: annotationPaymentMethod,
           annotationId: "AnnotationId",
           annotationSaleValue: annotationValue);
-      annotationsBloc.add(CreateAnnotationEvent(enterpriseId, newAnnotation));
+      createAnnotationsBloc.add(CreateAnnotationEvent(enterpriseId, newAnnotation));
       Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$enterpriseId", arguments: operatorEntity);
     } else {
       return;

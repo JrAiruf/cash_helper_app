@@ -1,8 +1,6 @@
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../user_module/domain/entities/operator_entity.dart';
 
@@ -19,7 +17,6 @@ class PendenciesInformationCard extends StatefulWidget {
 }
 
 class _PendenciesInformationCardState extends State<PendenciesInformationCard> {
-  final _managementController = Modular.get<ManagementController>();
   @override
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();

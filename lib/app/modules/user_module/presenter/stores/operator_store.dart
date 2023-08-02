@@ -59,15 +59,6 @@ class OperatorStore extends ValueNotifier<OperatorStoreStates> {
     value = ClosedCashState();
   }
 
-  void setOperatorState(OperatorEntity operatorEntity) {
-    value = LoadingCashState();
-    if (operatorEntity.operatorEnabled!) {
-      value = OpenedCashState();
-    } else {
-      value = ClosedCashState();
-    }
-  }
-
   Future<void> changeOperatorPassword(String newPassword, String operatorCode,
       String currentPassword, String collection) async {
     value = ChangePasswordLoadingState();

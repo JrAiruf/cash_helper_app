@@ -28,13 +28,17 @@ class GetRecentActivitiesBloc extends Bloc<GetRecentActivitiesEvents, GetRecentA
   void _mapGetAllOperatorsEventToState(GetRecentActivitiesEvent event, Emitter<GetRecentActivitiesStates> state) async {
     state(GetRecentActivitiesLoadingState());
     final operators = await _getAllOperators(event.enterpriseId)?.catchError((e) {
-      state(GetRecentActivitiesFailureState());
+      state(NoRecentActivitiesState());
       return <OperatorEntity>[];
     });
     if (operators!.isNotEmpty) {
       final annotations = await _getAllAnnotations(event.enterpriseId);
-      final pendecies = await _getAllPendencies(event.enterpriseId);
-      state(GetRecentActivitiesSuccessState(operators, pendecies, annotations));
+      final pendencies = await _getAllPendencies(event.enterpriseId).catchError(
+        (e) {
+          return <PendencyEntity>[];
+        },
+      );
+      state(GetRecentActivitiesSuccessState(operators, pendencies, annotations));
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/manager/recent_activities_component/recente_activities_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -110,50 +111,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       SizedBox(
                         height: height * 0.18,
-                        child: BlocBuilder<GetRecentActivitiesBloc, GetRecentActivitiesStates>(
-                          bloc: _managementController.getRecentActivitiesBloc,
-                          builder: (__, state) {
-                            if (state is GetRecentActivitiesLoadingState) {
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: appThemes.indicatorColor(context),
-                                ),
-                              );
-                            }
-                            if (state is GetRecentActivitiesFailureState) {
-                              return Center(
-                                child: Text(
-                                  "Nenhuma Atividade Recente",
-                                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                                        color: appThemes.surfaceColor(context),
-                                      ),
-                                ),
-                              );
-                            }
-                            if (state is GetRecentActivitiesSuccessState) {
-                              return ListView.builder(
-                                  itemCount: state.operators.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (_, i) {
-                                    final operator = state.operators[i];
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(operator.operatorName ?? ""),
-                                          Text(operator.operatorCode ?? ""),
-                                          Text(operator.operatorOppening ?? ""),
-                                          Text(operator.operatorClosing ?? ""),
-                                        ],
-                                      ),
-                                    );
-                                  });
-                            }
-                            return Container();
-                          },
-                        ),
+                        child: RecentActivitiesComponent(controller: _managementController)
                       ),
                       SizedBox(
                         height: height * 0.05,

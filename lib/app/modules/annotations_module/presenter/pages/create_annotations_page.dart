@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc/annotations_states.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/create_annotations_bloc/create_annotations_states.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
@@ -33,6 +33,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
     super.initState();
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
     _annotationsController.operatorId = widget.operatorEntity.operatorId!;
+    _annotationsController.operatorEntity = widget.operatorEntity;
     _paymentMethodListStore.getAllPaymentMethods(_annotationsController.enterpriseId);
   }
 
@@ -60,14 +61,14 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
             color: backgroundColor,
           ),
           child: BlocConsumer(
-            bloc: _annotationsController.annotationsBloc,
+            bloc: _annotationsController.createAnnotationsBloc,
             listener: (_, state) {
-              if (state is AnnotationsSuccessState) {
+              if (state is CreateAnnotationsSuccessState) {
                 Modular.to.navigate("${AnnotationRoutes.annotationsListPage}${_annotationsController.enterpriseId}", arguments: widget.operatorEntity);
               }
             },
             builder: (_, state) {
-              if (state is AnnotationsLoadingState) {
+              if (state is CreateAnnotationsLoadingState) {
                 return Container(
                   height: height,
                   width: width,
@@ -245,7 +246,7 @@ class _CreateAnnotationsPageState extends State<CreateAnnotationsPage> {
                               height: 50,
                               width: width * 0.7,
                               radius: 12,
-                              onPressed: () => _annotationsController.createAnnotation(widget.operatorEntity),
+                              onPressed: () => _annotationsController.createAnnotation,
                             ),
                           ),
                         ],

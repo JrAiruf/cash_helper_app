@@ -15,4 +15,4 @@ class GetRecentActivitiesSuccessState extends GetRecentActivitiesStates {
   GetRecentActivitiesSuccessState(this.operators, this.pendencies, this.annotations);
 }
 
-class GetRecentActivitiesFailureState extends GetRecentActivitiesStates {}
+class NoRecentActivitiesState extends GetRecentActivitiesStates {}

@@ -13,8 +13,8 @@ class AnnotationEntity {
   
   AnnotationEntity({
    this.annotationId,
-   this.annotationSaleTime,
    this.annotationCreatorId,
+   this.annotationSaleTime,
    this.annotationSaleDate,
    this.annotationSaleValue,
    this.annotationPaymentMethod,
