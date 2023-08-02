@@ -1,6 +1,6 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_methods_list_unnavailable.dart';

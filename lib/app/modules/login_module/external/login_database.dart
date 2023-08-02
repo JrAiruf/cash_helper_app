@@ -1,8 +1,8 @@
-import 'package:cash_helper_app/app/modules/login_module/domain/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
-import '../../../../services/crypt_serivce.dart';
+import '../../../services/crypt_serivce.dart';
 import 'errors/authentication_error.dart';
 import 'errors/database_error.dart';
 import 'errors/operators_unavailable.dart';
@@ -96,8 +96,16 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(String? email, String? operatorCode, String? enterpriseId, String? collection) {
-    throw UnimplementedError();
+  Future<bool>? checkUserDataForResetPassword(String? enterpriseId, String? userEmail, String? userCode, String? collection) async {
+      bool checked;
+    try {
+      final operatorsCollection = await _database.collection("enterprise").doc(enterpriseId).collection(collection!).get();
+      final checkedOperator = operatorsCollection.docs.firstWhere((userMap) => userMap.data()["${collection}Email"] == userEmail && userMap.data()["${collection}Code"] == userCode);
+      checkedOperator.exists ? checked = true : checked = false;
+      return checked;
+    } catch (e) {
+      throw UserNotFound(message: e.toString());
+    }
   }
 
   @override

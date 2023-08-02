@@ -1,5 +1,5 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/infra/data/login_repository.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/manager_model.dart';
 import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_model.dart';
@@ -62,12 +62,12 @@ class LoginRepoMock implements LoginRepository {
   }
 
   @override
-  Future<bool>? checkUserDataForResetPassword(String? enterpriseId,String? email, String? operatorCode, String? collection) {
-    throw UnimplementedError();
+  Future<bool>? checkUserDataForResetPassword(String? enterpriseId, String? email, String? operatorCode, String? collection) async {
+    return await _datasource.checkUserDataForResetPassword(enterpriseId!, email!, operatorCode!, collection!) ?? false;
   }
 
   @override
-  Future<void>? resetUserPassword(String? email, String? operatorCode,String? enterpriseId,String? collection , String? newPassword) {
+  Future<void>? resetUserPassword(String? email, String? operatorCode, String? enterpriseId, String? collection, String? newPassword) {
     throw UnimplementedError();
   }
 
@@ -215,42 +215,29 @@ void main() {
       );
     },
   );
-  /*
   group(
-    "CheckOperatorDataForResetPassword function should",
+    "CheckUserDataForResetPassword function should",
     () {
       test(
         "Call database function to check operator informations",
         () async {
-          when(datasource.register(any, any)).thenAnswer((_) async => databaseOperator);
-          when(datasource.getOperatorById(any, any)).thenAnswer((_) async => databaseOperator);
-          when(datasource.checkOperatorDataForResetPassword(any, any, any)).thenAnswer((_) async => true);
-
-          final createdOperator = await repository.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorModel>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          final checkedOperator = await repository.checkOperatorDataForResetPassword(createdOperator?.operatorEmail,createdOperator?.operatorCode,"collection");
-          
+          when(datasource.checkUserDataForResetPassword(any, any, any, any)).thenAnswer((_) async => true);
+          final checkedOperator = await repository.checkUserDataForResetPassword("enterpriseId", "userEmail", "userCode", "collection");
           expect(checkedOperator, equals(true));
         },
       );
       test(
         "Return false, for non checked informations",
         () async {
-             when(datasource.register(any, any)).thenAnswer((_) async => databaseOperator);
-          when(datasource.getOperatorById(any, any)).thenAnswer((_) async => databaseOperator);
-          when(datasource.checkOperatorDataForResetPassword(any, any, any)).thenAnswer((_) async => false);
-
-          final createdOperator = await repository.register(newOperator, "collection");
-          expect(createdOperator, isA<OperatorModel>());
-          expect(createdOperator?.operatorId != null, equals(true));
-          final checkedOperator = await repository.checkOperatorDataForResetPassword("",createdOperator?.operatorCode,"");
-          
+          when(datasource.checkUserDataForResetPassword(any, any, any, any)).thenAnswer((_) async => false);
+          final checkedOperator = await repository.checkUserDataForResetPassword("enterpriseId", "userEmail", "userCode", "collection");
           expect(checkedOperator, equals(false));
         },
       );
     },
   );
+  /*
+  
   group(
     "ResetOperatorPassword function should",
     () {

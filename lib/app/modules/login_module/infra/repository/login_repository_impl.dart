@@ -3,7 +3,7 @@ import 'package:cash_helper_app/app/modules/user_module/infra/models/operator_mo
 
 import '../../../../helpers/data_verifier.dart';
 import '../../../user_module/infra/models/manager_model.dart';
-import '../../domain/external/data/application_login_database.dart';
+import '../../external/data/application_login_database.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   LoginRepositoryImpl({
@@ -58,18 +58,14 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<bool>? checkUserDataForResetPassword(String? enterpriseId,String? email, String? operatorCode, String? collection) async {
-    if (email!.isNotEmpty && collection!.isNotEmpty) {
-      return await _datasource.checkOperatorDataForResetPassword(email, operatorCode, "", collection)!;
-    } else {
-      return false;
-    }
+  Future<bool>? checkUserDataForResetPassword(String? enterpriseId, String? email, String? operatorCode, String? collection) async {
+    return await _datasource.checkUserDataForResetPassword(enterpriseId!, email!, operatorCode!, collection!) ?? false;
   }
 
   @override
-  Future<void>? resetUserPassword(String? email, String? operatorCode,String? enterpriseId, String? collection, String? newPassword) async {
+  Future<void>? resetUserPassword(String? email, String? operatorCode, String? enterpriseId, String? collection, String? newPassword) async {
     if (email!.isNotEmpty && operatorCode!.isNotEmpty && newPassword!.isNotEmpty) {
-      return await _datasource.resetUserPassword(email, operatorCode, enterpriseId!,collection!,newPassword);
+      return await _datasource.resetUserPassword(email, operatorCode, enterpriseId!, collection!, newPassword);
     } else {
       return;
     }

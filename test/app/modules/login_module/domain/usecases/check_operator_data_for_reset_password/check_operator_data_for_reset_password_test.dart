@@ -14,11 +14,10 @@ class CheckOpDataMock implements ICheckUserDataForResetPassword {
   CheckOpDataMock({required LoginRepository repository}) : _repository = repository;
 
   final LoginRepository _repository;
-  final _dataVerifier = DataVerifier();
 
   @override
   Future<bool> call(String enterpriseId, String userEmail, String userrCode, String collection) async {
-    return await _repository.checkUserDataForResetPassword(enterpriseId, userEmail, userrCode, collection)!;
+    return await _repository.checkUserDataForResetPassword(enterpriseId, userEmail, userrCode, collection) ?? false;
   }
 }
 

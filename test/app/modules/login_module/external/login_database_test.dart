@@ -1,9 +1,9 @@
-import 'package:cash_helper_app/app/modules/login_module/domain/external/data/application_login_database.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/authentication_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/database_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/operators_unavailable.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/user_not_found_error.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/errors/registration_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/authentication_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/database_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/operators_unavailable.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/user_not_found_error.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/errors/registration_error.dart';
 import 'package:cash_helper_app/app/services/crypt_serivce.dart';
 import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
@@ -104,13 +104,15 @@ class FirebaseDatabaseMock implements ApplicationLoginDatabase {
   }
 
   @override
-  Future<bool>? checkOperatorDataForResetPassword(String? email, String? operatorCode, String? enterpriseId, String? collection) async {
-    if (email != null && operatorCode != null && collection != null) {
-      final operatorsCollection = await _database.collection(collection).get();
-      final checkedOperator = operatorsCollection.docs.firstWhere((operatorMap) => operatorMap.data()["operatorEmail"] == email && operatorMap.data()["operatorCode"] == operatorCode);
-      return checkedOperator.exists ? true : false;
-    } else {
-      return false;
+  Future<bool>? checkUserDataForResetPassword(String? enterpriseId, String? userEmail, String? userCode, String? collection) async {
+    bool checked;
+    try {
+      final operatorsCollection = await _database.collection("enterprise").doc(enterpriseId).collection(collection!).get();
+      final checkedOperator = operatorsCollection.docs.firstWhere((userMap) => userMap.data()["${collection}Email"] == userEmail && userMap.data()["${collection}Code"] == userCode);
+      checkedOperator.exists ? checked = true : checked = false;
+      return checked;
+    } catch (e) {
+      throw UserNotFound(message: e.toString());
     }
   }
 
@@ -351,7 +353,8 @@ void main() {
           expect(createdOperator, isA<Map<String, dynamic>>());
           expect(createdOperator!["operatorId"] != null, equals(true));
           expect(encrypter.checkHashCode("12345678", createdOperator["operatorPassword"]), equals(true));
-          await database.resetUserPassword(createdOperator["operatorEmail"], createdOperator["operatorCode"], createdEnterprise["enterpriseId"], createdOperator["businessPosition"],"newPassword1234");
+          await database.resetUserPassword(
+              createdOperator["operatorEmail"], createdOperator["operatorCode"], createdEnterprise["enterpriseId"], createdOperator["businessPosition"], "newPassword1234");
           expect(encrypter.checkHashCode("newPassword1234", createdOperator["operatorPassword"]), equals(true));
         },
       );
@@ -363,45 +366,31 @@ void main() {
       );
     },
   );
-/*   group(
-    "CheckOperatorDataForResetPassword function should",
+  group(
+    "CheckUserDataForResetPassword function should",
     () {
       test(
         "Return true, if parameters matches with database's operator data",
         () async {
-          final createdOperator = await database.register(
-              newOperator, newOperator["operatorOcupation"]);
-          final operatorsList = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
-              .get();
-          expect(operatorsList.docs.isEmpty, equals(false));
+          final createdEnterprise = await enterpriseDatabase.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final createdOperator = await database.register(LoginTestObjects.loginOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
           final checkedInformation =
-              await database.checkOperatorDataForResetPassword(
-                  createdOperator!["operatorEmail"],
-                  createdOperator["operatorCode"],
-                  createdOperator["operatorOcupation"]);
+              await database.checkUserDataForResetPassword(createdEnterprise!["enterpriseId"], createdOperator!["operatorEmail"], createdOperator["operatorCode"], createdOperator["businessPosition"]);
           expect(checkedInformation, equals(true));
         },
       );
       test(
         "Return false, if parameters does not matches with database's operator data",
         () async {
-          final createdOperator = await database.register(
-              newOperator, newOperator["operatorOcupation"]);
-          final operatorsList = await firebaseMock
-              .collection(newOperator["operatorOcupation"])
-              .get();
-          expect(operatorsList.docs.isEmpty, equals(false));
-          final checkedInformation =
-              await database.checkOperatorDataForResetPassword(
-                  createdOperator?["operatorEmail"],
-                  null,
-                  createdOperator?["operatorOccupation"]);
-          expect(checkedInformation, equals(false));
+          final createdEnterprise = await enterpriseDatabase.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final createdOperator = await database.register(LoginTestObjects.loginOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          expect(database.checkUserDataForResetPassword(createdEnterprise!["enterpriseId"], "userEmail", createdOperator!["operatorCode"], createdOperator["businessPosition"]),
+              throwsA(isA<UserNotFound>()));
         },
       );
     },
   );
+/* 
   group(
     "ResetOperatorPassword function should",
     () {

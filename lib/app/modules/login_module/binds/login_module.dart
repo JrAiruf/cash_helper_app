@@ -1,7 +1,7 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/login_module/domain/usecases_binds/login_usecases_binds.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/data/application_login_database.dart';
-import 'package:cash_helper_app/app/modules/login_module/domain/external/login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
+import 'package:cash_helper_app/app/modules/login_module/external/login_database.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/login_bloc_binds.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/create_manager_page.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/pages/forgot_password_page.dart';

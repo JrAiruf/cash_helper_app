@@ -1,13 +1,9 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_states.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/operator_info_list_view_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/manager_controller.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -114,73 +110,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       SizedBox(
                         height: height * 0.18,
-                        child: ValueListenableBuilder(
-                          valueListenable: _managementController.managementStore,
-                          builder: (_, state, __) {
-                            if (state is ManagementLoadingState) {
-                              return Container(
-                                decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: appThemes.indicatorColor(context),
-                                  ),
-                                ),
-                              );
-                            }
-                            if (state is GetUsersListFailureState) {
-                              return Center(
-                                child: Text(
-                                  "Nenhum Operador Encontrado",
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: appThemes.surfaceColor(context),
-                                      ),
-                                ),
-                              );
-                            }
-                            if (state is GetUsersListState) {
-                              state.operators.isNotEmpty ? _managementController.getAllPendencies() : null;
-                              final operatorsList = state.operators;
-                              return SizedBox(
-                                child: ValueListenableBuilder(
-                                  valueListenable: _managementController.pendenciesListStore,
-                                  builder: (_, state, __) {
-                                    if (state is LoadingPendenciesState) {
-                                      return Container(
-                                        decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color: appThemes.indicatorColor(context),
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                    if (state is NoPendenciesState) {
-                                      return Center(
-                                        child: Text(
-                                          "Sem pendências no momento",
-                                          style: Theme.of(context).textTheme.bodySmall,
-                                        ),
-                                      );
-                                    }
-                                    if (state is PendenciesListState) {
-                                      final pendenciesList = state.pendencies;
-                                      return OperatorInfoListViewComponent(
-                                        enterpriseId: _enterpriseId,
-                                        operators: operatorsList,
-                                        annotations: _managementController.annotationsListStore.value,
-                                        pendencies: pendenciesList,
-                                      );
-                                    } else {
-                                      return Container();
-                                    }
-                                  },
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
+                        child: Container(),
                       ),
                       SizedBox(
                         height: height * 0.05,
@@ -307,3 +237,74 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     );
   }
 }
+
+
+/* 
+ ValueListenableBuilder(
+                          valueListenable: _managementController.managementStore,
+                          builder: (_, state, __) {
+                            if (state is ManagementLoadingState) {
+                              return Container(
+                                decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: appThemes.indicatorColor(context),
+                                  ),
+                                ),
+                              );
+                            }
+                            if (state is GetUsersListFailureState) {
+                              return Center(
+                                child: Text(
+                                  "Nenhum Operador Encontrado",
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: appThemes.surfaceColor(context),
+                                      ),
+                                ),
+                              );
+                            }
+                            if (state is GetUsersListState) {
+                              state.operators.isNotEmpty ? _managementController.getAllPendencies() : null;
+                              final operatorsList = state.operators;
+                              return SizedBox(
+                                child: ValueListenableBuilder(
+                                  valueListenable: _managementController.pendenciesListStore,
+                                  builder: (_, state, __) {
+                                    if (state is LoadingPendenciesState) {
+                                      return Container(
+                                        decoration: BoxDecoration(color: appThemes.primaryColor(context)),
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: appThemes.indicatorColor(context),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    if (state is NoPendenciesState) {
+                                      return Center(
+                                        child: Text(
+                                          "Sem pendências no momento",
+                                          style: Theme.of(context).textTheme.bodySmall,
+                                        ),
+                                      );
+                                    }
+                                    if (state is PendenciesListState) {
+                                      final pendenciesList = state.pendencies;
+                                      return OperatorInfoListViewComponent(
+                                        enterpriseId: _enterpriseId,
+                                        operators: operatorsList,
+                                        annotations: _managementController.annotationsListStore.value,
+                                        pendencies: pendenciesList,
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
+ */
