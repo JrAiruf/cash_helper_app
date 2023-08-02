@@ -3,7 +3,6 @@ import 'package:cash_helper_app/app/modules/annotations_module/presenter/control
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';

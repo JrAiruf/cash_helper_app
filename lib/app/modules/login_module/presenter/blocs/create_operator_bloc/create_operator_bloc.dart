@@ -14,7 +14,7 @@ class CreateOperatorBloc extends Bloc<CreateOperatorEvents, CreateOperatorStates
   void _mapCreateOperatorEventToState(CreateOperatorEvent event, Emitter<CreateOperatorStates> state) async {
     state(CreateOperatorLoadingState());
     final createdOperator = await _registerOperator(event.operatorEntity, event.enterpriseId, event.collection).catchError((e) {
-      state(CreateOperatorErrorState("Não foi possível criar um novo Operador"));
+      state(CreateOperatorErrorState(e.toString()));
       return null;
     });
     if (createdOperator != null) {
