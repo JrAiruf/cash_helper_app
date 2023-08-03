@@ -8,6 +8,7 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/pa
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_methods_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_events.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/pendency_occurrance_bloc/pendency_ocurrance_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
@@ -38,6 +39,7 @@ class ManagementController {
   final paymentMethodBloc = Modular.get<PaymentMethodsBloc>();
   final paymentMethodsListBloc = Modular.get<PaymentMethodsListBloc>();
   final getRecentActivitiesBloc = Modular.get<GetRecentActivitiesBloc>();
+  final pendencyOcurranceBloc = Modular.get<PendencyOcurranceBloc>();
 
 //
   final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
@@ -111,6 +113,10 @@ class ManagementController {
 
   Future<void> getAllRecentActivities() async {
     getRecentActivitiesBloc.add(GetRecentActivitiesEvent(enterpriseId));
+  }
+
+  Future<void> getPendencyOcurrances() async {
+    pendencyOcurranceBloc.add(PendencyOcurranceEvent(enterpriseId));
   }
 
   Future<void> getAllAnnotations() async {

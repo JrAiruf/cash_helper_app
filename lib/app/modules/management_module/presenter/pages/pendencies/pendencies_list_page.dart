@@ -12,12 +12,9 @@ import '../../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../domain/entities/pendency_entity.dart';
 
 class PendenciesListPage extends StatefulWidget {
-  const PendenciesListPage({required this.managerEntity, required this.operatorsList, required this.pendencies, super.key});
+  const PendenciesListPage({required this.managerEntity, super.key});
 
   final ManagerEntity managerEntity;
-  final List<OperatorEntity> operatorsList;
-  final List<PendencyEntity> pendencies;
-  @override
   State<PendenciesListPage> createState() => _PendenciesListPageState();
 }
 
@@ -40,7 +37,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
     final appThemes = CashHelperThemes();
     return AnimatedBuilder(
         animation: _managementController.operatorAnnotations,
-        builder: (_,__) {
+        builder: (_, __) {
           return Scaffold(
             appBar: AppBar(),
             body: SingleChildScrollView(
@@ -99,9 +96,9 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10),
                                 child: ListView.builder(
-                                  itemCount: widget.operatorsList.length,
+                                  itemCount: 10,
                                   itemBuilder: (_, i) {
-                                    final pendingOperator = widget.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == widget.operatorsList[i].operatorId);
+                                    /* final pendingOperator = widget.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == widget.operatorsList[i].operatorId);
                                     final operatorAnnotations = _managementController.operatorAnnotations.value
                                         .where((annotation) => annotation.annotationCreatorId == pendingOperator.operatorId && !annotation.annotationWithPendency!)
                                         .toList();
@@ -207,7 +204,8 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                           ),
                                         ),
                                       ),
-                                    );
+                                    ); */
+                                    return Container();
                                   },
                                 ),
                               ),

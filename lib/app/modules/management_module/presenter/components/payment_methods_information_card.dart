@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_method_states.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_state.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +26,14 @@ class PaymentMethodsInformationCard extends StatelessWidget {
             bloc: _managementController.paymentMethodsListBloc,
             builder: (_, state) {
               if (state is PaymentMethodsListLoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: appThemes.indicatorColor(context),
+                return Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: LinearProgressIndicator(
+                      minHeight: 1,
+                      color: appThemes.blueColor(context),
+                    ),
                   ),
                 );
               }

@@ -41,13 +41,13 @@ class _ManagementPageState extends State<ManagementPage> {
         enterpriseId: _managementController.enterpriseId,
       ),
       body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
         child: Container(
           height: height,
           decoration: BoxDecoration(
             color: appThemes.backgroundColor(context),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Stack(
@@ -115,8 +115,7 @@ class _ManagementPageState extends State<ManagementPage> {
                       PendenciesInformationCard(
                         height: height,
                         enterpriseId: _managementController.enterpriseId,
-                        pendencies: const [],
-                        operators: const [],
+                        managerEntity: widget.managerEntity,
                       ),
                       SizedBox(
                         height: height * 0.02,
@@ -124,12 +123,9 @@ class _ManagementPageState extends State<ManagementPage> {
                       ManagerViewButton(
                         text: "Visualizar",
                         onPressed: () => Modular.to.pushNamed(
-                          "${ManagementRoutes.paymentMethodsPage}$_managementController.enterpriseId",
+                          "${ManagementRoutes.pendenciesListPage}${_managementController.enterpriseId}",
                           arguments: widget.managerEntity,
                         ),
-                      ),
-                      SizedBox(
-                        height: height * 0.035,
                       ),
                     ],
                   ),

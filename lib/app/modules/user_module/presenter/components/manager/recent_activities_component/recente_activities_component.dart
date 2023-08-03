@@ -16,9 +16,14 @@ class RecentActivitiesComponent extends StatelessWidget {
       bloc: controller.getRecentActivitiesBloc,
       builder: (__, state) {
         if (state is GetRecentActivitiesLoadingState) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: appThemes.indicatorColor(context),
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: LinearProgressIndicator(
+                minHeight: 1,
+                color: appThemes.blueColor(context),
+              ),
             ),
           );
         }

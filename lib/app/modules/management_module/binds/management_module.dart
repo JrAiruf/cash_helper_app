@@ -67,7 +67,7 @@ class ManagementModule extends Module {
     ),
     ChildRoute(
       "/pendencies-list-page/:enterpriseId",
-      child: (_, args) => PendenciesListPage(managerEntity: args.data["manager"], pendencies: args.data["pendenciesList"], operatorsList: args.data["operatorsList"]),
+      child: (_, args) => PendenciesListPage(managerEntity: args.data),
     ),
     ChildRoute(
       "/operator-activity-page/:enterpriseId",
