@@ -73,7 +73,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
             Positioned(
               top: sizeFrame ? height * 0.2 : height * 0.21,
               child: SizedBox(
-                height: height * 0.26,
+                height: height * 0.29,
                 width: width,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -99,7 +99,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                               child: OperatorPendencyCard(
                                 backgroundColor: appThemes.primaryColor(context),
                                 borderColor: appThemes.surfaceColor(context),
-                                cardWidth: sizeFrame ? width * 0.38 : width * 0.39,
+                                cardWidth: sizeFrame ? width * 0.37 : width * 0.38,
                                 annotation: filteredList[i],
                               ),
                             );
