@@ -1,6 +1,5 @@
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -14,7 +13,6 @@ class OperatorController {
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
 
-  final operatorStore = Modular.get<OperatorStore>();
   final annotationsListStore = Modular.get<AnnotationsListStore>();
   final annotationStore = Modular.get<AnnotationStore>();
   final pendencyStore = Modular.get<PendencyStore>();
@@ -30,11 +28,11 @@ class OperatorController {
 
   Future<void> openOperatorCash(BuildContext context) async {
     if (operatorCode == operatorEntity!.operatorCode) {
-      await operatorStore.openOperatorCash(
+      /* await operatorStore.openOperatorCash(
         enterpriseId ?? "",
         operatorEntity?.operatorId ?? "",
         operatorEntity?.operatorOppening ?? "",
-      );
+      ); */
       Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
     } else {
       wrongCodeSnackbar(context);
@@ -44,7 +42,7 @@ class OperatorController {
   Future<void> closeOperatorCash(BuildContext context, Color color) async {
     final unfinishedAnnotations = annotationsListStore.value.where((annotation) => annotation.annotationConcluied == false && annotation.annotationCreatorId == operatorEntity?.operatorId).toList();
     final finishedAnnotations = annotationsListStore.value.where((annotation) => annotation.annotationConcluied == true && annotation.annotationCreatorId == operatorEntity?.operatorId).toList();
-    cashClosingDialog(context, color, () async {
+    /* cashClosingDialog(context, color, () async {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();
         cashClosingConfirmationDialog(context, color, () async {
@@ -77,7 +75,7 @@ class OperatorController {
         );
         Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
       }
-    });
+    }); */
   }
 
   bool validOperatorCredentials(OperatorEntity operatorEntity, String operatorCode, String currentPassword, {String? operatorEmail}) {

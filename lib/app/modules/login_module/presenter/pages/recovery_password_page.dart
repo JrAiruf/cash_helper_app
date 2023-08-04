@@ -38,77 +38,59 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
           width: width,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Visibility(
-              visible: !_loginController.loadingLoginData,
-              replacement: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 35),
-                    child: LinearProgressIndicator(
-                      color: tertiaryColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: height * 0.1),
+                Text(
+                  "Recuperar Senha",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: surfaceColor),
+                ),
+                SizedBox(height: height * 0.1),
+                Text(
+                  "Digite sua nova senha:",
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 35),
+                  child: Form(
+                    key: _recoveryPasswordFormKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CashHelperTextFieldComponent(
+                          obscureText: true,
+                          radius: 15,
+                          validator: (value) => _loginController.passwordValidate(value),
+                          onSaved: (value) => _operatorEntity.operatorPassword = value?.trim(),
+                          controller: _loginController.passwordField,
+                          label: 'Nova Senha',
+                        ),
+                        SizedBox(height: height * 0.03),
+                        CashHelperTextFieldComponent(
+                          obscureText: true,
+                          radius: 15,
+                          validator: (value) => _loginController.confirmationPasswordValidate(value),
+                          onSaved: (value) => confirmationPassword = value?.trim(),
+                          controller: _loginController.confirmationPasswordField,
+                          label: 'Confirmar Nova Senha',
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: height * 0.4),
-                  const Text(
-                    "Aguarde...",
-                  )
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: height * 0.1),
-                  Text(
-                    "Recuperar Senha",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: surfaceColor),
-                  ),
-                  SizedBox(height: height * 0.1),
-                  Text(
-                    "Digite sua nova senha:",
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 35),
-                    child: Form(
-                      key: _recoveryPasswordFormKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CashHelperTextFieldComponent(
-                            obscureText: true,
-                            radius: 15,
-                            validator: (value) => _loginController.passwordValidate(value),
-                            onSaved: (value) => _operatorEntity.operatorPassword = value?.trim(),
-                            controller: _loginController.passwordField,
-                            label: 'Nova Senha',
-                          ),
-                          SizedBox(height: height * 0.03),
-                          CashHelperTextFieldComponent(
-                            obscureText: true,
-                            radius: 15,
-                            validator: (value) => _loginController.confirmationPasswordValidate(value),
-                            onSaved: (value) => confirmationPassword = value?.trim(),
-                            controller: _loginController.confirmationPasswordField,
-                            label: 'Confirmar Nova Senha',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: height * 0.15),
-                  CashHelperElevatedButton(
-                    onPressed: () async {},
-                    radius: 12,
-                    width: width,
-                    height: 65,
-                    buttonName: 'Próximo',
-                    fontSize: 20,
-                    nameColor: Colors.white,
-                    backgroundColor: tertiaryColor,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(height: height * 0.15),
+                CashHelperElevatedButton(
+                  onPressed: () async {},
+                  radius: 12,
+                  width: width,
+                  height: 65,
+                  buttonName: 'Próximo',
+                  fontSize: 20,
+                  nameColor: Colors.white,
+                  backgroundColor: tertiaryColor,
+                ),
+              ],
             ),
           ),
         ),

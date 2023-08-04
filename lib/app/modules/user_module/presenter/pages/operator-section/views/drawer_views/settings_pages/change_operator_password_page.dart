@@ -3,13 +3,10 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
-import '../../../../../stores/operator_store_states.dart';
 
 class ChangeOperatorPasswordPage extends StatefulWidget {
   ChangeOperatorPasswordPage({super.key, required this.operatorEntity});
@@ -24,10 +21,7 @@ class ChangeOperatorPasswordPage extends StatefulWidget {
 class _ChangeOperatorPasswordPageState
     extends State<ChangeOperatorPasswordPage> {
   final _controller = Modular.get<OperatorController>();
-
   final _changePasswordFormKey = GlobalKey<FormState>();
-
-  final _operatorStore = Modular.get<OperatorStore>();
 
   String? _newPassword = "";
   String? _confirmationPassword = "";
@@ -42,7 +36,6 @@ class _ChangeOperatorPasswordPageState
   bool _passwordVisible = false;
   @override
   void initState() {
-    _operatorStore.restartOperatorSettingsPage();
     super.initState();
   }
 
@@ -53,7 +46,7 @@ class _ChangeOperatorPasswordPageState
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return /* Scaffold(
       appBar: AppBar(),
       body: Container(
         decoration: BoxDecoration(color: backgroundContainer),
@@ -319,6 +312,6 @@ class _ChangeOperatorPasswordPageState
           ),
         ),
       ),
-    );
+    ) */ Container();
   }
 }

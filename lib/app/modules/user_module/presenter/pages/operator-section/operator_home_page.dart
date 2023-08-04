@@ -45,11 +45,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
     final sizeFrame = height <= 800.0;
     return BlocConsumer(
       bloc: _loginController.operatorBloc,
-      listener: (context, state) {
-        if (state is OperatorSignOutState) {
-          Modular.to.navigate(EnterpriseRoutes.initial);
-        }
-      },
+      listener: (context, state) {},
       builder: (_, state) {
         if (state is OperatorLoadingState) {
           return Container(

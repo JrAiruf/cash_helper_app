@@ -3,11 +3,8 @@
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../../../../../../login_module/presenter/components/visibility_icon_component.dart';
 
@@ -24,8 +21,6 @@ class ChangeOperatorEmailPage extends StatefulWidget {
 class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
   final _controller = Modular.get<OperatorController>();
   final _changeEmailFormKey = GlobalKey<FormState>();
-  final _operatorStore = Modular.get<OperatorStore>();
-
   String? _confirmationEmail;
   String? _operatorPassword;
   String? _operatorCode;
@@ -35,7 +30,6 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
   bool _passwordVisible = false;
   @override
   void initState() {
-    _operatorStore.restartOperatorSettingsPage();
     super.initState();
   }
 
@@ -46,7 +40,7 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
     final backgroundContainer = Theme.of(context).colorScheme.onBackground;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return /* Scaffold(
       appBar: AppBar(),
       body: Container(
         decoration: BoxDecoration(color: backgroundContainer),
@@ -278,6 +272,6 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
           ),
         ),
       ),
-    );
+    ) */ Container();
   }
 }

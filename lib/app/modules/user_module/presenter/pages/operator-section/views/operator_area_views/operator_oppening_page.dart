@@ -3,8 +3,6 @@
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/tiles/operator_infortmations_tile.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/stores/operator_store_states.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +26,6 @@ class OperatorOppeningPage extends StatefulWidget {
 }
 
 final operatorController = Modular.get<OperatorController>();
-final operatorStore = Modular.get<OperatorStore>();
 
 class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
   @override

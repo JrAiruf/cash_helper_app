@@ -8,9 +8,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_manager_bloc/create_manager_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_bloc.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_events.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -44,8 +42,6 @@ class LoginController {
   final operatorBloc = Modular.get<OperatorBloc>();
   //
   final dateValue = DateValues();
-  bool loadingLoginData = false;
-  bool loadingAuthData = false;
   bool startWithEnabledOperator = false;
   bool get enabledOperator => startWithEnabledOperator;
   set enabledOperator(bool status) => startWithEnabledOperator = status;
@@ -62,7 +58,6 @@ class LoginController {
   );
   EnterpriseEntity entepriseEntity = EnterpriseEntity();
 
-  final loadingData = ValueNotifier(false);
   final operatorPasswordVisible = ValueNotifier(false);
   final operatorConfirmationPasswordVisible = ValueNotifier(false);
   final managerPasswordVisible = ValueNotifier(false);
@@ -138,25 +133,18 @@ class LoginController {
   }
 
   void login() async {
-    loadingData.value = true;
     managerUser.value ? userEnterpriseBusinessPosition = EnterpriseBusinessPosition.manager : userEnterpriseBusinessPosition = EnterpriseBusinessPosition.cashOperator;
     loginFormKey.currentState?.validate();
     if (loginFormKey.currentState!.validate()) {
       loginFormKey.currentState!.save();
       authBloc.add(LoginEvent(entepriseEntity.enterpriseId!, emailField.text, passwordField.text, userEnterpriseBusinessPosition.position));
-      loadingData.value = false;
       emailField.clear();
       passwordField.clear();
     }
-    loadingData.value = false;
   }
 
-  void managerSignOut() async {
+  void signOut() async {
     authBloc.add(AuthSignOutEvent());
-  }
-
-  void operatorSignOut() async {
-    operatorBloc.add(OperatorSignOutEvent());
   }
 
   onFail(BuildContext context) {

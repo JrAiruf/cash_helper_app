@@ -18,7 +18,6 @@ import '../domain/usecases/delete_operator_account/idelete_operator_account.dart
 import '../domain/usecases/open_operator_cash/open_operator_cash.dart';
 import '../infra/data/operator_repository.dart';
 import '../infra/repository/operator_repository_impl.dart';
-import '../presenter/stores/operator_store.dart';
 
 abstract class AppUserModule {
   static routes() => ModuleRoute(
@@ -78,15 +77,6 @@ class UserModule extends Module {
     Bind<IDeleteOperatorAccount>(
       (i) => DeleteOperatorAccount(
         repository: i(),
-      ),
-    ),
-    Bind<OperatorStore>(
-      (i) => OperatorStore(
-        changeOperatorEmail: i(),
-        changeOperatorPassword: i(),
-        deleteOperatorAccount: i(),
-        openOperatorCash: i(),
-        closeOperatorCash: i(),
       ),
     ),
     Bind.singleton<PaymentMethodsController>(
