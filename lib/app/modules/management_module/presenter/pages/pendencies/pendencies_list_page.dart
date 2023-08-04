@@ -1,32 +1,30 @@
-import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/pendency_occurrance_bloc/pendency_ocurrance_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
-import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/manager_view_button.dart';
-import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_close_page.dart';
-import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
 import '../../../../../../shared/themes/cash_helper_themes.dart';
-import '../../../domain/entities/pendency_entity.dart';
+import '../../../../../routes/app_routes.dart';
+import '../../../../user_module/presenter/components/buttons/manager_view_button.dart';
 
 class PendenciesListPage extends StatefulWidget {
   const PendenciesListPage({required this.managerEntity, super.key});
 
   final ManagerEntity managerEntity;
+
+  @override
   State<PendenciesListPage> createState() => _PendenciesListPageState();
 }
 
 final _managementController = Modular.get<ManagementController>();
-final _loginController = Modular.get<LoginController>();
 
 class _PendenciesListPageState extends State<PendenciesListPage> {
   @override
   void initState() {
     super.initState();
-    _loginController.enterpriseId = Modular.args.params["enterpriseId"];
-    _managementController.getAllAnnotations();
+    _managementController.enterpriseId = Modular.args.params["enterpriseId"];
+    _managementController.getPendencyOcurrances();
   }
 
   @override
@@ -35,9 +33,28 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    return AnimatedBuilder(
-        animation: _managementController.operatorAnnotations,
-        builder: (_, __) {
+    return BlocBuilder(
+      bloc: _managementController.pendencyOcurranceBloc,
+      builder: (_, state) {
+        if (state is PendencyOcurranceLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: appThemes.indicatorColor(context),
+            ),
+          );
+        }
+        if (state is PendencyOcurranceFailureState) {
+          return Expanded(
+              child: Center(
+            child: Text(
+              "Sem pendências no momento.",
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    color: appThemes.surfaceColor(context),
+                  ),
+            ),
+          ));
+        }
+        if (state is PendencyOcurranceSuccessState) {
           return Scaffold(
             appBar: AppBar(),
             body: SingleChildScrollView(
@@ -96,13 +113,12 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10),
                                 child: ListView.builder(
-                                  itemCount: 10,
+                                  itemCount: state.pendencies.length,
                                   itemBuilder: (_, i) {
-                                    /* final pendingOperator = widget.operatorsList.firstWhere((operatorEntity) => operatorEntity.operatorId == widget.operatorsList[i].operatorId);
-                                    final operatorAnnotations = _managementController.operatorAnnotations.value
-                                        .where((annotation) => annotation.annotationCreatorId == pendingOperator.operatorId && !annotation.annotationWithPendency!)
-                                        .toList();
-                                    final operatorPendencies = widget.pendencies.where((pendency) => pendency.operatorId == pendingOperator.operatorId).toList();
+                                    final pendingOperatorsIdList = state.pendencies.map((pendency) => pendency.operatorId).toList();
+                                    final pendingOperator = state.operators.where((operatorEntity) => pendingOperatorsIdList.contains(operatorEntity.operatorId)).toList();
+                                    final operatorPendingAnnotations = state.annotations.where((annotation) => annotation.annotationCreatorId == pendingOperator[i].operatorId).toList();
+                                    final operatorPendencies = state.pendencies.where((pendency) => pendency.operatorId == pendingOperator[i].operatorId).toList();
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 3),
                                       child: Container(
@@ -125,7 +141,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "${pendingOperator.operatorName}",
+                                                    "${pendingOperator[i].operatorName}",
                                                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                                                           color: appThemes.surfaceColor(context),
                                                         ),
@@ -134,7 +150,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                                     backgroundColor: appThemes.surfaceColor(context),
                                                     radius: height * 0.02,
                                                     child: Text(
-                                                      "${pendingOperator.operatorNumber}",
+                                                      "${pendingOperator[i].operatorNumber}",
                                                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                                             color: appThemes.primaryColor(context),
                                                           ),
@@ -155,7 +171,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                                     backgroundColor: appThemes.surfaceColor(context),
                                                     radius: height * 0.02,
                                                     child: Text(
-                                                      "${operatorAnnotations.length}",
+                                                      "${operatorPendingAnnotations.length}",
                                                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                                                             color: appThemes.primaryColor(context),
                                                           ),
@@ -189,10 +205,10 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                                 child: ManagerViewButton(
                                                   text: "Visualizar",
                                                   onPressed: () {
-                                                    Modular.to.pushNamed("${ManagementRoutes.operatorActivityPage}$enterpriseId", arguments: {
+                                                    Modular.to.pushNamed("${ManagementRoutes.operatorActivityPage}${_managementController.enterpriseId}", arguments: {
                                                       "manager": widget.managerEntity,
-                                                      "operator": pendingOperator,
-                                                      "pendencies": operatorPendencies,
+                                                      "operator": pendingOperator[i],
+                                                      "pendingAnnotations": operatorPendingAnnotations,
                                                     });
                                                   },
                                                 ),
@@ -204,8 +220,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                           ),
                                         ),
                                       ),
-                                    ); */
-                                    return Container();
+                                    );
                                   },
                                 ),
                               ),
@@ -219,6 +234,9 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
               ),
             ),
           );
-        });
+        }
+        return Container();
+      },
+    );
   }
 }

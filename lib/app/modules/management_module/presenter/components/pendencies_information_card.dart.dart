@@ -43,7 +43,7 @@ class _PendenciesInformationCardState extends State<PendenciesInformationCard> {
             return Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: LinearProgressIndicator(
                   minHeight: 1,
                   color: appThemes.blueColor(context),

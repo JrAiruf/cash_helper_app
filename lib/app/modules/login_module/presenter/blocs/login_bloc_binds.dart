@@ -5,7 +5,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class LoginBlocBinds {
   static final binds = <Bind>[
-    Bind.lazySingleton<AuthBloc>((i) => AuthBloc(login: i())),
+    Bind.lazySingleton<AuthBloc>((i) => AuthBloc(login: i(), signOut: i())),
     Bind.lazySingleton<CreateManagerBloc>((i) => CreateManagerBloc(registerManager: i())),
     Bind.lazySingleton<CreateOperatorBloc>((i) => CreateOperatorBloc(registerOperator: i())),
   ];

@@ -71,7 +71,7 @@ class ManagementModule extends Module {
     ),
     ChildRoute(
       "/operator-activity-page/:enterpriseId",
-      child: (_, args) => OperatorActivityPage(managerEntity: args.data["manager"], operatorEntity: args.data["operator"], pendencies: args.data["pendencies"]),
+      child: (_, args) => OperatorActivityPage(managerEntity: args.data["manager"], operatorEntity: args.data["operator"], pendingAnnotations: args.data["pendingAnnotations"]),
     ),
   ];
   final bindsList = <Bind>[

@@ -1,4 +1,4 @@
-import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
@@ -10,11 +10,11 @@ import '../../components/cards/operator_pendency_card.dart';
 import '../../components/operator_widgets/cash_number_component.dart';
 
 class OperatorActivityPage extends StatefulWidget {
-  const OperatorActivityPage({super.key, required this.managerEntity, required this.operatorEntity, required this.pendencies});
+  const OperatorActivityPage({super.key, required this.managerEntity, required this.operatorEntity, required this.pendingAnnotations});
 
   final ManagerEntity managerEntity;
   final OperatorEntity operatorEntity;
-  final List<PendencyEntity> pendencies;
+  final List<AnnotationEntity> pendingAnnotations;
   @override
   State<OperatorActivityPage> createState() => _OperatorActivityPageState();
 }
@@ -25,7 +25,6 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
   void initState() {
     super.initState();
     _managementController.enterpriseId = Modular.args.params["enterpriseId"];
-    _managementController.getAllPendingAnnotations();
   }
 
   @override
@@ -34,10 +33,6 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
-    final annotations = _managementController.operatorPendingAnnotations.value.where((annotation) {
-      final pendingAnnotationsIdList = widget.pendencies.map((e) => e.annotationId).toList();
-      return pendingAnnotationsIdList.contains(annotation.annotationId);
-    }).toList();
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -90,10 +85,13 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                               color: appThemes.surfaceColor(context),
                             ),
                       ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
                       Expanded(
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: annotations.length,
+                          itemCount: widget.pendingAnnotations.length,
                           itemBuilder: (_, i) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -101,7 +99,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                                 backgroundColor: appThemes.primaryColor(context),
                                 borderColor: appThemes.surfaceColor(context),
                                 cardWidth: sizeFrame ? width * 0.38 : width * 0.39,
-                                annotation: annotations[i],
+                                annotation: widget.pendingAnnotations[i],
                               ),
                             );
                           },

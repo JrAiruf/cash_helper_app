@@ -113,7 +113,7 @@ class ManagerSectionDrawer extends StatelessWidget {
               ),
               SizedBox(height: itemSpacingHeight * 10),
               TextButton(
-                onPressed:loginController.managerSignOut,
+                onPressed: loginController.managerSignOut,
                 child: Row(
                   children: [
                     Text(

@@ -152,7 +152,7 @@ class LoginController {
   }
 
   void managerSignOut() async {
-    managerBloc.add(ManagerSignOutEvent());
+    authBloc.add(AuthSignOutEvent());
   }
 
   void operatorSignOut() async {

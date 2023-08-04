@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
@@ -46,9 +47,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     return BlocConsumer<ManagerBloc, ManagerStates>(
       bloc: _loginController.managerBloc,
       listener: ((context, state) {
-        if (state is ManagerSignOutState) {
+        /* if (state is ManagerSignOutState) {
           Modular.to.navigate(Modular.initialRoute);
-        }
+        } */
       }),
       builder: (_, state) {
         if (state is ManagerLoadingState) {
@@ -109,10 +110,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       SizedBox(
                         height: height * 0.03,
                       ),
-                      SizedBox(
-                        height: height * 0.18,
-                        child: RecentActivitiesComponent(controller: _managementController)
-                      ),
+                      SizedBox(height: height * 0.18, child: RecentActivitiesComponent(controller: _managementController)),
                       SizedBox(
                         height: height * 0.05,
                       ),

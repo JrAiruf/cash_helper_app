@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/pending_annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_method_events.dart';
@@ -9,17 +8,11 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/pa
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_events.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/pendency_occurrance_bloc/pendency_ocurrance_bloc.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/stores/payment_methods_list_store.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendencies_list_store.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/stores/pendency_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/get_recent_activities_bloc/get_recent_activities_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
-import '../../../annotations_module/presenter/stores/annotations_list_store.dart';
 
 class ManagementController {
   final paymentMethodFormKey = GlobalKey<FormState>();
@@ -41,13 +34,6 @@ class ManagementController {
   final getRecentActivitiesBloc = Modular.get<GetRecentActivitiesBloc>();
   final pendencyOcurranceBloc = Modular.get<PendencyOcurranceBloc>();
 
-//
-  final paymentMethodsListStore = Modular.get<PaymentMethodsListStore>();
-  final managementStore = Modular.get<ManagementStore>();
-  final pendencyStore = Modular.get<PendencyStore>();
-  final pendenciesListStore = Modular.get<PendenciesListStore>();
-  final pendingAnnotationsListStore = Modular.get<PendingAnnotationsListStore>();
-  final annotationsListStore = Modular.get<AnnotationsListStore>();
   ValueNotifier managementCodeVisible = ValueNotifier(true);
   String enterpriseId = "";
   String? managerCode;
@@ -89,52 +75,12 @@ class ManagementController {
     paymentMethodsListBloc.add(GetAllPaymentMethodsEvent(enterpriseId));
   }
 
-  Future<void> getAllPendencies() async {
-    await pendenciesListStore.getAllPendencies(enterpriseId);
-    if (pendencies.value.isNotEmpty) {
-      final operatorIdList = pendencies.value.map((e) => e.operatorId).toList();
-      final pendenciesPeriodList = pendencies.value.map((e) => e.pendencyPeriod).toList();
-      operatorsWithPendencies.value.clear();
-      periodList.value.clear();
-      for (var id in operatorIdList) {
-        if (!operatorsWithPendencies.value.contains(id)) {
-          operatorsWithPendencies.value.add(id!);
-        }
-      }
-      for (var period in pendenciesPeriodList) {
-        if (!periodList.value.contains(period)) {
-          periodList.value.add(period!);
-        }
-      }
-    } else {
-      return;
-    }
-  }
-
   Future<void> getAllRecentActivities() async {
     getRecentActivitiesBloc.add(GetRecentActivitiesEvent(enterpriseId));
   }
 
   Future<void> getPendencyOcurrances() async {
     pendencyOcurranceBloc.add(PendencyOcurranceEvent(enterpriseId));
-  }
-
-  Future<void> getAllAnnotations() async {
-    annotationsListStore.getAllAnnotations(enterpriseId);
-    operatorAnnotations.value.clear();
-    operatorAnnotations.value.addAll(annotationsListStore.value);
-  }
-
-  Future<void> getAllPendingAnnotations() async {
-    pendingAnnotationsListStore.getAllPendingAnnotations(enterpriseId);
-    operatorPendingAnnotations.value.clear();
-    operatorPendingAnnotations.value.addAll(pendingAnnotationsListStore.value);
-  }
-
-  Future<void>? getAnnotationsByOperator(String operatorId) async {
-    final operatorAnnotationsList = annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == operatorId).toList();
-    operatorAnnotations.value.clear();
-    operatorAnnotations.value.addAll(operatorAnnotationsList);
   }
 
   noMatchingCodes(BuildContext context, {required String message}) {
