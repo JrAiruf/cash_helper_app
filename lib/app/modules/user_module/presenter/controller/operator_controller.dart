@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class OperatorController {
   final pendencyStore = Modular.get<PendencyStore>();
   final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
 
+  final dateValue = DateValues();
   final operatorCodeFormKey = GlobalKey<FormState>();
   bool? loadingOperatorSettings;
 
@@ -27,13 +29,11 @@ class OperatorController {
   String? annotationId;
 
   Future<void> openOperatorCash(BuildContext context) async {
+    operatorCodeFormKey.currentState!.validate();
     if (operatorCode == operatorEntity!.operatorCode) {
-      /* await operatorStore.openOperatorCash(
-        enterpriseId ?? "",
-        operatorEntity?.operatorId ?? "",
-        operatorEntity?.operatorOppening ?? "",
-      ); */
-      Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
+      operatorCodeFormKey.currentState!.save();
+      operatorEntity?.operatorOppening = dateValue.operatorOppening;
+      operatorOppeningBloc.add(OperatorOppeningEvent(enterpriseId!, operatorEntity!));
     } else {
       wrongCodeSnackbar(context);
     }

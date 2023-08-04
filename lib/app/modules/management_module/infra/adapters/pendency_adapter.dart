@@ -11,4 +11,5 @@ class PendencyAdapter {
       operatorId: data["operatorId"],
     );
   }
+  
 }

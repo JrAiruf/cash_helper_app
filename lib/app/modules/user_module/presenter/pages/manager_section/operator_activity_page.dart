@@ -33,6 +33,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
+    final filteredList = widget.pendingAnnotations.where((annotation) => annotation.annotationWithPendency!).toList();
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -91,7 +92,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                       Expanded(
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: widget.pendingAnnotations.length,
+                          itemCount: filteredList.length,
                           itemBuilder: (_, i) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -99,7 +100,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                                 backgroundColor: appThemes.primaryColor(context),
                                 borderColor: appThemes.surfaceColor(context),
                                 cardWidth: sizeFrame ? width * 0.38 : width * 0.39,
-                                annotation: widget.pendingAnnotations[i],
+                                annotation: filteredList[i],
                               ),
                             );
                           },

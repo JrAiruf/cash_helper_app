@@ -3,6 +3,7 @@
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/tiles/operator_infortmations_tile.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +48,14 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
     String oppeningTime = operatorController.operatorEntity?.operatorOppening == "Pendente" ? "Pendente" : operatorController.operatorEntity?.operatorOppening ?? "";
     String operatorStatus = operatorController.operatorEntity!.operatorEnabled! ? "Ativo" : "Inativo";
     return BlocConsumer(
-      listener: ((_, state) {}),
+      listener: ((_, state) {
+        if (state is OperatorOppeningSuccessState) {
+          Modular.to.navigate(
+            "${UserRoutes.operatorHomePage}${operatorController.enterpriseId}",
+            arguments: widget.operatorEntity,
+          );
+        }
+      }),
       bloc: operatorController.operatorOppeningBloc,
       builder: (_, state) {
         if (state is OperatorOppeningLoadingState) {
@@ -164,16 +172,7 @@ class _OperatorOppeningPageState extends State<OperatorOppeningPage> {
                               ),
                             ),
                             CashHelperElevatedButton(
-                              onPressed: () {
-                                operatorController.operatorCodeFormKey.currentState!.validate();
-                                if (operatorController.operatorCodeFormKey.currentState!.validate()) {
-                                  operatorController.operatorCodeFormKey.currentState!.save();
-                                  operatorController.operatorEntity?.operatorOppening = dateValue.operatorOppening;
-                                  operatorController.openOperatorCash(context);
-                                } else {
-                                  operatorController.wrongCodeSnackbar(context);
-                                }
-                              },
+                              onPressed: () => operatorController.openOperatorCash(context),
                               border: true,
                               radius: 12,
                               width: width * 0.7,
