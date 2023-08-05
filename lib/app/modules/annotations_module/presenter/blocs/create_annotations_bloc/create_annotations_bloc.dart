@@ -1,6 +1,6 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/usecases/create_annotation/icreate_new_annotation.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/create_annotations_bloc/create_annotations_events.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/create_annotations_bloc/create_annotations_states.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/create_annotations_bloc/create_annotations_events.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/create_annotations_bloc/create_annotations_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateAnnotationsBloc extends Bloc<AnnotationsEvents, CreateAnnotationsStates> {

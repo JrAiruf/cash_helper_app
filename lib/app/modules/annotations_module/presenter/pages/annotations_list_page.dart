@@ -1,13 +1,15 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/bloc/get_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/views/finished_annotations.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/views/not_finished_annotations.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../shared/themes/cash_helper_themes.dart';
@@ -22,14 +24,14 @@ class AnnotationsListPage extends StatefulWidget {
 }
 
 final _annotationsController = Modular.get<AnnotationsController>();
-final _annotationsListStore = Modular.get<AnnotationsListStore>();
 
 class _AnnotationsListPageState extends State<AnnotationsListPage> {
+  final annotationsList = <AnnotationEntity>[];
   @override
   void initState() {
     super.initState();
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
-    _annotationsListStore.getAllAnnotations(_annotationsController.enterpriseId);
+    _annotationsController.getAllAnnotations();
     _annotationsController.position = BottomNavigationBarPosition.notFinishedAnnotations;
   }
 
@@ -37,6 +39,7 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
   Widget build(BuildContext context) {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     return Scaffold(
       appBar: AppBar(
@@ -47,43 +50,62 @@ class _AnnotationsListPageState extends State<AnnotationsListPage> {
           ),
         ),
       ),
-      body: AnimatedBuilder(
-        animation: _annotationsListStore,
-        builder: (context, _) {
-          final annotations = _annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId && annotation.annotationConcluied == false).toList();
-          final finishedAnnotations =
-              _annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId && annotation.annotationConcluied == true).toList();
-          if (_annotationsListStore.value.isEmpty) {
-            return Center(
-              child: Text(
-                "Nenhuma Anotação Localizada",
-                style: Theme.of(context).textTheme.displayMedium,
-              ),
-            );
-          }
-          return PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _annotationsController.annotationsListPageController,
-            children: [
-              NotFinishedAnnotations(
-                  operatorEntity: widget.operatorEntity,
-                  annotations: annotations,
-                  controller: _annotationsController.annotationsListPageController,
-                  position: BottomNavigationBarPosition.notFinishedAnnotations,
-                  enterpriseId: _annotationsController.enterpriseId),
-              FinishedAnnotations(
-                  operatorEntity: widget.operatorEntity,
-                  annotations: finishedAnnotations,
-                  controller: _annotationsController.annotationsListPageController,
-                  position: BottomNavigationBarPosition.finishedAnnotations,
-                  enterpriseId: _annotationsController.enterpriseId),
-            ],
-          );
-        },
+      body: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          color: appTheme.primaryColor(context),
+        ),
+        child: BlocBuilder(
+          bloc: _annotationsController.getAnnotationsBloc,
+          builder: (_, state) {
+            if (state is GetAnnotationsLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: appTheme.indicatorColor(context),
+                ),
+              );
+            }
+            if (state is GetAnnotationsFailureState) {
+              return Center(
+                child: Text(
+                  state.error,
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+              );
+            }
+            if (state is GetAnnotationsSuccessState) {
+              final annotations = state.annotations.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId && annotation.annotationConcluied == false).toList();
+              final finishedAnnotations =
+                  state.annotations.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId && annotation.annotationConcluied == true).toList();
+              annotationsList.clear();
+              annotationsList.addAll(annotations);
+              return PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: _annotationsController.annotationsListPageController,
+                children: [
+                  NotFinishedAnnotations(
+                      operatorEntity: widget.operatorEntity,
+                      annotations: annotations,
+                      controller: _annotationsController.annotationsListPageController,
+                      position: BottomNavigationBarPosition.notFinishedAnnotations,
+                      enterpriseId: _annotationsController.enterpriseId),
+                  FinishedAnnotations(
+                      operatorEntity: widget.operatorEntity,
+                      annotations: finishedAnnotations,
+                      controller: _annotationsController.annotationsListPageController,
+                      position: BottomNavigationBarPosition.finishedAnnotations,
+                      enterpriseId: _annotationsController.enterpriseId),
+                ],
+              );
+            }
+            return Container();
+          },
+        ),
       ),
       bottomNavigationBar: Container(
         height: sizeFrame ? height * 0.07 : height * 0.065,
-        decoration: BoxDecoration(color: _annotationsListStore.value.isNotEmpty ? appTheme.backgroundColor(context) : appTheme.primaryColor(context)),
+        decoration: BoxDecoration(color: annotationsList.isNotEmpty ? appTheme.backgroundColor(context) : appTheme.primaryColor(context)),
         child: CashHelperBottomNavigationBar(
           radius: 20,
           backgroundColor: appTheme.primaryColor(context),

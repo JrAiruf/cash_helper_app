@@ -22,14 +22,14 @@ class OperatorArea extends StatefulWidget {
 }
 
 final _annotationsController = Modular.get<AnnotationsController>();
-final _enterpriseId = Modular.args.params["enterpriseId"];
 final _operatorPageController = PageController();
 
 class _OperatorArea extends State<OperatorArea> {
   @override
   void initState() {
     super.initState();
-    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId);
+    _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
+    _annotationsController.getAllAnnotations();
   }
 
   @override
@@ -38,12 +38,11 @@ class _OperatorArea extends State<OperatorArea> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final appThemes = CashHelperThemes();
-    final annotations = _annotationsController.annotationsListStore.value;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_sharp),
-          onPressed: () => Modular.to.navigate("${UserRoutes.operatorHomePage}$_enterpriseId", arguments: widget.operatorEntity),
+          onPressed: () => Modular.to.navigate("${UserRoutes.operatorHomePage}${_annotationsController.enterpriseId}", arguments: widget.operatorEntity),
         ),
       ),
       body: Container(
@@ -60,20 +59,20 @@ class _OperatorArea extends State<OperatorArea> {
               operatorEntity: widget.operatorEntity,
               pageController: _operatorPageController,
               position: BottomNavigationBarPosition.operatorHome,
-              annotations: annotations,
-              enterpriseId: _enterpriseId,
+              annotations: const [],
+              enterpriseId: _annotationsController.enterpriseId,
             ),
             OperatorOptionsPage(
               position: BottomNavigationBarPosition.operatorOptions,
               pageController: _operatorPageController,
               operatorEntity: widget.operatorEntity,
-              enterpriseId: _enterpriseId,
+              enterpriseId: _annotationsController.enterpriseId,
             ),
             OperatorOppeningPage(
               operatorEntity: widget.operatorEntity,
               position: BottomNavigationBarPosition.operatorOppening,
               pageController: _operatorPageController,
-              enterpriseId: _enterpriseId,
+              enterpriseId: _annotationsController.enterpriseId,
             )
           ],
         ),

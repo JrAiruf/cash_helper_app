@@ -1,11 +1,7 @@
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-
-import '../../../../routes/app_routes.dart';
-import '../../../annotations_module/presenter/stores/annotations_store.dart';
 import '../../../management_module/presenter/stores/pendency_store.dart';
 import '../blocs/operator_oppening_bloc/operator_oppening_bloc.dart';
 
@@ -13,9 +9,6 @@ class OperatorController {
   final emailField = TextEditingController();
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
-
-  final annotationsListStore = Modular.get<AnnotationsListStore>();
-  final annotationStore = Modular.get<AnnotationStore>();
   final pendencyStore = Modular.get<PendencyStore>();
   final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
 
@@ -40,8 +33,6 @@ class OperatorController {
   }
 
   Future<void> closeOperatorCash(BuildContext context, Color color) async {
-    final unfinishedAnnotations = annotationsListStore.value.where((annotation) => annotation.annotationConcluied == false && annotation.annotationCreatorId == operatorEntity?.operatorId).toList();
-    final finishedAnnotations = annotationsListStore.value.where((annotation) => annotation.annotationConcluied == true && annotation.annotationCreatorId == operatorEntity?.operatorId).toList();
     /* cashClosingDialog(context, color, () async {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();

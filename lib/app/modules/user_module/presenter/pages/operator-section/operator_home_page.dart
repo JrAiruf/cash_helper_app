@@ -7,6 +7,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/operator_home_annotations_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_close_page.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -30,10 +31,10 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   final _annotationsController = Modular.get<AnnotationsController>();
   final _operatorController = Modular.get<OperatorController>();
   DrawerPagePosition? drawerPosition;
-  final _enterpriseId = Modular.args.params["enterpriseId"];
   @override
   void initState() {
-    _annotationsController.annotationsListStore.getAllAnnotations(_enterpriseId);
+    _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
+    _annotationsController.getAllAnnotations();
     super.initState();
   }
 
@@ -67,7 +68,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
               width: width * 0.75,
               pagePosition: DrawerPagePosition.home,
               operator: currentOperator,
-              enterpriseId: _enterpriseId,
+              enterpriseId: _annotationsController.enterpriseId,
             ),
             body: Stack(
               children: [
@@ -92,34 +93,9 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           height: height * 0.2,
-                          child: ValueListenableBuilder(
-                            valueListenable: _annotationsController.annotationsListStore,
-                            builder: ((context, annotationListState, child) {
-                              if (annotationListState.isEmpty) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: appThemes.primaryColor(context),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Nenhuma anotação encontrada",
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                            color: appThemes.surfaceColor(context),
-                                          ),
-                                    ),
-                                  ),
-                                );
-                              } else if (annotationListState.isNotEmpty) {
-                                final annotations =
-                                    annotationListState.where((annotation) => annotation.annotationCreatorId == currentOperator.operatorId && !annotation.annotationWithPendency!).toList();
-                                return AnnotationInfoListViewComponent(
-                                  annotations: annotations,
-                                );
-                              } else {
-                                return Container();
-                              }
-                            }),
+                          child: OperatorHomeAnnotationsComponent(
+                            enterpriseId: _annotationsController.enterpriseId,
+                            operatorEntity: currentOperator,
                           ),
                         ),
                       ),
@@ -158,9 +134,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                     ),
                                   ],
                                   onPressed: () {
-                                    _annotationsController.annotationsListStore.value.isEmpty
-                                        ? _operatorController.noAnnotationSnackbar(context)
-                                        : Modular.to.navigate("${AnnotationRoutes.annotationsListPage}$_enterpriseId", arguments: currentOperator);
+                                    Modular.to.navigate("${AnnotationRoutes.annotationsListPage}${_annotationsController.enterpriseId}", arguments: currentOperator);
                                   },
                                 ),
                                 QuickAccessButton(
@@ -183,7 +157,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                                   ],
                                   onPressed: () {
                                     currentOperator.operatorEnabled!
-                                        ? Modular.to.navigate("${AnnotationRoutes.createAnnotationPage}$_enterpriseId", arguments: currentOperator)
+                                        ? Modular.to.navigate("${AnnotationRoutes.createAnnotationPage}${_annotationsController.enterpriseId}", arguments: currentOperator)
                                         : operatorController.operatorDisabledSnackbar(context);
                                   },
                                 ),
@@ -201,7 +175,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
                           height: 50,
                           width: width * 0.7,
                           radius: 12,
-                          onPressed: () => Modular.to.navigate("${UserRoutes.operatorArea}$_enterpriseId", arguments: currentOperator),
+                          onPressed: () => Modular.to.navigate("${UserRoutes.operatorArea}${_annotationsController.enterpriseId}", arguments: currentOperator),
                           buttonName: "Área do operador",
                           backgroundColor: appThemes.greenColor(context),
                           fontSize: 16,

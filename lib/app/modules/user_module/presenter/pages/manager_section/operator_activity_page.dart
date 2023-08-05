@@ -98,8 +98,10 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                               padding: const EdgeInsets.symmetric(horizontal: 4),
                               child: OperatorPendencyCard(
                                 backgroundColor: appThemes.primaryColor(context),
+                                enterpriseId: _managementController.enterpriseId,
                                 borderColor: appThemes.surfaceColor(context),
                                 cardWidth: sizeFrame ? width * 0.37 : width * 0.38,
+                                operatorEntity: widget.operatorEntity,
                                 annotation: filteredList[i],
                               ),
                             );

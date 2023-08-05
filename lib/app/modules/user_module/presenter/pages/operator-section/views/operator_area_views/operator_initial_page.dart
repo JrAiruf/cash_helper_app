@@ -147,14 +147,14 @@ class _OperatorInitialtate extends State<OperatorInitialPage> {
                         scrollDirection: Axis.horizontal,
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
-                          AnnoationsListViewComponent(
+                          AnnotationsListViewComponent(
                               borderColor: appThemes.surfaceColor(context),
                               seccundaryColor: appThemes.surfaceColor(context),
                               backgroundColor: appThemes.primaryColor(context),
-                              itemWidth: sizeFrame ? width * 0.33 : width * 0.4,
+                              itemWidth: sizeFrame ? width * 0.39 : width * 0.4,
                               itemHeight: sizeFrame ? height * 0.025 : height * 0.033,
                               annotations: finishedAnnotations),
-                          AnnoationsListViewComponent(
+                          AnnotationsListViewComponent(
                               borderColor: appThemes.surfaceColor(context),
                               seccundaryColor: appThemes.surfaceColor(context),
                               backgroundColor: appThemes.primaryColor(context),

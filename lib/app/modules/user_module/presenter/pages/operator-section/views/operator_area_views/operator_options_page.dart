@@ -1,6 +1,5 @@
 // ignore_for_file: unused_local_variable
-
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/options_page_menu_component.dart';
@@ -25,7 +24,6 @@ class OperatorOptionsPage extends StatefulWidget {
 
 class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
   final _operatorController = Modular.get<OperatorController>();
-  final _annotationsListStore = Modular.get<AnnotationsListStore>();
   @override
   void initState() {
     super.initState();
@@ -76,7 +74,7 @@ class _OperatorOptionsPageState extends State<OperatorOptionsPage> {
                       height: height * 0.11,
                       width: width * 0.4,
                       onTap: () {
-                        _annotationsListStore.value.isEmpty
+                        <AnnotationEntity>[].isEmpty
                             ? _operatorController.noAnnotationSnackbar(context)
                             : Modular.to.pushNamed("${AnnotationRoutes.annotationsListPage}${operatorController.enterpriseId}", arguments: operatorController.operatorEntity);
                       },

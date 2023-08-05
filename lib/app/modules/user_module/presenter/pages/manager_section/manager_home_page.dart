@@ -1,4 +1,3 @@
-import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../blocs/get_recent_activities_bloc/get_recent_activities_bloc.dart';
 import '../../components/buttons/quick_access_button.dart';
 import '../../components/widgets/manager_section_drawer.dart';
 
@@ -46,11 +44,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     final appThemes = CashHelperThemes();
     return BlocConsumer<ManagerBloc, ManagerStates>(
       bloc: _loginController.managerBloc,
-      listener: ((context, state) {
-        /* if (state is ManagerSignOutState) {
-          Modular.to.navigate(Modular.initialRoute);
-        } */
-      }),
+      listener: (context, state) {},
       builder: (_, state) {
         if (state is ManagerLoadingState) {
           return Container(

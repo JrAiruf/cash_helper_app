@@ -11,13 +11,7 @@ import '../../../../user_module/domain/entities/operator_entity.dart';
 import '../../components/annotation_list_tile.dart';
 
 class FinishedAnnotations extends StatelessWidget {
-  FinishedAnnotations(
-      {super.key,
-      required this.operatorEntity,
-      required this.annotations,
-      required this.controller,
-      required this.position,
-      required this.enterpriseId});
+  FinishedAnnotations({super.key, required this.operatorEntity, required this.annotations, required this.controller, required this.position, required this.enterpriseId});
   OperatorEntity operatorEntity;
   List<AnnotationEntity> annotations;
   BottomNavigationBarPosition position;
@@ -28,6 +22,7 @@ class FinishedAnnotations extends StatelessWidget {
     final appTheme = CashHelperThemes();
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final sizeFrame = height <= 800.0;
     return annotations.isEmpty
         ? Container(
             decoration: BoxDecoration(
@@ -52,7 +47,7 @@ class FinishedAnnotations extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 Positioned(
-                  top: height * 0.05,
+                  top: sizeFrame ? height * 0.065 : height * 0.05,
                   child: Center(
                     child: Text(
                       "Finalizadas",
@@ -63,7 +58,7 @@ class FinishedAnnotations extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  height: height * 0.7,
+                  height: height * 0.65,
                   width: width,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(

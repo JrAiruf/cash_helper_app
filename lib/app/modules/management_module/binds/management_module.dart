@@ -10,6 +10,7 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/ma
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods/payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods/payment_methods_page.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/pages/pendencies/finish_pendency_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/pendencies/pendencies_list_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/pages/payment_methods/remove_payment_method_page.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/stores/management_store.dart';
@@ -68,6 +69,10 @@ class ManagementModule extends Module {
     ChildRoute(
       "/pendencies-list-page/:enterpriseId",
       child: (_, args) => PendenciesListPage(managerEntity: args.data),
+    ),
+    ChildRoute(
+      "/finish-pendency-page/:enterpriseId",
+      child: (_, args) => FinishPendencyPage(operatorEntity: args.data["operator"],annotation: args.data["annotation"]),
     ),
     ChildRoute(
       "/operator-activity-page/:enterpriseId",

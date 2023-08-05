@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/create_annotations_bloc/create_annotations_bloc.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/create_annotations_bloc/create_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +9,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../../shared/themes/cash_helper_themes.dart';
 import '../../../user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
-import '../blocs/annotations_bloc/create_annotations_bloc/create_annotations_events.dart';
+import '../blocs/bloc/get_annotations_bloc.dart';
+import '../blocs/create_annotations_bloc/create_annotations_events.dart';
 import '../date_values/date_values.dart';
-import '../stores/annotations_list_store.dart';
-import '../stores/annotations_store.dart';
 
 class AnnotationsController {
   final annotationAddressField = TextEditingController();
@@ -20,9 +19,8 @@ class AnnotationsController {
   final annotationPaymentMethodField = TextEditingController();
   final annotationSaleTimeField = TextEditingController();
   final dateValue = DateValues();
-  final _annotationsStore = Modular.get<AnnotationStore>();
   final createAnnotationsBloc = Modular.get<CreateAnnotationsBloc>();
-  final annotationsListStore = Modular.get<AnnotationsListStore>();
+  final getAnnotationsBloc = Modular.get<GetAnnotationsBloc>();
   final annotationsPageController = PageController();
   final annotationsListPageController = PageController();
   final appTheme = CashHelperThemes();
@@ -75,29 +73,13 @@ class AnnotationsController {
   }
 
   Future<void> getAllAnnotations() async {
-    annotationsList = annotationsListStore.value;
+    getAnnotationsBloc.add(GetAnnotationsEvent(enterpriseId));
   }
 
   Future<void> finishAnnotation(BuildContext context, OperatorEntity operatorEntity) async {
-    await _annotationsStore.finishAnnotation(enterpriseId, operatorEntity.operatorId!, annotationId);
-    annotationLoadingState.value = false;
-    annotationFinished(context);
-    Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
   }
 
-  Future<void> deleteAnnotation(BuildContext context, OperatorEntity operatorEntity) async {
-    showRemoveDialog(
-      context,
-      appTheme.backgroundColor(context),
-      () async {
-        await _annotationsStore.deleteAnnotation(enterpriseId, operatorEntity.operatorId!, annotationId);
-        annotationLoadingState.value = false;
-        annotationDeleted(context);
-        Modular.to.pop();
-        Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
-      },
-    );
-  }
+  Future<void> deleteAnnotation(BuildContext context, OperatorEntity operatorEntity) async {}
 
   annotationFinished(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(

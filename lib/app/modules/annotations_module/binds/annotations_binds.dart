@@ -5,12 +5,9 @@ import 'package:cash_helper_app/app/modules/annotations_module/external/annotati
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/data/annotation_repository.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/infra/repository/annotation_repository_impl.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc/annotations_bloc_binds.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/annotations_bloc_binds.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_list_store.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/annotations_store.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/stores/pending_annotations_list_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 import '../domain/usecases/create_annotation/create_new_annotation.dart';
@@ -105,28 +102,8 @@ class AnnotationModule extends Module {
         repository: i(),
       ),
     ),
-    Bind<AnnotationsListStore>(
-      (i) => AnnotationsListStore(
-        getAllAnnotations: i(),
-        searchAnnotationsByClientAddress: i(),
-      ),
-    ),
-    Bind<PendingAnnotationsListStore>(
-      (i) => PendingAnnotationsListStore(
-        getAllPendingAnnotations: i(),
-      ),
-    ),
     Bind<AnnotationsController>(
       (i) => AnnotationsController(),
-    ),
-    Bind<AnnotationStore>(
-      (i) => AnnotationStore(
-        createNewAnnotation: i(),
-        getAnnotationById: i(),
-        updateAnnotation: i(),
-        finishAnnotation: i(),
-        deleteAnnotation: i(),
-      ),
     ),
     ...AnnotationsBlocBinds.binds,
   ];

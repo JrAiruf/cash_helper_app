@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cards/close_page_informations_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
@@ -18,8 +19,6 @@ class OperatorClosePage extends StatefulWidget {
   @override
   State<OperatorClosePage> createState() => _OperatorClosePageState();
 }
-
-final enterpriseId = Modular.args.params["enterpriseId"];
 final operatorController = Modular.get<OperatorController>();
 final dateValues = DateValues();
 
@@ -27,10 +26,7 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
   @override
   void initState() {
     super.initState();
-    operatorController.annotationsListStore.getAllAnnotations(
-      enterpriseId,
-    );
-    operatorController.enterpriseId = enterpriseId;
+    operatorController.enterpriseId = Modular.args.params["enterpriseId"];
     operatorController.operatorEntity = widget.operatorEntity;
     operatorController.operatorEntity?.operatorClosing = dateValues.operatorClosing;
   }
@@ -43,13 +39,13 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
     final appThemes = CashHelperThemes();
     String oppeningTime = operatorController.operatorEntity?.operatorOppening == "Pendente" ? "Pendente" : operatorController.operatorEntity?.operatorOppening ?? "";
     String operatorStatus = operatorController.operatorEntity!.operatorEnabled! ? "Ativo" : "Inativo";
-    final annotations = operatorController.annotationsListStore.value.where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId).toList();
+    final annotations = <AnnotationEntity>[].where((annotation) => annotation.annotationCreatorId == widget.operatorEntity.operatorId).toList();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_sharp),
           onPressed: () => Modular.to.navigate(
-            "${UserRoutes.operatorHomePage}$enterpriseId",
+            "${UserRoutes.operatorHomePage}${operatorController.enterpriseId}",
             arguments: operatorController.operatorEntity!,
           ),
         ),
