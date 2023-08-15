@@ -1,15 +1,16 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/annotation_page.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/manager_view_button.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../../../domain/entities/manager_entity.dart';
 import '../../../domain/entities/operator_entity.dart';
 
 class OperatorPendencyCard extends StatelessWidget {
   const OperatorPendencyCard({
+    required this.managerEntity,
     required this.operatorEntity,
     required this.annotation,
     super.key,
@@ -20,6 +21,7 @@ class OperatorPendencyCard extends StatelessWidget {
     this.cardWidth,
   });
 
+  final ManagerEntity managerEntity;
   final OperatorEntity operatorEntity;
   final AnnotationEntity annotation;
   final Color? backgroundColor;

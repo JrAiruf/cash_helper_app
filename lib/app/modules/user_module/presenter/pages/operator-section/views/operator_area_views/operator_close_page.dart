@@ -161,6 +161,7 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                               operatorController.closeOperatorCash(
                                 context,
                                 appThemes.purpleColor(context),
+                                annotations,
                               );
                             },
                             buttonName: "Fechar Caixa",

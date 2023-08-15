@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_string_interpolations, must_be_immutable
 
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/bloc/get_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/cash_helper_bottom_navigation_bar.dart';
@@ -8,6 +9,7 @@ import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/pages/operator-section/views/operator_area_views/operator_options_page.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../components/cash_helper_bottom_navigation_item.dart';
@@ -51,30 +53,42 @@ class _OperatorArea extends State<OperatorArea> {
         decoration: BoxDecoration(
           color: appThemes.backgroundColor(context),
         ),
-        child: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _operatorPageController,
-          children: [
-            OperatorInitialPage(
-              operatorEntity: widget.operatorEntity,
-              pageController: _operatorPageController,
-              position: BottomNavigationBarPosition.operatorHome,
-              annotations: const [],
-              enterpriseId: _annotationsController.enterpriseId,
-            ),
-            OperatorOptionsPage(
-              position: BottomNavigationBarPosition.operatorOptions,
-              pageController: _operatorPageController,
-              operatorEntity: widget.operatorEntity,
-              enterpriseId: _annotationsController.enterpriseId,
-            ),
-            OperatorOppeningPage(
-              operatorEntity: widget.operatorEntity,
-              position: BottomNavigationBarPosition.operatorOppening,
-              pageController: _operatorPageController,
-              enterpriseId: _annotationsController.enterpriseId,
-            )
-          ],
+        child: BlocBuilder<GetAnnotationsBloc, GetAnnotationsStates>(
+          bloc: _annotationsController.getAnnotationsBloc,
+          builder: (context, state) {
+            return PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _operatorPageController,
+              children: [
+                if (state is GetAnnotationsLoadingState)
+                  Center(
+                    child: CircularProgressIndicator(
+                      color: appThemes.indicatorColor(context),
+                    ),
+                  ),
+                if (state is GetAnnotationsSuccessState)
+                  OperatorInitialPage(
+                    operatorEntity: widget.operatorEntity,
+                    pageController: _operatorPageController,
+                    position: BottomNavigationBarPosition.operatorHome,
+                    annotations: state.annotations,
+                    enterpriseId: _annotationsController.enterpriseId,
+                  ),
+                OperatorOptionsPage(
+                  position: BottomNavigationBarPosition.operatorOptions,
+                  pageController: _operatorPageController,
+                  operatorEntity: widget.operatorEntity,
+                  enterpriseId: _annotationsController.enterpriseId,
+                ),
+                OperatorOppeningPage(
+                  operatorEntity: widget.operatorEntity,
+                  position: BottomNavigationBarPosition.operatorOppening,
+                  pageController: _operatorPageController,
+                  enterpriseId: _annotationsController.enterpriseId,
+                )
+              ],
+            );
+          },
         ),
       ),
       bottomNavigationBar: Container(

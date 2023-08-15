@@ -101,6 +101,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                                 enterpriseId: _managementController.enterpriseId,
                                 borderColor: appThemes.surfaceColor(context),
                                 cardWidth: sizeFrame ? width * 0.37 : width * 0.38,
+                                managerEntity: widget.managerEntity,
                                 operatorEntity: widget.operatorEntity,
                                 annotation: filteredList[i],
                               ),

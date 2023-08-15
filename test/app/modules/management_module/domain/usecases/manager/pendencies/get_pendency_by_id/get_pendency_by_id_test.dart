@@ -9,7 +9,7 @@ class GetPendencyByIdMock implements IGetPendencyById {
 
   @override
   Future<PendencyEntity> call(String enterpriseId, String pendencyId) async {
-    throw UnimplementedError();
+    return await _repository.getPendencyById(enterpriseId, pendencyId);
   }
 }
 

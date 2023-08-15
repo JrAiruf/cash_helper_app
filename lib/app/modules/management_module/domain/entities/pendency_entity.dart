@@ -4,14 +4,16 @@ class PendencyEntity {
   String? pendencySaleTime;
   String? pendencySaleDate;
   String? annotationId;
+  bool? pendencyFinished;
   String? pendencyPeriod;
   String? operatorId;
-  
+
   PendencyEntity({
     this.pendencyId,
-    this.annotationId,
     this.pendencySaleTime,
     this.pendencySaleDate,
+    this.annotationId,
+    this.pendencyFinished,
     this.pendencyPeriod,
     this.operatorId,
   });

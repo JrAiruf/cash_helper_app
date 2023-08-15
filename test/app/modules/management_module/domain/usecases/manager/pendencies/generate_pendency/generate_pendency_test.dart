@@ -4,7 +4,7 @@ import 'package:cash_helper_app/app/modules/management_module/infra/data/managem
 import 'package:cash_helper_app/app/utils/tests/pendency_test_objects/pendency_test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import '../../../../../../mocks/mocks.dart';
+import '../../../../../../../mocks/mocks.dart';
 
 class GeneratePendencyMock implements IGeneratePendency {
   GeneratePendencyMock({required ManagementRepository repository}) : _repository = repository;

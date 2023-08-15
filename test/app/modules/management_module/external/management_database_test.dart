@@ -141,9 +141,16 @@ class ManagementDBMock implements ApplicationManagementDatabase {
     }
   }
 
+
   @override
-  Future<List<Map<String, dynamic>>>? getGeneralAnnotations(String enterpriseId) async {
-    // TODO: implement getGeneralAnnotations
+  Future? finishPendency(String enterpriseId, String pendencyId) {
+    // TODO: implement finishPendency
+    throw UnimplementedError();
+  }
+
+  @override
+  Future? getPendencyById(String enterpriseId, String pendencyId) {
+    // TODO: implement getPendencyById
     throw UnimplementedError();
   }
 

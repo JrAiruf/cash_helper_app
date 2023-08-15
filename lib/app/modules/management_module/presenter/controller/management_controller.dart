@@ -3,6 +3,7 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/finish_pedency_bloc/finish_pendency_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_method_events.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_methods_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/pe
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/get_recent_activities_bloc/get_recent_activities_bloc.dart';
+import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -33,9 +35,11 @@ class ManagementController {
   final paymentMethodsListBloc = Modular.get<PaymentMethodsListBloc>();
   final getRecentActivitiesBloc = Modular.get<GetRecentActivitiesBloc>();
   final pendencyOcurranceBloc = Modular.get<PendencyOcurranceBloc>();
+  final finishPendencyBloc = Modular.get<FinishPendencyBloc>();
 
   ValueNotifier managementCodeVisible = ValueNotifier(true);
   String enterpriseId = "";
+  String pendencyId = "";
   String? managerCode;
   ManagerEntity? manager;
   final newPaymentMethod = PaymentMethodEntity();
@@ -71,6 +75,14 @@ class ManagementController {
     }
   }
 
+  void finishPedency(BuildContext context) {
+    if (managerCode == manager!.managerCode) {
+      finishPendencyBloc.add(FinishPendencyEvent(enterpriseId, pendencyId));
+    } else {
+      noMatchingCodes(context, message: "Código inválido! Digite seu códio Ops");
+    }
+  }
+
   void getAllPaymentMethods() {
     paymentMethodsListBloc.add(GetAllPaymentMethodsEvent(enterpriseId));
   }
@@ -93,6 +105,41 @@ class ManagementController {
           ),
         ),
         backgroundColor: Colors.redAccent,
+        elevation: 5,
+        duration: const Duration(seconds: 5),
+        content: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                message,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const Icon(
+                Icons.warning_rounded,
+                size: 35,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  finishedPendencies(BuildContext context, {required String message}) {
+    final appThemes = CashHelperThemes();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: appThemes.blueColor(context),
         elevation: 5,
         duration: const Duration(seconds: 5),
         content: SizedBox(

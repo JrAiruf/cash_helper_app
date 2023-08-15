@@ -96,8 +96,21 @@ class ManagementRepositoryImpl implements ManagementRepository {
   }
 
   @override
-  Future? getGeneralAnnotations(String enterpriseId) {
-    // TODO: implement getGeneralAnnotations
-    throw UnimplementedError();
+  Future<void>? finishPendency(String? enterpriseId, String? pendencyId) async {
+    try {
+      await _database.finishPendency(enterpriseId!, pendencyId!);
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<PendencyEntity>? getPendencyById(String? enterpriseId, String? pendencyId) async {
+    try {
+      final pendencyMap = await _database.getPendencyById(enterpriseId!, pendencyId!);
+      return PendencyAdapter.fromMap(pendencyMap ?? {});
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
   }
 }

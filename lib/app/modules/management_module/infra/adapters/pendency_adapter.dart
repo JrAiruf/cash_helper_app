@@ -7,6 +7,7 @@ class PendencyAdapter {
       annotationId: data["annotationId"],
       pendencySaleTime: data["pendencySaleTime"],
       pendencySaleDate: data["pendencySaleDate"],
+      pendencyFinished: data["pendencyFinished"],
       pendencyPeriod: data["pendencyPeriod"],
       operatorId: data["operatorId"],
     );

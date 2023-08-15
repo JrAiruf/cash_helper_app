@@ -112,18 +112,6 @@ class ManagementDatabase implements ApplicationManagementDatabase {
     }
   }
 
-  String _getPendencyPeriod(String annotationSaleTime) {
-    final annotationPeriod = annotationSaleTime.split(":").first;
-    final timeValue = int.tryParse(annotationPeriod) ?? 0;
-    if (timeValue >= 18) {
-      return "Noite";
-    } else if (timeValue >= 12 && timeValue < 18) {
-      return "Tarde";
-    } else {
-      return "Manhã";
-    }
-  }
-
   @override
   Future<List<Map<String, dynamic>>?>? getAllPendencies(String? enterpriseId) async {
     try {
@@ -140,8 +128,34 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
 
   @override
-  Future? getGeneralAnnotations(String enterpriseId) {
-    // TODO: implement getGeneralAnnotations
-    throw UnimplementedError();
+  Future<void>? finishPendency(String enterpriseId, String pendencyId) async {
+    try {
+      await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").doc(pendencyId).update({"pendencyFinished": true});
+    } on FirebaseException catch (e) {
+      throw PendencyError(errorMessage: e.message ?? "");
+    }
+  }
+
+  @override
+  Future<Map<String,dynamic>>? getPendencyById(String enterpriseId, String pendencyId) async {
+    try {
+      final pendenciesCollection = await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").get();
+      final selectedPendency = pendenciesCollection.docs.firstWhere((pendency) => pendency["pendencyId"] == pendencyId).data();
+      return selectedPendency;
+    } on FirebaseException catch (e) {
+      throw PendencyError(errorMessage: e.message ?? "");
+    }
+  }
+
+  String _getPendencyPeriod(String annotationSaleTime) {
+    final annotationPeriod = annotationSaleTime.split(":").first;
+    final timeValue = int.tryParse(annotationPeriod) ?? 0;
+    if (timeValue >= 18) {
+      return "Noite";
+    } else if (timeValue >= 12 && timeValue < 18) {
+      return "Tarde";
+    } else {
+      return "Manhã";
+    }
   }
 }

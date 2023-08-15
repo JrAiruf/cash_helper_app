@@ -1,3 +1,5 @@
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/manager/finish_pendency.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/usecases/manager/ifinish_pendency.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/create_new_payment_method/icreate_new_payment_method.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/payment_methods/get_all_payment_methods/iget_all_payment_methods.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/usecases/operators/get_operator_informations/iget_operators_informations.dart';
@@ -111,6 +113,11 @@ class ManagementModule extends Module {
     ),
     Bind<IGeneratePendency>(
       (i) => GeneratePendency(
+        repository: i(),
+      ),
+    ),
+    Bind<IFinishPendency>(
+      (i) => FinishPendency(
         repository: i(),
       ),
     ),

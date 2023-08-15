@@ -2,6 +2,8 @@ import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_va
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../../routes/app_routes.dart';
+import '../../../annotations_module/domain/entities/annotation_entity.dart';
 import '../../../management_module/presenter/stores/pendency_store.dart';
 import '../blocs/operator_oppening_bloc/operator_oppening_bloc.dart';
 
@@ -11,6 +13,7 @@ class OperatorController {
   final cashierCodeField = TextEditingController();
   final pendencyStore = Modular.get<PendencyStore>();
   final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
+  // final operatorClosingBloc = Modular.get<OperatorClosingBloc>();
 
   final dateValue = DateValues();
   final operatorCodeFormKey = GlobalKey<FormState>();
@@ -32,8 +35,9 @@ class OperatorController {
     }
   }
 
-  Future<void> closeOperatorCash(BuildContext context, Color color) async {
-    /* cashClosingDialog(context, color, () async {
+  Future<void> closeOperatorCash(BuildContext context, Color color, List<AnnotationEntity> annotations) async {
+    final unfinishedAnnotations = annotations.where(((annotation) => !annotation.annotationConcluied!)).toList();
+    cashClosingDialog(context, color, () async {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();
         cashClosingConfirmationDialog(context, color, () async {
@@ -44,29 +48,28 @@ class OperatorController {
               annotation.annotationId ?? "",
             );
             annotation.annotationWithPendency = true;
-            await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
-            await annotationStore.createNewAnnotation(enterpriseId ?? "", annotation);
-            await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
+            // await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
+            // await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
           }
-          operatorStore.closeOperatorCash(
+/*           operatorStore.closeOperatorCash(
             enterpriseId ?? "",
             operatorEntity?.operatorId ?? "",
             operatorEntity?.operatorClosing ?? "",
-          );
+          ); */
           Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
         });
       } else {
-        for (var annotation in finishedAnnotations) {
+        /* for (var annotation in finishedAnnotations) {
           await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
         }
         await operatorStore.closeOperatorCash(
           enterpriseId ?? "",
           operatorEntity?.operatorId ?? "",
           operatorEntity?.operatorClosing ?? "",
-        );
+        ); */
         Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
       }
-    }); */
+    });
   }
 
   bool validOperatorCredentials(OperatorEntity operatorEntity, String operatorCode, String currentPassword, {String? operatorEmail}) {

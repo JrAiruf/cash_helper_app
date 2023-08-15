@@ -99,8 +99,14 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
   }
 
   @override
-  Future? getGeneralAnnotations(String enterpriseId) async {
-    // TODO: implement getGeneralAnnotations
+  Future? finishPendency(String enterpriseId, String pendencyId) async {
+    // TODO: implement finishPendency
+    throw UnimplementedError();
+  }
+
+  @override
+  Future? getPendencyById(String enterpriseId, String pendencyId) {
+    // TODO: implement getPendencyById
     throw UnimplementedError();
   }
 }
