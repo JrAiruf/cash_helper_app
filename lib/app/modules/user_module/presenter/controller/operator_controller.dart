@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../annotations_module/domain/entities/annotation_entity.dart';
+import '../../../management_module/presenter/blocs/generate_pendency_bloc/generate_pendency_bloc.dart';
 import '../blocs/operator_closing_bloc/operator_closing_bloc.dart';
 import '../blocs/operator_oppening_bloc/operator_oppening_bloc.dart';
 
@@ -14,7 +15,7 @@ class OperatorController {
   final cashierCodeField = TextEditingController();
   final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
   final operatorClosingBloc = Modular.get<OperatorClosingBloc>();
-  // final generatePendencyBloc = Modular.get<GeneratePendencyBloc>();
+  final generatePendencyBloc = Modular.get<GeneratePendencyBloc>();
 
   final dateValue = DateValues();
   final operatorCodeFormKey = GlobalKey<FormState>();
