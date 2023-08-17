@@ -25,13 +25,13 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   @override
   Future<Map<String, dynamic>?> createPendingAnnotation(String? enterpriseId, Map<String, dynamic>? annotation) async {
     if (enterpriseId != null && annotation != null) {
-     await _createPendingAnnotation(enterpriseId, annotation);
-    final currentAnnotation = await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").doc(annotation["annotationId"]).get().then((value) => value.data() ?? <String,dynamic>{});
-    return currentAnnotation.isEmpty ? null : currentAnnotation;
+      await _createPendingAnnotation(enterpriseId, annotation);
+      final currentAnnotation =
+          await _database.collection("enterprise").doc(enterpriseId).collection("pendingAnnotations").doc(annotation["annotationId"]).get().then((value) => value.data() ?? <String, dynamic>{});
+      return currentAnnotation.isEmpty ? null : currentAnnotation;
     } else {
       return null;
     }
-   
   }
 
   @override
@@ -83,12 +83,12 @@ class AFirebaseDatabaseMock implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<void>? updateAnnotation(String? enterpriseId, String? operatorId, String? annotationId, Map<String, dynamic>? annotation) async {
+  Future<void>? updateAnnotation(String? enterpriseId, Map<String, dynamic>? annotation) async {
     final annotationsCollection = _getCollection(enterpriseId);
-    if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
-      await annotationsCollection.doc(annotationId).update(annotation!);
-    } else {
-      return;
+    try {
+      await annotationsCollection.doc(annotation?["annotationId"]).update(annotation!);
+    } on Exception catch (e) {
+      throw Exception(e.toString());
     }
   }
 
@@ -146,7 +146,7 @@ void main() {
       test(
         "Fail Creating annotation",
         () async {
-          final createdAnnotation = await database.createAnnotation(null,  AnnotationsTestObjects.newAnnotationMap);
+          final createdAnnotation = await database.createAnnotation(null, AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation, equals(null));
         },
       );
@@ -155,7 +155,7 @@ void main() {
   group(
     "CreatePendingAnnotation function should",
     () {
-    test(
+      test(
         "Create a pending annotation in the current user",
         () async {
           final result = await database.createPendingAnnotation("enterpriseId", AnnotationsTestObjects.newPendingAnnotationMap);
@@ -219,7 +219,7 @@ void main() {
       test(
         "Fail Returning pending annotations",
         () async {
-       final createdAnnotation = await database.createPendingAnnotation("enterpriseId", AnnotationsTestObjects.newPendingAnnotationMap);
+          final createdAnnotation = await database.createPendingAnnotation("enterpriseId", AnnotationsTestObjects.newPendingAnnotationMap);
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
           final pendingAnnotationsList = await database.getAllPendingAnnotations(null);
@@ -263,7 +263,7 @@ void main() {
           final createdAnnotation = await database.createAnnotation("enterpriseId", AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
-          await database.finishAnnotation("enterpriseId", "operatorId",createdAnnotation?["annotationId"]);
+          await database.finishAnnotation("enterpriseId", "operatorId", createdAnnotation?["annotationId"]);
           final currentAnnotation = await database.getAnnotationById("enterpriseId", createdAnnotation?["annotationId"]);
           expect(currentAnnotation?["annotationConcluied"], equals(true));
         },
@@ -274,7 +274,7 @@ void main() {
           final createdAnnotation = await database.createAnnotation("enterpriseId", AnnotationsTestObjects.newAnnotationMap);
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
-          await database.finishAnnotation("","", null);
+          await database.finishAnnotation("", "", null);
           final currentAnnotation = await database.getAnnotationById("enterpriseId", createdAnnotation?["annotationId"]);
           expect(currentAnnotation?["annotationConcluied"], equals(false));
         },
@@ -291,7 +291,7 @@ void main() {
           expect(createdAnnotation?["annotationId"] != null, equals(true));
           final annotationsList = await database.getAllAnnotations("enterpriseId");
           expect(annotationsList?.isNotEmpty, equals(true));
-          await database.deleteAnnotation("enterpriseId","operatorId", createdAnnotation?["annotationId"]);
+          await database.deleteAnnotation("enterpriseId", "operatorId", createdAnnotation?["annotationId"]);
           final currentAnnotationsList = await database.getAllAnnotations("enterpriseId");
           expect(currentAnnotationsList?.isEmpty, equals(true));
         },
@@ -303,7 +303,7 @@ void main() {
           expect(createdAnnotation?["annotationId"] != null, equals(true));
           final annotationsList = await database.getAllAnnotations("enterpriseId");
           expect(annotationsList?.isNotEmpty, equals(true));
-          await database.deleteAnnotation("enterpriseId", "operatorId","");
+          await database.deleteAnnotation("enterpriseId", "operatorId", "");
           final currentAnnotationsList = await database.getAllAnnotations("enterpriseId");
           expect(currentAnnotationsList?.isEmpty, equals(false));
         },
@@ -321,10 +321,12 @@ void main() {
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
           expect(createdAnnotation?["annotationSaleValue"], equals("125,56"));
-          await database.updateAnnotation("enterpriseId","operatorId", createdAnnotation?["annotationId"], AnnotationsTestObjects.updatedAnnotation);
+          createdAnnotation?["annotationConcluied"] = true;
+          await database.updateAnnotation("enterpriseId", createdAnnotation);
           final currentAnnotation = await database.getAnnotationById("enterpriseId", createdAnnotation?["annotationId"]);
-          expect(currentAnnotation?["annotationSaleValue"], equals("300"));
-          expect(currentAnnotation?["annotationPaymentMethod"], equals("Crédito"));
+          expect(currentAnnotation?["annotationSaleValue"], equals("125,56"));
+          expect(currentAnnotation?["annotationPaymentMethod"], equals("Dinheiro"));
+          expect(createdAnnotation?["annotationConcluied"], equals(true));
         },
       );
       test(
@@ -334,7 +336,7 @@ void main() {
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
           expect(createdAnnotation?["annotationSaleValue"], equals("125,56"));
-          await database.updateAnnotation("enterpriseId", "operatorId",createdAnnotation?["annotationId"], {});
+          await database.updateAnnotation("enterpriseId", {});
           final currentAnnotation = await database.getAnnotationById("enterpriseId", createdAnnotation?["annotationId"]);
           expect(currentAnnotation?["annotationSaleValue"], equals("125,56"));
           expect(currentAnnotation?["annotationPaymentMethod"], equals("Dinheiro"));

@@ -52,11 +52,7 @@ class OperatorController {
               pendencySaleTime: annotation.annotationSaleTime,
               pendencySaleDate: annotation.annotationSaleDate,
             );
-            /*  await pendencyStore.generatePendency(
-              enterpriseId ?? "",
-              operatorEntity?.operatorId ?? "",
-              annotation.annotationId ?? "",
-            ); */
+            generatePendencyBloc.add(GeneratePendencyEvent(enterpriseId!, pendency));
             annotation.annotationWithPendency = true;
             // await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
             // await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");

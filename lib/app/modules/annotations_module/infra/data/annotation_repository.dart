@@ -7,7 +7,7 @@ abstract class AnnotationRepository {
   Future<List<AnnotationModel>?>? getAllAnnotations(String enterpriseId);
   Future<List<AnnotationModel>?>? getAllPendingAnnotations(String enterpriseId);
   Future<List<AnnotationModel>?>? searchAnnotationsByClientAddress(String operatorId, String clientAddress);
-  Future<void>? updateAnnotation(String enterpriseId, String operatorId,String annotationId,AnnotationModel? annotation);
+  Future<void>? updateAnnotation(String enterpriseId, AnnotationModel annotation);
   Future<void>? finishAnnotation(String enterpriseId, String operatorId,String annotationId);
   Future<void>? deleteAnnotation(String enterpriseId, String operatorId, String annotationId);
 }

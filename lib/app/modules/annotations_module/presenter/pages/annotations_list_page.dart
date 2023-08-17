@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/bloc/get_annotations_bloc.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/get_all_annotations_bloc/get_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/views/finished_annotations.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/pages/views/not_finished_annotations.dart';

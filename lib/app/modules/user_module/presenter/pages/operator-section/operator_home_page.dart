@@ -1,5 +1,5 @@
 // ignore_for_file: must_be_immutable, unnecessary_string_interpolations
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/bloc/get_annotations_bloc.dart';
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/get_all_annotations_bloc/get_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';

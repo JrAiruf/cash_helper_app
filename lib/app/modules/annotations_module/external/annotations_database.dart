@@ -81,12 +81,12 @@ class AnnotationsDatabase implements ApplicationAnnotationDatabase {
   }
 
   @override
-  Future<void>? updateAnnotation(String? enterpriseId, String? operatorId, String? annotationId, Map<String, dynamic>? annotation) async {
+  Future<void>? updateAnnotation(String? enterpriseId, Map<String, dynamic>? annotation) async {
     final annotationsCollection = _getCollection(enterpriseId);
-    if (enterpriseId!.isNotEmpty && operatorId!.isNotEmpty && annotationId!.isNotEmpty) {
-      await annotationsCollection.doc(annotationId).update(annotation!);
-    } else {
-      return;
+    try {
+      await annotationsCollection.doc(annotation?["annotationId"]).update(annotation!);
+    } on Exception catch (e) {
+      throw Exception(e.toString());
     }
   }
 

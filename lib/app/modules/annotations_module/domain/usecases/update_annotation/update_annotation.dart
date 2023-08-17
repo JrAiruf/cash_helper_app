@@ -7,16 +7,9 @@ import '../../../infra/models/annotation_model.dart';
 
 class UpdateAnnotation implements IUpdateAnnotation {
   UpdateAnnotation({required AnnotationRepository repository}) : _repository = repository;
-
   final AnnotationRepository _repository;
-  final _dataVerifier = DataVerifier();
   @override
-  Future<void>? call(String? enterpriseId, String? operatorId, String? annotationId, AnnotationEntity? annotation) async {
-    if (_dataVerifier.validateInputData(inputs: [enterpriseId, operatorId, annotationId]) && annotation != null) {
-      final annotationModel = AnnotationModel.fromEntityData(annotation);
-      await _repository.updateAnnotation(enterpriseId!, operatorId!, annotationId!, annotationModel);
-    } else {
-      return;
-    }
+  Future<void>? call(String? enterpriseId, AnnotationEntity? annotation) async {
+    await _repository.updateAnnotation(enterpriseId!, AnnotationModel.fromEntityData(annotation!));
   }
 }
