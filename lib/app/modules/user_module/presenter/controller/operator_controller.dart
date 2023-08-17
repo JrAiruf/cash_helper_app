@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../annotations_module/domain/entities/annotation_entity.dart';
-import '../../../management_module/presenter/stores/pendency_store.dart';
 import '../blocs/operator_oppening_bloc/operator_oppening_bloc.dart';
 
 class OperatorController {
   final emailField = TextEditingController();
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
-  final pendencyStore = Modular.get<PendencyStore>();
   final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
   // final operatorClosingBloc = Modular.get<OperatorClosingBloc>();
 
@@ -42,11 +40,11 @@ class OperatorController {
         Modular.to.pop();
         cashClosingConfirmationDialog(context, color, () async {
           for (var annotation in unfinishedAnnotations) {
-            await pendencyStore.generatePendency(
+           /*  await pendencyStore.generatePendency(
               enterpriseId ?? "",
               operatorEntity?.operatorId ?? "",
               annotation.annotationId ?? "",
-            );
+            ); */
             annotation.annotationWithPendency = true;
             // await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
             // await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");

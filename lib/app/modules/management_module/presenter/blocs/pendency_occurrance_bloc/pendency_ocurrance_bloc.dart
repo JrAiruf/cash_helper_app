@@ -31,8 +31,9 @@ class PendencyOcurranceBloc extends Bloc<PendencyOcurranceEvents, PendencyOcurra
   void _mapPendencyOcurranceEventToState(PendencyOcurranceEvent event, Emitter<PendencyOcurranceStates> state) async {
     state(PendencyOcurranceLoadingState());
     final operators = await _getAllOperators(event.enterpriseId)?.catchError((e) {
-      return <OperatorEntity>[];
-    }) ?? [];
+          return <OperatorEntity>[];
+        }) ??
+        [];
     final annotations = await _getAllAnnotations(event.enterpriseId)?.catchError((e) {
       return <AnnotationEntity>[];
     });
@@ -41,7 +42,8 @@ class PendencyOcurranceBloc extends Bloc<PendencyOcurranceEvents, PendencyOcurra
       return <PendencyEntity>[];
     });
     if (pendencies.isNotEmpty) {
-      state(PendencyOcurranceSuccessState(operators, annotations, pendencies));
+      final pendenciesList = pendencies.where((pendency) => !pendency.pendencyFinished! == false).toList();
+      state(PendencyOcurranceSuccessState(operators, annotations, pendenciesList));
     }
   }
 }

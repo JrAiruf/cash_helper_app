@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
@@ -10,11 +11,12 @@ import '../../components/cards/operator_pendency_card.dart';
 import '../../components/operator_widgets/cash_number_component.dart';
 
 class OperatorActivityPage extends StatefulWidget {
-  const OperatorActivityPage({super.key, required this.managerEntity, required this.operatorEntity, required this.pendingAnnotations});
+  const OperatorActivityPage({super.key, required this.managerEntity, required this.operatorEntity, required this.pendingAnnotations,  required this.pendencies});
 
   final ManagerEntity managerEntity;
   final OperatorEntity operatorEntity;
   final List<AnnotationEntity> pendingAnnotations;
+  final List<PendencyEntity> pendencies;
   @override
   State<OperatorActivityPage> createState() => _OperatorActivityPageState();
 }
@@ -34,6 +36,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
     final width = MediaQuery.of(context).size.width;
     final sizeFrame = height <= 800.0;
     final filteredList = widget.pendingAnnotations.where((annotation) => annotation.annotationWithPendency!).toList();
+    final pendenciesList = widget.pendencies.where((pendency) => pendency.operatorId == widget.operatorEntity.operatorId!).toList();
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -104,6 +107,7 @@ class _OperatorActivityPageState extends State<OperatorActivityPage> {
                                 managerEntity: widget.managerEntity,
                                 operatorEntity: widget.operatorEntity,
                                 annotation: filteredList[i],
+                                pendency: pendenciesList[i],
                               ),
                             );
                           },

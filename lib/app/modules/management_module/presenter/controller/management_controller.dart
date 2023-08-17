@@ -3,7 +3,7 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/payment_method_entity.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
-import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/finish_pedency_bloc/finish_pendency_bloc.dart';
+import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/finish_pendency_bloc/finish_pendency_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_method_events.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_bloc/payment_methods_bloc.dart';
 import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/payment_methods_list_bloc/payment_methods_list_bloc.dart';
@@ -12,15 +12,18 @@ import 'package:cash_helper_app/app/modules/management_module/presenter/blocs/pe
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/get_recent_activities_bloc/get_recent_activities_bloc.dart';
+import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class ManagementController {
   final paymentMethodFormKey = GlobalKey<FormState>();
+  final finishPendencyFormKey = GlobalKey<FormState>();
   final paymentMethodNameField = TextEditingController();
   final paymentMethodDescriptionField = TextEditingController();
   final managerCodeField = TextEditingController();
+  final managerFinishCodeField = TextEditingController();
   var paymentMethods = ValueNotifier(<PaymentMethodEntity>[]);
   var pendencies = ValueNotifier(<PendencyEntity>[]);
   var operatorsList = <OperatorEntity>[];
@@ -76,8 +79,11 @@ class ManagementController {
   }
 
   void finishPedency(BuildContext context) {
-    if (managerCode == manager!.managerCode) {
+    finishPendencyFormKey.currentState!.validate();
+    finishPendencyFormKey.currentState!.save();
+    if (finishPendencyFormKey.currentState!.validate() && managerCode == manager!.managerCode) {
       finishPendencyBloc.add(FinishPendencyEvent(enterpriseId, pendencyId));
+      Modular.to.navigate("${UserRoutes.managementPage}$enterpriseId", arguments: manager);
     } else {
       noMatchingCodes(context, message: "Código inválido! Digite seu códio Ops");
     }

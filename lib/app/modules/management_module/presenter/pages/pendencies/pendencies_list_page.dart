@@ -209,6 +209,7 @@ class _PendenciesListPageState extends State<PendenciesListPage> {
                                                       "manager": widget.managerEntity,
                                                       "operator": pendingOperator[i],
                                                       "pendingAnnotations": operatorPendingAnnotations,
+                                                      "pendencies": state.pendencies,
                                                     });
                                                   },
                                                 ),

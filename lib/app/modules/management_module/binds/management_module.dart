@@ -29,7 +29,6 @@ import '../domain/usecases/pendencies/get_all_pendencies/get_all_pendencies.dart
 import '../presenter/pages/payment_methods/create_payment_methods_page.dart';
 import '../presenter/stores/payment_methods_list_store.dart';
 import '../presenter/stores/pendencies_list_store.dart';
-import '../presenter/stores/pendency_store.dart';
 
 abstract class AppManagementModule {
   static routes() => ModuleRoute(
@@ -74,11 +73,12 @@ class ManagementModule extends Module {
     ),
     ChildRoute(
       "/finish-pendency-page/:enterpriseId",
-      child: (_, args) => FinishPendencyPage(operatorEntity: args.data["operator"],annotation: args.data["annotation"]),
+      child: (_, args) => FinishPendencyPage(managerEntity: args.data["manager"],operatorEntity: args.data["operator"], annotation: args.data["annotation"], pendency: args.data["pendency"]),
     ),
     ChildRoute(
       "/operator-activity-page/:enterpriseId",
-      child: (_, args) => OperatorActivityPage(managerEntity: args.data["manager"], operatorEntity: args.data["operator"], pendingAnnotations: args.data["pendingAnnotations"]),
+      child: (_, args) =>
+          OperatorActivityPage(managerEntity: args.data["manager"], operatorEntity: args.data["operator"], pendingAnnotations: args.data["pendingAnnotations"], pendencies: args.data["pendencies"]),
     ),
   ];
   final bindsList = <Bind>[
@@ -137,11 +137,6 @@ class ManagementModule extends Module {
         createNewPaymentMethod: i(),
         getAllPaymentMethods: i(),
         removePaymentMethod: i(),
-      ),
-    ),
-    Bind<PendencyStore>(
-      (i) => PendencyStore(
-        generatePendency: i(),
       ),
     ),
     Bind<PendenciesListStore>(

@@ -1,6 +1,5 @@
 import 'package:cash_helper_app/app/helpers/data_verifier.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/external/data/application_annotations_database.dart';
-import 'package:cash_helper_app/app/modules/login_module/external/data/application_login_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_method_not_created.dart';
 import 'package:cash_helper_app/app/modules/management_module/external/errors/payment_methods_list_unnavailable.dart';
@@ -12,6 +11,7 @@ import 'package:cash_helper_app/app/services/encrypter/encrypt_service.dart';
 import 'package:cash_helper_app/app/utils/tests/annotations_test_objects/test_objects.dart';
 import 'package:cash_helper_app/app/utils/tests/enterprise_test_objects/test_objects.dart';
 import 'package:cash_helper_app/app/utils/tests/login_test_objects/login_test_objects.dart';
+import 'package:cash_helper_app/app/utils/tests/pendency_test_objects/pendency_test_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
@@ -99,28 +99,17 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
-    Map<String, dynamic> pendencyMap = {};
+  Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, Map<String, dynamic>? pendency) async {
     try {
-      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId!, annotationId!);
-      await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").add({
-        "annotationId": annotationId,
-        "pendencySaleTime": pendingAnnotation?["annotationSaleTime"],
-        "pendencySaleDate": pendingAnnotation?["annotationSaleDate"],
-        "pendencyPeriod": _getPendencyPeriod(pendingAnnotation?["annotationSaleTime"]),
-        "operatorId": operatorId,
-      }).then(
-        (value) async {
-          pendencyMap["pendencyId"] = value.id;
-          value.update({"pendencyId": pendencyMap["pendencyId"]});
-        },
-      );
-      await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).update({"hasPendencies": true});
-      if (pendencyMap.isNotEmpty) {
-        return pendencyMap;
-      } else {
-        return null;
+      final pendenciesCollection = _database.collection("enterprise").doc(enterpriseId).collection("pendencies");
+      await pendenciesCollection.add(pendency!).then((value) => value.update({"pendencyId": value.id}));
+      final pendenciesMapsList = await pendenciesCollection.get();
+      final createdPendency =
+          pendenciesMapsList.docs.firstWhere((pendency) => pendency.data()["annotationId"] == pendency["annotationId"] && pendency.data()["operatorId"] == pendency["operatorId"]).data();
+      if (createdPendency.isEmpty) {
+        return {};
       }
+      return createdPendency;
     } catch (e) {
       throw PendencyError(errorMessage: e.toString());
     }
@@ -141,17 +130,25 @@ class ManagementDBMock implements ApplicationManagementDatabase {
     }
   }
 
-
   @override
-  Future? finishPendency(String enterpriseId, String pendencyId) {
-    // TODO: implement finishPendency
-    throw UnimplementedError();
+  Future<void>? finishPendency(String? enterpriseId, String? pendencyId) async {
+    try {
+      await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").doc(pendencyId).update({"pendencyFinished": true});
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
   }
 
   @override
-  Future? getPendencyById(String enterpriseId, String pendencyId) {
-    // TODO: implement getPendencyById
-    throw UnimplementedError();
+  Future<Map<String, dynamic>>? getPendencyById(String enterpriseId, String pendencyId) async {
+    try {
+      final pendenciesCollection = await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").get();
+      final pendenciesListMap = pendenciesCollection.docs.map((document) => document.data()).toList();
+      final currentPendency = pendenciesListMap.firstWhere((pendencyMap) => pendencyMap["pendencyId"] == pendencyId);
+      return currentPendency;
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
   }
 
   String _getPendencyPeriod(String annotationSaleTime) {
@@ -312,20 +309,16 @@ void main() {
         "Create a New Pendency in Database",
         () async {
           final createdEnterprise = await enterpriseDb.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
-          final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
-          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], AnnotationsTestObjects.databaseAnnotation);
-          final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
-          final currentUser = await loginDb.getUserById(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], "operator");
+          final result = await database.generatePendency(createdEnterprise?["enterpriseId"], PendencyTestObjects.newPendencyMap);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));
-          expect(currentUser?["hasPendencies"], equals(true));
         },
       );
 
       test(
         "Fail to create pendencies",
         () async {
-          expect(() async => database.generatePendency("", "", "annotationId"), throwsA(isA<PendencyError>()));
+          expect(() async => database.generatePendency("", {}), throwsA(isA<PendencyError>()));
         },
       );
     },
@@ -339,7 +332,7 @@ void main() {
           final createdEnterprise = await enterpriseDb.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
           final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
           final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], AnnotationsTestObjects.databaseAnnotation);
-          final result = await database.generatePendency(createdEnterprise?["enterpriseId"], newOperator?["operatorId"], annotation?["annotationId"]);
+          final result = await database.generatePendency(createdEnterprise?["enterpriseId"], PendencyTestObjects.pendencyMap);
           expect(result, isA<Map<String, dynamic>>());
           expect(result?["pendencyId"] != null, equals(true));
           final pendencyList = await database.getAllPendencies(createdEnterprise?["enterpriseId"]);
@@ -353,6 +346,40 @@ void main() {
         "Fail to Get a List of Pendencies",
         () async {
           expect(() async => database.getAllPendencies(""), throwsA(isA<PendencyListError>()));
+        },
+      );
+    },
+  );
+  group(
+    'FinishPendency Function should',
+    () {
+      test(
+        "Change de Property 'pendencyFinished' to true",
+        () async {
+          final createdEnterprise = await enterpriseDb.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], AnnotationsTestObjects.databaseAnnotation);
+          final pendency = await database.generatePendency(createdEnterprise?["enterpriseId"], PendencyTestObjects.pendencyMap);
+
+          await database.finishPendency(createdEnterprise?["enterpriseId"], pendency?["pendencyId"]);
+          final finishedPendency = await database.getPendencyById(createdEnterprise?["enterpriseId"], pendency?["pendencyId"]);
+          expect(finishedPendency?["pendencyFinished"], equals(true));
+        },
+      );
+    },
+  );
+  group(
+    'GetPendencyById Function should',
+    () {
+      test(
+        "retrieve a single map from database",
+        () async {
+          final createdEnterprise = await enterpriseDb.createEnterpriseAccount(EnterpriseTestObjects.enterpriseMap);
+          final newOperator = await loginDb.register(LoginTestObjects.newOperator, createdEnterprise?["enterpriseId"], LoginTestObjects.newOperator["businessPosition"]);
+          final annotation = await annotationsDatabase.createAnnotation(createdEnterprise?["enterpriseId"], AnnotationsTestObjects.databaseAnnotation);
+          final pendency = await database.generatePendency(createdEnterprise?["enterpriseId"], PendencyTestObjects.pendencyMap);
+          final currentPendency = await database.getPendencyById(createdEnterprise?["enterpriseId"], pendency?["pendencyId"]);
+          expect(currentPendency?["pendencyId"] != null, equals(true));
         },
       );
     },

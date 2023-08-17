@@ -9,15 +9,13 @@ import '../../../../../../../mocks/mocks.dart';
 class GeneratePendencyMock implements IGeneratePendency {
   GeneratePendencyMock({required ManagementRepository repository}) : _repository = repository;
   final ManagementRepository _repository;
+  
   @override
-  Future<PendencyEntity>? call(String enterpriseId, String operatorId, String annotationId) async {
-    final pendency = await _repository.generatePendency(enterpriseId, operatorId, annotationId);
-    if (pendency != null) {
-      return pendency;
-    } else {
-      return PendencyEntity();
-    }
+  Future<PendencyEntity>? call(String enterpriseId, PendencyEntity pendency) {
+    // TODO: implement call
+    throw UnimplementedError();
   }
+  
 }
 
 void main() {
@@ -29,8 +27,8 @@ void main() {
       test(
         'Create a New Pendency',
         () async {
-          when(repository.generatePendency(any, any, any)).thenAnswer((_) async => PendencyTestObjects.pendency);
-          final result = await generatePendency("enterpriseId", "operatorId", "annotationId");
+          when(repository.generatePendency(any, any)).thenAnswer((_) async => PendencyTestObjects.pendency);
+          final result = await generatePendency("enterpriseId", PendencyEntity());
           expect(result, isA<PendencyEntity>());
           expect(result?.pendencyId != null, equals(true));
         },
@@ -38,8 +36,8 @@ void main() {
       test(
         'Fail to create a New Pendency',
         () async {
-          when(repository.generatePendency(any, any, any)).thenAnswer((_) async => null);
-          final result = await generatePendency("enterpriseId", "operatorId", "annotationId");
+          when(repository.generatePendency(any, any)).thenAnswer((_) async => null);
+          final result = await generatePendency("enterpriseId", PendencyEntity());
           expect(result, isA<PendencyEntity>());
           expect(result?.pendencyId, equals(null));
         },

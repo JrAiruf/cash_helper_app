@@ -85,31 +85,8 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
 
   @override
-  Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
+  Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, Map<String, dynamic>? pendency) async {
     Map<String, dynamic> pendencyMap = {};
-    try {
-      final pendingAnnotation = await _annotationsDatabase.getAnnotationById(enterpriseId!, annotationId!);
-      await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").add({
-        "annotationId": annotationId,
-        "pendencySaleTime": pendingAnnotation?["annotationSaleTime"],
-        "pendencySaleDate": pendingAnnotation?["annotationSaleDate"],
-        "pendencyPeriod": _getPendencyPeriod(pendingAnnotation?["annotationSaleTime"]),
-        "operatorId": operatorId,
-      }).then(
-        (value) async {
-          pendencyMap["pendencyId"] = value.id;
-          value.update({"pendencyId": pendencyMap["pendencyId"]});
-        },
-      );
-      await _database.collection("enterprise").doc(enterpriseId).collection("operator").doc(operatorId).update({"hasPendencies": true});
-      if (pendencyMap.isNotEmpty) {
-        return pendencyMap;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      throw PendencyError(errorMessage: e.toString());
-    }
   }
 
   @override
@@ -128,7 +105,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
 
   @override
-  Future<void>? finishPendency(String enterpriseId, String pendencyId) async {
+  Future<void>? finishPendency(String? enterpriseId, String? pendencyId) async {
     try {
       await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").doc(pendencyId).update({"pendencyFinished": true});
     } on FirebaseException catch (e) {
@@ -137,7 +114,7 @@ class ManagementDatabase implements ApplicationManagementDatabase {
   }
 
   @override
-  Future<Map<String,dynamic>>? getPendencyById(String enterpriseId, String pendencyId) async {
+  Future<Map<String, dynamic>>? getPendencyById(String enterpriseId, String pendencyId) async {
     try {
       final pendenciesCollection = await _database.collection("enterprise").doc(enterpriseId).collection("pendencies").get();
       final selectedPendency = pendenciesCollection.docs.firstWhere((pendency) => pendency["pendencyId"] == pendencyId).data();

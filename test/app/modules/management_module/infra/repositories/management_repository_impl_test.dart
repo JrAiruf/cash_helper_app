@@ -71,9 +71,9 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
   }
 
   @override
-  Future<PendencyEntity?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
+  Future<PendencyEntity?>? generatePendency(String? enterpriseId, PendencyEntity? pendency) async {
     try {
-      final pendencyMap = await _database.generatePendency(enterpriseId, operatorId, annotationId);
+      final pendencyMap = await _database.generatePendency(enterpriseId, PendencyAdapter.fromEntity(pendency!));
       if (pendencyMap != null) {
         return PendencyAdapter.fromMap(pendencyMap);
       } else {
@@ -85,7 +85,7 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
   }
 
   @override
-  Future? getAllPendencies(String? enterpriseId) async {
+  Future<List<PendencyEntity>>? getAllPendencies(String? enterpriseId) async {
     try {
       final pendenciesMapsList = await _database.getAllPendencies(enterpriseId);
       if (pendenciesMapsList != null) {
@@ -100,8 +100,11 @@ class ManagementRepositoryMockImpl implements ManagementRepository {
 
   @override
   Future? finishPendency(String enterpriseId, String pendencyId) async {
-    // TODO: implement finishPendency
-    throw UnimplementedError();
+    try {
+      await _database.finishPendency(enterpriseId, pendencyId);
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
   }
 
   @override
@@ -264,8 +267,8 @@ void main() {
       test(
         "Call database to create a new pendency",
         () async {
-          when(database.generatePendency(any, any, any)).thenAnswer((_) async => PendencyTestObjects.pendencyMap);
-          final result = await repository.generatePendency("enterpriseId", "operatorId", "annotationId");
+          when(database.generatePendency(any, any)).thenAnswer((_) async => PendencyTestObjects.pendencyMap);
+          final result = await repository.generatePendency("enterpriseId", PendencyTestObjects.pendency);
           expect(result, isA<PendencyEntity>());
           expect(result!.pendencyId != null, equals(true));
         },
@@ -273,7 +276,7 @@ void main() {
       test(
         "Fail to to create pendency (throws PendencyFailure)",
         () async {
-          expect(() async => repository.generatePendency("", null, "annotationId"), throwsA(isA<PendencyError>()));
+          expect(() async => repository.generatePendency("", null), throwsA(isA<PendencyError>()));
         },
       );
     },
@@ -298,6 +301,27 @@ void main() {
         "Fail to to create pendency (throws PendencyFailure)",
         () async {
           expect(() async => repository.getAllPendencies(""), throwsA(isA<PendencyListError>()));
+        },
+      );
+    },
+  );
+  group(
+    'FinishPendency Function should',
+    () {
+      test(
+        "Call database to finish a single pendency)",
+        () async {
+          when(database.finishPendency(any, any)).thenReturn(null);
+          when(database.getAllPendencies(any)).thenAnswer(
+            (_) async => [
+              PendencyTestObjects.pendencyMap,
+              PendencyTestObjects.finisehdPendencyMap,
+            ],
+          );
+          await repository.finishPendency("enterpriseId", "pendencyId");
+          final list = await repository.getAllPendencies("enterpriseId");
+          final finishedPendency = list?.firstWhere((pendency) => pendency.pendencyFinished!);
+          expect(finishedPendency != null, equals(true));
         },
       );
     },

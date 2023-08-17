@@ -1,4 +1,5 @@
 import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/manager_view_button.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
@@ -13,6 +14,7 @@ class OperatorPendencyCard extends StatelessWidget {
     required this.managerEntity,
     required this.operatorEntity,
     required this.annotation,
+    required this.pendency,
     super.key,
     this.backgroundColor,
     this.enterpriseId,
@@ -24,6 +26,7 @@ class OperatorPendencyCard extends StatelessWidget {
   final ManagerEntity managerEntity;
   final OperatorEntity operatorEntity;
   final AnnotationEntity annotation;
+  final PendencyEntity pendency;
   final Color? backgroundColor;
   final String? enterpriseId;
   final Color? borderColor;
@@ -89,8 +92,10 @@ class OperatorPendencyCard extends StatelessWidget {
             ManagerViewButton(
               onPressed: () {
                 Modular.to.pushNamed("${ManagementRoutes.finishPendencyPage}$enterpriseId", arguments: {
+                  "manager":managerEntity,
                   "operator": operatorEntity,
                   "annotation": annotation,
+                  "pendency":pendency
                 });
               },
               text: "Finalizar",

@@ -68,9 +68,9 @@ class ManagementRepositoryImpl implements ManagementRepository {
   }
 
   @override
-  Future<PendencyEntity?>? generatePendency(String? enterpriseId, String? operatorId, String? annotationId) async {
+  Future<PendencyEntity?>? generatePendency(String? enterpriseId, PendencyEntity? pendency) async {
     try {
-      final pendencyMap = await _database.generatePendency(enterpriseId, operatorId, annotationId);
+      final pendencyMap = await _database.generatePendency(enterpriseId, PendencyAdapter.fromEntity(pendency!));
       if (pendencyMap != null) {
         return PendencyAdapter.fromMap(pendencyMap);
       } else {
@@ -98,7 +98,7 @@ class ManagementRepositoryImpl implements ManagementRepository {
   @override
   Future<void>? finishPendency(String? enterpriseId, String? pendencyId) async {
     try {
-      await _database.finishPendency(enterpriseId!, pendencyId!);
+      await _database.finishPendency(enterpriseId, pendencyId);
     } catch (e) {
       throw PendencyError(errorMessage: e.toString());
     }
