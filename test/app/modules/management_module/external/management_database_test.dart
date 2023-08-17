@@ -102,7 +102,16 @@ class ManagementDBMock implements ApplicationManagementDatabase {
   Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, Map<String, dynamic>? pendency) async {
     try {
       final pendenciesCollection = _database.collection("enterprise").doc(enterpriseId).collection("pendencies");
-      await pendenciesCollection.add(pendency!).then((value) => value.update({"pendencyId": value.id}));
+      await pendenciesCollection.add(pendency!).then(
+            (value) => value.update(
+              {
+                "pendencyId": value.id,
+                "pendencyPediod": _getPendencyPeriod(
+                  pendency["pendencySaleTime"],
+                ),
+              },
+            ),
+          );
       final pendenciesMapsList = await pendenciesCollection.get();
       final createdPendency =
           pendenciesMapsList.docs.firstWhere((pendency) => pendency.data()["annotationId"] == pendency["annotationId"] && pendency.data()["operatorId"] == pendency["operatorId"]).data();
@@ -153,7 +162,7 @@ class ManagementDBMock implements ApplicationManagementDatabase {
 
   String _getPendencyPeriod(String annotationSaleTime) {
     final annotationPeriod = annotationSaleTime.split(":").first;
-    final timeValue = int.tryParse(annotationPeriod) ?? 0;
+    var timeValue = int.tryParse(annotationPeriod) ?? 0;
     if (timeValue >= 18) {
       return "Noite";
     } else if (timeValue >= 12 && timeValue < 18) {

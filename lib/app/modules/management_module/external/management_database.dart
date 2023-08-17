@@ -86,7 +86,19 @@ class ManagementDatabase implements ApplicationManagementDatabase {
 
   @override
   Future<Map<String, dynamic>?>? generatePendency(String? enterpriseId, Map<String, dynamic>? pendency) async {
-    Map<String, dynamic> pendencyMap = {};
+    try {
+      final pendenciesCollection = _database.collection("enterprise").doc(enterpriseId).collection("pendencies");
+      await pendenciesCollection.add(pendency!).then((value) => value.update({"pendencyId": value.id}));
+      final pendenciesMapsList = await pendenciesCollection.get();
+      final createdPendency =
+          pendenciesMapsList.docs.firstWhere((pendency) => pendency.data()["annotationId"] == pendency["annotationId"] && pendency.data()["operatorId"] == pendency["operatorId"]).data();
+      if (createdPendency.isEmpty) {
+        return {};
+      }
+      return createdPendency;
+    } catch (e) {
+      throw PendencyError(errorMessage: e.toString());
+    }
   }
 
   @override

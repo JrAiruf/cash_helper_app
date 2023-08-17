@@ -5,7 +5,7 @@ import 'package:cash_helper_app/app/utils/tests/pendency_test_objects/pendency_t
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../../../../mocks/mocks.dart';
+import '../../../../../../mocks/mocks.dart';
 
 class GetAllPendenciesMock implements IGetAllPendencies {
   GetAllPendenciesMock({required ManagementRepository repository}) : _repository = repository;

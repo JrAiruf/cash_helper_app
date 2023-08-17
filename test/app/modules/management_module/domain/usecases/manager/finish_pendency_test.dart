@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../../mocks/mocks.dart';
-import 'pendencies/get_pendency_by_id/get_pendency_by_id_test.dart';
+import '../pendencies/get_pendency_by_id/get_pendency_by_id_test.dart';
 
 class FinishPendencyMock implements IFinishPendency {
   FinishPendencyMock({required ManagementRepository repository}) : _repository = repository;

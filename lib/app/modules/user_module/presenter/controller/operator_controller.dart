@@ -1,9 +1,11 @@
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
+import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../annotations_module/domain/entities/annotation_entity.dart';
+import '../blocs/operator_closing_bloc/operator_closing_bloc.dart';
 import '../blocs/operator_oppening_bloc/operator_oppening_bloc.dart';
 
 class OperatorController {
@@ -11,12 +13,14 @@ class OperatorController {
   final passwordField = TextEditingController();
   final cashierCodeField = TextEditingController();
   final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
-  // final operatorClosingBloc = Modular.get<OperatorClosingBloc>();
+  final operatorClosingBloc = Modular.get<OperatorClosingBloc>();
+  // final generatePendencyBloc = Modular.get<GeneratePendencyBloc>();
 
   final dateValue = DateValues();
   final operatorCodeFormKey = GlobalKey<FormState>();
   bool? loadingOperatorSettings;
 
+  List<AnnotationEntity> operatorAnnotations = [];
   OperatorEntity? operatorEntity;
   String? enterpriseId;
   String? operatorCode;
@@ -33,14 +37,21 @@ class OperatorController {
     }
   }
 
-  Future<void> closeOperatorCash(BuildContext context, Color color, List<AnnotationEntity> annotations) async {
-    final unfinishedAnnotations = annotations.where(((annotation) => !annotation.annotationConcluied!)).toList();
+  Future<void> closeOperatorCash(BuildContext context, Color color) async {
+    final unfinishedAnnotations = operatorAnnotations.where(((annotation) => !annotation.annotationConcluied!)).toList();
     cashClosingDialog(context, color, () async {
       if (unfinishedAnnotations.isNotEmpty) {
         Modular.to.pop();
         cashClosingConfirmationDialog(context, color, () async {
           for (var annotation in unfinishedAnnotations) {
-           /*  await pendencyStore.generatePendency(
+            PendencyEntity pendency = PendencyEntity(
+              annotationId: annotation.annotationId,
+              pendencyFinished: false,
+              operatorId: operatorEntity!.operatorId,
+              pendencySaleTime: annotation.annotationSaleTime,
+              pendencySaleDate: annotation.annotationSaleDate,
+            );
+            /*  await pendencyStore.generatePendency(
               enterpriseId ?? "",
               operatorEntity?.operatorId ?? "",
               annotation.annotationId ?? "",

@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class AnnotationsBlocBinds {
   static final binds = <Bind>[
-    Bind<CreateAnnotationsBloc>((i)=> CreateAnnotationsBloc(createNewAnnotation: i())),
-    Bind<GetAnnotationsBloc>((i)=> GetAnnotationsBloc(getAllAnnotations: i())),
+    Bind.singleton<CreateAnnotationsBloc>((i)=> CreateAnnotationsBloc(createNewAnnotation: i())),
+    Bind.singleton<GetAnnotationsBloc>((i)=> GetAnnotationsBloc(getAllAnnotations: i())),
   ];
 }

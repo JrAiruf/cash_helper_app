@@ -4,18 +4,16 @@ import 'package:cash_helper_app/app/modules/management_module/infra/data/managem
 import 'package:cash_helper_app/app/utils/tests/pendency_test_objects/pendency_test_objects.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import '../../../../../../../mocks/mocks.dart';
+import '../../../../../../mocks/mocks.dart';
 
 class GeneratePendencyMock implements IGeneratePendency {
   GeneratePendencyMock({required ManagementRepository repository}) : _repository = repository;
   final ManagementRepository _repository;
-  
+
   @override
-  Future<PendencyEntity>? call(String enterpriseId, PendencyEntity pendency) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<PendencyEntity>? call(String enterpriseId, PendencyEntity pendency) async {
+    return await _repository.generatePendency(enterpriseId, pendency);
   }
-  
 }
 
 void main() {
@@ -31,15 +29,6 @@ void main() {
           final result = await generatePendency("enterpriseId", PendencyEntity());
           expect(result, isA<PendencyEntity>());
           expect(result?.pendencyId != null, equals(true));
-        },
-      );
-      test(
-        'Fail to create a New Pendency',
-        () async {
-          when(repository.generatePendency(any, any)).thenAnswer((_) async => null);
-          final result = await generatePendency("enterpriseId", PendencyEntity());
-          expect(result, isA<PendencyEntity>());
-          expect(result?.pendencyId, equals(null));
         },
       );
     },

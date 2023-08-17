@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable, unnecessary_string_interpolations
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/bloc/get_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
@@ -28,13 +29,12 @@ class OperartorHomePage extends StatefulWidget {
 
 class _OperartorHomePageState extends State<OperartorHomePage> {
   final _loginController = Modular.get<LoginController>();
-  final _annotationsController = Modular.get<AnnotationsController>();
   final _operatorController = Modular.get<OperatorController>();
+  final _annotationsController = Modular.get<AnnotationsController>();
   DrawerPagePosition? drawerPosition;
   @override
   void initState() {
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
-    _annotationsController.getAllAnnotations();
     super.initState();
   }
 
@@ -46,7 +46,14 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
     final sizeFrame = height <= 800.0;
     return BlocConsumer(
       bloc: _loginController.operatorBloc,
-      listener: (context, state) {},
+      listener: (context, state) {
+        _annotationsController.getAnnotationsBloc.stream.listen((event) {
+          if (state is GetAnnotationsSuccessState) {
+            _operatorController.operatorAnnotations.clear();
+            _operatorController.operatorAnnotations.addAll(state.annotations);
+          }
+        });
+      },
       builder: (_, state) {
         if (state is OperatorLoadingState) {
           return Container(

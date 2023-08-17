@@ -19,6 +19,7 @@ class OperatorClosePage extends StatefulWidget {
   @override
   State<OperatorClosePage> createState() => _OperatorClosePageState();
 }
+
 final operatorController = Modular.get<OperatorController>();
 final dateValues = DateValues();
 
@@ -161,7 +162,6 @@ class _OperatorClosePageState extends State<OperatorClosePage> {
                               operatorController.closeOperatorCash(
                                 context,
                                 appThemes.purpleColor(context),
-                                annotations,
                               );
                             },
                             buttonName: "Fechar Caixa",

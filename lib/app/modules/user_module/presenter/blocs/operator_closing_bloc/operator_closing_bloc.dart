@@ -9,9 +9,7 @@ class OperatorClosingBloc extends Bloc<OperatorClosingEvent, OperatorClosingStat
   OperatorClosingBloc({required ICloseOperatorCash closeOperatorCash})
       : _closeOperatorCash = closeOperatorCash,
         super(OperatorClosingInitialState()) {
-    on<OperatorClosingEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<OperatorClosingEvent>(_mapOperatorClosingEventToState);
   }
 
   final ICloseOperatorCash _closeOperatorCash;

@@ -8,6 +8,14 @@ class PendencyTestObjects {
     pendencyPeriod: "Manhã",
     operatorId: "dfskjgali45ut8o87fe793K252K7FdgkdkaGSDK",
   );
+  static final newPendency = PendencyEntity(
+    pendencyFinished: false,
+    annotationId: "235234i5hqoeaighoais34oithqa",
+    pendencyPeriod: "Manhã",
+    pendencySaleDate: "23/08/2023",
+    pendencySaleTime: "11:23",
+    operatorId: "dfskjgali45ut8o87fe793K252K7FdgkdkaGSDK",
+  );
   static final finishedPendency = PendencyEntity(
     pendencyFinished: true,
     pendencyId: "573hweriwf29h382goqe819rgfan",
@@ -24,9 +32,8 @@ class PendencyTestObjects {
   };
   static final newPendencyMap = {
     "annotationId": "235234i5hqoeaighoais34oithqa",
-    "pendencySaleTime": "10:23",
+    "pendencySaleTime": "14:23",
     "pendencySaleDate": "23/08/2023",
-    "pendencyPeriod": "Manhã",
     "pendencyFinished": false,
     "operatorId": "dfskjgali45ut8o87fe793K252K7FdgkdkaGSDK",
   };
