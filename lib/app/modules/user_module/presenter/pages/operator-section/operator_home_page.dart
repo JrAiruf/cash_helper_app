@@ -1,10 +1,12 @@
 // ignore_for_file: must_be_immutable, unnecessary_string_interpolations
-import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/get_all_annotations_bloc/get_annotations_bloc.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/controllers/annotations_controller.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_bloc/operator_states.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_closing_bloc/operator_closing_bloc.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/operator_oppening_bloc/operator_oppening_bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/buttons/quick_access_button.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/widgets/cash_helper_drawer.dart';
@@ -17,7 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../components/operator_widgets/operator_status_component.dart';
-import '../../components/widgets/annotation_info_list_view_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
   OperartorHomePage({super.key, required this.operatorEntity});
@@ -34,8 +35,39 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   DrawerPagePosition? drawerPosition;
   @override
   void initState() {
-    _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
     super.initState();
+    _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
+    _operatorController.operatorOppeningBloc.stream.listen(
+      (state) {
+        if (state is OperatorOppeningSuccessState) {
+          _loginController.operatorBloc.add(
+            GetOperatorByIdEvent(
+              _annotationsController.enterpriseId,
+              widget.operatorEntity.operatorId!,
+              widget.operatorEntity.businessPosition!,
+            ),
+          );
+        }
+      },
+    );
+    _operatorController.operatorClosingBloc.stream.listen(
+      (state) {
+        if (state is OperatorClosingSuccessState) {
+          _loginController.operatorBloc.add(
+            GetOperatorByIdEvent(
+              _annotationsController.enterpriseId,
+              widget.operatorEntity.operatorId!,
+              widget.operatorEntity.businessPosition!,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -46,14 +78,7 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
     final sizeFrame = height <= 800.0;
     return BlocConsumer(
       bloc: _loginController.operatorBloc,
-      listener: (context, state) {
-        _annotationsController.getAnnotationsBloc.stream.listen((event) {
-          if (state is GetAnnotationsSuccessState) {
-            _operatorController.operatorAnnotations.clear();
-            _operatorController.operatorAnnotations.addAll(state.annotations);
-          }
-        });
-      },
+      listener: (context, _) {},
       builder: (_, state) {
         if (state is OperatorLoadingState) {
           return Container(

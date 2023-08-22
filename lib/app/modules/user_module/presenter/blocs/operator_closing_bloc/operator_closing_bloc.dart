@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/usecases/close_operator_cash/iclose_operator_cash.dart';
 import 'package:meta/meta.dart';
-
 part 'operator_closing_events.dart';
 part 'operator_closing_states.dart';
 

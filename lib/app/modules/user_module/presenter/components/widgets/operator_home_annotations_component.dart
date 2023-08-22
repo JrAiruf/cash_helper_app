@@ -16,7 +16,6 @@ class OperatorHomeAnnotationsComponent extends StatefulWidget {
   State<OperatorHomeAnnotationsComponent> createState() => _OperatorHomeAnnotationsComponentState();
 }
 
-final _getAnnotationsBloc = Modular.get<GetAnnotationsBloc>();
 final _annotationsController = Modular.get<AnnotationsController>();
 
 class _OperatorHomeAnnotationsComponentState extends State<OperatorHomeAnnotationsComponent> {
@@ -31,7 +30,7 @@ class _OperatorHomeAnnotationsComponentState extends State<OperatorHomeAnnotatio
   Widget build(BuildContext context) {
     final appThemes = CashHelperThemes();
     return BlocBuilder<GetAnnotationsBloc, GetAnnotationsStates>(
-      bloc: _getAnnotationsBloc,
+      bloc: _annotationsController.getAnnotationsBloc,
       builder: (_, state) {
         if (state is GetAnnotationsLoadingState) {
           return Align(

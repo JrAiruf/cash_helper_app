@@ -48,7 +48,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
           : null;
       final registeredUsersList = await _database.collection("enterprise").doc(enterpriseId).collection(newUserMap["businessPosition"]).get();
       userData = registeredUsersList.docs.firstWhere((element) => element.data()["${collection}Id"] == newUserId).data();
-      await Future.delayed(const Duration(seconds: 4));
+      await Future.delayed(const Duration(seconds: 10));
       return userData;
     } catch (e) {
       if (userData.isEmpty) {
@@ -61,7 +61,7 @@ class FirebaseDatabase implements ApplicationLoginDatabase {
 
   @override
   Future<Map<String, dynamic>>? login(String? email, String? password, String? enterpriseId, String? collection) async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     try {
       _authUser = await _auth.signInWithEmailAndPassword(email: email ?? "", password: password ?? "").then((value) => value.user);
       final usersMapList = await _database.collection("enterprise").doc(enterpriseId).collection(collection!).get();

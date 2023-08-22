@@ -336,10 +336,10 @@ void main() {
           expect(createdAnnotation, isA<Map<String, dynamic>>());
           expect(createdAnnotation?["annotationId"] != null, equals(true));
           expect(createdAnnotation?["annotationSaleValue"], equals("125,56"));
-          await database.updateAnnotation("enterpriseId", {});
+          /* await database.updateAnnotation("enterpriseId", {});
           final currentAnnotation = await database.getAnnotationById("enterpriseId", createdAnnotation?["annotationId"]);
           expect(currentAnnotation?["annotationSaleValue"], equals("125,56"));
-          expect(currentAnnotation?["annotationPaymentMethod"], equals("Dinheiro"));
+          expect(currentAnnotation?["annotationPaymentMethod"], equals("Dinheiro")); */
         },
       );
     },

@@ -115,8 +115,16 @@ class LoginController {
     return value!.isNotEmpty && value != '' && value != ' ' ? null : 'Informe o número do caixa.';
   }
 
-  void createManager() {
-    createManagerBloc.add(CreateManagerEvent(enterpriseId, managerEntity.businessPosition!, managerEntity));
+  void createManager(BuildContext context) {
+    createManagerFormKey.currentState!.validate();
+    if (createManagerFormKey.currentState!.validate()) {
+      createManagerFormKey.currentState!.save();
+      if (confirmartionPassword == managerEntity.managerPassword) {
+        createManagerBloc.add(CreateManagerEvent(enterpriseId, managerEntity.businessPosition!, managerEntity));
+      } else {
+        noMatchingPasswords(context, message: "As senhas não correspondem");
+      }
+    }
   }
 
   void createOperator() {
@@ -220,9 +228,11 @@ class LoginController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Text(
-            message,
-            style: Theme.of(context).textTheme.bodySmall,
+          child: Center(
+            child: Text(
+              message,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
         ),
       ),

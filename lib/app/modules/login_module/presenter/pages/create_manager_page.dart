@@ -198,7 +198,9 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                         child: CashHelperElevatedButton(
-                          onPressed: _loginController.createManager,
+                          onPressed: () {
+                            _loginController.createManager(context);
+                          },
                           width: width,
                           height: 65,
                           buttonName: 'Registrar',

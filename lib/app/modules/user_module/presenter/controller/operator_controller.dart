@@ -1,3 +1,4 @@
+import 'package:cash_helper_app/app/modules/annotations_module/presenter/blocs/update_annotation_bloc/update_annotation_bloc.dart';
 import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_values/date_values.dart';
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
@@ -16,6 +17,7 @@ class OperatorController {
   final operatorOppeningBloc = Modular.get<OperatorOppeningBloc>();
   final operatorClosingBloc = Modular.get<OperatorClosingBloc>();
   final generatePendencyBloc = Modular.get<GeneratePendencyBloc>();
+  final updateAnnotationBloc = Modular.get<UpdateAnnotationBloc>();
 
   final dateValue = DateValues();
   final operatorCodeFormKey = GlobalKey<FormState>();
@@ -29,11 +31,12 @@ class OperatorController {
 
   Future<void> openOperatorCash(BuildContext context) async {
     operatorCodeFormKey.currentState!.validate();
-    if (operatorCode == operatorEntity!.operatorCode) {
-      operatorCodeFormKey.currentState!.save();
+    operatorCodeFormKey.currentState!.save();
+    if (cashierCodeField.text == operatorEntity!.operatorCode) {
       operatorEntity?.operatorOppening = dateValue.operatorOppening;
       operatorOppeningBloc.add(OperatorOppeningEvent(enterpriseId!, operatorEntity!));
     } else {
+      operatorCodeFormKey.currentState!.reset();
       wrongCodeSnackbar(context);
     }
   }
@@ -54,26 +57,12 @@ class OperatorController {
             );
             generatePendencyBloc.add(GeneratePendencyEvent(enterpriseId!, pendency));
             annotation.annotationWithPendency = true;
-            // await annotationStore.updateAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "", annotation);
-            // await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
+            updateAnnotationBloc.add(UpdateAnnotationEvent(enterpriseId!, annotation));
           }
-/*           operatorStore.closeOperatorCash(
-            enterpriseId ?? "",
-            operatorEntity?.operatorId ?? "",
-            operatorEntity?.operatorClosing ?? "",
-          ); */
-          Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
+          operatorClosingBloc.add(OperatorClosingEvent(enterpriseId!, operatorEntity!.operatorId!, operatorEntity!.operatorClosing!));
         });
       } else {
-        /* for (var annotation in finishedAnnotations) {
-          await annotationStore.deleteAnnotation(enterpriseId ?? "", operatorEntity?.operatorId ?? "", annotation.annotationId ?? "");
-        }
-        await operatorStore.closeOperatorCash(
-          enterpriseId ?? "",
-          operatorEntity?.operatorId ?? "",
-          operatorEntity?.operatorClosing ?? "",
-        ); */
-        Modular.to.navigate("${UserRoutes.operatorHomePage}$enterpriseId", arguments: operatorEntity);
+        operatorClosingBloc.add(OperatorClosingEvent(enterpriseId!, operatorEntity!.operatorId!, operatorEntity!.operatorClosing!));
       }
     });
   }
@@ -104,9 +93,9 @@ class OperatorController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
                 'E-mail não modificado. Verifique os dados e tente novamente',
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 13),
@@ -133,9 +122,9 @@ class OperatorController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
                 'Conta não deletada. Verifique os dados e tente novamente',
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 13),
@@ -162,9 +151,9 @@ class OperatorController {
         content: SizedBox(
           height: MediaQuery.of(context).size.height * 0.07,
           width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Text(
                 'Senha não modificada. Verifique os dados e tente novamente',
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 13),
