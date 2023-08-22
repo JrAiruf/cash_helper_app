@@ -13,7 +13,7 @@ class CreateManagerBloc extends Bloc<CreateManagerEvents, CreateManagerStates> {
   final IRegisterManager _registerManager;
 
   void _mapCreateManagerEventToState(CreateManagerEvent event, Emitter<CreateManagerStates> state) async {
-    state(CreateManagerLoadingState());
+    state(RedirectingManagerState());
     final createdManager = await _registerManager(event.manager, event.enterpriseId, event.collection).catchError((e) {
       state(CreateManagerErrorState("Não foi possível criar um novo Gerente"));
       return null;

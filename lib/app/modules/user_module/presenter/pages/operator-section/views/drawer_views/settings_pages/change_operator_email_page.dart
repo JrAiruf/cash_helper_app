@@ -1,12 +1,9 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../../../../../../login_module/presenter/components/visibility_icon_component.dart';
 
 class ChangeOperatorEmailPage extends StatefulWidget {
   ChangeOperatorEmailPage({super.key, required this.operatorEntity});
@@ -24,10 +21,10 @@ class _ChangeOperatorEmailPageState extends State<ChangeOperatorEmailPage> {
   String? _confirmationEmail;
   String? _operatorPassword;
   String? _operatorCode;
-  bool _emailChanged = false;
+  final bool _emailChanged = false;
 
-  bool _operatorCodeVisible = false;
-  bool _passwordVisible = false;
+  final bool _operatorCodeVisible = false;
+  final bool _passwordVisible = false;
   @override
   void initState() {
     super.initState();

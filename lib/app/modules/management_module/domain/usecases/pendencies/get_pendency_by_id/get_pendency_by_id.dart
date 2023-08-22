@@ -4,10 +4,10 @@ import '../../../../infra/data/management_repository.dart';
 
 class GetPendencyById implements IGetPendencyById {
   GetPendencyById({required ManagementRepository repository}) : _repository = repository;
- final ManagementRepository _repository;
+  final ManagementRepository _repository;
 
   @override
   Future<PendencyEntity> call(String enterpriseId, String pendencyId) async {
-    throw UnimplementedError();
+    return await _repository.getPendencyById(enterpriseId, pendencyId);
   }
 }

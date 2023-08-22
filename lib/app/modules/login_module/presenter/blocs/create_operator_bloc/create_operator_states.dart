@@ -4,7 +4,7 @@ abstract class CreateOperatorStates {}
 
 class CreateOperatorInitialState implements CreateOperatorStates {}
 
-class CreateOperatorLoadingState implements CreateOperatorStates {}
+class RedirectingOperatorState implements CreateOperatorStates {}
 
 class CreateOperatorSuccessState implements CreateOperatorStates {
   final OperatorEntity operatorEntity;

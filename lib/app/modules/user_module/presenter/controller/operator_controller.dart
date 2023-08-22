@@ -4,7 +4,6 @@ import 'package:cash_helper_app/app/modules/management_module/domain/entities/pe
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../routes/app_routes.dart';
 import '../../../annotations_module/domain/entities/annotation_entity.dart';
 import '../../../management_module/presenter/blocs/generate_pendency_bloc/generate_pendency_bloc.dart';
 import '../blocs/operator_closing_bloc/operator_closing_bloc.dart';

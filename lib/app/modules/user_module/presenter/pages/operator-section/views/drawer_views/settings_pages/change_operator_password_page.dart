@@ -1,12 +1,9 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:cash_helper_app/app/modules/login_module/presenter/components/visibility_icon_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
 
 class ChangeOperatorPasswordPage extends StatefulWidget {
   ChangeOperatorPasswordPage({super.key, required this.operatorEntity});
@@ -23,17 +20,17 @@ class _ChangeOperatorPasswordPageState
   final _controller = Modular.get<OperatorController>();
   final _changePasswordFormKey = GlobalKey<FormState>();
 
-  String? _newPassword = "";
-  String? _confirmationPassword = "";
-  String? _operatorCode = "";
-  String? _operatorPassword = "";
+  final String _newPassword = "";
+  final String _confirmationPassword = "";
+  final String _operatorCode = "";
+  final String _operatorPassword = "";
 
-  bool _passwordChanged = false;
+  final bool _passwordChanged = false;
 
-  bool _newPasswordVisible = false;
-  bool _confirmationPasswordVisible = false;
-  bool _operatorCodeVisible = false;
-  bool _passwordVisible = false;
+  final bool _newPasswordVisible = false;
+  final bool _confirmationPasswordVisible = false;
+  final bool _operatorCodeVisible = false;
+  final bool _passwordVisible = false;
   @override
   void initState() {
     super.initState();

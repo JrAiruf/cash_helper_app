@@ -2,6 +2,7 @@ import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/l
 import 'package:cash_helper_app/app/modules/management_module/presenter/controller/management_controller.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_bloc.dart';
+import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/blocs/manager_bloc/manager_states.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/home_page_component.dart';
 import 'package:cash_helper_app/app/modules/user_module/presenter/components/manager/recent_activities_component/recente_activities_component.dart';
@@ -11,6 +12,7 @@ import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import '../../../../login_module/presenter/blocs/auth/auth_states.dart';
 import '../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
 import '../../components/buttons/quick_access_button.dart';
 import '../../components/widgets/manager_section_drawer.dart';
@@ -33,6 +35,20 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     super.initState();
     _loginController.enterpriseId = _enterpriseId;
     _managementController.enterpriseId = _enterpriseId;
+    _loginController.managerBloc.add(
+      GetManagerByIdEvent(
+        _enterpriseId,
+        widget.managerEntity.managerId!,
+        widget.managerEntity.businessPosition!,
+      ),
+    );
+    _loginController.authBloc.stream.listen(
+      (state) {
+        if (state is AuthSignOutState) {
+          Modular.to.navigate(EnterpriseRoutes.initial);
+        }
+      },
+    );
     _managementController.getAllRecentActivities();
   }
 

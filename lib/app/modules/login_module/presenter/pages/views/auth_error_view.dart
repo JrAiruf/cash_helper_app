@@ -32,7 +32,6 @@ class _AuthErrorViewState extends State<AuthErrorView> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final userBusinessPosition = _managerUser ? "Gerente" : "Operador";
     final appThemes = CashHelperThemes();
     return BlocBuilder<AuthBloc, AuthStates?>(
         bloc: _loginController.authBloc,

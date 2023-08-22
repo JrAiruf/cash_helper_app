@@ -22,7 +22,6 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     final primaryColor = Theme.of(context).colorScheme.primary;
     final secondaryColor = Theme.of(context).colorScheme.secondary;
-    final tertiaryColor = Theme.of(context).colorScheme.tertiaryContainer;
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(

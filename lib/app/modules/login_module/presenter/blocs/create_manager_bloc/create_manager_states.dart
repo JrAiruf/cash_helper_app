@@ -4,7 +4,9 @@ abstract class CreateManagerStates {}
 
 class CreateManagerInitialState implements CreateManagerStates {}
 
-class CreateManagerLoadingState implements CreateManagerStates {}
+class RedirectingManagerState implements CreateManagerStates {}
+
+// class RedirectingManagerState implements CreateManagerStates {}
 
 class CreateManagerSuccessState implements CreateManagerStates {
   final ManagerEntity manager;

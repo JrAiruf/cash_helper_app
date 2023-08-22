@@ -1,10 +1,9 @@
-import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/annotation_entity.dart';
 import 'package:flutter/material.dart';
 
 import 'annotation_informations_card.dart';
 
 class AnnotationsStatusCardComponent extends StatelessWidget {
-  AnnotationsStatusCardComponent({
+  const AnnotationsStatusCardComponent({
     super.key,
     this.height,
     this.width,

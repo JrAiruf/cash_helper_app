@@ -2,13 +2,11 @@ import 'package:cash_helper_app/app/modules/annotations_module/domain/entities/a
 import 'package:cash_helper_app/app/modules/management_module/domain/entities/pendency_entity.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../management_module/presenter/controller/management_controller.dart';
 import '../operator_widgets/operator_information_tile.dart';
 
 class OperatorInfoListViewComponent extends StatelessWidget {
-  OperatorInfoListViewComponent({
+  const OperatorInfoListViewComponent({
     super.key,
     required this.enterpriseId,
     required this.operators,

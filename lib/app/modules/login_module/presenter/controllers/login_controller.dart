@@ -127,16 +127,20 @@ class LoginController {
     }
   }
 
-  void createOperator() {
+  void createOperator(BuildContext context) {
     createOperatorFormKey.currentState?.validate();
     if (createOperatorFormKey.currentState!.validate()) {
       createOperatorFormKey.currentState?.save();
-      operatorEntity.hasPendencies = false;
-      operatorEntity.operatorEnabled = startWithEnabledOperator ? true : false;
-      operatorEntity.operatorOppening = startWithEnabledOperator ? dateValue.operatorOppening : "Pendente";
-      operatorEntity.operatorId = "operatorId";
-      operatorEntity.operatorCode = "operatorCode";
-      createOperatorBloc.add(CreateOperatorEvent(enterpriseId, operatorEntity.businessPosition!, operatorEntity));
+      if (operatorConfirmationPassword == operatorEntity.operatorPassword) {
+        operatorEntity.hasPendencies = false;
+        operatorEntity.operatorEnabled = startWithEnabledOperator ? true : false;
+        operatorEntity.operatorOppening = startWithEnabledOperator ? dateValue.operatorOppening : "Pendente";
+        operatorEntity.operatorId = "operatorId";
+        operatorEntity.operatorCode = "operatorCode";
+        createOperatorBloc.add(CreateOperatorEvent(enterpriseId, operatorEntity.businessPosition!, operatorEntity));
+      } else {
+        noMatchingPasswords(context, message: "As senhas não correspondem");
+      }
     }
   }
 

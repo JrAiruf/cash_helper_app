@@ -83,7 +83,7 @@ class ManagementModule extends Module {
   ];
   final bindsList = <Bind>[
     Bind<ApplicationManagementDatabase>(
-      (i) => ManagementDatabase(database: i(), annotationsDatabase: i()),
+      (i) => ManagementDatabase(database: i()),
     ),
     Bind<ManagementRepository>(
       (i) => ManagementRepositoryImpl(

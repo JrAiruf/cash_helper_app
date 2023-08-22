@@ -3,6 +3,7 @@
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_manager_bloc/create_manager_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/registration_loading_page.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,16 +45,10 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
           }
         },
         builder: (_, state) {
-          if (state is CreateManagerLoadingState) {
-            return Container(
-              decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-              child: Center(
-                child: CircularProgressIndicator(
-                  color: appThemes.indicatorColor(context),
-                ),
-              ),
-            );
-          } else if (state is CreateManagerInitialState) {
+          if (state is RedirectingManagerState) {
+            return const RegistrationLoadingPage();
+          }
+          if (state is CreateManagerInitialState) {
             return Scaffold(
               appBar: AppBar(),
               body: SingleChildScrollView(

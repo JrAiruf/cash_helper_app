@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, unnecessary_string_interpolations
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_operator_bloc/create_operator_states.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/pages/views/registration_loading_page.dart';
 import 'package:cash_helper_app/app/routes/app_routes.dart';
 import 'package:cash_helper_app/shared/themes/cash_helper_themes.dart';
 import 'package:flutter/material.dart';
@@ -42,17 +43,8 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
           },
           bloc: _loginController.createOperatorBloc,
           builder: (_, state) {
-            if (state is CreateOperatorLoadingState) {
-              return Container(
-                decoration: BoxDecoration(color: appThemes.primaryColor(context)),
-                height: height,
-                width: width,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
-                ),
-              );
+            if (state is RedirectingOperatorState) {
+              return const RegistrationLoadingPage();
             }
             if (state is CreateOperatorInitialState) {
               return SingleChildScrollView(
@@ -195,7 +187,9 @@ class _CreateOperatorPageState extends State<CreateOperatorPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                         child: CashHelperElevatedButton(
-                          onPressed: _loginController.createOperator,
+                          onPressed: () {
+                            _loginController.createOperator(context);
+                          },
                           width: width,
                           height: 65,
                           buttonName: 'Registrar',

@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../../routes/app_routes.dart';
+import '../../../../login_module/presenter/blocs/auth/auth_states.dart';
 import '../../components/operator_widgets/operator_status_component.dart';
 
 class OperartorHomePage extends StatefulWidget {
@@ -37,6 +38,20 @@ class _OperartorHomePageState extends State<OperartorHomePage> {
   void initState() {
     super.initState();
     _annotationsController.enterpriseId = Modular.args.params["enterpriseId"];
+    _loginController.operatorBloc.add(
+      GetOperatorByIdEvent(
+        _annotationsController.enterpriseId,
+        widget.operatorEntity.operatorId!,
+        widget.operatorEntity.businessPosition!,
+      ),
+    );
+    _loginController.authBloc.stream.listen(
+      (state) {
+        if (state is AuthSignOutState) {
+          Modular.to.navigate(EnterpriseRoutes.initial);
+        }
+      },
+    );
     _operatorController.operatorOppeningBloc.stream.listen(
       (state) {
         if (state is OperatorOppeningSuccessState) {

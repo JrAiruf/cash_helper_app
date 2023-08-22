@@ -2,9 +2,6 @@ import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator
 import 'package:cash_helper_app/app/modules/user_module/presenter/controller/operator_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../../../../../../login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import '../../../../../../../login_module/presenter/components/cash_helper_text_field.dart';
-import '../../../../../../../login_module/presenter/components/visibility_icon_component.dart';
 
 class RemoveOperatorAccountPage extends StatefulWidget {
   const RemoveOperatorAccountPage({super.key, required this.operatorEntity});
@@ -23,9 +20,9 @@ class _RemoveOperatorAccountPageState extends State<RemoveOperatorAccountPage> {
   String? _operatorEmail;
   String? _operatorCode;
   String? _operatorPassword;
-  bool _operatorCodeVisible = false;
-  bool _passwordVisible = false;
-  bool _accountDeleted = false;
+  final bool _operatorCodeVisible = false;
+  final bool _passwordVisible = false;
+  final bool _accountDeleted = false;
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;

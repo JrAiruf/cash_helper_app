@@ -12,7 +12,7 @@ class CreateOperatorBloc extends Bloc<CreateOperatorEvents, CreateOperatorStates
 
   final IRegisterOperator _registerOperator;
   void _mapCreateOperatorEventToState(CreateOperatorEvent event, Emitter<CreateOperatorStates> state) async {
-    state(CreateOperatorLoadingState());
+    state(RedirectingOperatorState());
     final createdOperator = await _registerOperator(event.operatorEntity, event.enterpriseId, event.collection).catchError((e) {
       state(CreateOperatorErrorState(e.toString()));
       return null;

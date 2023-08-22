@@ -1,6 +1,5 @@
 import 'package:cash_helper_app/app/modules/management_module/external/data/application_management_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../annotations_module/external/data/application_annotations_database.dart';
 import 'errors/payment_method_not_created.dart';
 import 'errors/payment_methods_list_unnavailable.dart';
 import 'errors/pendency_error.dart';
@@ -11,12 +10,9 @@ import 'errors/users_unavailable_error.dart';
 class ManagementDatabase implements ApplicationManagementDatabase {
   ManagementDatabase({
     required FirebaseFirestore database,
-    required ApplicationAnnotationDatabase annotationsDatabase,
-  })  : _database = database,
-        _annotationsDatabase = annotationsDatabase;
+  }) : _database = database;
 
   final FirebaseFirestore _database;
-  final ApplicationAnnotationDatabase _annotationsDatabase;
   var databaseOperatorsMapList = <Map<String, dynamic>>[];
   @override
   Future<List<Map<String, dynamic>>>? getOperatorInformations(String? enterpriseId) async {
