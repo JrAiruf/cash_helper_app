@@ -199,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                                 TextButton(
                                   style: TextButton.styleFrom(),
                                   onPressed: () {
-                                    Modular.to.pushNamed("/forgot-password-page");
+                                    Modular.to.pushNamed("/user-redirection-page/${_loginController.entepriseEntity}");
                                   },
                                   child: Text('Esqueci minha senha', style: Theme.of(context).textTheme.displaySmall),
                                 ),

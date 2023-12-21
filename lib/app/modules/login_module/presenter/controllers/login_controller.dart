@@ -4,6 +4,7 @@ import 'package:cash_helper_app/app/modules/annotations_module/presenter/date_va
 import 'package:cash_helper_app/app/modules/enterprise_module/domain/entities/enterprise_entity.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_bloc.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/auth/auth_events.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/check_user_data_bloc/check_user_data_bloc.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_manager_bloc/create_manager_bloc.dart';
 import 'package:cash_helper_app/app/modules/login_module/presenter/blocs/create_manager_bloc/create_manager_events.dart';
 import 'package:cash_helper_app/app/modules/user_module/domain/entities/manager_entity.dart';
@@ -38,9 +39,13 @@ class LoginController {
   final authBloc = Modular.get<AuthBloc>();
   final createManagerBloc = Modular.get<CreateManagerBloc>();
   final createOperatorBloc = Modular.get<CreateOperatorBloc>();
+  final checkUserDataBloc = Modular.get<CheckUserDataBloc>();
   final managerBloc = Modular.get<ManagerBloc>();
   final operatorBloc = Modular.get<OperatorBloc>();
   //
+  late String userEmail;
+  late String userCode;
+  late String userCollection;
   final dateValue = DateValues();
   bool startWithEnabledOperator = false;
   bool get enabledOperator => startWithEnabledOperator;
@@ -153,6 +158,15 @@ class LoginController {
       emailField.clear();
       passwordField.clear();
     }
+  }
+
+  void checkUserData() {
+    checkOperatorDataFormKey.currentState!.validate();
+    if (checkOperatorDataFormKey.currentState!.validate()) {
+      checkUserDataBloc.add(CheckUserDataEvent(enterpriseId, userEmail, userCode, userCollection));
+    }
+    emailField.clear();
+    cashierCodeField.clear();
   }
 
   void signOut() async {

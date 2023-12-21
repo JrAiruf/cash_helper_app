@@ -14,6 +14,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:uuid/uuid.dart';
 import '../infra/data/login_repository.dart';
 import '../infra/repository/login_repository_impl.dart';
+import '../presenter/pages/views/user_redirection_page.dart';
 import 'login_prensentation_binds/login_presentation_binds.dart';
 import '../presenter/pages/recovery_password_page.dart';
 
@@ -45,8 +46,12 @@ class LoginModule extends Module {
       child: (_, args) => CreateOperatorPage(enterpriseEntity: args.data),
     ),
     ChildRoute(
-      "/forgot-password-page",
-      child: (_, args) => const ForgotPasswordPage(),
+      "/user-redirection-page/:enterpriseId",
+      child: (_, args) => const UserRedirectionPage(),
+    ),
+    ChildRoute(
+      "/forgot-password-page/:enterpriseId",
+      child: (_, args) => ForgotPasswordPage(businessPosition: args.data),
     ),
     ChildRoute(
       "/recovery-password-page",

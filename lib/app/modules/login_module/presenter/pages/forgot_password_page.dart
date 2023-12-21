@@ -1,20 +1,29 @@
-import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
-import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
-import 'package:cash_helper_app/app/modules/user_module/domain/entities/operator_entity.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({super.key});
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/buttons/cash_helper_login_button.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/components/cash_helper_text_field.dart';
+import 'package:cash_helper_app/app/modules/login_module/presenter/controllers/login_controller.dart';
 
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({Key? key, required this.businessPosition}) : super(key: key);
+
+  final String businessPosition;
   @override
   State<ForgotPasswordPage> createState() => ForgotPasswordPageState();
 }
 
+final _loginController = Modular.get<LoginController>();
+
 class ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final _operatorEntity = OperatorEntity();
-  final _loginController = Modular.get<LoginController>();
+  @override
+  void initState() {
+    super.initState();
+    _loginController.enterpriseId = Modular.args.params["enterpriseId"];
+    _loginController.enterpriseId = Modular.args.params["enterpriseId"];
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -56,8 +65,8 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       children: [
                         CashHelperTextFieldComponent(
                           radius: 15,
-                          validator: (value) => _loginController.emailValidate(value),
-                          onSaved: (value) => _operatorEntity.operatorEmail = value,
+                          validator: _loginController.emailValidate,
+                          onSaved: (value) => _loginController.userEmail = value ?? "",
                           controller: _loginController.emailField,
                           label: 'Email',
                         ),
@@ -65,8 +74,8 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         CashHelperTextFieldComponent(
                           obscureText: true,
                           radius: 15,
-                          validator: (value) => _loginController.cashierCodeValidate(value),
-                          onSaved: (value) => _operatorEntity.operatorCode = value,
+                          validator: _loginController.cashierCodeValidate,
+                          onSaved: (value) => _loginController.userCode = value ?? "",
                           controller: _loginController.cashierCodeField,
                           label: 'Código Ops.',
                         ),
@@ -76,7 +85,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
                 SizedBox(height: height * 0.15),
                 CashHelperElevatedButton(
-                  onPressed: () async {
+                  onPressed: () {
                     /* _checkOperatorDataFormKey.currentState!.validate();
                     _checkOperatorDataFormKey.currentState!.save();
                     if (_checkOperatorDataFormKey.currentState!.validate()) {

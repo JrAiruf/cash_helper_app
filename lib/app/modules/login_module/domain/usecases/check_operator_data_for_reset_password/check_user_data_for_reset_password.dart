@@ -7,8 +7,7 @@ CheckUserDataForResetPassword({required LoginRepository repository}) : _reposito
   final LoginRepository _repository;
 
   @override
-  Future<bool> call(String enterpriseId, String userEmail, String userrCode, String collection) async {
-    return await _repository.checkUserDataForResetPassword(enterpriseId, userEmail, userrCode, collection) ?? false;
-  }
+  Future<bool> call(String enterpriseId, String userEmail, String userrCode, String collection) async =>
+      await _repository.checkUserDataForResetPassword(enterpriseId, userEmail, userrCode, collection) ?? false;
 
 }
